@@ -1,0 +1,108 @@
+import tk.mybatis.mapper.generator.MapperPlugin
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.10.RELEASE'
+        druidSpringVersion = '1.1.7'
+        fastjsonVersion = '1.2.38'
+        commonsLang3Version = '3.6'
+        springBootStarterSwaggerVersion = '1.5.1.RELEASE'
+        mybatisSpringBootStarterVersion = '1.3.1'
+        mapperSpringBootStarterVersion = '1.2.3'
+        pagehelperSpringBootStarterVersion = '1.2.3'
+    }
+
+    repositories {
+        maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.cuisongliu.plugin:mybatis-generator:0.9.6"
+    }
+}
+
+group 'com.songpo'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+apply plugin: "com.cuisongliu.plugin.mybatis-generator"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+    mavenCentral()
+}
+
+dependencies {
+
+    // 通用模块
+    compile "com.songpo:sp-component-common:0.0.1-SNAPSHOT"
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile("com.alibaba:druid-spring-boot-starter:${druidSpringVersion}")
+
+    // swagger文档管理
+    compile("com.spring4all:spring-boot-starter-swagger:$springBootStarterSwaggerVersion")
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile("org.apache.commons:commons-lang3:$commonsLang3Version")
+
+    runtime('mysql:mysql-connector-java')
+
+    compileOnly('org.projectlombok:lombok')
+
+    // Spring Boot MyBatis依赖
+    // https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisSpringBootStarterVersion")
+
+    // 通用Mapper
+    // https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter
+    compile("tk.mybatis:mapper-spring-boot-starter:$mapperSpringBootStarterVersion")
+
+    // Mybatis分页插件
+    // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+    compile("com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperSpringBootStarterVersion")
+
+    // MySQL驱动
+    compile('mysql:mysql-connector-java')
+
+    // 正式打包时，请移除该注释
+//	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+}
+
+// 指定工程编码格式
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+mbg {
+    overwrite = true
+    consoleable = true
+    generatorFile = "src/main/resources/generatorConfig.xml"
+    jdbc{
+        driver = "com.mysql.jdbc.Driver"
+        url    = "jdbc:mysql://47.94.93.150:1598/ogcp?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "ogcp"
+        password = "517B0k&GmeRtPh5oa&%w!jLV#Sm94A2X"
+    }
+    xml{
+        resourcesProject = "src/main/java"
+        mapperPlugin = MapperPlugin.class
+        mapperMapper = "tk.mybatis.mapper.common.Mapper"
+        mapperPackage= "com.songpo.mapper"
+        modelPackage = "com.songpo.entity"
+        xmlPackage =   "com.songpo.mapper"
+    }
+}
