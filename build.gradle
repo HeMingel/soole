@@ -3,7 +3,7 @@ import tk.mybatis.mapper.generator.MapperPlugin
 buildscript {
     ext {
         springBootVersion = '1.5.10.RELEASE'
-        druidSpringVersion = '1.1.7'
+        druidSpringVersion = '1.1.6'
         fastjsonVersion = '1.2.38'
         commonsLang3Version = '3.6'
         springBootStarterSwaggerVersion = '1.5.1.RELEASE'
