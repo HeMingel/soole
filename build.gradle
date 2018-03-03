@@ -93,11 +93,13 @@ mbg {
     generatorFile = "src/main/resources/generatorConfig.xml"
     jdbc{
         driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://47.94.93.150:1598/ogcp?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "ogcp"
-        password = "517B0k&GmeRtPh5oa&%w!jLV#Sm94A2X"
+        url    = "jdbc:mysql://47.94.93.150:1598/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "searched"
+        password = "86GYBXkzTbA%y@27"
     }
     xml{
+        tableName = 'sl'
+        objectName = 'SL'
         resourcesProject = "src/main/java"
         mapperPlugin = MapperPlugin.class
         mapperMapper = "tk.mybatis.mapper.common.Mapper"
