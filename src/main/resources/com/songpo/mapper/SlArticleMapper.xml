@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.mapper.SlArticleMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.entity.SlArticle">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="read_count" jdbcType="DECIMAL" property="readCount"/>
+        <result column="praise_count" jdbcType="DECIMAL" property="praiseCount"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+        <result column="modification_time" jdbcType="VARCHAR" property="modificationTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, title, content, image_url, read_count, praise_count, creator, create_time, modifier,
+        modification_time
+    </sql>
+</mapper>

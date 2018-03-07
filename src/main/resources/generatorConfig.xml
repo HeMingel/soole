@@ -57,12 +57,20 @@
         </javaClientGenerator>
 
         <!-- oracle 使用 schema 对应 用户名称空间 mysql 使用 catalog 对应 数据库 -->
-        <table tableName="demo" domainObjectName="Demo"
+        <table tableName="%"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false">
             <property name="useActualColumnNames" value="false"/>
             <property name="selectAllOrderByClause" value="true"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <!--<table tableName="demo" domainObjectName="Demo"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

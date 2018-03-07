@@ -1,12 +1,10 @@
-import tk.mybatis.mapper.generator.MapperPlugin
-
 buildscript {
     ext {
         springBootVersion = '1.5.10.RELEASE'
         druidSpringVersion = '1.1.6'
         fastjsonVersion = '1.2.38'
         commonsLang3Version = '3.6'
-        springBootStarterSwaggerVersion = '1.5.1.RELEASE'
+        swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
         mybatisSpringBootStarterVersion = '1.3.1'
         mapperSpringBootStarterVersion = '1.2.3'
         pagehelperSpringBootStarterVersion = '1.2.3'
@@ -41,22 +39,23 @@ repositories {
 
 dependencies {
 
-    // 通用模块
-    compile "com.songpo:sp-component-common:0.0.1-SNAPSHOT"
-
-    compile('org.springframework.boot:spring-boot-starter-web')
-
-    compile("com.alibaba:druid-spring-boot-starter:${druidSpringVersion}")
+    // 实体编译组件
+    compileOnly('org.projectlombok:lombok')
 
     // swagger文档管理
-    compile("com.spring4all:spring-boot-starter-swagger:$springBootStarterSwaggerVersion")
+    compile("com.spring4all:swagger-spring-boot-starter:$swaggerSpringBootStarterVersion")
+
+    // WEB组件
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    // Redis组件
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
+
+    // Druid数据源组件
+    compile("com.alibaba:druid-spring-boot-starter:${druidSpringVersion}")
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile("org.apache.commons:commons-lang3:$commonsLang3Version")
-
-    runtime('mysql:mysql-connector-java')
-
-    compileOnly('org.projectlombok:lombok')
 
     // Spring Boot MyBatis依赖
     // https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
@@ -73,9 +72,20 @@ dependencies {
     // MySQL驱动
     compile('mysql:mysql-connector-java')
 
+    // 业务模型校验
+    // https://mvnrepository.com/artifact/com.baidu.unbiz/fluent-validator
+    compile('com.baidu.unbiz:fluent-validator:1.0.9') {
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
+
+    // OAUTH2组件
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2
+    compile('org.springframework.cloud:spring-cloud-starter-oauth2:1.2.2.RELEASE')
+
     // 正式打包时，请移除该注释
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
+    // 测试组件
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
@@ -101,7 +111,7 @@ mbg {
         tableName = 'sl'
         objectName = 'SL'
         resourcesProject = "src/main/java"
-        mapperPlugin = MapperPlugin.class
+        mapperPlugin = tk.mybatis.mapper.generator.MapperPlugin.class
         mapperMapper = "tk.mybatis.mapper.common.Mapper"
         mapperPackage= "com.songpo.mapper"
         modelPackage = "com.songpo.entity"
