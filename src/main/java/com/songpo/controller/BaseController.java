@@ -9,7 +9,6 @@ import com.songpo.service.BaseService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +21,12 @@ import static com.baidu.unbiz.fluentvalidator.ResultCollectors.toSimple;
 /**
  * @author liuso
  */
-@Transactional
 public class BaseController<T, PK> {
 
     private final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
     public BaseService<T, PK> service;
+
     public ValidatorHandler<T> validatorHandler;
 
     /**
