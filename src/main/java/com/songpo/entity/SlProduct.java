@@ -5,52 +5,62 @@ import java.io.Serializable;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 名称
      */
     private String name;
+
     /**
      * 备注
      */
     private String remark;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
     /**
      * 图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 简介
      */
     private String introduction;
+
     /**
      * 详情
      */
     private String detail;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

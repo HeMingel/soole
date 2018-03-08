@@ -1,39 +1,44 @@
 package com.songpo.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Table(name = "sl_member_level")
 public class SlMemberLevel implements Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * 唯一标识符
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+
     /**
      * 等级名称
      */
     private String name;
     /**
+     * 唯一标识符
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    /**
      * 该等级范围最大值
      */
     private Integer maximum;
+
     /**
      * 等级描述
      */
     private String descriptional;
+    /**
+     * logo的路径
+     */
+    @Column(name = "logo_url")
+    private String logoUrl;
 
     /**
      * 获取唯一标识符
      *
      * @return id - 唯一标识符
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -42,8 +47,8 @@ public class SlMemberLevel implements Serializable {
      *
      * @param id 唯一标识符
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -62,6 +67,24 @@ public class SlMemberLevel implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取logo的路径
+     *
+     * @return logo_url - logo的路径
+     */
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    /**
+     * 设置logo的路径
+     *
+     * @param logoUrl logo的路径
+     */
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
     }
 
     /**
@@ -108,6 +131,7 @@ public class SlMemberLevel implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", logoUrl=").append(logoUrl);
         sb.append(", maximum=").append(maximum);
         sb.append(", descriptional=").append(descriptional);
         sb.append(", serialVersionUID=").append(serialVersionUID);

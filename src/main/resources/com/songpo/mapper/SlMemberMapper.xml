@@ -11,6 +11,7 @@
         <result column="money" jdbcType="DECIMAL" property="money"/>
         <result column="level" jdbcType="DECIMAL" property="level"/>
         <result column="exp" jdbcType="DECIMAL" property="exp"/>
+        <result column="is_push" jdbcType="BIT" property="isPush"/>
         <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
@@ -20,6 +21,6 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, user_id, coin, money, level, exp, creator, create_time, modifier, modification_time
+        id, user_id, coin, money, level, exp, is_push, creator, create_time, modifier, modification_time
     </sql>
 </mapper>

@@ -5,55 +5,66 @@ import java.io.Serializable;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 账号
      */
     private String username;
+
     /**
      * 密码
      */
     private String password;
+
     /**
      * 手机号码
      */
     private String phone;
+
     /**
      * 电子邮箱
      */
     private String email;
+
     /**
      * 头像
      */
     private String avatar;
+
     /**
      * 密钥
      */
     private String secret;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

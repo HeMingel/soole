@@ -5,63 +5,80 @@ import java.io.Serializable;
 
 @Table(name = "sl_action_navigation")
 public class SlActionNavigation implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 元素文本
      */
     private String title;
+
     /**
      * 元素描述
      */
     private String description;
+
     /**
      * 元素图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 链接地址
      */
     private String url;
+
     /**
      * 动作页面_android
      */
     @Column(name = "page_android")
     private String pageAndroid;
+
     /**
      * 动作页面_ios
      */
     @Column(name = "page_ios")
     private String pageIos;
+
     /**
      * 导航类型唯一标识符
      */
     @Column(name = "type_id")
     private String typeId;
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+    /**
+     * 序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     */
+    @Column(name = "serial_number")
+    private Integer serialNumber;
 
     /**
      * 获取唯一标识符
@@ -208,6 +225,24 @@ public class SlActionNavigation implements Serializable {
     }
 
     /**
+     * 获取序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     *
+     * @return serial_number - 序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     */
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+
+    /**
+     * 设置序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     *
+     * @param serialNumber 序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     */
+    public void setSerialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    /**
      * 获取创建人
      *
      * @return creator - 创建人
@@ -293,6 +328,7 @@ public class SlActionNavigation implements Serializable {
         sb.append(", pageAndroid=").append(pageAndroid);
         sb.append(", pageIos=").append(pageIos);
         sb.append(", typeId=").append(typeId);
+        sb.append(", serialNumber=").append(serialNumber);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);

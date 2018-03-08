@@ -6,65 +6,78 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_repository")
 public class SlRepository implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 店铺唯一标识
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 商品唯一标识
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 备注
      */
     private String remark;
+
     /**
      * 价格
      */
     private BigDecimal price;
+
     /**
      * 折扣
      */
     private BigDecimal discount;
+
     /**
      * 状态
      */
     private Integer state;
+
     /**
      * 数量
      */
     private Integer count;
+
     /**
      * 评分
      */
     private BigDecimal score;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
