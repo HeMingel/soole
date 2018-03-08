@@ -4,15 +4,10 @@ import com.baidu.unbiz.fluentvalidator.ValidationError;
 import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
 import com.songpo.entity.SlRepository;
-import com.songpo.entity.SlTag;
-import com.songpo.service.RespositoryService;
-import com.songpo.service.TagService;
+import com.songpo.service.RepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -20,13 +15,13 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Y.H
  */
-public class RespositoryValidator extends ValidatorHandler<SlRepository> {
+public class RepositoryValidator extends ValidatorHandler<SlRepository> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RespositoryValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(RepositoryValidator.class);
 
-    private RespositoryService service;
+    private RepositoryService service;
 
-    public RespositoryValidator(RespositoryService service) {
+    public RepositoryValidator(RepositoryService service) {
         this.service = service;
     }
 
@@ -62,8 +57,6 @@ public class RespositoryValidator extends ValidatorHandler<SlRepository> {
                 }});
             }
         }
-
-
 
         return flag;
     }

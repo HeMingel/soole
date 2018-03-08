@@ -9,6 +9,7 @@ import com.songpo.entity.SlShop;
 import com.songpo.service.ShopService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -103,7 +104,6 @@ public class ShopValidator  extends ValidatorHandler<SlShop> {
                     }});
                     flag = false;
                 }else {
-                    /*t.setSecret(UUID.randomUUID().toString());*/
                     // 设置创建时间
                     t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 }

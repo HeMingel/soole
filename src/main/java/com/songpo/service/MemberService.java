@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberService extends BaseService<SlMember, String> {
+
     public MemberService(SlMemberMapper mapper) {
         super(mapper);
     }
+
 }

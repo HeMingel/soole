@@ -5,8 +5,8 @@ import com.songpo.mapper.SlRepositoryMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RespositoryService extends BaseService<SlRepository, String> {
-    public RespositoryService(SlRepositoryMapper mapper) {
+public class RepositoryService extends BaseService<SlRepository, String> {
+    public RepositoryService(SlRepositoryMapper mapper) {
         super(mapper);
     }
 }

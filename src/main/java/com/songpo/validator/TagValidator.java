@@ -52,8 +52,6 @@ public class TagValidator extends ValidatorHandler<SlTag> {
             }
         }
 
-
-
         return flag;
     }
 }
