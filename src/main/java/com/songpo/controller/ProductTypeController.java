@@ -41,11 +41,20 @@ public class ProductTypeController extends BaseController<SlProductType, String>
         super.validatorHandler = new ProductTypeValidator(service);
     }
 
+    /**
+     * 搜索一级分类
+     * @return
+     */
     @RequestMapping(value = "/find-category",method = RequestMethod.POST)
     public BusinessMessage findCategory() {
         return this.productTypeService.findCategory();
     }
 
+    /**
+     * 通过父ID 搜索二级分类
+     * @param parentId
+     * @return
+     */
     @RequestMapping(value = "/find-category-by-parentId",method = RequestMethod.POST)
     public BusinessMessage findCategoryByParentId(String parentId) {
         if(parentId == null){

@@ -5,6 +5,7 @@
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="tagName" jdbcType="VARCHAR"/>
+        <result column="parentId" jdbcType="VARCHAR"/>
 
     </resultMap>
     <sql id="Base_Column_List">
@@ -16,7 +17,7 @@
 
     <select id="findCategoryByParentId" parameterType="String" resultType="com.songpo.dto.ProductCategoryDto">
         select
-        t.id as id,t.name as name ,st.name as tagName
+        t.id as id,t.name as name ,st.name as tagName,t.parent_id as parentId
         FROM sl_product_type t
         left join sl_product_type_tags tt
         on t.tag_id = tt.id

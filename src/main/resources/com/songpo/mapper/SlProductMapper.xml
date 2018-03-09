@@ -15,12 +15,13 @@
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction, 
-    detail
+    detail, product_type_id
   </sql>
 </mapper>

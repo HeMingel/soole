@@ -88,4 +88,24 @@ public class ProductService extends BaseService<SlProduct,String>{
         return businessMessage;
     }
 
+    public BusinessMessage findGoodsByCategory(String goodsType){
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try{
+            List<ProductDto> productDtos = this.productMapper.findGoodsByCategory(goodsType);
+            if(productDtos.size() > 0){
+                businessMessage.setMsg("查询成功");
+                businessMessage.setSuccess(true);
+                businessMessage.setData(productDtos);
+            }else{
+                businessMessage.setMsg("查询无数据!");
+                businessMessage.setSuccess(true);
+            }
+
+        }catch (Exception e){
+
+        }
+        return businessMessage;
+    }
+
 }

@@ -60,6 +60,12 @@ public class SlProduct implements Serializable {
      */
     private String detail;
 
+    /**
+     * 商品类别
+     */
+    @Column(name = "product_type_id")
+    private String productTypeId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -242,6 +248,24 @@ public class SlProduct implements Serializable {
         this.detail = detail == null ? null : detail.trim();
     }
 
+    /**
+     * 获取商品类别
+     *
+     * @return product_type_id - 商品类别
+     */
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    /**
+     * 设置商品类别
+     *
+     * @param productTypeId 商品类别
+     */
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId == null ? null : productTypeId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -258,6 +282,7 @@ public class SlProduct implements Serializable {
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
+        sb.append(", productTypeId=").append(productTypeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

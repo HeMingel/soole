@@ -46,6 +46,15 @@
         select id as productId,image_url,name from sl_product limit 0,5
     </select>
 
+    <select id="findGoodsByCategory" parameterType="String" resultMap="BaseResultMap">
+        select
+        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        FROM sl_product p
+        LEFT JOIN sl_repository r
+        ON p.`id`= r.product_id
+        WHERE p.`product_type_id` = #{id}
+    </select>
+
 
 
 </mapper>

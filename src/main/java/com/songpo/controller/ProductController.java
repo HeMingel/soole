@@ -55,4 +55,11 @@ public class ProductController extends BaseController<SlProduct,String>{
         return this.productService.recommendProduct();
     }
 
+    /**
+     * 通过商品分类查询商品
+     */
+    @RequestMapping(value = "/find-goods-by-type",method = RequestMethod.POST)
+    public BusinessMessage findGoodsByCategory(String goodsType){
+        return this.productService.findGoodsByCategory(goodsType);
+    }
 }

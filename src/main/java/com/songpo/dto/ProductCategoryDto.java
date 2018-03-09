@@ -15,4 +15,9 @@ public class ProductCategoryDto {
      * 标签名称
      */
     private String tagName;
+
+    /**
+     * 父Id
+     */
+    private String parentId;
 }
