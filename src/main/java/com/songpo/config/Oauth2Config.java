@@ -51,7 +51,7 @@ public class Oauth2Config {
                     // 不拦截获取token的请求
                     .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
                     // SwaggerUi
-                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**").permitAll()
+                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**","/api/v2/**").permitAll()
                     .antMatchers("/api/v1/system/login", "/api/v1/system/register").permitAll()
                     // 其他请求都需要经过授权
                     .anyRequest().authenticated();
