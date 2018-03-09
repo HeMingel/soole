@@ -1,5 +1,6 @@
 package com.songpo.service;
 
+import com.songpo.cache.UserCache;
 import com.songpo.entity.SlUser;
 import com.songpo.mapper.SlUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,18 @@ public class MyClientDetailsService implements ClientDetailsService {
     @Autowired
     private SlUserMapper mapper;
 
+    @Autowired
+    private UserCache cache;
+
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         BaseClientDetails details = null;
-        SlUser user = this.mapper.selectByPrimaryKey(clientId);
+
+        SlUser user = this.cache.get(clientId);
+        if (null == user) {
+            user = this.mapper.selectByPrimaryKey(clientId);
+        }
+
         if (null != user) {
             details = new BaseClientDetails();
             details.setClientId(clientId);

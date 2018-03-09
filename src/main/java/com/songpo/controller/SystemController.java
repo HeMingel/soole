@@ -1,5 +1,6 @@
 package com.songpo.controller;
 
+import com.songpo.cache.UserCache;
 import com.songpo.domain.BusinessMessage;
 import com.songpo.entity.SlUser;
 import com.songpo.service.UserService;
@@ -26,6 +27,9 @@ public class SystemController {
     private UserService userService;
 
     @Autowired
+    private UserCache userCache;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     private Logger logger = LoggerFactory.getLogger(SystemController.class);
@@ -33,32 +37,46 @@ public class SystemController {
     /**
      * 登录
      *
-     * @param username 账号，可以是用户名、手机号码或邮箱
+     * @param phone 账号，可以是用户名、手机号码或邮箱
      * @param password 密码
      * @return 业务消息
      */
     @PostMapping("login")
-    public BusinessMessage<Map<String, String>> login(String username, String password) {
-        logger.debug("用户登录，账号：{}，密码：{}", username, password);
+    public BusinessMessage<Map<String, String>> login(String phone, String password) {
+        logger.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
-        try {
-            SlUser user = userService.selectOne(new SlUser() {{
-                setUsername(username);
-            }});
-            if (null == user) {
-                message.setMsg("用户信息不匹配");
-            } else if (!passwordEncoder.matches(password, user.getPassword())) {
-                message.setMsg("用户信息不匹配");
-            } else {
-                message.setData(new HashMap<String, String>() {{
-                    put("clientId", user.getId());
-                    put("clientSecret", user.getSecret());
-                }});
-                message.setSuccess(true);
+        if (StringUtils.isEmpty(phone)) {
+            message.setMsg("账号为空");
+        } else if (StringUtils.isEmpty(password)) {
+            message.setMsg("密码为空");
+        } else {
+            try {
+                // 从缓存中获取用户信息
+                SlUser user = this.userCache.get(phone);
+
+                // 如果用户不存在，则从数据库查询
+                if (null == user) {
+                    user = userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
+                }
+
+                if (null == user) {
+                    message.setMsg("用户信息不匹配");
+                } else if (!passwordEncoder.matches(password, user.getPassword())) {
+                    message.setMsg("用户信息不匹配");
+                } else {
+                    SlUser finalUser = user;
+                    message.setData(new HashMap<String, String>() {{
+                        put("clientId", finalUser.getId());
+                        put("clientSecret", finalUser.getSecret());
+                    }});
+                    message.setSuccess(true);
+                }
+            } catch (Exception e) {
+                logger.error("登录失败：{}", e);
+                message.setMsg("登录失败：" + e.getMessage());
             }
-        } catch (Exception e) {
-            logger.error("登录失败：{}", e);
-            message.setMsg("登录失败：" + e.getMessage());
         }
         return message;
     }
@@ -66,29 +84,29 @@ public class SystemController {
     /**
      * 注册
      *
-     * @param username 账号
+     * @param phone 账号
      * @param password 密码
      * @return 业务信息
      */
     @PostMapping("register")
-    public BusinessMessage<SlUser> register(String username, String password) {
-        logger.debug("用户注册，账号：{}，密码：{}", username, password);
+    public BusinessMessage<SlUser> register(String phone, String password) {
+        logger.debug("用户注册，账号：{}，密码：{}", phone, password);
         BusinessMessage<SlUser> message = new BusinessMessage<>();
-        if (StringUtils.isEmpty(username)) {
+        if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
         } else if (StringUtils.isEmpty(password)) {
             message.setMsg("密码为空");
         } else {
             try {
                 SlUser user = this.userService.selectOne(new SlUser() {{
-                    setUsername(username);
+                    setPhone(phone);
                 }});
 
                 if (null != user) {
                     message.setMsg("账号已存在");
                 } else {
                     user = new SlUser();
-                    user.setUsername(username);
+                    user.setUsername(phone);
                     user.setPassword(password);
                     // 添加
                     userService.insertSelective(user);
