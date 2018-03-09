@@ -12,6 +12,7 @@
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
         <result column="quantity" jdbcType="VARCHAR" property="quantity"/>
         <result column="price" jdbcType="VARCHAR" property="price"/>
+        <result column="shipping_state" jdbcType="INTEGER" property="shippingState"/>
         <result column="discount" jdbcType="INTEGER" property="discount"/>
         <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
@@ -22,7 +23,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, order_id, shop_id, product_id, amount, quantity, price, discount, creator, create_time,
-        modifier, modification_time
+        id, order_id, shop_id, product_id, amount, quantity, price, shipping_state, discount,
+        creator, create_time, modifier, modification_time
     </sql>
 </mapper>

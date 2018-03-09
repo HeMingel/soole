@@ -47,6 +47,12 @@ public class SlOrderDetail implements Serializable {
     private String price;
 
     /**
+     * 0、待发货 1、已发货 2、已签收 3、已拒收
+     */
+    @Column(name = "shipping_state")
+    private Integer shippingState;
+
+    /**
      * 折扣
      */
     private Integer discount;
@@ -202,6 +208,24 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
+     * 获取0、待发货 1、已发货 2、已签收 3、已拒收
+     *
+     * @return shipping_state - 0、待发货 1、已发货 2、已签收 3、已拒收
+     */
+    public Integer getShippingState() {
+        return shippingState;
+    }
+
+    /**
+     * 设置0、待发货 1、已发货 2、已签收 3、已拒收
+     *
+     * @param shippingState 0、待发货 1、已发货 2、已签收 3、已拒收
+     */
+    public void setShippingState(Integer shippingState) {
+        this.shippingState = shippingState;
+    }
+
+    /**
      * 获取折扣
      *
      * @return discount - 折扣
@@ -304,6 +328,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", amount=").append(amount);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
+        sb.append(", shippingState=").append(shippingState);
         sb.append(", discount=").append(discount);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);

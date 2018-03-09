@@ -11,7 +11,7 @@
         <result column="shipping_address_id" jdbcType="VARCHAR" property="shippingAddressId"/>
         <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
         <result column="fee" jdbcType="DECIMAL" property="fee"/>
-        <result column="state" jdbcType="DECIMAL" property="state"/>
+        <result column="payment_state" jdbcType="DECIMAL" property="paymentState"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="payment_channel" jdbcType="INTEGER" property="paymentChannel"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -22,7 +22,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, serial_number, user_id, shipping_address_id, total_amount, fee, state, type,
-        payment_channel, remark, create_time, pay_time
+        id, serial_number, user_id, shipping_address_id, total_amount, fee, payment_state,
+        type, payment_channel, remark, create_time, pay_time
     </sql>
 </mapper>

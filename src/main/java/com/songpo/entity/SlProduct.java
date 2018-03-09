@@ -60,6 +60,18 @@ public class SlProduct implements Serializable {
      */
     private String detail;
 
+    /**
+     * 评论总数
+     */
+    @Column(name = "comment_num")
+    private Integer commentNum;
+
+    /**
+     * 销售总数
+     */
+    @Column(name = "sale_num")
+    private Integer saleNum;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -242,6 +254,42 @@ public class SlProduct implements Serializable {
         this.detail = detail == null ? null : detail.trim();
     }
 
+    /**
+     * 获取评论总数
+     *
+     * @return comment_num - 评论总数
+     */
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    /**
+     * 设置评论总数
+     *
+     * @param commentNum 评论总数
+     */
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    /**
+     * 获取销售总数
+     *
+     * @return sale_num - 销售总数
+     */
+    public Integer getSaleNum() {
+        return saleNum;
+    }
+
+    /**
+     * 设置销售总数
+     *
+     * @param saleNum 销售总数
+     */
+    public void setSaleNum(Integer saleNum) {
+        this.saleNum = saleNum;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -258,6 +306,8 @@ public class SlProduct implements Serializable {
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
+        sb.append(", commentNum=").append(commentNum);
+        sb.append(", saleNum=").append(saleNum);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

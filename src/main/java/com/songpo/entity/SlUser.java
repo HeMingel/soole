@@ -23,6 +23,39 @@ public class SlUser implements Serializable {
     private String password;
 
     /**
+     * 用户昵称
+     */
+    @Column(name = "nick_name")
+    private String nickName;
+
+    /**
+     * 用户真实姓名
+     */
+    private String name;
+
+    /**
+     * 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     */
+    @Column(name = "card_type")
+    private Boolean cardType;
+
+    /**
+     * 证件号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    /**
+     * 1.男  2.女
+     */
+    private Boolean sex;
+
+    /**
+     * 生日
+     */
+    private String birthday;
+
+    /**
      * 手机号码
      */
     private String phone;
@@ -41,6 +74,11 @@ public class SlUser implements Serializable {
      * 密钥
      */
     private String secret;
+
+    /**
+     * 个性签名描述
+     */
+    private String describtion;
 
     /**
      * 创建人
@@ -121,6 +159,114 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取用户昵称
+     *
+     * @return nick_name - 用户昵称
+     */
+    public String getNickName() {
+        return nickName;
+    }
+
+    /**
+     * 设置用户昵称
+     *
+     * @param nickName 用户昵称
+     */
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
+    }
+
+    /**
+     * 获取用户真实姓名
+     *
+     * @return name - 用户真实姓名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置用户真实姓名
+     *
+     * @param name 用户真实姓名
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     *
+     * @return card_type - 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     */
+    public Boolean getCardType() {
+        return cardType;
+    }
+
+    /**
+     * 设置证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     *
+     * @param cardType 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     */
+    public void setCardType(Boolean cardType) {
+        this.cardType = cardType;
+    }
+
+    /**
+     * 获取证件号
+     *
+     * @return card_number - 证件号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置证件号
+     *
+     * @param cardNumber 证件号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
+    }
+
+    /**
+     * 获取1.男  2.女
+     *
+     * @return sex - 1.男  2.女
+     */
+    public Boolean getSex() {
+        return sex;
+    }
+
+    /**
+     * 设置1.男  2.女
+     *
+     * @param sex 1.男  2.女
+     */
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * 获取生日
+     *
+     * @return birthday - 生日
+     */
+    public String getBirthday() {
+        return birthday;
+    }
+
+    /**
+     * 设置生日
+     *
+     * @param birthday 生日
+     */
+    public void setBirthday(String birthday) {
+        this.birthday = birthday == null ? null : birthday.trim();
+    }
+
+    /**
      * 获取手机号码
      *
      * @return phone - 手机号码
@@ -190,6 +336,24 @@ public class SlUser implements Serializable {
      */
     public void setSecret(String secret) {
         this.secret = secret == null ? null : secret.trim();
+    }
+
+    /**
+     * 获取个性签名描述
+     *
+     * @return describtion - 个性签名描述
+     */
+    public String getDescribtion() {
+        return describtion;
+    }
+
+    /**
+     * 设置个性签名描述
+     *
+     * @param describtion 个性签名描述
+     */
+    public void setDescribtion(String describtion) {
+        this.describtion = describtion == null ? null : describtion.trim();
     }
 
     /**
@@ -273,10 +437,17 @@ public class SlUser implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", password=").append(password);
+        sb.append(", nickName=").append(nickName);
+        sb.append(", name=").append(name);
+        sb.append(", cardType=").append(cardType);
+        sb.append(", cardNumber=").append(cardNumber);
+        sb.append(", sex=").append(sex);
+        sb.append(", birthday=").append(birthday);
         sb.append(", phone=").append(phone);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
         sb.append(", secret=").append(secret);
+        sb.append(", describtion=").append(describtion);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);

@@ -48,7 +48,8 @@ public class SlOrder implements Serializable {
      1：支付成功
      2：支付失败
      */
-    private Integer state;
+    @Column(name = "payment_state")
+    private Integer paymentState;
     /**
      * 1：普通订单
      2：拼团订单
@@ -73,8 +74,8 @@ public class SlOrder implements Serializable {
     private String payTime;
     /**
      * 1：微信支付
-     * 2：支付宝支付
-     * 3：厦门银行支付
+     2：支付宝支付
+     3：厦门银行支付
      */
     @Column(name = "payment_channel")
     private Integer paymentChannel;
@@ -192,12 +193,12 @@ public class SlOrder implements Serializable {
                                             1：支付成功
      2：支付失败
      *
-     * @return state - 0：待支付
+     * @return payment_state - 0：待支付
     1：支付成功
     2：支付失败
      */
-    public Integer getState() {
-        return state;
+    public Integer getPaymentState() {
+        return paymentState;
     }
 
     /**
@@ -205,12 +206,12 @@ public class SlOrder implements Serializable {
                                             1：支付成功
      2：支付失败
      *
-     * @param state 0：待支付
+     * @param paymentState 0：待支付
     1：支付成功
     2：支付失败
      */
-    public void setState(Integer state) {
-        this.state = state;
+    public void setPaymentState(Integer paymentState) {
+        this.paymentState = paymentState;
     }
 
     /**
@@ -327,7 +328,7 @@ public class SlOrder implements Serializable {
         sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", fee=").append(fee);
-        sb.append(", state=").append(state);
+        sb.append(", paymentState=").append(paymentState);
         sb.append(", type=").append(type);
         sb.append(", paymentChannel=").append(paymentChannel);
         sb.append(", remark=").append(remark);
