@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "商店标签")
 @RestController
-@RequestMapping("/api/v1/productTypeTags")
+@RequestMapping("/api/v1/product-type-tags")
 public class ProductTypeTagsController extends BaseController<SlProductTypeTags, String>{
 
     private Logger logger = LoggerFactory.getLogger(ProductTypeTagsController.class);

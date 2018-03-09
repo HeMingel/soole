@@ -3,81 +3,77 @@ package com.songpo.validator;
 import com.baidu.unbiz.fluentvalidator.ValidationError;
 import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
-import com.songpo.entity.SlOrder;
-import com.songpo.entity.SlUser;
-import com.songpo.service.OrderService;
-import com.songpo.service.UserService;
+import com.songpo.entity.SlActionNavigation;
+import com.songpo.entity.SlArticle;
+import com.songpo.service.ActionNavigationService;
+import com.songpo.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class OrderValidator extends ValidatorHandler<SlOrder> {
-    private static final Logger logger = LoggerFactory.getLogger(OrderValidator.class);
+public class ActionNavigationValidator extends ValidatorHandler<SlActionNavigation> {
 
-    private OrderService service;
+    private static final Logger logger = LoggerFactory.getLogger(SlActionNavigation.class);
 
-    public OrderValidator(OrderService service) {
+    private ActionNavigationService service;
+
+    public ActionNavigationValidator(ActionNavigationService service) {
         this.service = service;
     }
 
     @Override
-    public boolean validate(ValidatorContext context, SlOrder t) {
+    public boolean validate(ValidatorContext context, SlActionNavigation t) {
         logger.debug("执行校验：实体信息[{}]", t);
+        // 初始化验证标识
         boolean flag = true;
+
         // 校验实体是否为空
         if (null == t)
         {
             context.addError(new ValidationError() {{
-                setErrorMsg("订单信息为空");
-                setField("order");
+                setErrorMsg("ActionNavigation该实体为空");
+                setField("SlActionNavigation");
                 setInvalidValue(t);
             }});
             flag = false;
         } else
         {
             // 校验字段
-            if (StringUtils.isEmpty(t.getUserId()))
+            if (StringUtils.isEmpty(t.getImageUrl()))
             {
                 context.addError(new ValidationError() {{
-                    setErrorMsg("用户账号为空");
-                    setField("getUserId");
-                    setInvalidValue(t.getUserId());
+                    setErrorMsg("图片为空");
+                    setField("imageUrl");
+                    setInvalidValue(t.getImageUrl());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getShippingAddressId()))
+            } else if (StringUtils.isEmpty(t.getUrl()))
             {
                 context.addError(new ValidationError() {{
-                    setErrorMsg("收货地址为空");
-                    setField("ShippingAddressId");
-                    setInvalidValue(t.getShippingAddressId());
+                    setErrorMsg("路径为空");
+                    setField("Url");
+                    setInvalidValue(t.getUrl());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getTotalAmount()))
+            } else if (StringUtils.isEmpty(t.getTypeId()))
             {
                 context.addError(new ValidationError() {{
-                    setErrorMsg("订单总金额为空");
-                    setField("TotalAmount");
-                    setInvalidValue(t.getTotalAmount());
-                }});
-                flag = false;
-            } else if (StringUtils.isEmpty(t.getFee()))
-            {
-                context.addError(new ValidationError() {{
-                    setErrorMsg("手续费为空");
-                    setField("Fee");
-                    setInvalidValue(t.getFee());
+                    setErrorMsg("路径为空");
+                    setField("Url");
+                    setInvalidValue(t.getUrl());
                 }});
                 flag = false;
             }
         }
+        // 校验是否存在，如果不存在，则进行初始化工作
         if (flag)
         {
             try
             {
+                // 设置创建时间
                 t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } catch (Exception e)
             {
@@ -85,7 +81,7 @@ public class OrderValidator extends ValidatorHandler<SlOrder> {
 
                 context.addError(new ValidationError() {{
                     setErrorMsg("校验失败：" + e.getMessage());
-                    setField("orderInfo");
+                    setField("SlActionNavigation");
                     setInvalidValue(t);
                 }});
                 flag = false;

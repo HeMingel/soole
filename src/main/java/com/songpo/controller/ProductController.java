@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.domain.BusinessMessage;
 import com.songpo.entity.SlProduct;
 import com.songpo.service.ProductService;
+import com.songpo.validator.ProductValidator;
 import io.swagger.annotations.Api;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v2/product")
 public class ProductController extends BaseController<SlProduct,String>{
 
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(SlProduct.class);
+
+    public ProductController(ProductService service) {
+        //设置业务服务类
+        super.service = service;
+        //设置实体校验器
+        super.validatorHandler = new ProductValidator(service);
+    }
+
     @Autowired
     private ProductService productService;
 
@@ -28,7 +39,7 @@ public class ProductController extends BaseController<SlProduct,String>{
      * @return
      */
 
-    @RequestMapping(value = "/findGoods",method = RequestMethod.POST)
+    @RequestMapping(value = "/find-goods",method = RequestMethod.POST)
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name,page,size);
 
@@ -39,7 +50,7 @@ public class ProductController extends BaseController<SlProduct,String>{
      * 取最新商品的前6个
      * @return
      */
-    @RequestMapping(value = "/recommendProduct",method = RequestMethod.POST)
+    @RequestMapping(value = "/recommend-product",method = RequestMethod.POST)
     public BusinessMessage recommendProduct(){
         return this.productService.recommendProduct();
     }

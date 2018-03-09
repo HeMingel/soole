@@ -26,7 +26,7 @@ import java.util.List;
 @Api(description = "商品类型管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/productType")
+@RequestMapping("/api/v2/product-type")
 public class ProductTypeController extends BaseController<SlProductType, String>{
 
     private Logger logger = LoggerFactory.getLogger(ProductTypeController.class);
@@ -41,12 +41,12 @@ public class ProductTypeController extends BaseController<SlProductType, String>
         super.validatorHandler = new ProductTypeValidator(service);
     }
 
-    @RequestMapping(value = "/findCategory",method = RequestMethod.POST)
+    @RequestMapping(value = "/find-category",method = RequestMethod.POST)
     public BusinessMessage findCategory() {
         return this.productTypeService.findCategory();
     }
 
-    @RequestMapping(value = "/findCategoryByParentId",method = RequestMethod.POST)
+    @RequestMapping(value = "/find-category-by-parentId",method = RequestMethod.POST)
     public BusinessMessage findCategoryByParentId(String parentId) {
         if(parentId == null){
             BusinessMessage businessMessage = new BusinessMessage();

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "用户管理")
 @RestController
-@RequestMapping("/api/v1/orderDetail")
+@RequestMapping("/api/v1/order-detail")
 public class OrderDetailController extends BaseController<SlOrderDetail, String> {
     public OrderDetailController(OrderDetailService service) {
         // 设置业务服务类

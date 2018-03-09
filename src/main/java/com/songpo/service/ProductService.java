@@ -7,6 +7,7 @@ import com.songpo.domain.BusinessMessage;
 import com.songpo.dto.ProductDto;
 import com.songpo.entity.SlProduct;
 import com.songpo.mapper.ProductMapper;
+import com.songpo.mapper.SlActionNavigationMapper;
 import com.songpo.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class ProductService extends BaseService<SlProduct,String>{
+
 
     @Autowired
     private ProductMapper productMapper;
