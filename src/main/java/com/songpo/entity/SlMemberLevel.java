@@ -5,18 +5,18 @@ import java.io.Serializable;
 
 @Table(name = "sl_member_level")
 public class SlMemberLevel implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 等级名称
-     */
-    private String name;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private static final long serialVersionUID = 1L;
+    /**
+     * 等级名称
+     */
+    private String name;
 
     /**
      * 该等级范围最大值

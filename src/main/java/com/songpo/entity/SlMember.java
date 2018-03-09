@@ -177,18 +177,18 @@ public class SlMember implements Serializable {
     }
 
     /**
-     * 获取是否开启消息推送  1.开启  2.不开启
+     * 获取是否开启消息推送  1.开启  2.不开启 
      *
-     * @return is_push - 是否开启消息推送  1.开启  2.不开启
+     * @return is_push - 是否开启消息推送  1.开启  2.不开启 
      */
     public Boolean getIsPush() {
         return isPush;
     }
 
     /**
-     * 设置是否开启消息推送  1.开启  2.不开启
+     * 设置是否开启消息推送  1.开启  2.不开启 
      *
-     * @param isPush 是否开启消息推送  1.开启  2.不开启
+     * @param isPush 是否开启消息推送  1.开启  2.不开启 
      */
     public void setIsPush(Boolean isPush) {
         this.isPush = isPush;

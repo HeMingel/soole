@@ -31,7 +31,7 @@ public class SlRepository implements Serializable {
     private String remark;
 
     /**
-     * 价格
+     * 平台价格
      */
     private BigDecimal price;
 
@@ -76,6 +76,52 @@ public class SlRepository implements Serializable {
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    /**
+     * 参考价格
+     */
+    @Column(name = "reference_price")
+    private BigDecimal referencePrice;
+
+    /**
+     * 成本价格
+     */
+    @Column(name = "cost_price")
+    private BigDecimal costPrice;
+
+    /**
+     * 拼团价
+     */
+    @Column(name = "collage_price")
+    private BigDecimal collagePrice;
+
+    /**
+     * 个人价
+     */
+    @Column(name = "personal_price")
+    private BigDecimal personalPrice;
+
+    /**
+     * 秒杀价
+     */
+    @Column(name = "price_spike")
+    private BigDecimal priceSpike;
+
+    /**
+     * 重量
+     */
+    private BigDecimal weight;
+
+    /**
+     * 是否包邮
+     */
+    @Column(name = "isShip")
+    private Boolean isship;
+
+    /**
+     * 了豆
+     */
+    private Integer pulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -152,18 +198,18 @@ public class SlRepository implements Serializable {
     }
 
     /**
-     * 获取价格
+     * 获取平台价格
      *
-     * @return price - 价格
+     * @return price - 平台价格
      */
     public BigDecimal getPrice() {
         return price;
     }
 
     /**
-     * 设置价格
+     * 设置平台价格
      *
-     * @param price 价格
+     * @param price 平台价格
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
@@ -313,6 +359,150 @@ public class SlRepository implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取参考价格
+     *
+     * @return reference_price - 参考价格
+     */
+    public BigDecimal getReferencePrice() {
+        return referencePrice;
+    }
+
+    /**
+     * 设置参考价格
+     *
+     * @param referencePrice 参考价格
+     */
+    public void setReferencePrice(BigDecimal referencePrice) {
+        this.referencePrice = referencePrice;
+    }
+
+    /**
+     * 获取成本价格
+     *
+     * @return cost_price - 成本价格
+     */
+    public BigDecimal getCostPrice() {
+        return costPrice;
+    }
+
+    /**
+     * 设置成本价格
+     *
+     * @param costPrice 成本价格
+     */
+    public void setCostPrice(BigDecimal costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    /**
+     * 获取拼团价
+     *
+     * @return collage_price - 拼团价
+     */
+    public BigDecimal getCollagePrice() {
+        return collagePrice;
+    }
+
+    /**
+     * 设置拼团价
+     *
+     * @param collagePrice 拼团价
+     */
+    public void setCollagePrice(BigDecimal collagePrice) {
+        this.collagePrice = collagePrice;
+    }
+
+    /**
+     * 获取个人价
+     *
+     * @return personal_price - 个人价
+     */
+    public BigDecimal getPersonalPrice() {
+        return personalPrice;
+    }
+
+    /**
+     * 设置个人价
+     *
+     * @param personalPrice 个人价
+     */
+    public void setPersonalPrice(BigDecimal personalPrice) {
+        this.personalPrice = personalPrice;
+    }
+
+    /**
+     * 获取秒杀价
+     *
+     * @return price_spike - 秒杀价
+     */
+    public BigDecimal getPriceSpike() {
+        return priceSpike;
+    }
+
+    /**
+     * 设置秒杀价
+     *
+     * @param priceSpike 秒杀价
+     */
+    public void setPriceSpike(BigDecimal priceSpike) {
+        this.priceSpike = priceSpike;
+    }
+
+    /**
+     * 获取重量
+     *
+     * @return weight - 重量
+     */
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    /**
+     * 设置重量
+     *
+     * @param weight 重量
+     */
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
+
+    /**
+     * 获取是否包邮
+     *
+     * @return isShip - 是否包邮
+     */
+    public Boolean getIsship() {
+        return isship;
+    }
+
+    /**
+     * 设置是否包邮
+     *
+     * @param isship 是否包邮
+     */
+    public void setIsship(Boolean isship) {
+        this.isship = isship;
+    }
+
+    /**
+     * 获取了豆
+     *
+     * @return pulse - 了豆
+     */
+    public Integer getPulse() {
+        return pulse;
+    }
+
+    /**
+     * 设置了豆
+     *
+     * @param pulse 了豆
+     */
+    public void setPulse(Integer pulse) {
+        this.pulse = pulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -332,6 +522,14 @@ public class SlRepository implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", referencePrice=").append(referencePrice);
+        sb.append(", costPrice=").append(costPrice);
+        sb.append(", collagePrice=").append(collagePrice);
+        sb.append(", personalPrice=").append(personalPrice);
+        sb.append(", priceSpike=").append(priceSpike);
+        sb.append(", weight=").append(weight);
+        sb.append(", isship=").append(isship);
+        sb.append(", pulse=").append(pulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

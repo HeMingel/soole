@@ -18,12 +18,21 @@
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
         <result column="modification_time" jdbcType="VARCHAR" property="modificationTime"/>
+        <result column="reference_price" jdbcType="DECIMAL" property="referencePrice"/>
+        <result column="cost_price" jdbcType="DECIMAL" property="costPrice"/>
+        <result column="collage_price" jdbcType="DECIMAL" property="collagePrice"/>
+        <result column="personal_price" jdbcType="DECIMAL" property="personalPrice"/>
+        <result column="price_spike" jdbcType="DECIMAL" property="priceSpike"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="isShip" jdbcType="BIT" property="isship"/>
+        <result column="pulse" jdbcType="INTEGER" property="pulse"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
           WARNING - @mbg.generated
         -->
         id, shop_id, product_id, remark, price, discount, state, count, score, creator, create_time,
-        modifier, modification_time
+        modifier, modification_time, reference_price, cost_price, collage_price, personal_price,
+        price_spike, weight, isShip, pulse
     </sql>
 </mapper>
