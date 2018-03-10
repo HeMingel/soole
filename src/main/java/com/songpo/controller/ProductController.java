@@ -1,12 +1,13 @@
 package com.songpo.controller;
 
 
-import com.github.pagehelper.PageInfo;
 import com.songpo.domain.BusinessMessage;
 import com.songpo.entity.SlProduct;
 import com.songpo.service.ProductService;
 import com.songpo.validator.ProductValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class ProductController extends BaseController<SlProduct,String>{
      * @return
      */
     @ApiOperation(value = "根据商品名称查询商品")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "商品名称")
+    })
     @RequestMapping(value = "/find-goods",method = RequestMethod.POST)
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name,page,size);
