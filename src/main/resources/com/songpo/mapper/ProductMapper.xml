@@ -10,6 +10,7 @@
         <result column="price" jdbcType="DECIMAL" property="price" />
         <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
         <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
+        <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
     </resultMap>
     <resultMap id="RecommendResultMap" type="com.songpo.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
@@ -30,12 +31,13 @@
         <result column="price_spike" jdbcType="DECIMAL" property="priceSpike" />
         <result column="weight" jdbcType="DECIMAL" property="weight" />
         <result column="isShip" jdbcType="BIT" property="isship" />
+        <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
     </resultMap>
 
 
     <select id="findGoods" parameterType="String" resultMap="BaseResultMap">
         SELECT
-        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as productTypeId,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
         FROM sl_product p
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
@@ -53,6 +55,45 @@
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
         WHERE p.`product_type_id` = #{id}
+    </select>
+
+    <select id="screenGoods" resultMap="BaseResultMap">
+        select
+        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        FROM sl_product p
+        LEFT JOIN sl_repository r
+        ON p.`id`= r.product_id
+        WHERE  1=1
+        <if test="goodsType != null and goodsType !=''">
+            p.product_type_id = #{goodsType}
+        </if>
+        <if test="screenGoods == null and screenGoods ==''">
+            order By (r.sale_num +r.comment_num) Desc
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 1">
+            order By  r.sale_num desc
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 2">
+            order By  r.sale_num asc
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
+            order By  r.price desc
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 4">
+            order By  r.price asc
+        </if>
+
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 5">
+            and r.sale_Typet == 5
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 6">
+            and r.sale_Typet == 6
+        </if>
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 7">
+            and r.sale_Typet == 7
+        </if>
+
+
     </select>
 
 

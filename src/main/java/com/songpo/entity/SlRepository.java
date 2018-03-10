@@ -135,6 +135,12 @@ public class SlRepository implements Serializable {
     @Column(name = "sale_num")
     private Integer saleNum;
 
+    /**
+     * 销售类型:1钱2乐豆3钱+了豆
+     */
+    @Column(name = "sale_type")
+    private Integer saleType;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -551,6 +557,24 @@ public class SlRepository implements Serializable {
         this.saleNum = saleNum;
     }
 
+    /**
+     * 获取销售类型:1钱2乐豆3钱+了豆
+     *
+     * @return sale_type - 销售类型:1钱2乐豆3钱+了豆
+     */
+    public Integer getSaleType() {
+        return saleType;
+    }
+
+    /**
+     * 设置销售类型:1钱2乐豆3钱+了豆
+     *
+     * @param saleType 销售类型:1钱2乐豆3钱+了豆
+     */
+    public void setSaleType(Integer saleType) {
+        this.saleType = saleType;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -580,6 +604,7 @@ public class SlRepository implements Serializable {
         sb.append(", pulse=").append(pulse);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
+        sb.append(", saleType=").append(saleType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
