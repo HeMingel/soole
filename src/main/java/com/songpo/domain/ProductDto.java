@@ -81,4 +81,6 @@ public class ProductDto {
      */
     @Column(name = "sale_num")
     private Integer saleNum;
+
+    private String productTypeId;
 }

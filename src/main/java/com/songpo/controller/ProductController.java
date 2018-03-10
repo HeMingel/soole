@@ -7,12 +7,10 @@ import com.songpo.entity.SlProduct;
 import com.songpo.service.ProductService;
 import com.songpo.validator.ProductValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(description = "商品管理")
 @CrossOrigin
@@ -38,11 +36,10 @@ public class ProductController extends BaseController<SlProduct,String>{
      * @param size
      * @return
      */
-
+    @ApiOperation(value = "根据商品名称查询商品")
     @RequestMapping(value = "/find-goods",method = RequestMethod.POST)
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name,page,size);
-
     }
 
     /**
@@ -50,16 +47,30 @@ public class ProductController extends BaseController<SlProduct,String>{
      * 取最新商品的前6个
      * @return
      */
+    @ApiOperation(value = "分类页面,推荐商品")
     @RequestMapping(value = "/recommend-product",method = RequestMethod.POST)
     public BusinessMessage recommendProduct(){
         return this.productService.recommendProduct();
     }
 
+
     /**
-     * 通过商品分类查询商品
+     * 根据商品分类查询商品,商品筛选分类 +筛选
+     * @param goodsType
+     * @param screenType
+     * @param page
+     * @param size
+     * @return
      */
-    @RequestMapping(value = "/find-goods-by-type",method = RequestMethod.POST)
-    public BusinessMessage findGoodsByCategory(String goodsType){
-        return this.productService.findGoodsByCategory(goodsType);
+    @ApiOperation(value = "根据商品分类查询商品+筛选商品")
+    @RequestMapping(value = "/screen-goods",method = RequestMethod.POST)
+    public BusinessMessage screenGoods(String goodsType,Integer screenType,Integer page, Integer size){
+        return this.productService.screenGoods(goodsType,screenType,page,size);
     }
+    @ApiOperation(value = "单个查询商品")
+    @PostMapping("{id}")
+    public BusinessMessage goodsDetail(String goodsType,Integer screenType,Integer page, Integer size){
+        return this.productService.screenGoods(goodsType,screenType,page,size);
+    }
+
 }

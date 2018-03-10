@@ -11,6 +11,7 @@ import com.songpo.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -19,17 +20,14 @@ import java.util.List;
 @Slf4j
 public class ProductService extends BaseService<SlProduct,String>{
 
-
     @Autowired
     private ProductMapper productMapper;
     @Autowired
     private SlProductMapper slProductMapper;
 
-
     public ProductService(SlProductMapper mapper) {
         super(mapper);
     }
-
     /**
      * 根据商品名称
      * @param name
@@ -55,7 +53,6 @@ public class ProductService extends BaseService<SlProduct,String>{
                 businessMessage.setMsg("查询失败");
                 log.error("查询商品失败",e);
         }
-
         return businessMessage;
     }
 
@@ -84,26 +81,34 @@ public class ProductService extends BaseService<SlProduct,String>{
 
         return businessMessage;
     }
-
-    public BusinessMessage findGoodsByCategory(String goodsType){
+    /**
+     * 根据分类查询商品  +  商品筛选
+     * @param goodsType
+     * @param screenType
+     * @param page
+     * @param size
+     * @return
+     */
+    public BusinessMessage screenGoods(String goodsType,Integer screenType,Integer page, Integer size){
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try{
-            List<ProductDto> productDtos = this.productMapper.findGoodsByCategory(goodsType);
-            if(productDtos.size() > 0){
-                businessMessage.setMsg("查询成功");
-                businessMessage.setSuccess(true);
-                businessMessage.setData(productDtos);
-            }else{
-                businessMessage.setMsg("查询无数据!");
-                businessMessage.setSuccess(true);
+            PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
+            if(goodsType != null){
+                List<ProductDto> productDtos = this.productMapper.screenGoods(goodsType,screenType);
+                if(productDtos.size() >0){
+                    businessMessage.setMsg("查询成功");
+                    businessMessage.setSuccess(true);
+                    businessMessage.setData(new PageInfo<>(productDtos));
+                }else{
+                    businessMessage.setMsg("查询无数据!");
+                    businessMessage.setSuccess(true);
+                }
             }
-
         }catch (Exception e){
             businessMessage.setMsg("查询异常");
             log.error("查询商品异常",e);
         }
         return businessMessage;
     }
-
 }
