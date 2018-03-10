@@ -4,17 +4,14 @@ package com.songpo.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.domain.BusinessMessage;
-import com.songpo.dto.ProductDto;
+import com.songpo.domain.ProductDto;
 import com.songpo.entity.SlProduct;
 import com.songpo.mapper.ProductMapper;
-import com.songpo.mapper.SlActionNavigationMapper;
 import com.songpo.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -103,7 +100,8 @@ public class ProductService extends BaseService<SlProduct,String>{
             }
 
         }catch (Exception e){
-
+            businessMessage.setMsg("查询异常");
+            log.error("查询商品异常",e);
         }
         return businessMessage;
     }

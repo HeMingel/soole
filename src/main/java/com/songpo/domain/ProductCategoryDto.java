@@ -1,4 +1,4 @@
-package com.songpo.dto;
+package com.songpo.domain;
 
 import lombok.Data;
 

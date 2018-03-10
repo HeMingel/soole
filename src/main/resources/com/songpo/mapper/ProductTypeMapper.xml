@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.mapper.ProductTypeMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.dto.ProductCategoryDto">
+    <resultMap id="BaseResultMap" type="com.songpo.domain.ProductCategoryDto">
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="tagName" jdbcType="VARCHAR"/>
@@ -15,7 +15,7 @@
         id, name, tagName
     </sql>
 
-    <select id="findCategoryByParentId" parameterType="String" resultType="com.songpo.dto.ProductCategoryDto">
+    <select id="findCategoryByParentId" parameterType="String" resultType="com.songpo.domain.ProductCategoryDto">
         select
         t.id as id,t.name as name ,st.name as tagName,t.parent_id as parentId
         FROM sl_product_type t

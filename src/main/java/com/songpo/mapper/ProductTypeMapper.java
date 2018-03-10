@@ -1,8 +1,7 @@
 package com.songpo.mapper;
 
-import com.songpo.dto.ProductCategoryDto;
+import com.songpo.domain.ProductCategoryDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 
 import java.util.List;

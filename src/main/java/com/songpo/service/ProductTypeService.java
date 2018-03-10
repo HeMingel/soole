@@ -2,7 +2,7 @@ package com.songpo.service;
 
 
 import com.songpo.domain.BusinessMessage;
-import com.songpo.dto.ProductCategoryDto;
+import com.songpo.domain.ProductCategoryDto;
 import com.songpo.entity.SlProductType;
 import com.songpo.mapper.SlProductTypeMapper;
 import com.songpo.mapper.ProductTypeMapper;

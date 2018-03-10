@@ -1,6 +1,6 @@
 package com.songpo.mapper;
 
-import com.songpo.dto.ProductDto;
+import com.songpo.domain.ProductDto;
 
 import java.util.List;
 
