@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,8 +108,11 @@ public class SystemController {
                     message.setMsg("账号已存在");
                 } else {
                     user = new SlUser();
-                    user.setUsername(phone);
-                    user.setPassword(password);
+                    user.setPhone(phone);
+                    user.setPassword(passwordEncoder.encode(password));
+                    user.setCreator("");
+                    user.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
                     // 添加
                     userService.insertSelective(user);
 
