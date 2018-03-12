@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.songpo.mapper.ProductMapper">
+<mapper namespace="com.songpo.searched.mapper.ProductMapper">
     <resultMap id="BaseResultMap" type="com.songpo.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
