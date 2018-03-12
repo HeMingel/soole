@@ -1,14 +1,15 @@
-package com.songpo.searched.controller;
+package com.songpo.controller;
 
-import com.songpo.searched.cache.UserCache;
-import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.service.UserService;
+import com.songpo.cache.UserCache;
+import com.songpo.domain.BusinessMessage;
+import com.songpo.entity.SlUser;
+import com.songpo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,8 @@ import java.util.Map;
  * @author liuso
  */
 @RestController
-@RequestMapping("/api/v1/uaa")
+@CrossOrigin
+@RequestMapping("/api/v1/system")
 public class SystemController {
 
     @Autowired
@@ -39,7 +41,7 @@ public class SystemController {
     /**
      * 登录
      *
-     * @param phone    账号，可以是用户名、手机号码或邮箱
+     * @param phone 账号，可以是用户名、手机号码或邮箱
      * @param password 密码
      * @return 业务消息
      */
@@ -86,7 +88,7 @@ public class SystemController {
     /**
      * 注册
      *
-     * @param phone    账号
+     * @param phone 账号
      * @param password 密码
      * @return 业务信息
      */

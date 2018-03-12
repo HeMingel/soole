@@ -26,4 +26,11 @@ public class BusinessMessage<T> {
      * 业务数据
      */
     private T data;
+
+    public BusinessMessage(Boolean success) {
+        this.success = success;
+    }
+
+    public BusinessMessage() {
+    }
 }
