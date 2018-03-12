@@ -1,11 +1,7 @@
-package com.songpo.config;
+package com.songpo.searched.config;
 
-import com.songpo.entity.SlUser;
-import com.songpo.domain.MyShoppingCartPojo;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.interceptor.KeyGenerator;
+import com.songpo.searched.domain.MyShoppingCartPojo;
+import com.songpo.searched.entity.SlUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

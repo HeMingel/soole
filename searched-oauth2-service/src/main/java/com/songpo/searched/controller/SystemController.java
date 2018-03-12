@@ -1,9 +1,9 @@
-package com.songpo.controller;
+package com.songpo.searched.controller;
 
-import com.songpo.cache.UserCache;
-import com.songpo.domain.BusinessMessage;
-import com.songpo.entity.SlUser;
-import com.songpo.service.UserService;
+import com.songpo.searched.cache.UserCache;
+import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

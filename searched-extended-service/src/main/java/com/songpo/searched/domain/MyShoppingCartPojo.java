@@ -1,4 +1,4 @@
-package com.songpo.domain;
+package com.songpo.searched.domain;
 
 import lombok.Data;
 

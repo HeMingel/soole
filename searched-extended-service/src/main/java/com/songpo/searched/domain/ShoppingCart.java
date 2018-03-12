@@ -1,6 +1,5 @@
-package com.songpo.domain;
+package com.songpo.searched.domain;
 
-import com.songpo.entity.SlProduct;
 import lombok.Data;
 
 import javax.persistence.Entity;

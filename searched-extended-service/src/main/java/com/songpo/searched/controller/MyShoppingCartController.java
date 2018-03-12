@@ -1,26 +1,16 @@
-package com.songpo.controller;
+package com.songpo.searched.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.songpo.cache.ShoppingCartCache;
-import com.songpo.domain.BusinessMessage;
-import com.songpo.domain.MyShoppingCartPojo;
-import com.songpo.domain.ShoppingCart;
-import com.songpo.entity.SlProduct;
-import com.songpo.entity.SlUser;
-import com.songpo.service.MyShoppingCartService;
-import com.songpo.service.UserService;
-import com.songpo.validator.OrderValidator;
+import com.songpo.searched.cache.ShoppingCartCache;
+import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.domain.MyShoppingCartPojo;
+import com.songpo.searched.domain.ShoppingCart;
+import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.service.UserService;
 import io.swagger.annotations.Api;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.spring.web.json.Json;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 @Api(description = "购物车管理")
 @RestController
@@ -40,7 +30,7 @@ public class MyShoppingCartController {
      */
     @PostMapping("add")
     public BusinessMessage<Json> addmyShoppingCart(MyShoppingCartPojo pojo) {
-        BusinessMessage message = new BusinessMessage(false);
+        BusinessMessage message = new BusinessMessage();
         if (StringUtils.isEmpty(pojo.getUserId()))
         {
             message.setMsg("用户ID为空");
@@ -71,7 +61,7 @@ public class MyShoppingCartController {
      */
     @GetMapping("serch")
     public BusinessMessage<MyShoppingCartPojo> findCart(String uid) {
-        BusinessMessage message = new BusinessMessage(false);
+        BusinessMessage message = new BusinessMessage();
         message.setMsg("查询成功");
         if (StringUtils.isEmpty(uid))
         {

@@ -1,7 +1,7 @@
-package com.songpo.service;
+package com.songpo.searched.service;
 
-import com.songpo.domain.BusinessMessage;
-import com.songpo.domain.MyShoppingCartPojo;
+import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.domain.MyShoppingCartPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class MyShoppingCartService {
      * @param pojo
      */
     public void addmyShoppingCart(MyShoppingCartPojo pojo) {
-        BusinessMessage businessMessage = new BusinessMessage(false);
+        BusinessMessage businessMessage = new BusinessMessage();
         this.redisTemplate.opsForValue().set("myShoppingCart", pojo);
     }
 }
