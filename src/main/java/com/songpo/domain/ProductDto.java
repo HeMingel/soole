@@ -83,4 +83,8 @@ public class ProductDto {
     private Integer saleNum;
 
     private String productTypeId;
+    /**
+     * 销售类型
+     */
+    private Integer saleType;
 }

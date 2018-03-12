@@ -111,4 +111,30 @@ public class ProductService extends BaseService<SlProduct,String>{
         }
         return businessMessage;
     }
+
+    /**
+     * 根据商品Id 查询商品详情
+     * @param goodsId
+     * @return
+     */
+    public BusinessMessage goodsDetail(String goodsId){
+
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try{
+                //商品基础信息
+                ProductDto productDto = this.productMapper.goodsBaseDetail(goodsId);
+                if(productDto.getPrice() != null){
+
+                } else{
+                    businessMessage.setMsg("!");
+                    businessMessage.setSuccess(true);
+                }
+
+        }catch (Exception e){
+            businessMessage.setMsg("查询异常");
+            log.error("查询商品异常",e);
+        }
+        return businessMessage;
+    }
 }

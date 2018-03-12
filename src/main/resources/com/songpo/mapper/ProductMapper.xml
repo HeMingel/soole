@@ -11,6 +11,7 @@
         <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
         <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
         <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
+        <result column="sale_type" jdbcType="INTEGER" property="saleType" />
     </resultMap>
     <resultMap id="RecommendResultMap" type="com.songpo.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
@@ -50,7 +51,7 @@
 
     <select id="findGoodsByCategory" parameterType="String" resultMap="BaseResultMap">
         select
-        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse,r.sale_type
         FROM sl_product p
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
@@ -94,6 +95,26 @@
         </if>
 
 
+    </select>
+
+    <select id="goodsBaseDetail" parameterType="String" resultMap="ResultMap">
+        SELECT
+          p.id,
+          p.name,
+          p.detail,
+          p.introduction,
+          r.`sale_num`,
+          r.`price`,
+          r.pulse,
+          r.sale_type,
+          r.shop_id,
+          r.isShip,
+          r.weight
+        FROM
+          sl_product p
+          LEFT JOIN sl_repository r
+            ON p.id = r.`product_id`
+            WHERE p.id = #{goodsId}
     </select>
 
 

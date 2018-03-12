@@ -14,8 +14,10 @@ public interface ProductMapper {
 
      List<ProductDto> findGoodsByCategory(String goodsType);
 
-
      List<ProductDto> screenGoods(@Param("goodsType")String goodsType, @Param("screenGoods")Integer screenGoods);
+
+     ProductDto goodsBaseDetail(String goodsId);
+
 
 }
 

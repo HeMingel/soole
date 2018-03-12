@@ -47,7 +47,6 @@ public class ProductController extends BaseController<SlProduct,String>{
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name,page,size);
     }
-
     /**
      * 分类页面 推荐商品
      * 取最新商品的前6个
@@ -60,8 +59,6 @@ public class ProductController extends BaseController<SlProduct,String>{
     public BusinessMessage recommendProduct(){
         return this.productService.recommendProduct();
     }
-
-
     /**
      * 根据商品分类查询商品,商品筛选分类 + 筛选
      * @param goodsType
@@ -80,6 +77,22 @@ public class ProductController extends BaseController<SlProduct,String>{
     @RequestMapping(value = "/screen-goods",method = RequestMethod.POST)
     public BusinessMessage screenGoods(String goodsType,Integer screenType,Integer page, Integer size){
         return this.productService.screenGoods(goodsType,screenType,page,size);
+    }
+
+    @ApiOperation(value = "根据商品Id查询商品详情")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "goodsId", value = "分类ID", paramType = "form", required = true)
+    })
+    @RequestMapping(value = "/goods-detail",method = RequestMethod.POST)
+    public BusinessMessage goodsDetail(String goodsId){
+        if(goodsId != null){
+            return this.productService.goodsDetail(goodsId);
+        }else{
+            BusinessMessage businessMessage = new BusinessMessage();
+            businessMessage.setMsg("商品ID为空");
+            businessMessage.setSuccess(false);
+            return businessMessage;
+        }
     }
 
 
