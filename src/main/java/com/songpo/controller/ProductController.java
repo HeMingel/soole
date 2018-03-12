@@ -39,7 +39,9 @@ public class ProductController extends BaseController<SlProduct,String>{
      */
     @ApiOperation(value = "根据商品名称查询商品")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "商品名称")
+            @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
+            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
     })
     @RequestMapping(value = "/find-goods",method = RequestMethod.POST)
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
@@ -52,6 +54,8 @@ public class ProductController extends BaseController<SlProduct,String>{
      * @return
      */
     @ApiOperation(value = "分类页面,推荐商品")
+    @ApiImplicitParams(value = {
+    })
     @RequestMapping(value = "/recommend-product",method = RequestMethod.POST)
     public BusinessMessage recommendProduct(){
         return this.productService.recommendProduct();
@@ -59,7 +63,7 @@ public class ProductController extends BaseController<SlProduct,String>{
 
 
     /**
-     * 根据商品分类查询商品,商品筛选分类 +筛选
+     * 根据商品分类查询商品,商品筛选分类 + 筛选
      * @param goodsType
      * @param screenType
      * @param page
@@ -67,14 +71,16 @@ public class ProductController extends BaseController<SlProduct,String>{
      * @return
      */
     @ApiOperation(value = "根据商品分类查询商品+筛选商品")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "screenType", value = "筛选条件", paramType = "form", required = true),
+            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
+            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
+    })
     @RequestMapping(value = "/screen-goods",method = RequestMethod.POST)
     public BusinessMessage screenGoods(String goodsType,Integer screenType,Integer page, Integer size){
         return this.productService.screenGoods(goodsType,screenType,page,size);
     }
-    @ApiOperation(value = "单个查询商品")
-    @PostMapping("{id}")
-    public BusinessMessage goodsDetail(String goodsType,Integer screenType,Integer page, Integer size){
-        return this.productService.screenGoods(goodsType,screenType,page,size);
-    }
+
 
 }

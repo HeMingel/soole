@@ -10,6 +10,9 @@ import com.songpo.service.ShopService;
 import com.songpo.validator.ProductTypeValidator;
 import com.songpo.validator.ShopValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,11 @@ public class ProductTypeController extends BaseController<SlProductType, String>
      * 搜索一级分类
      * @return
      */
+    @ApiOperation(value = "搜索一级分类")
     @RequestMapping(value = "/find-category",method = RequestMethod.POST)
+    @ApiImplicitParams(value = {
+
+    })
     public BusinessMessage findCategory() {
         return this.productTypeService.findCategory();
     }
@@ -55,6 +62,10 @@ public class ProductTypeController extends BaseController<SlProductType, String>
      * @param parentId
      * @return
      */
+    @ApiOperation(value = "通过父ID 搜索二级分类")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "parentId", value = "商品名称", paramType = "form", required = true)
+    })
     @RequestMapping(value = "/find-category-by-parentId",method = RequestMethod.POST)
     public BusinessMessage findCategoryByParentId(String parentId) {
         if(parentId == null){

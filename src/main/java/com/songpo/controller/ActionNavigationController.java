@@ -7,6 +7,8 @@ import com.songpo.entity.SlArticle;
 import com.songpo.service.ActionNavigationService;
 import com.songpo.validator.ActionNavigationValidator;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class ActionNavigationController extends BaseController<SlActionNavigatio
      * @return
      */
     @ApiOperation(value = "商品分类banner")
+    @ApiImplicitParams(value = {
+    })
     @RequestMapping(value = "goods-category-banner",method = RequestMethod.POST)
     public BusinessMessage goodsCategoryBanner() {
         return this.actionNavigationService.goodsCategoryBanner();

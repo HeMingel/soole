@@ -136,7 +136,7 @@ public class SlRepository implements Serializable {
     private Integer saleNum;
 
     /**
-     * 销售类型:1钱2乐豆3钱+了豆
+     * 销售类型:5钱6乐豆7钱+了豆
      */
     @Column(name = "sale_type")
     private Integer saleType;
@@ -558,18 +558,18 @@ public class SlRepository implements Serializable {
     }
 
     /**
-     * 获取销售类型:1钱2乐豆3钱+了豆
+     * 获取销售类型:5钱6乐豆7钱+了豆
      *
-     * @return sale_type - 销售类型:1钱2乐豆3钱+了豆
+     * @return sale_type - 销售类型:5钱6乐豆7钱+了豆
      */
     public Integer getSaleType() {
         return saleType;
     }
 
     /**
-     * 设置销售类型:1钱2乐豆3钱+了豆
+     * 设置销售类型:5钱6乐豆7钱+了豆
      *
-     * @param saleType 销售类型:1钱2乐豆3钱+了豆
+     * @param saleType 销售类型:5钱6乐豆7钱+了豆
      */
     public void setSaleType(Integer saleType) {
         this.saleType = saleType;
