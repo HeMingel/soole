@@ -1,1 +1,5 @@
 rootProject.name = 'searched'
+
+include 'searched-common-service'
+include 'searched-oauth2-service'
+include 'searched-extended-service'

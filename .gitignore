@@ -11,7 +11,7 @@
 .springBeans
 
 ### IntelliJ IDEA ###
-.idea/
+.idea
 *.iws
 *.iml
 *.ipr
@@ -19,7 +19,6 @@
 ### NetBeans ###
 nbproject/private/
 build/
-out/
 nbbuild/
 dist/
 nbdist/
