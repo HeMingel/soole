@@ -6,6 +6,7 @@ import com.songpo.validator.TagValidator;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "标签管理")
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/tag")
 public class TagController extends BaseController<SlTag, String> {
 
