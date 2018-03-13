@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableSwagger2Doc
-@MapperScan(basePackages = "com.songpo.mapper")
+@MapperScan(basePackages = "com.songpo.searched.mapper")
 @SpringBootApplication
 public class CommonServiceApplication {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlOrderDetailMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.entity.SlOrderDetail">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlOrderDetail">
         <!--
           WARNING - @mbg.generated
         -->

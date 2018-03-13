@@ -8,7 +8,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableOAuth2Sso
 @EnableSwagger2Doc
-@MapperScan(basePackages = "com.songpo.mapper")
+@MapperScan(basePackages = "com.songpo.searched.mapper")
 @SpringBootApplication
 public class ExtendedServiceApplication {
 

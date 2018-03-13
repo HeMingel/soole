@@ -4,19 +4,14 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActionNavigation;
 import com.songpo.searched.mapper.SlActionNavigationMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class ActionNavigationService extends BaseService<SlActionNavigation, String> {
-
-
-    @Autowired
-    private SlActionNavigationMapper slActionNavigationMapper;
 
     public ActionNavigationService(SlActionNavigationMapper mapper) {
         super(mapper);
@@ -33,7 +28,7 @@ public class ActionNavigationService extends BaseService<SlActionNavigation, Str
         try {
             Example example = new Example(SlActionNavigation.class);
             example.createCriteria().andEqualTo("typeId", 1);
-            List<SlActionNavigation> slActionNavigations = this.slActionNavigationMapper.selectByExample(example);
+            List<SlActionNavigation> slActionNavigations = selectByExample(example);
             if (slActionNavigations.size() > 0) {
                 businessMessage.setSuccess(true);
                 businessMessage.setMsg("查询成功");

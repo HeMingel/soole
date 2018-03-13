@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.ProductMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.domain.ProductDto">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
@@ -13,12 +13,12 @@
         <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
         <result column="sale_type" jdbcType="INTEGER" property="saleType"/>
     </resultMap>
-    <resultMap id="RecommendResultMap" type="com.songpo.domain.ProductDto">
+    <resultMap id="RecommendResultMap" type="com.songpo.searched.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
     </resultMap>
-    <resultMap id="ResultMap" type="com.songpo.domain.ProductDto">
+    <resultMap id="ResultMap" type="com.songpo.searched.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
