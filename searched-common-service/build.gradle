@@ -98,8 +98,8 @@ mbg {
         resourcesProject = "src/main/java"
         mapperPlugin = tk.mybatis.mapper.generator.MapperPlugin.class
         mapperMapper = "tk.mybatis.mapper.common.Mapper"
-        mapperPackage= "com.songpo.mapper"
-        modelPackage = "com.songpo.entity"
-        xmlPackage =   "com.songpo.mapper"
+        mapperPackage= "com.songpo.searched.mapper"
+        modelPackage = "com.songpo.searched.entity"
+        xmlPackage =   "com.songpo.searched.mapper"
     }
 }
