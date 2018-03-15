@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+    mavenCentral()
+}
+
+dependencies {
+
+    // 实体编译组件
+    compileOnly('org.projectlombok:lombok')
+
+    // Druid数据源组件
+    compile("com.alibaba:druid-spring-boot-starter:${druidSpringVersion}")
+
+    // 通用Mapper
+    // https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter
+    compile("tk.mybatis:mapper-spring-boot-starter:$mapperSpringBootStarterVersion")
+
+    // Mybatis分页插件
+    // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+    compile("com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperSpringBootStarterVersion")
+
+    // MySQL驱动
+    compile('mysql:mysql-connector-java')
+
+    // 测试组件
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+}

@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+    mavenCentral()
+}
+
+dependencies {
+
+    compile project(':searched-base')
+
+    // 实体编译组件
+    compileOnly('org.projectlombok:lombok')
+
+    // Redis组件
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
+
+    // 测试组件
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+}
