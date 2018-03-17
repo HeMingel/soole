@@ -1,4 +1,4 @@
-package com.songpo.searched.controller;
+package com.songpo.searched.service;
 
 
 import com.github.pagehelper.PageHelper;
