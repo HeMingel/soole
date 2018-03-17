@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlProductCommentMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductComment">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="product_id" jdbcType="VARCHAR" property="productId"/>
-        <result column="commentator_id" jdbcType="VARCHAR" property="commentatorId"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="creator" jdbcType="VARCHAR" property="creator"/>
-        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
-        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
-        <result column="modification_time" jdbcType="VARCHAR" property="modificationTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        id, product_id, commentator_id, content, creator, create_time, modifier, modification_time
-    </sql>
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="commentator_id" jdbcType="VARCHAR" property="commentatorId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, product_id, commentator_id, content, creator, create_time, modifier, modification_time
+  </sql>
 </mapper>

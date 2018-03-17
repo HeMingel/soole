@@ -58,6 +58,6 @@ public class ShoppingCart {
     /**
      * 商品标签Id
      */
-    private String tagId;
+    private String specificationId;
 
 }

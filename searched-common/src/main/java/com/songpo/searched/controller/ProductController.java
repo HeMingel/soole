@@ -1,6 +1,4 @@
-package com.songpo.searched.controller;
-
-
+import com.songpo.searched.controller.BaseController;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.service.ProductService;

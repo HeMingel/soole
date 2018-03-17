@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_my_collection")
 public class SlMyCollection implements Serializable {
@@ -24,12 +24,13 @@ public class SlMyCollection implements Serializable {
     @Column(name = "collection_id")
     private String collectionId;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 1：收藏的为店铺
-     2：收藏的为商品
+                                      2：收藏的为商品
      */
     private Byte type;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
@@ -87,10 +88,10 @@ public class SlMyCollection implements Serializable {
 
     /**
      * 获取1：收藏的为店铺
-     2：收藏的为商品
+                                      2：收藏的为商品
      *
      * @return type - 1：收藏的为店铺
-    2：收藏的为商品
+                                      2：收藏的为商品
      */
     public Byte getType() {
         return type;
@@ -98,10 +99,10 @@ public class SlMyCollection implements Serializable {
 
     /**
      * 设置1：收藏的为店铺
-     2：收藏的为商品
+                                      2：收藏的为商品
      *
      * @param type 1：收藏的为店铺
-    2：收藏的为商品
+                                      2：收藏的为商品
      */
     public void setType(Byte type) {
         this.type = type;

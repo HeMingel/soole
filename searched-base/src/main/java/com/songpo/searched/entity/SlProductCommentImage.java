@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_product_comment_image")
 public class SlProductCommentImage implements Serializable {

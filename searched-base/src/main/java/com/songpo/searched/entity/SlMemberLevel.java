@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_member_level")
 public class SlMemberLevel implements Serializable {
@@ -17,7 +17,11 @@ public class SlMemberLevel implements Serializable {
      */
     private String name;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * logo的路径
+     */
+    @Column(name = "logo_url")
+    private String logoUrl;
 
     /**
      * 该等级范围最大值
@@ -28,11 +32,8 @@ public class SlMemberLevel implements Serializable {
      * 等级描述
      */
     private String descriptional;
-    /**
-     * logo的路径
-     */
-    @Column(name = "logo_url")
-    private String logoUrl;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

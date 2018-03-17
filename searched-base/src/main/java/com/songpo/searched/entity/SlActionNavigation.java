@@ -51,7 +51,11 @@ public class SlActionNavigation implements Serializable {
     @Column(name = "type_id")
     private String typeId;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
+     */
+    @Column(name = "serial_number")
+    private Integer serialNumber;
 
     /**
      * 创建人
@@ -74,11 +78,8 @@ public class SlActionNavigation implements Serializable {
      */
     @Column(name = "modification_time")
     private String modificationTime;
-    /**
-     * 序号，用于区分不同的元素，比如从上至下的顺序，每个元素一个不同的序列号
-     */
-    @Column(name = "serial_number")
-    private Integer serialNumber;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

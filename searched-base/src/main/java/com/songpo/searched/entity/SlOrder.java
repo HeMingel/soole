@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -42,19 +42,27 @@ public class SlOrder implements Serializable {
      */
     private BigDecimal fee;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 0：待支付
-     1：支付成功
-     2：支付失败
+                                            1：支付成功
+                                            2：支付失败
      */
     @Column(name = "payment_state")
     private Integer paymentState;
+
     /**
      * 1：普通订单
-     2：拼团订单
+                                  2：拼团订单
      */
     private Integer type;
+
+    /**
+     * 1：微信支付
+                                             2：支付宝支付
+                                             3：厦门银行支付
+     */
+    @Column(name = "payment_channel")
+    private Integer paymentChannel;
 
     /**
      * 备注
@@ -72,13 +80,8 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "pay_time")
     private String payTime;
-    /**
-     * 1：微信支付
-     2：支付宝支付
-     3：厦门银行支付
-     */
-    @Column(name = "payment_channel")
-    private Integer paymentChannel;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
@@ -190,12 +193,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 获取0：待支付
-     1：支付成功
-     2：支付失败
+                                            1：支付成功
+                                            2：支付失败
      *
      * @return payment_state - 0：待支付
-    1：支付成功
-    2：支付失败
+                                            1：支付成功
+                                            2：支付失败
      */
     public Integer getPaymentState() {
         return paymentState;
@@ -203,12 +206,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 设置0：待支付
-     1：支付成功
-     2：支付失败
+                                            1：支付成功
+                                            2：支付失败
      *
      * @param paymentState 0：待支付
-    1：支付成功
-    2：支付失败
+                                            1：支付成功
+                                            2：支付失败
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
@@ -216,10 +219,10 @@ public class SlOrder implements Serializable {
 
     /**
      * 获取1：普通订单
-     2：拼团订单
+                                  2：拼团订单
      *
      * @return type - 1：普通订单
-    2：拼团订单
+                                  2：拼团订单
      */
     public Integer getType() {
         return type;
@@ -227,10 +230,10 @@ public class SlOrder implements Serializable {
 
     /**
      * 设置1：普通订单
-     2：拼团订单
+                                  2：拼团订单
      *
      * @param type 1：普通订单
-    2：拼团订单
+                                  2：拼团订单
      */
     public void setType(Integer type) {
         this.type = type;
@@ -238,12 +241,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 获取1：微信支付
-     2：支付宝支付
-     3：厦门银行支付
+                                             2：支付宝支付
+                                             3：厦门银行支付
      *
      * @return payment_channel - 1：微信支付
-    2：支付宝支付
-    3：厦门银行支付
+                                             2：支付宝支付
+                                             3：厦门银行支付
      */
     public Integer getPaymentChannel() {
         return paymentChannel;
@@ -251,12 +254,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 设置1：微信支付
-     2：支付宝支付
-     3：厦门银行支付
+                                             2：支付宝支付
+                                             3：厦门银行支付
      *
      * @param paymentChannel 1：微信支付
-    2：支付宝支付
-    3：厦门银行支付
+                                             2：支付宝支付
+                                             3：厦门银行支付
      */
     public void setPaymentChannel(Integer paymentChannel) {
         this.paymentChannel = paymentChannel;

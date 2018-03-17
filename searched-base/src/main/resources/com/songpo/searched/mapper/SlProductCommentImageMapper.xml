@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlProductCommentImageMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductCommentImage">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="product_comment_id" jdbcType="VARCHAR" property="productCommentId"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        id, product_comment_id, image_url
-    </sql>
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductCommentImage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_comment_id" jdbcType="VARCHAR" property="productCommentId" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, product_comment_id, image_url
+  </sql>
 </mapper>

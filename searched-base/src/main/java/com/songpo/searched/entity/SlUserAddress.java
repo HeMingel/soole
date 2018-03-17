@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_user_address")
 public class SlUserAddress implements Serializable {
@@ -18,11 +18,15 @@ public class SlUserAddress implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 收货人姓名
      */
     private String name;
+
+    /**
+     * 收货人手机号
+     */
+    private String phone;
 
     /**
      * 省
@@ -38,10 +42,11 @@ public class SlUserAddress implements Serializable {
      * 县
      */
     private String county;
+
     /**
-     * 收货人手机号
+     * 详细地址
      */
-    private String phone;
+    private String detailed;
 
     /**
      * 经度
@@ -52,15 +57,14 @@ public class SlUserAddress implements Serializable {
      * 纬度
      */
     private String latitude;
-    /**
-     * 详细地址
-     */
-    private String detailed;
+
     /**
      * 1. 默认地址  2.不是默认地址
      */
     @Column(name = "is_default")
     private Boolean isDefault;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

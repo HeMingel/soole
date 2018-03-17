@@ -25,7 +25,11 @@ public class SlRepository implements Serializable {
     @Column(name = "product_id")
     private String productId;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 规格唯一标识符
+     */
+    @Column(name = "specification_id")
+    private String specificationId;
 
     /**
      * 备注
@@ -142,11 +146,8 @@ public class SlRepository implements Serializable {
      */
     @Column(name = "sale_type")
     private Integer saleType;
-    /**
-     * 规格唯一标识符
-     */
-    @Column(name = "specification_id")
-    private String specificationId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

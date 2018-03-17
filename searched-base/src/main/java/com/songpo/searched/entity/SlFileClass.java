@@ -1,47 +1,67 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_file_class")
 public class SlFileClass implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
+
     private String var;
+
     private String type;
+
     @Column(name = "home_show")
     private Boolean homeShow;
+
     @Column(name = "admin_show")
     private Boolean adminShow;
+
     private Short myorder;
+
     private String suffix;
+
     private Integer size;
+
     @Column(name = "home_upload")
     private Boolean homeUpload;
+
     @Column(name = "home_login")
     private Boolean homeLogin;
+
     private String mimetype;
+
     @Column(name = "is_thumb")
     private Boolean isThumb;
+
     @Column(name = "thumb_type")
     private Byte thumbType;
+
     private Integer width;
+
     private Integer height;
+
     @Column(name = "delete_source")
     private Boolean deleteSource;
+
     private Boolean watermark;
+
     /**
      * 系统
      */
     @Column(name = "is_system")
     private Boolean isSystem;
+
     /**
      * 附加参数
      */
     private String params;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

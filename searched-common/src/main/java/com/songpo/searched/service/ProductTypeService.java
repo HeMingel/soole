@@ -1,6 +1,5 @@
 package com.songpo.searched.service;
 
-
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.ProductCategoryDto;
 import com.songpo.searched.entity.SlProductType;

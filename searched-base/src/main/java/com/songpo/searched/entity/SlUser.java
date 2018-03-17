@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -102,14 +102,17 @@ public class SlUser implements Serializable {
     @Column(name = "modification_time")
     private String modificationTime;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 用户常用地址
      */
     private String address;
+
     private String industry;
+
     @Column(name = "group_var")
     private Byte groupVar;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlFileClassMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFileClass">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="var" jdbcType="VARCHAR" property="var"/>
-        <result column="type" jdbcType="CHAR" property="type"/>
-        <result column="home_show" jdbcType="BIT" property="homeShow"/>
-        <result column="admin_show" jdbcType="BIT" property="adminShow"/>
-        <result column="myorder" jdbcType="SMALLINT" property="myorder"/>
-        <result column="suffix" jdbcType="VARCHAR" property="suffix"/>
-        <result column="size" jdbcType="INTEGER" property="size"/>
-        <result column="home_upload" jdbcType="BIT" property="homeUpload"/>
-        <result column="home_login" jdbcType="BIT" property="homeLogin"/>
-        <result column="mimetype" jdbcType="VARCHAR" property="mimetype"/>
-        <result column="is_thumb" jdbcType="BIT" property="isThumb"/>
-        <result column="thumb_type" jdbcType="TINYINT" property="thumbType"/>
-        <result column="width" jdbcType="INTEGER" property="width"/>
-        <result column="height" jdbcType="INTEGER" property="height"/>
-        <result column="delete_source" jdbcType="BIT" property="deleteSource"/>
-        <result column="watermark" jdbcType="BIT" property="watermark"/>
-        <result column="is_system" jdbcType="BIT" property="isSystem"/>
-    </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlFileClass">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <result column="params" jdbcType="LONGVARCHAR" property="params"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        id, name, var, type, home_show, admin_show, myorder, suffix, size, home_upload, home_login,
-        mimetype, is_thumb, thumb_type, width, height, delete_source, watermark, is_system
-    </sql>
-    <sql id="Blob_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        params
-    </sql>
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFileClass">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="var" jdbcType="VARCHAR" property="var" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="home_show" jdbcType="BIT" property="homeShow" />
+    <result column="admin_show" jdbcType="BIT" property="adminShow" />
+    <result column="myorder" jdbcType="SMALLINT" property="myorder" />
+    <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="home_upload" jdbcType="BIT" property="homeUpload" />
+    <result column="home_login" jdbcType="BIT" property="homeLogin" />
+    <result column="mimetype" jdbcType="VARCHAR" property="mimetype" />
+    <result column="is_thumb" jdbcType="BIT" property="isThumb" />
+    <result column="thumb_type" jdbcType="TINYINT" property="thumbType" />
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="delete_source" jdbcType="BIT" property="deleteSource" />
+    <result column="watermark" jdbcType="BIT" property="watermark" />
+    <result column="is_system" jdbcType="BIT" property="isSystem" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlFileClass">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="params" jdbcType="LONGVARCHAR" property="params" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, name, var, type, home_show, admin_show, myorder, suffix, size, home_upload, home_login, 
+    mimetype, is_thumb, thumb_type, width, height, delete_source, watermark, is_system
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    params
+  </sql>
 </mapper>

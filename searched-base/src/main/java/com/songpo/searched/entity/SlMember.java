@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_member")
 public class SlMember implements Serializable {
@@ -39,7 +39,11 @@ public class SlMember implements Serializable {
      */
     private Integer exp;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 是否开启消息推送  1.开启  2.不开启 
+     */
+    @Column(name = "is_push")
+    private Boolean isPush;
 
     /**
      * 创建人
@@ -62,11 +66,8 @@ public class SlMember implements Serializable {
      */
     @Column(name = "modification_time")
     private String modificationTime;
-    /**
-     * 是否开启消息推送  1.开启  2.不开启
-     */
-    @Column(name = "is_push")
-    private Boolean isPush;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
