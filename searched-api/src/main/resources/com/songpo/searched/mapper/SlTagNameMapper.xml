@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.songpo.searched.mapper.SlTagNameMapper">
+    <!--<select id="findTagNameByTagId" resultType="java.lang.String">-->
+        <!--select st.name from sl_tag st-->
+        <!--LEFT JOIN sl_product sp ON st.id = spt.tag_id-->
+        <!--LEFT JOIN sl_repository sr on sr.product_id = sp.id-->
+        <!--WHERE sr.count > 0 AND st.id = #{tagId};-->
+    <!--</select>-->
+    <select id="findTagNameByTagId" resultType="java.lang.String">
+        select st.name from sl_tag st
+        LEFT JOIN sl_repository sr on st.id = sr.tag_id
+        LEFT JOIN sl_product sp ON sp.id = sr.product_id
+        WHERE sr.product_id = #{arg1} and sr.count > 0 AND st.id = #{arg0}
+    </select>
+</mapper>

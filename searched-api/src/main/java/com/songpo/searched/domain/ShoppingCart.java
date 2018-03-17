@@ -3,7 +3,7 @@ package com.songpo.searched.domain;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -15,15 +15,18 @@ public class ShoppingCart {
     /**
      * 商品Id
      */
+    /**
+     * 商品Id
+     */
     private String goodId;
     /**
      * 商品名称
      */
-//    private String goodName;
+    private String goodName;
     /**
      * 商品图片的Url
      */
-//    private String imageUrl;
+    private String imageUrl;
     /**
      * 商铺Id
      */
@@ -35,13 +38,26 @@ public class ShoppingCart {
     /**
      * 价格
      */
-//    private String price;
+    private BigDecimal price;
     /**
      * 加入购物车数量
      */
     private int counts;
     /**
-     * 规格类型
+     * 规格名称
      */
-    private List<String> productTypeName;
+    private String tagName;
+    /**
+     * 销售类型
+     */
+    private int saleType;
+    /**
+     * 了豆
+     */
+    private int pulse;
+    /**
+     * 商品标签Id
+     */
+    private String tagId;
+
 }
