@@ -6,34 +6,41 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_member")
 public class SlMember implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户唯一标识符
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 金币
      */
     private Integer coin;
+
     /**
      * 余额
      */
     private BigDecimal money;
+
     /**
      * 等级
      */
     private Integer level;
+
     /**
      * 经验值
      */
     private Integer exp;
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 创建人
      */
@@ -170,18 +177,18 @@ public class SlMember implements Serializable {
     }
 
     /**
-     * 获取是否开启消息推送  1.开启  2.不开启
+     * 获取是否开启消息推送  1.开启  2.不开启 
      *
-     * @return is_push - 是否开启消息推送  1.开启  2.不开启
+     * @return is_push - 是否开启消息推送  1.开启  2.不开启 
      */
     public Boolean getIsPush() {
         return isPush;
     }
 
     /**
-     * 设置是否开启消息推送  1.开启  2.不开启
+     * 设置是否开启消息推送  1.开启  2.不开启 
      *
-     * @param isPush 是否开启消息推送  1.开启  2.不开启
+     * @param isPush 是否开启消息推送  1.开启  2.不开启 
      */
     public void setIsPush(Boolean isPush) {
         this.isPush = isPush;

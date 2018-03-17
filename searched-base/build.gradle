@@ -1,5 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.cuisongliu.plugin:mybatis-generator:0.9.6"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -32,5 +46,27 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
 
+// Mybatis生成文件配置
+mbg {
+    overwrite = true
+    consoleable = true
+    generatorFile = "src/main/resources/generatorConfig.xml"
+    jdbc{
+        driver = "com.mysql.jdbc.Driver"
+        url    = "jdbc:mysql://rm-2ze5l09532t3f23wiio.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "liusongpo"
+        password = "Liusp1987"
+    }
+    xml{
+        tableName = 'sl'
+        objectName = 'SL'
+        resourcesProject = "src/main/java"
+        mapperPlugin = tk.mybatis.mapper.generator.MapperPlugin.class
+        mapperMapper = "tk.mybatis.mapper.common.Mapper"
+        mapperPackage= "com.songpo.searched.mapper"
+        modelPackage = "com.songpo.searched.entity"
+        xmlPackage =   "com.songpo.searched.mapper"
+    }
 }

@@ -69,9 +69,9 @@ mbg {
     generatorFile = "src/main/resources/generatorConfig.xml"
     jdbc{
         driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://47.94.93.150:1598/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "searched"
-        password = "86GYBXkzTbA%y@27"
+        url    = "jdbc:mysql://rm-2ze5l09532t3f23wiio.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "liusongpo"
+        password = "Liusp1987"
     }
     xml{
         tableName = 'sl'

@@ -5,54 +5,64 @@ import java.io.Serializable;
 
 @Table(name = "sl_article")
 public class SlArticle implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 标题
      */
     private String title;
+
     /**
      * 内容
      */
     private String content;
+
     /**
      * 图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 阅读数量
      */
     @Column(name = "read_count")
     private Integer readCount;
+
     /**
      * 赞扬数量
      */
     @Column(name = "praise_count")
     private Integer praiseCount;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -6,118 +6,147 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_repository")
 public class SlRepository implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 店铺唯一标识
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 商品唯一标识
      */
     @Column(name = "product_id")
     private String productId;
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 备注
      */
     private String remark;
+
     /**
      * 平台价格
      */
     private BigDecimal price;
+
     /**
      * 折扣
      */
     private BigDecimal discount;
+
     /**
      * 状态
      */
     private Integer state;
+
     /**
      * 数量
      */
     private Integer count;
+
     /**
      * 评分
      */
     private BigDecimal score;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
     /**
      * 参考价格
      */
     @Column(name = "reference_price")
     private BigDecimal referencePrice;
+
     /**
      * 成本价格
      */
     @Column(name = "cost_price")
     private BigDecimal costPrice;
+
     /**
      * 拼团价
      */
     @Column(name = "collage_price")
     private BigDecimal collagePrice;
+
     /**
      * 个人价
      */
     @Column(name = "personal_price")
     private BigDecimal personalPrice;
+
     /**
      * 秒杀价
      */
     @Column(name = "price_spike")
     private BigDecimal priceSpike;
+
     /**
      * 重量
      */
     private BigDecimal weight;
+
     /**
      * 是否包邮
      */
     @Column(name = "isShip")
     private Boolean isship;
+
     /**
      * 了豆
      */
     private Integer pulse;
+
     /**
      * 评论数量
      */
     @Column(name = "comment_num")
     private Integer commentNum;
+
     /**
      * 销售数量
      */
     @Column(name = "sale_num")
     private Integer saleNum;
+
     /**
      * 销售类型:5钱6乐豆7钱+了豆
      */
     @Column(name = "sale_type")
     private Integer saleType;
+    /**
+     * 规格唯一标识符
+     */
+    @Column(name = "specification_id")
+    private String specificationId;
 
     /**
      * 获取唯一标识符
@@ -171,6 +200,24 @@ public class SlRepository implements Serializable {
      */
     public void setProductId(String productId) {
         this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
+     * 获取规格唯一标识符
+     *
+     * @return specification_id - 规格唯一标识符
+     */
+    public String getSpecificationId() {
+        return specificationId;
+    }
+
+    /**
+     * 设置规格唯一标识符
+     *
+     * @param specificationId 规格唯一标识符
+     */
+    public void setSpecificationId(String specificationId) {
+        this.specificationId = specificationId == null ? null : specificationId.trim();
     }
 
     /**
@@ -560,6 +607,7 @@ public class SlRepository implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
         sb.append(", productId=").append(productId);
+        sb.append(", specificationId=").append(specificationId);
         sb.append(", remark=").append(remark);
         sb.append(", price=").append(price);
         sb.append(", discount=").append(discount);

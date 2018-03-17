@@ -5,23 +5,26 @@ import java.io.Serializable;
 
 @Table(name = "sl_product_comment_image")
 public class SlProductCommentImage implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品评论唯一标识符
      */
     @Column(name = "product_comment_id")
     private String productCommentId;
+
     /**
      * 图片地址
      */
     @Column(name = "image_url")
     private String imageUrl;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

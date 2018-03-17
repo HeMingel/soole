@@ -8,14 +8,16 @@ import java.io.Serializable;
 
 @Table(name = "sl_admin_section")
 public class SlAdminSection implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 部门名称
      */
     private String name;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

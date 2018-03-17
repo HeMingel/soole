@@ -5,23 +5,26 @@ import java.io.Serializable;
 
 @Table(name = "sl_product_type_tags")
 public class SlProductTypeTags implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品类别唯一标识符
      */
     @Column(name = "product_type_id")
     private String productTypeId;
+
     /**
      * 标签唯一标识符
      */
     @Column(name = "product_tag_id")
     private String productTagId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -5,57 +5,73 @@ import java.io.Serializable;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 名称
      */
     private String name;
+
     /**
      * 备注
      */
     private String remark;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
     /**
      * 图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 简介
      */
     private String introduction;
+
     /**
      * 详情
      */
     private String detail;
+
     /**
      * 商品类别
      */
     @Column(name = "product_type_id")
     private String productTypeId;
+
+    private static final long serialVersionUID = 1L;
+    /**
+     * 是否下架
+     */
+    @Column(name = "is_soldOut")
+    private Boolean isSoldout;
 
     /**
      * 获取唯一标识符
@@ -255,6 +271,24 @@ public class SlProduct implements Serializable {
         this.productTypeId = productTypeId == null ? null : productTypeId.trim();
     }
 
+    /**
+     * 获取是否下架
+     *
+     * @return is_soldOut - 是否下架
+     */
+    public Boolean getIsSoldout() {
+        return isSoldout;
+    }
+
+    /**
+     * 设置是否下架
+     *
+     * @param isSoldout 是否下架
+     */
+    public void setIsSoldout(Boolean isSoldout) {
+        this.isSoldout = isSoldout;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -272,6 +306,7 @@ public class SlProduct implements Serializable {
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
         sb.append(", productTypeId=").append(productTypeId);
+        sb.append(", isSoldout=").append(isSoldout);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

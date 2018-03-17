@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlDevelopMenuMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlDevelopMenu">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="classname" jdbcType="VARCHAR" property="classname"/>
+        <result column="classvar" jdbcType="VARCHAR" property="classvar"/>
+        <result column="parent" jdbcType="VARCHAR" property="parent"/>
+        <result column="top" jdbcType="VARCHAR" property="top"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="isdefault" jdbcType="BIT" property="isdefault"/>
+        <result column="myorder" jdbcType="SMALLINT" property="myorder"/>
+        <result column="isshow" jdbcType="BIT" property="isshow"/>
+        <result column="params" jdbcType="VARCHAR" property="params"/>
+        <result column="isclose" jdbcType="BIT" property="isclose"/>
+        <result column="pattern" jdbcType="VARCHAR" property="pattern"/>
+        <result column="higher_up" jdbcType="VARCHAR" property="higherUp"/>
+        <result column="no_child" jdbcType="BIT" property="noChild"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, classname, classvar, parent, top, icon, isdefault, myorder, isshow, params, isclose,
+        pattern, higher_up, no_child
+    </sql>
+</mapper>

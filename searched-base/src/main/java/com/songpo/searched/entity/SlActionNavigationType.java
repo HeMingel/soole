@@ -8,17 +8,19 @@ import java.io.Serializable;
 
 @Table(name = "sl_action_navigation_type")
 public class SlActionNavigationType implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 名称，比如：我的、商品、首页
      */
     private String name;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

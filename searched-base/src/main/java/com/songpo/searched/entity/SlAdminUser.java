@@ -5,77 +5,92 @@ import java.io.Serializable;
 
 @Table(name = "sl_admin_user")
 public class SlAdminUser implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 帐号
      */
     private String username;
+
     /**
      * 密码
      */
     private String password;
+
     /**
      * 邮箱
      */
     private String email;
+
     /**
      * 联系方式
      */
     private String phone;
+
     /**
      * QQ号码
      */
     private String qq;
+
     /**
      * 本次登录IP
      */
     @Column(name = "login_ip")
     private String loginIp;
+
     /**
      * 本次登录时间
      */
     @Column(name = "login_time")
     private Integer loginTime;
+
     /**
      * 最后一次登录IP地址
      */
     @Column(name = "last_ip")
     private String lastIp;
+
     /**
      * 最后一次登录时间
      */
     @Column(name = "last_time")
     private Integer lastTime;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private Integer createTime;
+
     /**
      * 用户组权限ID
      */
     @Column(name = "group_id")
     private Short groupId;
+
     /**
      * 所属部门ID
      */
     @Column(name = "section_id")
     private Short sectionId;
+
     /**
      * 是否审核
      */
     private Boolean checked;
+
     /**
      * 登录次数
      */
     @Column(name = "login_total")
     private Integer loginTotal;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取ID

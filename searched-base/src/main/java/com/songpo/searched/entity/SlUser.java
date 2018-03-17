@@ -5,86 +5,111 @@ import java.io.Serializable;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 账号
      */
     private String username;
+
     /**
      * 密码
      */
     private String password;
+
     /**
      * 用户昵称
      */
     @Column(name = "nick_name")
     private String nickName;
+
     /**
      * 用户真实姓名
      */
     private String name;
+
     /**
      * 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
      */
     @Column(name = "card_type")
     private Boolean cardType;
+
     /**
      * 证件号
      */
     @Column(name = "card_number")
     private String cardNumber;
+
     /**
      * 1.男  2.女
      */
     private Boolean sex;
+
     /**
      * 生日
      */
     private String birthday;
+
     /**
      * 手机号码
      */
     private String phone;
+
     /**
      * 电子邮箱
      */
     private String email;
+
     /**
      * 头像
      */
     private String avatar;
+
     /**
      * 密钥
      */
     private String secret;
+
     /**
      * 个性签名描述
      */
     private String describtion;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
+    /**
+     * 用户常用地址
+     */
+    private String address;
+    private String industry;
+    @Column(name = "group_var")
+    private Byte groupVar;
 
     /**
      * 获取唯一标识符
@@ -410,6 +435,52 @@ public class SlUser implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取用户常用地址
+     *
+     * @return address - 用户常用地址
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * 设置用户常用地址
+     *
+     * @param address 用户常用地址
+     */
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    /**
+     * @return industry
+     */
+    public String getIndustry() {
+        return industry;
+    }
+
+    /**
+     * @param industry
+     */
+    public void setIndustry(String industry) {
+        this.industry = industry == null ? null : industry.trim();
+    }
+
+    /**
+     * @return group_var
+     */
+    public Byte getGroupVar() {
+        return groupVar;
+    }
+
+    /**
+     * @param groupVar
+     */
+    public void setGroupVar(Byte groupVar) {
+        this.groupVar = groupVar;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -434,6 +505,9 @@ public class SlUser implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", address=").append(address);
+        sb.append(", industry=").append(industry);
+        sb.append(", groupVar=").append(groupVar);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

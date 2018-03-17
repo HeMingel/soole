@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
+        <result column="specification_id" jdbcType="VARCHAR" property="specificationId"/>
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="discount" jdbcType="DECIMAL" property="discount" />
@@ -34,8 +35,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, product_id, remark, price, discount, state, count, score, creator, create_time, 
-    modifier, modification_time, reference_price, cost_price, collage_price, personal_price, 
-    price_spike, weight, isShip, pulse, comment_num, sale_num, sale_type
+      id, shop_id, product_id, specification_id, remark, price, discount, state, count,
+      score, creator, create_time, modifier, modification_time, reference_price, cost_price,
+      collage_price, personal_price, price_spike, weight, isShip, pulse, comment_num, sale_num,
+      sale_type
   </sql>
 </mapper>

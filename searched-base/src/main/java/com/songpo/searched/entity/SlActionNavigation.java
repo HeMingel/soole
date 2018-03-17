@@ -5,45 +5,54 @@ import java.io.Serializable;
 
 @Table(name = "sl_action_navigation")
 public class SlActionNavigation implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 元素文本
      */
     private String title;
+
     /**
      * 元素描述
      */
     private String description;
+
     /**
      * 元素图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 链接地址
      */
     private String url;
+
     /**
      * 动作页面_android
      */
     @Column(name = "page_android")
     private String pageAndroid;
+
     /**
      * 动作页面_ios
      */
     @Column(name = "page_ios")
     private String pageIos;
+
     /**
      * 导航类型唯一标识符
      */
     @Column(name = "type_id")
     private String typeId;
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 创建人
      */

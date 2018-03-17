@@ -6,61 +6,73 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 店主唯一标识符
      */
     @Column(name = "owner_id")
     private String ownerId;
+
     /**
      * 名称
      */
     private String name;
+
     /**
      * 描述
      */
     private String description;
+
     /**
      * 图片
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 地址
      */
     private String address;
+
     /**
      * 经度
      */
     private BigDecimal longitude;
+
     /**
      * 维度
      */
     private BigDecimal latitude;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

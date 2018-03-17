@@ -6,56 +6,70 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "sl_message_type")
-public class SlMessageType implements Serializable {
-    /**
-     * 唯一标识符
-     */
+@Table(name = "sl_develop_route")
+public class SlDevelopRoute implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-
-    /**
-     * 名称
-     */
+    private Integer id;
     private String name;
-
-    private static final long serialVersionUID = 1L;
+    private String path;
+    private String source;
 
     /**
-     * 获取唯一标识符
-     *
-     * @return id - 唯一标识符
+     * @return id
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     /**
-     * 设置唯一标识符
-     *
-     * @param id 唯一标识符
+     * @param id
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
-     * 获取名称
-     *
-     * @return name - 名称
+     * @return name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置名称
-     *
-     * @param name 名称
+     * @param name
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * @return path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path
+     */
+    public void setPath(String path) {
+        this.path = path == null ? null : path.trim();
+    }
+
+    /**
+     * @return source
+     */
+    public String getSource() {
+        return source;
+    }
+
+    /**
+     * @param source
+     */
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
     }
 
     @Override
@@ -66,6 +80,8 @@ public class SlMessageType implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", path=").append(path);
+        sb.append(", source=").append(source);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

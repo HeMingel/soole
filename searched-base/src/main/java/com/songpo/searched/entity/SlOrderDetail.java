@@ -6,67 +6,80 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 订单唯一标识符
      */
     @Column(name = "order_id")
     private String orderId;
+
     /**
      * 店铺唯一标识符
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 总额
      */
     private BigDecimal amount;
+
     /**
      * 数量
      */
     private String quantity;
+
     /**
      * 价格
      */
     private String price;
+
     /**
      * 0、待发货 1、已发货 2、已签收 3、已拒收
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
+
     /**
      * 折扣
      */
     private Integer discount;
+
     /**
      * 创建人
      */
     private String creator;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 修改人
      */
     private String modifier;
+
     /**
      * 修改时间
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -6,21 +6,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "sl_message_type")
-public class SlMessageType implements Serializable {
+@Table(name = "sl_activity")
+public class SlActivity implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-
     /**
-     * 名称
+     * 活动名称
      */
     private String name;
-
-    private static final long serialVersionUID = 1L;
+    /**
+     * 活动备注
+     */
+    private String remark;
 
     /**
      * 获取唯一标识符
@@ -41,21 +43,39 @@ public class SlMessageType implements Serializable {
     }
 
     /**
-     * 获取名称
+     * 获取活动名称
      *
-     * @return name - 名称
+     * @return name - 活动名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置名称
+     * 设置活动名称
      *
-     * @param name 名称
+     * @param name 活动名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取活动备注
+     *
+     * @return remark - 活动备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置活动备注
+     *
+     * @param remark 活动备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     @Override
@@ -66,6 +86,7 @@ public class SlMessageType implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
