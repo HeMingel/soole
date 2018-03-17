@@ -8,21 +8,24 @@ import java.io.Serializable;
 
 @Table(name = "sl_activity")
 public class SlActivity implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 活动名称
      */
     private String name;
+
     /**
      * 活动备注
      */
     private String remark;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

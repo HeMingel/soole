@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -14,14 +13,14 @@ dependencies {
     compile project(':searched-base')
 
     // 实体编译组件
-    compileOnly('org.projectlombok:lombok')
+    compile('org.projectlombok:lombok:1.16.20')
 
     // Redis组件
-    compile('org.springframework.boot:spring-boot-starter-data-redis')
+    compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
 
-    // 测试组件
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
 
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-
+// 指定工程编码格式
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }

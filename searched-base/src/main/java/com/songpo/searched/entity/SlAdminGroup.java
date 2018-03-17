@@ -8,18 +8,21 @@ import java.io.Serializable;
 
 @Table(name = "sl_admin_group")
 public class SlAdminGroup implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 权限名称
      */
     private String name;
+
     /**
      * 权限规则
      */
     private String rule;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

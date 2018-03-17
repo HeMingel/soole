@@ -18,11 +18,12 @@ public class SlUserAddress implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 收货人姓名
      */
     private String name;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 省
@@ -52,15 +53,16 @@ public class SlUserAddress implements Serializable {
      * 纬度
      */
     private String latitude;
-    /**
-     * 详细地址
-     */
-    private String detailed;
+
     /**
      * 1. 默认地址  2.不是默认地址
      */
     @Column(name = "is_default")
     private Boolean isDefault;
+    /**
+     * 详细地址
+     */
+    private String detailed;
 
     /**
      * 获取唯一标识符

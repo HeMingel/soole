@@ -66,12 +66,13 @@ public class SlProduct implements Serializable {
     @Column(name = "product_type_id")
     private String productTypeId;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 是否下架
      */
     @Column(name = "is_soldOut")
     private Boolean isSoldout;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

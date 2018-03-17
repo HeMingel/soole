@@ -8,13 +8,17 @@ import java.io.Serializable;
 
 @Table(name = "sl_develop_route")
 public class SlDevelopRoute implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
+
     private String path;
+
     private String source;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

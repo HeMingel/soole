@@ -8,8 +8,8 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="size" jdbcType="INTEGER" property="size"/>
-        <result column="floder" jdbcType="VARCHAR" property="floder"/>
-        <result column="mimetype" jdbcType="VARCHAR" property="mimetype"/>
+        <result column="folder" jdbcType="VARCHAR" property="folder"/>
+        <result column="mime_type" jdbcType="VARCHAR" property="mimeType"/>
         <result column="extension" jdbcType="VARCHAR" property="extension"/>
         <result column="source_name" jdbcType="VARCHAR" property="sourceName"/>
         <result column="mark_type" jdbcType="VARCHAR" property="markType"/>
@@ -23,7 +23,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, size, floder, mimetype, extension, source_name, mark_type, mark_value,
+        id, name, size, folder, mime_type, extension, source_name, mark_type, mark_value,
         hash, userid, is_admin, classify
     </sql>
 </mapper>

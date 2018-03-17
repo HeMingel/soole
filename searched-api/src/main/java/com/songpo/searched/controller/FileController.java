@@ -6,17 +6,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 刘松坡
+ */
+@Slf4j
 @Api(description = "文件管理")
 @CrossOrigin
 @RestController
@@ -26,18 +29,45 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @ApiOperation(value = "上次图片")
+    /**
+     * 文件上传
+     *
+     * @param type 文件类型，例如头像、商品图片等
+     * @param file 文件
+     * @return
+     */
+    @ApiOperation(value = "文件上传")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "文件", required = true, paramType = "body")
+            @ApiImplicitParam(name = "type", value = "类型", paramType = "form"),
+            @ApiImplicitParam(name = "file", value = "文件", paramType = "body", dataType = "file")
     })
     @PostMapping
     public BusinessMessage<Map<String, String>> upload(String type, MultipartFile file) {
-        String url = this.fileService.upload(type, file);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
-        message.setSuccess(StringUtils.isEmpty(url));
-        message.setData(new HashMap<String, String>(1) {{
-            put("url", url);
-        }});
+        try {
+            String url = this.fileService.upload(type, file);
+
+            message.setSuccess(StringUtils.isEmpty(url));
+            message.setData(new HashMap<String, String>(1) {{
+                put("fileUrl", url);
+            }});
+        } catch (Exception e) {
+            log.error("文件上传失败，{}", e);
+        }
         return message;
+    }
+
+    /**
+     * 文件下载
+     *
+     * @param name 文件名称
+     */
+    @ApiOperation(value = "文件下载")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "文件名称", paramType = "path")
+    })
+    @GetMapping("{name:.*}")
+    public ResponseEntity<byte[]> download(@PathVariable String name) {
+        return this.fileService.download(name);
     }
 }

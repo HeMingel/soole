@@ -5,64 +5,78 @@ import java.io.Serializable;
 
 @Table(name = "sl_develop_menu")
 public class SlDevelopMenu implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 栏目名称
      */
     private String classname;
+
     /**
      * 栏目标识
      */
     private String classvar;
+
     /**
      * 上级栏目标识
      */
     private String parent;
+
     /**
      * 顶级栏目标识
      */
     private String top;
+
     /**
      * 图标
      */
     private String icon;
+
     /**
      * 默认导航面板
      */
     private Boolean isdefault;
+
     /**
      * 自定义排序
      */
     private Short myorder;
+
     /**
      * 是否显示
      */
     private Boolean isshow;
+
     /**
      * 附加参数
      */
     private String params;
+
     /**
      * 是否关闭
      */
     private Boolean isclose;
+
     /**
      * 追加方法
      */
     private String pattern;
+
     /**
      * 定义上级
      */
     @Column(name = "higher_up")
     private String higherUp;
+
     /**
      * 没有子栏目
      */
     @Column(name = "no_child")
     private Boolean noChild;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
