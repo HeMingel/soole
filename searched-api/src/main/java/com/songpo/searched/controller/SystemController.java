@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author liuso
@@ -64,6 +65,11 @@ public class SystemController {
                     user = userService.selectOne(new SlUser() {{
                         setPhone(phone);
                     }});
+
+                    // 缓存用户信息
+                    if (null != user) {
+                        this.userCache.put(phone, user);
+                    }
                 }
 
                 if (null == user) {
@@ -73,7 +79,7 @@ public class SystemController {
                 } else {
                     SlUser finalUser = user;
                     message.setData(new HashMap<String, String>() {{
-                        put("clientId", finalUser.getId());
+                        put("clientId", finalUser.getPhone());
                         put("clientSecret", finalUser.getSecret());
                     }});
                     message.setSuccess(true);
@@ -113,7 +119,8 @@ public class SystemController {
                     user = new SlUser();
                     user.setPhone(phone);
                     user.setPassword(passwordEncoder.encode(password));
-                    user.setCreator("");
+                    user.setSecret(UUID.randomUUID().toString());
+                    user.setCreator("admin");
                     user.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                     // 添加

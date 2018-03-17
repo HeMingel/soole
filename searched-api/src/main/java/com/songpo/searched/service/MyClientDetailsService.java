@@ -31,7 +31,14 @@ public class MyClientDetailsService implements ClientDetailsService {
 
         SlUser user = this.cache.get(clientId);
         if (null == user) {
-            user = this.mapper.selectByPrimaryKey(clientId);
+            user = this.mapper.selectOne(new SlUser() {{
+                setPhone(clientId);
+            }});
+
+            // 加入缓存
+            if (null != user) {
+                this.cache.put(clientId, user);
+            }
         }
 
         if (null != user) {
