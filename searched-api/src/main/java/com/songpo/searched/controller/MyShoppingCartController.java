@@ -110,7 +110,7 @@ public class MyShoppingCartController {
                                 shoppingCart.setCounts(sc.getCounts());// TODO 加入购物车商品的数量
                                 shoppingCart.setImageUrl(slProduct.getImageUrl()); // TODO 商品图片
                                 SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
-                                    setTagId(sc.getTagId());
+                                    /*setTagId(sc.getTagId());*/
                                     setProductId(sc.getGoodId());
                                 }});
                                 shoppingCart.setPulse(repository.getPulse());// TODO 了豆
