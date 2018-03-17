@@ -7,10 +7,6 @@ import java.util.List;
 @Data
 public class MyShoppingCartPojo {
     /**
-     * 主键
-     */
-    private String id;
-    /**
      * 用户Id
      */
     private String userId;
@@ -19,6 +15,10 @@ public class MyShoppingCartPojo {
      */
     private List<ShoppingCart> carts;
 
+    /**
+     * 商品实体
+     */
+//    private SlProduct slProduct;
 
 }
 
