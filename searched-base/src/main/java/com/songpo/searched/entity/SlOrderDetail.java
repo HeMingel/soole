@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -32,7 +32,7 @@ public class SlOrderDetail implements Serializable {
     private String productId;
 
     /**
-     * 总额
+     * 单个商品价格
      */
     private BigDecimal amount;
 
@@ -45,12 +45,6 @@ public class SlOrderDetail implements Serializable {
      * 价格
      */
     private String price;
-
-    /**
-     * 0、待发货 1、已发货 2、已签收 3、已拒收
-     */
-    @Column(name = "shipping_state")
-    private Integer shippingState;
 
     /**
      * 折扣
@@ -154,18 +148,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取总额
+     * 获取单个商品价格
      *
-     * @return amount - 总额
+     * @return amount - 单个商品价格
      */
     public BigDecimal getAmount() {
         return amount;
     }
 
     /**
-     * 设置总额
+     * 设置单个商品价格
      *
-     * @param amount 总额
+     * @param amount 单个商品价格
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
@@ -205,24 +199,6 @@ public class SlOrderDetail implements Serializable {
      */
     public void setPrice(String price) {
         this.price = price == null ? null : price.trim();
-    }
-
-    /**
-     * 获取0、待发货 1、已发货 2、已签收 3、已拒收
-     *
-     * @return shipping_state - 0、待发货 1、已发货 2、已签收 3、已拒收
-     */
-    public Integer getShippingState() {
-        return shippingState;
-    }
-
-    /**
-     * 设置0、待发货 1、已发货 2、已签收 3、已拒收
-     *
-     * @param shippingState 0、待发货 1、已发货 2、已签收 3、已拒收
-     */
-    public void setShippingState(Integer shippingState) {
-        this.shippingState = shippingState;
     }
 
     /**
@@ -328,7 +304,6 @@ public class SlOrderDetail implements Serializable {
         sb.append(", amount=").append(amount);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
-        sb.append(", shippingState=").append(shippingState);
         sb.append(", discount=").append(discount);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);

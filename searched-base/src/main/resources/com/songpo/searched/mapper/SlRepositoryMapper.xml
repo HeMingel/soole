@@ -30,6 +30,7 @@
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
     <result column="sale_type" jdbcType="INTEGER" property="saleType" />
+    <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -38,6 +39,6 @@
     id, shop_id, product_id, specification_id, remark, price, discount, state, count, 
     score, creator, create_time, modifier, modification_time, reference_price, cost_price, 
     collage_price, personal_price, price_spike, weight, isShip, pulse, comment_num, sale_num, 
-    sale_type
+    sale_type, post_fee
   </sql>
 </mapper>
