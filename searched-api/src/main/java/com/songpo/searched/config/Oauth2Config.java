@@ -70,10 +70,7 @@ public class Oauth2Config {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-            oauthServer.tokenKeyAccess("permitAll()")
-//                .checkTokenAccess("isAuthenticated()") //allow check token
-                    .checkTokenAccess("permitAll()") //allow check token
-                    .allowFormAuthenticationForClients();
+            oauthServer.checkTokenAccess("permitAll()");
         }
 
         @Override
