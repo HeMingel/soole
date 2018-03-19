@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 用户的API控制层
+ * 用户端的API控制层
+ *
+ * 用于配置用户端APP每个页面所有数据统一的接口
+ * 比如首页有商品一级分类、拼团秒杀活动等，将这些数据放到一个接口里
  *
  * @author 刘松坡
  */
