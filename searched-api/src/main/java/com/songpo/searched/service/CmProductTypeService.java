@@ -3,8 +3,9 @@ package com.songpo.searched.service;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.ProductCategoryDto;
 import com.songpo.searched.entity.SlProductType;
-import com.songpo.searched.mapper.ProductTypeMapper;
+import com.songpo.searched.mapper.CmProductTypeMapper;
 import com.songpo.searched.mapper.SlProductTypeMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -12,15 +13,16 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 @Service
-public class ProductTypeService extends BaseService<SlProductType, String> {
+@Slf4j
+public class CmProductTypeService extends BaseService<SlProductType, String> {
 
     @Autowired
     private SlProductTypeMapper slProductTypeMapper;
 
     @Autowired
-    private ProductTypeMapper productTypeMapper;
+    private CmProductTypeMapper productTypeMapper;
 
-    public ProductTypeService(SlProductTypeMapper mapper) {
+    public CmProductTypeService(SlProductTypeMapper mapper) {
         super(mapper);
     }
 
@@ -56,6 +58,8 @@ public class ProductTypeService extends BaseService<SlProductType, String> {
      * @return
      */
     public BusinessMessage findCategoryByParentId(String id) {
+        log.debug("查询: 父id {}",id);
+
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
@@ -70,6 +74,7 @@ public class ProductTypeService extends BaseService<SlProductType, String> {
             }
         } catch (Exception e) {
             businessMessage.setMsg("查询失败");
+            log.error("查询二级分类异常",e);
         }
         return businessMessage;
     }

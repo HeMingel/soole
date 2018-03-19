@@ -22,7 +22,7 @@ import java.util.List;
 public class CustomerClientHomeService {
 
     @Autowired
-    private ProductTypeService productTypeService;
+    private CmProductTypeService productTypeService;
 
     @Autowired
     private ActionNavigationService actionNavigationService;
