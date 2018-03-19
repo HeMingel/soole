@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmProductMapper">
+    <select id="selectByActionId" parameterType="String" resultType="com.songpo.searched.entity.SlProduct">
+        SELECT * FROM sl_product p, sl_action_product ap WHERE p.id = ap.product_id AND ap.action_id = #{actionId}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

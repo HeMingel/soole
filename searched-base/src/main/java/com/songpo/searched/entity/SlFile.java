@@ -16,21 +16,23 @@ public class SlFile implements Serializable {
      * 文件大小（bytes）
      */
     private Integer size;
+
+    /**
+     * 保存路径
+     */
+    private String folder;
+
+    /**
+     * 文件类型
+     */
+    @Column(name = "mime_type")
+    private String mimeType;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    /**
-     * 保存路径
-     */
-    private String folder;
-    /**
-     * 文件类型
-     */
-    @Column(name = "mime_type")
-    private String mimeType;
 
     /**
      * 文件原名

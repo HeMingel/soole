@@ -58,6 +58,16 @@ public class SlActionNavigation implements Serializable {
     private Integer serialNumber;
 
     /**
+     * 尺寸，1：大、2：小
+     */
+    private Integer size;
+
+    /**
+     * 所处位置，1：上、2：下、3：左、4：右
+     */
+    private Integer position;
+
+    /**
      * 创建人
      */
     private String creator;
@@ -244,6 +254,42 @@ public class SlActionNavigation implements Serializable {
     }
 
     /**
+     * 获取尺寸，1：大、2：小
+     *
+     * @return size - 尺寸，1：大、2：小
+     */
+    public Integer getSize() {
+        return size;
+    }
+
+    /**
+     * 设置尺寸，1：大、2：小
+     *
+     * @param size 尺寸，1：大、2：小
+     */
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    /**
+     * 获取所处位置，1：上、2：下、3：左、4：右
+     *
+     * @return position - 所处位置，1：上、2：下、3：左、4：右
+     */
+    public Integer getPosition() {
+        return position;
+    }
+
+    /**
+     * 设置所处位置，1：上、2：下、3：左、4：右
+     *
+     * @param position 所处位置，1：上、2：下、3：左、4：右
+     */
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    /**
      * 获取创建人
      *
      * @return creator - 创建人
@@ -330,6 +376,8 @@ public class SlActionNavigation implements Serializable {
         sb.append(", pageIos=").append(pageIos);
         sb.append(", typeId=").append(typeId);
         sb.append(", serialNumber=").append(serialNumber);
+        sb.append(", size=").append(size);
+        sb.append(", position=").append(position);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);

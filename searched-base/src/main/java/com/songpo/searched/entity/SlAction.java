@@ -6,26 +6,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "sl_action_navigation_type")
-public class SlActionNavigationType implements Serializable {
+@Table(name = "sl_action")
+public class SlAction implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-
     /**
-     * 名称，比如：我的、商品、首页
+     * 活动名称
      */
     private String name;
-
     /**
-     * 播放速度，比如轮播图这些可以指定播放速度
+     * 活动备注
      */
-    private Float speed;
-
-    private static final long serialVersionUID = 1L;
+    private String remark;
 
     /**
      * 获取唯一标识符
@@ -46,39 +43,39 @@ public class SlActionNavigationType implements Serializable {
     }
 
     /**
-     * 获取名称，比如：我的、商品、首页
+     * 获取活动名称
      *
-     * @return name - 名称，比如：我的、商品、首页
+     * @return name - 活动名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置名称，比如：我的、商品、首页
+     * 设置活动名称
      *
-     * @param name 名称，比如：我的、商品、首页
+     * @param name 活动名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
 
     /**
-     * 获取播放速度，比如轮播图这些可以指定播放速度
+     * 获取活动备注
      *
-     * @return speed - 播放速度，比如轮播图这些可以指定播放速度
+     * @return remark - 活动备注
      */
-    public Float getSpeed() {
-        return speed;
+    public String getRemark() {
+        return remark;
     }
 
     /**
-     * 设置播放速度，比如轮播图这些可以指定播放速度
+     * 设置活动备注
      *
-     * @param speed 播放速度，比如轮播图这些可以指定播放速度
+     * @param remark 活动备注
      */
-    public void setSpeed(Float speed) {
-        this.speed = speed;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     @Override
@@ -89,7 +86,7 @@ public class SlActionNavigationType implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", speed=").append(speed);
+        sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
@@ -50,7 +51,7 @@ public class Oauth2Config {
                     .authorizeRequests()
                     // 不拦截获取token的请求
                     .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
-                    .antMatchers("/oauth/token").permitAll()
+                    .antMatchers("/oauth/**").permitAll()
                     // SwaggerUi
                     .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**", "/api/v2/**", "/api/v1/myShoppingCart/**").permitAll()
                     .antMatchers("/api/v1/system/login", "/api/v1/system/register").permitAll()
@@ -66,6 +67,14 @@ public class Oauth2Config {
 
         @Autowired
         private MyClientDetailsService clientDetailsService;
+
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
+            oauthServer.tokenKeyAccess("permitAll()")
+//                .checkTokenAccess("isAuthenticated()") //allow check token
+                    .checkTokenAccess("permitAll()") //allow check token
+                    .allowFormAuthenticationForClients();
+        }
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

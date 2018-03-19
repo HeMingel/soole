@@ -5,36 +5,42 @@ import java.io.Serializable;
 
 @Table(name = "sl_file_info")
 public class SlFileInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 原始文件名
      */
     @Column(name = "source_name")
     private String sourceName;
+
     /**
      * 目标文件名
      */
     @Column(name = "target_name")
     private String targetName;
+
     /**
      * 文件类型
      */
     @Column(name = "content_type")
     private String contentType;
+
     /**
      * 文件大小
      */
     private Integer size;
+
     /**
      * 文件路径
      */
     private String path;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

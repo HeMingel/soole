@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlActionProductMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlActionProduct">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="action_id" jdbcType="VARCHAR" property="actionId"/>
+        <result column="product_id" jdbcType="VARCHAR" property="productId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, action_id, product_id
+    </sql>
+</mapper>
