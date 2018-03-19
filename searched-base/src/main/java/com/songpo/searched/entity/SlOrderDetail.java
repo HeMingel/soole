@@ -38,19 +38,14 @@ public class SlOrderDetail implements Serializable {
     private String productId;
 
     /**
-     * 单个商品价格
-     */
-    private BigDecimal amount;
-
-    /**
      * 数量
      */
     private String quantity;
 
     /**
-     * 价格
+     * 单个商品价格
      */
-    private String price;
+    private BigDecimal price;
 
     /**
      * 折扣
@@ -178,24 +173,6 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取单个商品价格
-     *
-     * @return amount - 单个商品价格
-     */
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    /**
-     * 设置单个商品价格
-     *
-     * @param amount 单个商品价格
-     */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    /**
      * 获取数量
      *
      * @return quantity - 数量
@@ -214,21 +191,21 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取价格
+     * 获取单个商品价格
      *
-     * @return price - 价格
+     * @return price - 单个商品价格
      */
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
     /**
-     * 设置价格
+     * 设置单个商品价格
      *
-     * @param price 价格
+     * @param price 单个商品价格
      */
-    public void setPrice(String price) {
-        this.price = price == null ? null : price.trim();
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     /**
@@ -350,7 +327,6 @@ public class SlOrderDetail implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", repositoryId=").append(repositoryId);
         sb.append(", productId=").append(productId);
-        sb.append(", amount=").append(amount);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", discount=").append(discount);

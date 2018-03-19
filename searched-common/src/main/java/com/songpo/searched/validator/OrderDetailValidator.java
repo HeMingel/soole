@@ -59,11 +59,11 @@ public class OrderDetailValidator extends ValidatorHandler<SlOrderDetail> {
                     setInvalidValue(t.getProductId());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getAmount())) {
+            } else if (StringUtils.isEmpty(t.getPrice())) {
                 context.addError(new ValidationError() {{
                     setErrorMsg("总额ID为空");
                     setField("Amount");
-                    setInvalidValue(t.getAmount());
+                    setInvalidValue(t.getPrice());
                 }});
                 flag = false;
             } else if (StringUtils.isEmpty(t.getPrice())) {
