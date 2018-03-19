@@ -88,8 +88,8 @@ public class ProductService extends BaseService<SlProduct, String> {
     /**
      * 根据分类查询商品  +  商品筛选
      *
-     * @param goodsType
-     * @param screenType
+     * @param goodsType  商品分类ID
+     * @param screenType 筛选类型
      * @param page
      * @param size
      * @return

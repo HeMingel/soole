@@ -35,7 +35,7 @@
         <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
     </resultMap>
 
-
+    <!--根据商品名称查询商品-->
     <select id="findGoods" parameterType="String" resultMap="BaseResultMap">
         SELECT
         p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
@@ -45,11 +45,11 @@
         ON p.`id`= r.product_id
         WHERE p.`name` = #{name}
     </select>
-
+    <!--查询商品前六个 推荐-->
     <select id="findRecommendProduct" resultMap="RecommendResultMap">
         select id as productId,image_url,name from sl_product limit 0,5
     </select>
-
+    <!--根据分类id查询商品-->
     <select id="findGoodsByCategory" parameterType="String" resultMap="BaseResultMap">
         select
         p.`id` as
@@ -59,7 +59,7 @@
         ON p.`id`= r.product_id
         WHERE p.`product_type_id` = #{id}
     </select>
-
+    <!--根据分类查询商品 + 商品的筛选-->
     <select id="screenGoods" resultMap="BaseResultMap">
         select
         p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse

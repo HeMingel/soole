@@ -39,6 +39,7 @@ public class ProductTypeService extends BaseService<SlProductType, String> {
             if (slProductTypeList.size() > 0) {
                 businessMessage.setData(slProductTypeList);
                 businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询成功");
             } else {
                 businessMessage.setSuccess(true);
                 businessMessage.setMsg("查询无数据!");

@@ -24,19 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v2/goods-type")
-public class ProductTypeController extends BaseController<SlProductType, String> {
-
-    private Logger logger = LoggerFactory.getLogger(ProductTypeController.class);
+public class ProductTypeController {
 
     @Autowired
     private ProductTypeService productTypeService;
 
-    public ProductTypeController(ProductTypeService service) {
-        // 设置业务服务类
-        super.service = service;
-        // 设置实体校验器
-        super.validatorHandler = new ProductTypeValidator(service);
-    }
 
     /**
      * 搜索一级分类
