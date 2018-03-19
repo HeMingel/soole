@@ -78,7 +78,7 @@ public class SlOrderDetail implements Serializable {
      * 扣除的金豆数量
      */
     @Column(name = "deduct_pulse")
-    private BigDecimal deductPulse;
+    private Integer deductPulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -303,7 +303,7 @@ public class SlOrderDetail implements Serializable {
      *
      * @return deduct_pulse - 扣除的金豆数量
      */
-    public BigDecimal getDeductPulse() {
+    public Integer getDeductPulse() {
         return deductPulse;
     }
 
@@ -312,7 +312,7 @@ public class SlOrderDetail implements Serializable {
      *
      * @param deductPulse 扣除的金豆数量
      */
-    public void setDeductPulse(BigDecimal deductPulse) {
+    public void setDeductPulse(Integer deductPulse) {
         this.deductPulse = deductPulse;
     }
 

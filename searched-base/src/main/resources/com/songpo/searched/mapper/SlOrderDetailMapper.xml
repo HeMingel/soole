@@ -17,7 +17,7 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
-    <result column="deduct_pulse" jdbcType="DECIMAL" property="deductPulse" />
+    <result column="deduct_pulse" jdbcType="INTEGER" property="deductPulse" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
