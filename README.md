@@ -1,9 +1,22 @@
-# 说明
-为了方便复制粘贴的需要，特意将Java API开发整理成了脚手架。
-持久化框架分别准备了Spring Data Jpa和MyBatis，开发语言使用Java和Kotlin。
-构建工具则使用了Maven和Gradle。
-其实Web项目中是可以使用java和kotlin进行混编的，而构建工具也是可以放在一个工程里
-方便不同的人选择不同的构建工具
+# 一、工程简介
+
+## 1、searched-base
+主要包含数据库中所有的表转换成的实体和持久化工具类以及映射文件
+
+### 1.1 searched-base\src\main\java\com\songpo\searched\entity
+这个目录下是跟表对应的实体
+
+### 1.2 searched-base\src\main\java\com\songpo\searched\mapper
+这个目录下是完成实体对应的增删改查操作的接口
+
+### 1.3 searched-base\src\main\resources\com\songpo\searched\mapper
+这个目录下是持久化接口所对应的XML文件
+
+## 2、searched-common
+用于放置通用实现或缓存等
+
+## 3、searched-api
+提供所有的api接口和授权验证接口
 
 ## OAuth2授权
 
