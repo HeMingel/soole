@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlFileMapper">
-  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFile">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="size" jdbcType="INTEGER" property="size" />
-    <result column="folder" jdbcType="VARCHAR" property="folder" />
-    <result column="mime_type" jdbcType="VARCHAR" property="mimeType" />
-    <result column="extension" jdbcType="VARCHAR" property="extension" />
-    <result column="source_name" jdbcType="VARCHAR" property="sourceName" />
-    <result column="mark_type" jdbcType="VARCHAR" property="markType" />
-    <result column="mark_value" jdbcType="VARCHAR" property="markValue" />
-    <result column="hash" jdbcType="VARCHAR" property="hash" />
-    <result column="userid" jdbcType="INTEGER" property="userid" />
-    <result column="is_admin" jdbcType="BIT" property="isAdmin" />
-    <result column="classify" jdbcType="VARCHAR" property="classify" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, name, size, folder, mime_type, extension, source_name, mark_type, mark_value, 
-    hash, userid, is_admin, classify
-  </sql>
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFile">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="size" jdbcType="INTEGER" property="size"/>
+        <result column="folder" jdbcType="VARCHAR" property="folder"/>
+        <result column="mime_type" jdbcType="VARCHAR" property="mimeType"/>
+        <result column="extension" jdbcType="VARCHAR" property="extension"/>
+        <result column="source_name" jdbcType="VARCHAR" property="sourceName"/>
+        <result column="mark_type" jdbcType="VARCHAR" property="markType"/>
+        <result column="mark_value" jdbcType="VARCHAR" property="markValue"/>
+        <result column="hash" jdbcType="VARCHAR" property="hash"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="is_admin" jdbcType="BIT" property="isAdmin"/>
+        <result column="classify" jdbcType="VARCHAR" property="classify"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, name, size, folder, mime_type, extension, source_name, mark_type, mark_value,
+        hash, userid, is_admin, classify
+    </sql>
 </mapper>

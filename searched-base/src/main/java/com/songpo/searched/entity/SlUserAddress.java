@@ -23,6 +23,8 @@ public class SlUserAddress implements Serializable {
      */
     private String name;
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 收货人手机号
      */
@@ -63,6 +65,10 @@ public class SlUserAddress implements Serializable {
      */
     @Column(name = "is_default")
     private Boolean isDefault;
+    /**
+     * 详细地址
+     */
+    private String detailed;
 
     private static final long serialVersionUID = 1L;
 

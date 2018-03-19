@@ -3,8 +3,8 @@ package com.songpo.searched.validator;
 import com.baidu.unbiz.fluentvalidator.ValidationError;
 import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
-import com.songpo.searched.entity.SlActivity;
-import com.songpo.searched.service.ActivityService;
+import com.songpo.searched.entity.SlSystemConfig;
+import com.songpo.searched.service.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -12,18 +12,18 @@ import org.springframework.util.StringUtils;
 /**
  * @author 刘松坡
  */
-public class ActivityValidator extends ValidatorHandler<SlActivity> {
+public class SystemConfigValidator extends ValidatorHandler<SlSystemConfig> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SlActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(SlSystemConfig.class);
 
-    private ActivityService service;
+    private SystemConfigService service;
 
-    public ActivityValidator(ActivityService service) {
+    public SystemConfigValidator(SystemConfigService service) {
         this.service = service;
     }
 
     @Override
-    public boolean validate(ValidatorContext context, SlActivity t) {
+    public boolean validate(ValidatorContext context, SlSystemConfig t) {
         logger.debug("执行校验：实体信息[{}]", t);
         // 初始化验证标识
         boolean flag = true;
@@ -32,7 +32,7 @@ public class ActivityValidator extends ValidatorHandler<SlActivity> {
         if (null == t) {
             context.addError(new ValidationError() {{
                 setErrorMsg("实体为空");
-                setField("activity");
+                setField("systemConfig");
                 setInvalidValue(t);
             }});
             flag = false;
@@ -45,13 +45,20 @@ public class ActivityValidator extends ValidatorHandler<SlActivity> {
                     setInvalidValue(t.getName());
                 }});
                 flag = false;
+            } else if (StringUtils.isEmpty(t.getContent())) {
+                context.addError(new ValidationError() {{
+                    setErrorMsg("内容为空");
+                    setField("content");
+                    setInvalidValue(t.getContent());
+                }});
+                flag = false;
             }
         }
         // 校验是否存在，如果不存在，则进行初始化工作
         if (flag) {
             try {
                 // 初始化唯一查询条件
-                SlActivity item = new SlActivity();
+                SlSystemConfig item = new SlSystemConfig();
                 item.setName(t.getName());
 
                 // 查询数量
@@ -71,7 +78,7 @@ public class ActivityValidator extends ValidatorHandler<SlActivity> {
 
                 context.addError(new ValidationError() {{
                     setErrorMsg("校验失败：" + e.getMessage());
-                    setField("activity");
+                    setField("systemConfig");
                     setInvalidValue(t);
                 }});
                 flag = false;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlProductMapper">
-  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProduct">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProduct">
     <!--
       WARNING - @mbg.generated
     -->
@@ -16,13 +16,13 @@
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
-    <result column="is_soldOut" jdbcType="BIT" property="isSoldout" />
+        <result column="is_soldOut" jdbcType="BIT" property="isSoldout"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction, 
-    detail, product_type_id, is_soldOut
+      id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction,
+      detail, product_type_id, is_soldOut
   </sql>
 </mapper>

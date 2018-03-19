@@ -1,16 +1,11 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_file")
 public class SlFile implements Serializable {
-    /**
-     * 唯一标识符
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 文件名
@@ -21,22 +16,21 @@ public class SlFile implements Serializable {
      * 文件大小（bytes）
      */
     private Integer size;
-
+    /**
+     * 唯一标识符
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     /**
      * 保存路径
      */
     private String folder;
-
     /**
      * 文件类型
      */
     @Column(name = "mime_type")
     private String mimeType;
-
-    /**
-     * 文件扩展名
-     */
-    private String extension;
 
     /**
      * 文件原名
@@ -76,8 +70,10 @@ public class SlFile implements Serializable {
      * 文件分类
      */
     private String classify;
-
-    private static final long serialVersionUID = 1L;
+    /**
+     * 文件扩展名
+     */
+    private String extension;
 
     /**
      * 获取唯一标识符
