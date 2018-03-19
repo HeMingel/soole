@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMGoods;
+import com.songpo.searched.domain.ProductCategoryDto;
 import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.CmProductTypeMapper;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,9 @@ public class CustomerClientHomeService {
 
     @Autowired
     private SpecificationNameMapper specificationNameMapper;
+
+    @Autowired
+    private CmProductTypeMapper cmProductTypeMapper;
 
     /**
      * 获取首页所有数据
@@ -139,7 +144,19 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData() {
+    public JSONObject getClassificationData(String parentId) {
+        JSONObject data = new JSONObject();
+
+        // 获取所有一级商品分类列表
+        List<SlProductType> productTypes = this.productTypeService.select(new SlProductType() {{
+            setParentId(null);
+        }});
+        data.put("productTypes", productTypes);
+
+        List<ProductCategoryDto> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
+        data.put("productTypes",productCategoryDtos);
+
+
         return null;
     }
 
