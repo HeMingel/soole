@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+    <result column="repository_id" jdbcType="VARCHAR" property="repositoryId" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="quantity" jdbcType="VARCHAR" property="quantity" />
@@ -23,7 +24,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, order_id, shop_id, product_id, amount, quantity, price, discount, creator, create_time, 
-    modifier, modification_time, deduct_pulse
+    id, order_id, shop_id, repository_id, product_id, amount, quantity, price, discount, 
+    creator, create_time, modifier, modification_time, deduct_pulse
   </sql>
 </mapper>
