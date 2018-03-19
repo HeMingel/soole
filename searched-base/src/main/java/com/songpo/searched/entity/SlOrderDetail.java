@@ -73,6 +73,12 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "modification_time")
     private String modificationTime;
 
+    /**
+     * 扣除的金豆数量
+     */
+    @Column(name = "deduct_pulse")
+    private BigDecimal deductPulse;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -291,6 +297,24 @@ public class SlOrderDetail implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取扣除的金豆数量
+     *
+     * @return deduct_pulse - 扣除的金豆数量
+     */
+    public BigDecimal getDeductPulse() {
+        return deductPulse;
+    }
+
+    /**
+     * 设置扣除的金豆数量
+     *
+     * @param deductPulse 扣除的金豆数量
+     */
+    public void setDeductPulse(BigDecimal deductPulse) {
+        this.deductPulse = deductPulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -309,6 +333,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", deductPulse=").append(deductPulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

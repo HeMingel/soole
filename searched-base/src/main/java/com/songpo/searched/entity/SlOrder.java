@@ -102,10 +102,10 @@ public class SlOrder implements Serializable {
     private Integer status;
 
     /**
-     * 实际扣除的了豆
+     * 扣除的了豆总数
      */
-    @Column(name = "deduct_pulse")
-    private Integer deductPulse;
+    @Column(name = "deduct_total_pulse")
+    private Integer deductTotalPulse;
 
     /**
      * 买家留言
@@ -412,21 +412,21 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取实际扣除的了豆
+     * 获取扣除的了豆总数
      *
-     * @return deduct_pulse - 实际扣除的了豆
+     * @return deduct_total_pulse - 扣除的了豆总数
      */
-    public Integer getDeductPulse() {
-        return deductPulse;
+    public Integer getDeductTotalPulse() {
+        return deductTotalPulse;
     }
 
     /**
-     * 设置实际扣除的了豆
+     * 设置扣除的了豆总数
      *
-     * @param deductPulse 实际扣除的了豆
+     * @param deductTotalPulse 扣除的了豆总数
      */
-    public void setDeductPulse(Integer deductPulse) {
-        this.deductPulse = deductPulse;
+    public void setDeductTotalPulse(Integer deductTotalPulse) {
+        this.deductTotalPulse = deductTotalPulse;
     }
 
     /**
@@ -469,7 +469,7 @@ public class SlOrder implements Serializable {
         sb.append(", shippingTime=").append(shippingTime);
         sb.append(", shipNumber=").append(shipNumber);
         sb.append(", status=").append(status);
-        sb.append(", deductPulse=").append(deductPulse);
+        sb.append(", deductTotalPulse=").append(deductTotalPulse);
         sb.append(", buyerMessage=").append(buyerMessage);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

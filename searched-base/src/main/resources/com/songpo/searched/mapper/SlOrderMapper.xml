@@ -21,7 +21,7 @@
     <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
     <result column="ship_number" jdbcType="VARCHAR" property="shipNumber" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="deduct_pulse" jdbcType="INTEGER" property="deductPulse" />
+    <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
     <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -30,6 +30,6 @@
     -->
     id, serial_number, user_id, shippng_address_id, total_amount, fee, payment_state, 
     type, payment_channel, remark, create_time, pay_time, shipping_state, shipping_time, 
-    ship_number, status, deduct_pulse, buyer_message
+    ship_number, status, deduct_total_pulse, buyer_message
   </sql>
 </mapper>
