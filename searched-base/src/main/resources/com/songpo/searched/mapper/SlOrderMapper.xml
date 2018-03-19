@@ -8,10 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="province" jdbcType="VARCHAR" property="province" />
-    <result column="city" jdbcType="VARCHAR" property="city" />
-    <result column="district" jdbcType="VARCHAR" property="district" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="shippng_address_id" jdbcType="VARCHAR" property="shippngAddressId" />
     <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
     <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
@@ -20,12 +17,19 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="pay_time" jdbcType="VARCHAR" property="payTime" />
+    <result column="shipping_state" jdbcType="INTEGER" property="shippingState" />
+    <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
+    <result column="ship_number" jdbcType="VARCHAR" property="shipNumber" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
+    <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, user_id, province, city, district, address, total_amount, fee, 
-    payment_state, type, payment_channel, remark, create_time, pay_time
+    id, serial_number, user_id, shippng_address_id, total_amount, fee, payment_state, 
+    type, payment_channel, remark, create_time, pay_time, shipping_state, shipping_time, 
+    ship_number, status, deduct_total_pulse, buyer_message
   </sql>
 </mapper>

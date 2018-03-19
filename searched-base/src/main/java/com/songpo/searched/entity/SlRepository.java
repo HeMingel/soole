@@ -147,6 +147,12 @@ public class SlRepository implements Serializable {
     @Column(name = "sale_type")
     private Integer saleType;
 
+    /**
+     * 邮费
+     */
+    @Column(name = "post_fee")
+    private BigDecimal postFee;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -599,6 +605,24 @@ public class SlRepository implements Serializable {
         this.saleType = saleType;
     }
 
+    /**
+     * 获取邮费
+     *
+     * @return post_fee - 邮费
+     */
+    public BigDecimal getPostFee() {
+        return postFee;
+    }
+
+    /**
+     * 设置邮费
+     *
+     * @param postFee 邮费
+     */
+    public void setPostFee(BigDecimal postFee) {
+        this.postFee = postFee;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -630,6 +654,7 @@ public class SlRepository implements Serializable {
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
         sb.append(", saleType=").append(saleType);
+        sb.append(", postFee=").append(postFee);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

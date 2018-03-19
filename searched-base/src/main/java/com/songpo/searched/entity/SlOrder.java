@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -26,27 +26,13 @@ public class SlOrder implements Serializable {
     private String userId;
 
     /**
-     * 收货地址省地址
+     * 收货地址id
      */
-    private String province;
+    @Column(name = "shippng_address_id")
+    private String shippngAddressId;
 
     /**
-     * 收货地址市地址
-     */
-    private String city;
-
-    /**
-     * 收货地址区地址
-     */
-    private String district;
-
-    /**
-     * 收货详细地址
-     */
-    private String address;
-
-    /**
-     * 总金额
+     * 订单总金额(可能是一个商品可能是多个商品)
      */
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
@@ -57,23 +43,20 @@ public class SlOrder implements Serializable {
     private BigDecimal fee;
 
     /**
-     * 0：待支付
-                                            1：支付成功
-                                            2：支付失败
+     * 0：待支付1：支付成功 2：支付失败
      */
     @Column(name = "payment_state")
     private Integer paymentState;
 
     /**
-     * 1：普通订单
-                                  2：拼团订单
+     * 1：普通订单2：拼团订单3:预售订单
      */
     private Integer type;
 
     /**
      * 1：微信支付
-                                             2：支付宝支付
-                                             3：厦门银行支付
+2：支付宝支付
+3：厦门银行支付
      */
     @Column(name = "payment_channel")
     private Integer paymentChannel;
@@ -94,6 +77,41 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "pay_time")
     private String payTime;
+
+    /**
+     * 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    @Column(name = "shipping_state")
+    private Integer shippingState;
+
+    /**
+     * 发货时间
+     */
+    @Column(name = "shipping_time")
+    private String shippingTime;
+
+    /**
+     * 快递单号
+     */
+    @Column(name = "ship_number")
+    private String shipNumber;
+
+    /**
+     * 记录状态 1:正常 0:删除
+     */
+    private Integer status;
+
+    /**
+     * 扣除的了豆总数
+     */
+    @Column(name = "deduct_total_pulse")
+    private Integer deductTotalPulse;
+
+    /**
+     * 买家留言
+     */
+    @Column(name = "buyer_message")
+    private String buyerMessage;
 
     private static final long serialVersionUID = 1L;
 
@@ -152,90 +170,36 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取收货地址省地址
+     * 获取收货地址id
      *
-     * @return province - 收货地址省地址
+     * @return shippng_address_id - 收货地址id
      */
-    public String getProvince() {
-        return province;
+    public String getShippngAddressId() {
+        return shippngAddressId;
     }
 
     /**
-     * 设置收货地址省地址
+     * 设置收货地址id
      *
-     * @param province 收货地址省地址
+     * @param shippngAddressId 收货地址id
      */
-    public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+    public void setShippngAddressId(String shippngAddressId) {
+        this.shippngAddressId = shippngAddressId == null ? null : shippngAddressId.trim();
     }
 
     /**
-     * 获取收货地址市地址
+     * 获取订单总金额(可能是一个商品可能是多个商品)
      *
-     * @return city - 收货地址市地址
-     */
-    public String getCity() {
-        return city;
-    }
-
-    /**
-     * 设置收货地址市地址
-     *
-     * @param city 收货地址市地址
-     */
-    public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
-    }
-
-    /**
-     * 获取收货地址区地址
-     *
-     * @return district - 收货地址区地址
-     */
-    public String getDistrict() {
-        return district;
-    }
-
-    /**
-     * 设置收货地址区地址
-     *
-     * @param district 收货地址区地址
-     */
-    public void setDistrict(String district) {
-        this.district = district == null ? null : district.trim();
-    }
-
-    /**
-     * 获取收货详细地址
-     *
-     * @return address - 收货详细地址
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * 设置收货详细地址
-     *
-     * @param address 收货详细地址
-     */
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
-
-    /**
-     * 获取总金额
-     *
-     * @return total_amount - 总金额
+     * @return total_amount - 订单总金额(可能是一个商品可能是多个商品)
      */
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
     /**
-     * 设置总金额
+     * 设置订单总金额(可能是一个商品可能是多个商品)
      *
-     * @param totalAmount 总金额
+     * @param totalAmount 订单总金额(可能是一个商品可能是多个商品)
      */
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
@@ -260,48 +224,36 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取0：待支付
-                                            1：支付成功
-                                            2：支付失败
+     * 获取0：待支付1：支付成功 2：支付失败
      *
-     * @return payment_state - 0：待支付
-                                            1：支付成功
-                                            2：支付失败
+     * @return payment_state - 0：待支付1：支付成功 2：支付失败
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置0：待支付
-                                            1：支付成功
-                                            2：支付失败
+     * 设置0：待支付1：支付成功 2：支付失败
      *
-     * @param paymentState 0：待支付
-                                            1：支付成功
-                                            2：支付失败
+     * @param paymentState 0：待支付1：支付成功 2：支付失败
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
     }
 
     /**
-     * 获取1：普通订单
-                                  2：拼团订单
+     * 获取1：普通订单2：拼团订单3:预售订单
      *
-     * @return type - 1：普通订单
-                                  2：拼团订单
+     * @return type - 1：普通订单2：拼团订单3:预售订单
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置1：普通订单
-                                  2：拼团订单
+     * 设置1：普通订单2：拼团订单3:预售订单
      *
-     * @param type 1：普通订单
-                                  2：拼团订单
+     * @param type 1：普通订单2：拼团订单3:预售订单
      */
     public void setType(Integer type) {
         this.type = type;
@@ -309,12 +261,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 获取1：微信支付
-                                             2：支付宝支付
-                                             3：厦门银行支付
+2：支付宝支付
+3：厦门银行支付
      *
      * @return payment_channel - 1：微信支付
-                                             2：支付宝支付
-                                             3：厦门银行支付
+2：支付宝支付
+3：厦门银行支付
      */
     public Integer getPaymentChannel() {
         return paymentChannel;
@@ -322,12 +274,12 @@ public class SlOrder implements Serializable {
 
     /**
      * 设置1：微信支付
-                                             2：支付宝支付
-                                             3：厦门银行支付
+2：支付宝支付
+3：厦门银行支付
      *
      * @param paymentChannel 1：微信支付
-                                             2：支付宝支付
-                                             3：厦门银行支付
+2：支付宝支付
+3：厦门银行支付
      */
     public void setPaymentChannel(Integer paymentChannel) {
         this.paymentChannel = paymentChannel;
@@ -387,6 +339,114 @@ public class SlOrder implements Serializable {
         this.payTime = payTime == null ? null : payTime.trim();
     }
 
+    /**
+     * 获取0:待发货 1:已发货 2:已签收 3:已拒收
+     *
+     * @return shipping_state - 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    public Integer getShippingState() {
+        return shippingState;
+    }
+
+    /**
+     * 设置0:待发货 1:已发货 2:已签收 3:已拒收
+     *
+     * @param shippingState 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    public void setShippingState(Integer shippingState) {
+        this.shippingState = shippingState;
+    }
+
+    /**
+     * 获取发货时间
+     *
+     * @return shipping_time - 发货时间
+     */
+    public String getShippingTime() {
+        return shippingTime;
+    }
+
+    /**
+     * 设置发货时间
+     *
+     * @param shippingTime 发货时间
+     */
+    public void setShippingTime(String shippingTime) {
+        this.shippingTime = shippingTime == null ? null : shippingTime.trim();
+    }
+
+    /**
+     * 获取快递单号
+     *
+     * @return ship_number - 快递单号
+     */
+    public String getShipNumber() {
+        return shipNumber;
+    }
+
+    /**
+     * 设置快递单号
+     *
+     * @param shipNumber 快递单号
+     */
+    public void setShipNumber(String shipNumber) {
+        this.shipNumber = shipNumber == null ? null : shipNumber.trim();
+    }
+
+    /**
+     * 获取记录状态 1:正常 0:删除
+     *
+     * @return status - 记录状态 1:正常 0:删除
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置记录状态 1:正常 0:删除
+     *
+     * @param status 记录状态 1:正常 0:删除
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * 获取扣除的了豆总数
+     *
+     * @return deduct_total_pulse - 扣除的了豆总数
+     */
+    public Integer getDeductTotalPulse() {
+        return deductTotalPulse;
+    }
+
+    /**
+     * 设置扣除的了豆总数
+     *
+     * @param deductTotalPulse 扣除的了豆总数
+     */
+    public void setDeductTotalPulse(Integer deductTotalPulse) {
+        this.deductTotalPulse = deductTotalPulse;
+    }
+
+    /**
+     * 获取买家留言
+     *
+     * @return buyer_message - 买家留言
+     */
+    public String getBuyerMessage() {
+        return buyerMessage;
+    }
+
+    /**
+     * 设置买家留言
+     *
+     * @param buyerMessage 买家留言
+     */
+    public void setBuyerMessage(String buyerMessage) {
+        this.buyerMessage = buyerMessage == null ? null : buyerMessage.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -396,10 +456,7 @@ public class SlOrder implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", userId=").append(userId);
-        sb.append(", province=").append(province);
-        sb.append(", city=").append(city);
-        sb.append(", district=").append(district);
-        sb.append(", address=").append(address);
+        sb.append(", shippngAddressId=").append(shippngAddressId);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);
@@ -408,6 +465,12 @@ public class SlOrder implements Serializable {
         sb.append(", remark=").append(remark);
         sb.append(", createTime=").append(createTime);
         sb.append(", payTime=").append(payTime);
+        sb.append(", shippingState=").append(shippingState);
+        sb.append(", shippingTime=").append(shippingTime);
+        sb.append(", shipNumber=").append(shipNumber);
+        sb.append(", status=").append(status);
+        sb.append(", deductTotalPulse=").append(deductTotalPulse);
+        sb.append(", buyerMessage=").append(buyerMessage);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

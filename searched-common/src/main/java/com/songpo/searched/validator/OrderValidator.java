@@ -42,11 +42,11 @@ public class OrderValidator extends ValidatorHandler<SlOrder> {
                     setInvalidValue(t.getUserId());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getAddress())) {
+            } else if (StringUtils.isEmpty(t.getShippngAddressId())) {
                 context.addError(new ValidationError() {{
                     setErrorMsg("收货地址为空");
                     setField("ShippingAddressId");
-                    setInvalidValue(t.getAddress());
+                    setInvalidValue(t.getShippngAddressId());
                 }});
                 flag = false;
             } else if (StringUtils.isEmpty(t.getTotalAmount())) {
