@@ -2,8 +2,8 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.MyShoppingCartPojo;
-import com.songpo.searched.domain.ShoppingCart;
+import com.songpo.searched.domain.CMShoppingCart;
+import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -157,12 +157,12 @@ public class CustomerClientHomeService {
             }});
             if (null != user)
             {
-                MyShoppingCartPojo pojo = this.cache.get(uid);
-                List<ShoppingCart> list = new ArrayList<>();
-                ShoppingCart shoppingCart = null;
+                CMShoppingCart pojo = this.cache.get(uid);
+                List<CMGoods> list = new ArrayList<>();
+                CMGoods CMGoods = null;
                 if (null != pojo)
                 {
-                    for (ShoppingCart sc : pojo.getCarts())
+                    for (CMGoods sc : pojo.getCarts())
                     {
                         if (StringUtils.hasLength(sc.getGoodId()))
                         {
@@ -172,22 +172,22 @@ public class CustomerClientHomeService {
                             }});
                             if (null != slProduct)
                             {
-                                shoppingCart = new ShoppingCart();
-                                shoppingCart.setGoodName(slProduct.getName());// 商品名称
-                                shoppingCart.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                shoppingCart.setImageUrl(slProduct.getImageUrl()); // 商品图片
+                                CMGoods = new CMGoods();
+                                CMGoods.setGoodName(slProduct.getName());// 商品名称
+                                CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                                CMGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
                                 SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
                                     setSpecificationId(sc.getSpecificationId());
                                     setProductId(sc.getGoodId());
                                 }});
-                                shoppingCart.setPulse(repository.getPulse());// 了豆
-                                shoppingCart.setSaleType(repository.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
-                                shoppingCart.setPrice(repository.getPrice());// 商品价格
+                                CMGoods.setPulse(repository.getPulse());// 了豆
+                                CMGoods.setSaleType(repository.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                CMGoods.setPrice(repository.getPrice());// 商品价格
                                 /**
                                  * 查询标签名称 返回null的话 前台就显示失效
                                  */
-                                shoppingCart.setTagName(this.specificationNameMapper.findSpecificationContentBySpecificationId(sc.getSpecificationId(), sc.getGoodId()));
-                                list.add(shoppingCart);
+                                CMGoods.setTagName(this.specificationNameMapper.findSpecificationContentBySpecificationId(sc.getSpecificationId(), sc.getGoodId()));
+                                list.add(CMGoods);
                             }
                         }
                     }

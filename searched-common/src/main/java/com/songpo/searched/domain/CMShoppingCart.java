@@ -5,15 +5,15 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MyShoppingCartPojo {
+public class CMShoppingCart {
     /**
      * 用户Id
      */
     private String userId;
     /**
-     * 购物车详情
+     * 商品详情
      */
-    private List<ShoppingCart> carts;
+    private List<CMGoods> carts;
 
     /**
      * 商品实体

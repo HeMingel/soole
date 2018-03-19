@@ -1,7 +1,7 @@
 package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.MyShoppingCartPojo;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.service.MyShoppingCartService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class MyShoppingCartController {
      * @param pojo
      */
     @PostMapping("add")
-    public BusinessMessage addmyShoppingCart(MyShoppingCartPojo pojo) {
+    public BusinessMessage addmyShoppingCart(CMShoppingCart pojo) {
         return this.shoppingCartService.addmyShoppingCart(pojo);
     }
 

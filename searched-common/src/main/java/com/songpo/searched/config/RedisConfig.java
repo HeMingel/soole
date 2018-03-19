@@ -1,6 +1,6 @@
 package com.songpo.searched.config;
 
-import com.songpo.searched.domain.MyShoppingCartPojo;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,10 @@ public class RedisConfig {
      * @return
      */
     @Bean
-    public RedisTemplate<String, MyShoppingCartPojo> myShoppingCartTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, MyShoppingCartPojo> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, CMShoppingCart> myShoppingCartTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, CMShoppingCart> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MyShoppingCartPojo.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(CMShoppingCart.class));
         redisTemplate.setConnectionFactory(factory);
         return redisTemplate;
     }

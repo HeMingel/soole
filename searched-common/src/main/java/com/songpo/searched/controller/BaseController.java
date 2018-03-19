@@ -25,7 +25,7 @@ public class BaseController<T, PK> {
 
     private final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    public BaseService<T, PK> service;
+    public BaseService<T, PK>  service;
 
     public ValidatorHandler<T> validatorHandler;
 

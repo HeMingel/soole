@@ -2,12 +2,10 @@ package com.songpo.searched.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 
-@Entity
 @Data
-public class ShoppingCart {
+public class CMGoods {
     /**
      * 商品实体
      */
@@ -59,5 +57,9 @@ public class ShoppingCart {
      * 商品标签Id
      */
     private String specificationId;
+    /**
+     * 店铺仓库的ID
+     */
+    private String repository;
 
 }
