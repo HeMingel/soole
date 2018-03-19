@@ -132,7 +132,7 @@ public class CustomerClientHomeService {
         }});
         if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
         {
-            List<SlProduct> products = this.cmproductService.selectByActionId(teamworkType.getContent());
+            List<SlProduct> products = this.cmproductService.selectByActionId(preSaleType.getContent());
             data.put("preSaleProducts", products);
         }
 
