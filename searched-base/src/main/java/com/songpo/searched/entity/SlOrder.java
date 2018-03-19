@@ -26,10 +26,24 @@ public class SlOrder implements Serializable {
     private String userId;
 
     /**
-     * 收货地址唯一标识符
+     * 收货地址省地址
      */
-    @Column(name = "shipping_address_id")
-    private String shippingAddressId;
+    private String province;
+
+    /**
+     * 收货地址市地址
+     */
+    private String city;
+
+    /**
+     * 收货地址区地址
+     */
+    private String district;
+
+    /**
+     * 收货详细地址
+     */
+    private String address;
 
     /**
      * 总金额
@@ -138,21 +152,75 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取收货地址唯一标识符
+     * 获取收货地址省地址
      *
-     * @return shipping_address_id - 收货地址唯一标识符
+     * @return province - 收货地址省地址
      */
-    public String getShippingAddressId() {
-        return shippingAddressId;
+    public String getProvince() {
+        return province;
     }
 
     /**
-     * 设置收货地址唯一标识符
+     * 设置收货地址省地址
      *
-     * @param shippingAddressId 收货地址唯一标识符
+     * @param province 收货地址省地址
      */
-    public void setShippingAddressId(String shippingAddressId) {
-        this.shippingAddressId = shippingAddressId == null ? null : shippingAddressId.trim();
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    /**
+     * 获取收货地址市地址
+     *
+     * @return city - 收货地址市地址
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 设置收货地址市地址
+     *
+     * @param city 收货地址市地址
+     */
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    /**
+     * 获取收货地址区地址
+     *
+     * @return district - 收货地址区地址
+     */
+    public String getDistrict() {
+        return district;
+    }
+
+    /**
+     * 设置收货地址区地址
+     *
+     * @param district 收货地址区地址
+     */
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
+    }
+
+    /**
+     * 获取收货详细地址
+     *
+     * @return address - 收货详细地址
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * 设置收货详细地址
+     *
+     * @param address 收货详细地址
+     */
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
     /**
@@ -328,7 +396,10 @@ public class SlOrder implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", userId=").append(userId);
-        sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", district=").append(district);
+        sb.append(", address=").append(address);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);

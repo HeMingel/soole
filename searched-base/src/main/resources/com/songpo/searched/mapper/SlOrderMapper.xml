@@ -8,7 +8,10 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="shipping_address_id" jdbcType="VARCHAR" property="shippingAddressId" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
     <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
@@ -22,7 +25,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, user_id, shipping_address_id, total_amount, fee, payment_state, 
-    type, payment_channel, remark, create_time, pay_time
+    id, serial_number, user_id, province, city, district, address, total_amount, fee, 
+    payment_state, type, payment_channel, remark, create_time, pay_time
   </sql>
 </mapper>
