@@ -1,6 +1,5 @@
 rootProject.name = 'searched'
 
 include 'searched-base'
-include 'searched-cache'
 include 'searched-common'
 include 'searched-api'

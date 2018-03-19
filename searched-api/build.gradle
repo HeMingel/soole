@@ -1,6 +1,5 @@
 apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
-apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -33,26 +32,4 @@ dependencies {
 // 指定工程编码格式
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-mbg {
-    overwrite = true
-    consoleable = true
-    generatorFile = "src/main/resources/generatorConfig.xml"
-    jdbc{
-        driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://47.94.93.150:1598/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "searched"
-        password = "86GYBXkzTbA%y@27"
-    }
-    xml{
-        tableName = 'sl'
-        objectName = 'SL'
-        resourcesProject = "src/main/java"
-        mapperPlugin = tk.mybatis.mapper.generator.MapperPlugin.class
-        mapperMapper = "tk.mybatis.mapper.common.Mapper"
-        mapperPackage= "com.songpo.searched.mapper"
-        modelPackage = "com.songpo.searched.entity"
-        xmlPackage =   "com.songpo.searched.mapper"
-    }
 }

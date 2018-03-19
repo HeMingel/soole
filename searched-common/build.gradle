@@ -20,8 +20,8 @@ targetCompatibility = 1.8
 
 dependencies {
 
-    // 依赖缓存工程
-    compile project(':searched-cache')
+    // 依赖基础工程
+    compile project(':searched-base')
 
     // 实体编译组件
     compile('org.projectlombok:lombok')
@@ -37,6 +37,9 @@ dependencies {
 
     // WEB组件
     compile('org.springframework.boot:spring-boot-starter-web')
+
+    // Redis组件
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
 
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
