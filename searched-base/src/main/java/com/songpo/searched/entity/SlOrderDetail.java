@@ -26,6 +26,12 @@ public class SlOrderDetail implements Serializable {
     private String shopId;
 
     /**
+     * 店铺仓库唯一标识
+     */
+    @Column(name = "repository_id")
+    private String repositoryId;
+
+    /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
@@ -133,6 +139,24 @@ public class SlOrderDetail implements Serializable {
      */
     public void setShopId(String shopId) {
         this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    /**
+     * 获取店铺仓库唯一标识
+     *
+     * @return repository_id - 店铺仓库唯一标识
+     */
+    public String getRepositoryId() {
+        return repositoryId;
+    }
+
+    /**
+     * 设置店铺仓库唯一标识
+     *
+     * @param repositoryId 店铺仓库唯一标识
+     */
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId == null ? null : repositoryId.trim();
     }
 
     /**
@@ -324,6 +348,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", orderId=").append(orderId);
         sb.append(", shopId=").append(shopId);
+        sb.append(", repositoryId=").append(repositoryId);
         sb.append(", productId=").append(productId);
         sb.append(", amount=").append(amount);
         sb.append(", quantity=").append(quantity);
