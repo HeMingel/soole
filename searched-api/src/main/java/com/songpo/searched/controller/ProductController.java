@@ -1,16 +1,13 @@
 package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.service.ProductService;
+import com.songpo.searched.service.CmProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(description = "商品管理")
 @CrossOrigin
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private CmProductService productService;
 
 
     /**
@@ -35,7 +32,7 @@ public class ProductController {
             @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
             @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
     })
-    @RequestMapping(value = "/find-goods", method = RequestMethod.POST)
+    @GetMapping("goods")
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name, page, size);
     }
@@ -49,7 +46,7 @@ public class ProductController {
     @ApiOperation(value = "分类页面,推荐商品")
     @ApiImplicitParams(value = {
     })
-    @RequestMapping(value = "/recommend-product", method = RequestMethod.POST)
+    @GetMapping("recommend-product")
     public BusinessMessage recommendProduct() {
         return this.productService.recommendProduct();
     }
@@ -70,17 +67,19 @@ public class ProductController {
             @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
             @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
     })
-    @RequestMapping(value = "/screen-goods", method = RequestMethod.POST)
+    @GetMapping("screen-goods")
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size) {
         return this.productService.screenGoods(goodsType, screenType, page, size);
     }
 
-
+    /**
+     * 未完成
+     */
     @ApiOperation(value = "根据商品Id查询商品详情")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsId", value = "分类ID", paramType = "form", required = true)
     })
-    @RequestMapping(value = "/goods-detail", method = RequestMethod.POST)
+    @GetMapping("detail")
     public BusinessMessage goodsDetail(String goodsId) {
         if (goodsId != null) {
             return this.productService.goodsDetail(goodsId);
