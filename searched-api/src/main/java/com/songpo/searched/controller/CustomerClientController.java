@@ -56,10 +56,10 @@ public class CustomerClientController {
      */
     @ApiOperation("用户端分类")
     @GetMapping("classification")
-    public BusinessMessage<JSONObject> classification() {
+    public BusinessMessage<JSONObject> classification(String parentId) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         try {
-            message.setData(this.customerClientHomeService.getClassificationData());
+            message.setData(this.customerClientHomeService.getClassificationData(parentId));
             message.setSuccess(true);
         } catch (Exception e) {
             log.error("获取用户端分类数据失败，{}", e);

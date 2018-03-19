@@ -51,6 +51,11 @@ public class SlProductComment implements Serializable {
     @Column(name = "modification_time")
     private String modificationTime;
 
+    /**
+     * 评论状态:1好2中3差4有图
+     */
+    private Integer status;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -197,6 +202,24 @@ public class SlProductComment implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取评论状态:1好2中3差4有图
+     *
+     * @return status - 评论状态:1好2中3差4有图
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置评论状态:1好2中3差4有图
+     *
+     * @param status 评论状态:1好2中3差4有图
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -211,6 +234,7 @@ public class SlProductComment implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

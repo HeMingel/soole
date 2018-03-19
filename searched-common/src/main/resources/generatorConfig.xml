@@ -73,13 +73,21 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="sl_repository" domainObjectName="SlRepository"
+        <table tableName="sl_product_comment" domainObjectName="SlProductComment"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false">
             <property name="useActualColumnNames" value="false"/>
             <property name="selectAllOrderByClause" value="true"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <!--<table tableName="sl_repository" domainObjectName="SlRepository"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="selectAllOrderByClause" value="true"/>
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
         <!--<table tableName="sl_action_navigation_type" domainObjectName="SlActionNavigationType"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false">

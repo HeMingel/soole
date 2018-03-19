@@ -72,6 +72,12 @@ public class SlProduct implements Serializable {
     @Column(name = "is_soldOut")
     private Boolean isSoldout;
 
+    /**
+     * 评论数量
+     */
+    @Column(name = "comment_num")
+    private Integer commentNum;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -290,6 +296,24 @@ public class SlProduct implements Serializable {
         this.isSoldout = isSoldout;
     }
 
+    /**
+     * 获取评论数量
+     *
+     * @return comment_num - 评论数量
+     */
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    /**
+     * 设置评论数量
+     *
+     * @param commentNum 评论数量
+     */
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -308,6 +332,7 @@ public class SlProduct implements Serializable {
         sb.append(", detail=").append(detail);
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", isSoldout=").append(isSoldout);
+        sb.append(", commentNum=").append(commentNum);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

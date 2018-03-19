@@ -47,6 +47,7 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
+        log.debug("查询 商品名称名称{}",name,"页数{}",page,"条数{}",size);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
@@ -104,6 +105,8 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size) {
+        log.debug("查询 商品分类Id{}",goodsType,"筛选条件{}",screenType,"页数{}",page,"条数{}",size);
+
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
@@ -133,7 +136,7 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage goodsDetail(String goodsId) {
-
+        log.debug("查询 商品Id{}",goodsId);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
