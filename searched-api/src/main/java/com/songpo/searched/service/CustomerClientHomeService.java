@@ -107,4 +107,22 @@ public class CustomerClientHomeService {
 
         return data;
     }
+
+    /**
+     * 获取用户端分类数据
+     *
+     * @return
+     */
+    public JSONObject getClassificationData() {
+        return null;
+    }
+
+    /**
+     * 获取用户端购物车数据
+     *
+     * @return
+     */
+    public JSONObject getShoppingCartData() {
+        return null;
+    }
 }
