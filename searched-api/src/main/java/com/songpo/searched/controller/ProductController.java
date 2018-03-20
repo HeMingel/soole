@@ -22,23 +22,6 @@ public class ProductController {
     private CmProductService productService;
 
 
-    /**
-     * 根据商品名称查询商品
-     *
-     * @param page
-     * @param size
-     * @return
-     */
-    @ApiOperation(value = "根据商品名称查询商品")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form", required = true),
-            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
-            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
-    })
-    @GetMapping("name")
-    public BusinessMessage findGoods(String name, Integer page, Integer size) {
-        return this.productService.findGoods(name, page, size);
-    }
 
     /**
      * 分类页面 推荐商品
