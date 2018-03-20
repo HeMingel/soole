@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMGoods;
-import com.songpo.searched.domain.ProductCategoryDto;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.ProductDto;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmProductMapper;
@@ -19,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘松坡
@@ -55,7 +55,7 @@ public class CustomerClientHomeService {
     private ProductService productService;
 
     @Autowired
-    private RepositoryService repositoryService;
+    private ProductRepositoryService productRepositoryService;
 
     @Autowired
     private SpecificationNameMapper specificationNameMapper;
@@ -157,7 +157,7 @@ public class CustomerClientHomeService {
         data.put("productTypes", productTypes);
         //通过商品分类parentId 查询二级分类
 
-        List<ProductCategoryDto> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
+        List<Map<String, Object>> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
         data.put("productTypes", productCategoryDtos);
 
         //筛选商品
@@ -212,8 +212,7 @@ public class CustomerClientHomeService {
                                 CMGoods.setGoodName(slProduct.getName());// 商品名称
                                 CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
                                 CMGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                                SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
-                                    setSpecificationId(sc.getSpecificationId());
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setProductId(sc.getGoodId());
                                 }});
                                 CMGoods.setPulse(repository.getPulse());// 了豆

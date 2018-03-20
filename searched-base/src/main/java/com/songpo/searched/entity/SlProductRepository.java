@@ -1,17 +1,35 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
-@Table(name = "sl_repository")
-public class SlRepository implements Serializable {
+@Table(name = "sl_product_repository")
+public class SlProductRepository implements Serializable {
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 店铺唯一标识符
+     */
+    @Column(name = "shop_id")
+    private String shopId;
+
+    /**
+     * 商品唯一标识符
+     */
+    @Column(name = "product_id")
+    private String productId;
+
+    /**
+     * 商品规格明细组合唯一标识符
+     */
+    @Column(name = "specification_detail_group_id")
+    private String specificationDetailGroupId;
 
     /**
      * 备注
@@ -131,6 +149,60 @@ public class SlRepository implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取店铺唯一标识符
+     *
+     * @return shop_id - 店铺唯一标识符
+     */
+    public String getShopId() {
+        return shopId;
+    }
+
+    /**
+     * 设置店铺唯一标识符
+     *
+     * @param shopId 店铺唯一标识符
+     */
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    /**
+     * 获取商品唯一标识符
+     *
+     * @return product_id - 商品唯一标识符
+     */
+    public String getProductId() {
+        return productId;
+    }
+
+    /**
+     * 设置商品唯一标识符
+     *
+     * @param productId 商品唯一标识符
+     */
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
+     * 获取商品规格明细组合唯一标识符
+     *
+     * @return specification_detail_group_id - 商品规格明细组合唯一标识符
+     */
+    public String getSpecificationDetailGroupId() {
+        return specificationDetailGroupId;
+    }
+
+    /**
+     * 设置商品规格明细组合唯一标识符
+     *
+     * @param specificationDetailGroupId 商品规格明细组合唯一标识符
+     */
+    public void setSpecificationDetailGroupId(String specificationDetailGroupId) {
+        this.specificationDetailGroupId = specificationDetailGroupId == null ? null : specificationDetailGroupId.trim();
     }
 
     /**
@@ -464,6 +536,9 @@ public class SlRepository implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", shopId=").append(shopId);
+        sb.append(", productId=").append(productId);
+        sb.append(", specificationDetailGroupId=").append(specificationDetailGroupId);
         sb.append(", remark=").append(remark);
         sb.append(", price=").append(price);
         sb.append(", postFee=").append(postFee);

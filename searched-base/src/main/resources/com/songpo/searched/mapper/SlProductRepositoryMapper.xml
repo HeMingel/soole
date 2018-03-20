@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.songpo.searched.mapper.SlRepositoryMapper">
-  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlRepository">
+<mapper namespace="com.songpo.searched.mapper.SlProductRepositoryMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductRepository">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="shop_id" jdbcType="VARCHAR" property="shopId"/>
+        <result column="product_id" jdbcType="VARCHAR" property="productId"/>
+        <result column="specification_detail_group_id" jdbcType="VARCHAR" property="specificationDetailGroupId"/>
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
@@ -29,8 +32,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, remark, price, post_fee, discount, state, count, score, reference_price, cost_price, 
-    collage_price, personal_price, price_spike, weight, isShip, pulse, comment_num, sale_num, 
-    sale_type
+      id, shop_id, product_id, specification_detail_group_id, remark, price, post_fee,
+      discount, state, count, score, reference_price, cost_price, collage_price, personal_price,
+      price_spike, weight, isShip, pulse, comment_num, sale_num, sale_type
   </sql>
 </mapper>
