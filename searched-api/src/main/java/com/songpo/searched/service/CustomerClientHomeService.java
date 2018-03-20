@@ -1,9 +1,10 @@
 package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMGoods;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.ProductCategoryDto;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmProductTypeMapper;
@@ -36,7 +37,7 @@ public class CustomerClientHomeService {
     private SystemConfigService systemConfigService;
 
     @Autowired
-    private CmProductService cmproductService;
+    private CmProductService cmProductService;
 
     @Autowired
     private MyShoppingCartService myShoppingCartService;
@@ -80,8 +81,7 @@ public class CustomerClientHomeService {
 
         JSONObject banner = new JSONObject();
 
-        if (null != homeType && !StringUtils.isEmpty(homeType.getContent()))
-        {
+        if (null != homeType && !StringUtils.isEmpty(homeType.getContent())) {
             // 获取广告轮播图列表
             List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
                 // 设置位置编号
@@ -120,9 +120,8 @@ public class CustomerClientHomeService {
         SlSystemConfig teamworkType = this.systemConfigService.selectOne(new SlSystemConfig() {{
             setName("TEAMWORK_PRODUCT");
         }});
-        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent()))
-        {
-            List<SlProduct> products = this.cmproductService.selectByActionId(teamworkType.getContent());
+        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent())) {
+            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(teamworkType.getContent(), 1, 10);
             data.put("teamworkProducts", products);
         }
 
@@ -130,9 +129,8 @@ public class CustomerClientHomeService {
         SlSystemConfig preSaleType = this.systemConfigService.selectOne(new SlSystemConfig() {{
             setName("PRE_SALE_PRODUCT");
         }});
-        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
-        {
-            List<SlProduct> products = this.cmproductService.selectByActionId(preSaleType.getContent());
+        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent())) {
+            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(preSaleType.getContent(), 1, 10);
             data.put("preSaleProducts", products);
         }
 
@@ -154,7 +152,7 @@ public class CustomerClientHomeService {
         data.put("productTypes", productTypes);
 
         List<ProductCategoryDto> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
-        data.put("productTypes",productCategoryDtos);
+        data.put("productTypes", productCategoryDtos);
 
 
         return null;
@@ -167,28 +165,22 @@ public class CustomerClientHomeService {
      */
     public JSONObject getShoppingCartData(String uid) {
         JSONObject object = new JSONObject();
-        if (StringUtils.hasLength(uid))
-        {
+        if (StringUtils.hasLength(uid)) {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setId(uid);
             }});
-            if (null != user)
-            {
+            if (null != user) {
                 CMShoppingCart pojo = this.cache.get(uid);
                 List<CMGoods> list = new ArrayList<>();
                 CMGoods CMGoods = null;
-                if (null != pojo)
-                {
-                    for (CMGoods sc : pojo.getCarts())
-                    {
-                        if (StringUtils.hasLength(sc.getGoodId()))
-                        {
+                if (null != pojo) {
+                    for (CMGoods sc : pojo.getCarts()) {
+                        if (StringUtils.hasLength(sc.getGoodId())) {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
                                 setIsSoldout(false);
                             }});
-                            if (null != slProduct)
-                            {
+                            if (null != slProduct) {
                                 CMGoods = new CMGoods();
                                 CMGoods.setGoodName(slProduct.getName());// 商品名称
                                 CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量

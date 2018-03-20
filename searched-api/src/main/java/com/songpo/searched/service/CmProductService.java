@@ -18,8 +18,8 @@ import java.util.List;
  * <p>
  * 主要提供处理跟商品相关的服务
  */
-@Service
 @Slf4j
+@Service
 public class CmProductService {
 
     @Autowired
@@ -29,13 +29,30 @@ public class CmProductService {
     private SlProductMapper slProductMapper;
 
     /**
-     * 根据活动唯一标识符查询商品列表
+     * 根据活动唯一标识符分页查询商品列表
      *
      * @param actionId 活动唯一标识符
-     * @return 商品列表
+     * @param pageNum 页码
+     * @param pageSize 容量
+     * @return 商品分页列表
      */
-    public List<SlProduct> selectByActionId(String actionId) {
-        return this.mapper.selectByActionId(actionId);
+    public PageInfo<SlProduct> selectByActionId(String actionId, Integer pageNum, Integer pageSize) {
+        log.debug("根据活动唯一标识符查询商品列表，活动唯一标识符：{}，页码：{}，容量：{}", actionId, pageNum, pageSize);
+        if (null == pageNum || pageNum <= 1) {
+            pageNum = 1;
+        }
+
+        if (null == pageSize || pageSize <= 1) {
+            pageSize = 10;
+        }
+
+        // 设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+
+        // 执行查询
+        List<SlProduct> list = this.mapper.selectByActionId(actionId);
+
+        return new PageInfo<>(list);
     }
 
     /**
