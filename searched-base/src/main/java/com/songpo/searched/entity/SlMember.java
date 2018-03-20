@@ -20,9 +20,14 @@ public class SlMember implements Serializable {
     private String userId;
 
     /**
-     * 金币
+     * 金豆
      */
     private Integer coin;
+
+    /**
+     * 银豆
+     */
+    private Integer silver;
 
     /**
      * 余额
@@ -106,21 +111,39 @@ public class SlMember implements Serializable {
     }
 
     /**
-     * 获取金币
+     * 获取金豆
      *
-     * @return coin - 金币
+     * @return coin - 金豆
      */
     public Integer getCoin() {
         return coin;
     }
 
     /**
-     * 设置金币
+     * 设置金豆
      *
-     * @param coin 金币
+     * @param coin 金豆
      */
     public void setCoin(Integer coin) {
         this.coin = coin;
+    }
+
+    /**
+     * 获取银豆
+     *
+     * @return silver - 银豆
+     */
+    public Integer getSilver() {
+        return silver;
+    }
+
+    /**
+     * 设置银豆
+     *
+     * @param silver 银豆
+     */
+    public void setSilver(Integer silver) {
+        this.silver = silver;
     }
 
     /**
@@ -276,6 +299,7 @@ public class SlMember implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", coin=").append(coin);
+        sb.append(", silver=").append(silver);
         sb.append(", money=").append(money);
         sb.append(", level=").append(level);
         sb.append(", exp=").append(exp);

@@ -69,14 +69,20 @@ public class SlProduct implements Serializable {
     /**
      * 是否下架
      */
-    @Column(name = "is_soldOut")
-    private Boolean isSoldout;
+    @Column(name = "sold_out")
+    private Boolean soldOut;
 
     /**
      * 评论数量
      */
     @Column(name = "comment_num")
     private Integer commentNum;
+
+    /**
+     * 销量
+     */
+    @Column(name = "sales_volume")
+    private Integer salesVolume;
 
     private static final long serialVersionUID = 1L;
 
@@ -281,19 +287,19 @@ public class SlProduct implements Serializable {
     /**
      * 获取是否下架
      *
-     * @return is_soldOut - 是否下架
+     * @return sold_out - 是否下架
      */
-    public Boolean getIsSoldout() {
-        return isSoldout;
+    public Boolean getSoldOut() {
+        return soldOut;
     }
 
     /**
      * 设置是否下架
      *
-     * @param isSoldout 是否下架
+     * @param soldOut 是否下架
      */
-    public void setIsSoldout(Boolean isSoldout) {
-        this.isSoldout = isSoldout;
+    public void setSoldOut(Boolean soldOut) {
+        this.soldOut = soldOut;
     }
 
     /**
@@ -314,6 +320,24 @@ public class SlProduct implements Serializable {
         this.commentNum = commentNum;
     }
 
+    /**
+     * 获取销量
+     *
+     * @return sales_volume - 销量
+     */
+    public Integer getSalesVolume() {
+        return salesVolume;
+    }
+
+    /**
+     * 设置销量
+     *
+     * @param salesVolume 销量
+     */
+    public void setSalesVolume(Integer salesVolume) {
+        this.salesVolume = salesVolume;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -331,8 +355,9 @@ public class SlProduct implements Serializable {
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
         sb.append(", productTypeId=").append(productTypeId);
-        sb.append(", isSoldout=").append(isSoldout);
+        sb.append(", soldOut=").append(soldOut);
         sb.append(", commentNum=").append(commentNum);
+        sb.append(", salesVolume=").append(salesVolume);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
