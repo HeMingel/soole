@@ -32,6 +32,12 @@ public class SlProductRepository implements Serializable {
     private String specificationDetailGroupId;
 
     /**
+     * 商品规格明细组合名称
+     */
+    @Column(name = "specification_detail_group_name")
+    private String specificationDetailGroupName;
+
+    /**
      * 备注
      */
     private String remark;
@@ -203,6 +209,24 @@ public class SlProductRepository implements Serializable {
      */
     public void setSpecificationDetailGroupId(String specificationDetailGroupId) {
         this.specificationDetailGroupId = specificationDetailGroupId == null ? null : specificationDetailGroupId.trim();
+    }
+
+    /**
+     * 获取商品规格明细组合名称
+     *
+     * @return specification_detail_group_name - 商品规格明细组合名称
+     */
+    public String getSpecificationDetailGroupName() {
+        return specificationDetailGroupName;
+    }
+
+    /**
+     * 设置商品规格明细组合名称
+     *
+     * @param specificationDetailGroupName 商品规格明细组合名称
+     */
+    public void setSpecificationDetailGroupName(String specificationDetailGroupName) {
+        this.specificationDetailGroupName = specificationDetailGroupName == null ? null : specificationDetailGroupName.trim();
     }
 
     /**
@@ -539,6 +563,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", productId=").append(productId);
         sb.append(", specificationDetailGroupId=").append(specificationDetailGroupId);
+        sb.append(", specificationDetailGroupName=").append(specificationDetailGroupName);
         sb.append(", remark=").append(remark);
         sb.append(", price=").append(price);
         sb.append(", postFee=").append(postFee);
