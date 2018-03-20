@@ -1,17 +1,22 @@
 package com.songpo.searched.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.CmProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
+@Slf4j
 @Api(description = "商品管理")
 @CrossOrigin
 @RestController
@@ -21,6 +26,30 @@ public class ProductController {
     @Autowired
     private CmProductService productService;
 
+
+    @ApiOperation(value = "分页查询商品")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
+            @ApiImplicitParam(name = "actionId", value = "商品活动唯一标识符", paramType = "form"),
+            @ApiImplicitParam(name = "pageNum", value = "页码", paramType = "form"),
+            @ApiImplicitParam(name = "pageSize", value = "数量", paramType = "form")
+    })
+    @GetMapping("page")
+    public BusinessMessage<PageInfo<Map<String, Object>>> page(String name, String actionId, Integer pageNum, Integer pageSize) {
+        log.debug("分页查询商品，页码：{}，数量：{}", pageNum, pageSize);
+        BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
+        try {
+            PageInfo<Map<String, Object>> data = this.productService.selectAll(name, actionId, pageNum, pageSize);
+
+            message.setData(data);
+            message.setSuccess(true);
+        } catch (Exception e) {
+            log.error("分页查询商品失败，{}", e);
+
+            message.setMsg("分页查询商品失败，请重试");
+        }
+        return message;
+    }
 
 
     /**
@@ -60,7 +89,6 @@ public class ProductController {
     }
 
 
-
     @ApiOperation(value = "根据商品Id查询商品详情 未完成")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "Id", value = "分类ID", paramType = "form", required = true)
@@ -76,9 +104,6 @@ public class ProductController {
             return businessMessage;
         }
     }
-
-
-
 
 
 }

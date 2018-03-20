@@ -1,7 +1,6 @@
 package com.songpo.searched.mapper;
 
 import com.songpo.searched.domain.ProductDto;
-import com.songpo.searched.entity.SlProduct;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,7 +19,7 @@ public interface CmProductMapper {
      * @param actionId 活动唯一标识符
      * @return 商品集合
      */
-    List<SlProduct> selectByActionId(String actionId);
+    List<Map<String, Object>> selectAll(@Param("name") String name, @Param("actionId") String actionId);
 
     //List<ProductDto> findGoods(String name);
 

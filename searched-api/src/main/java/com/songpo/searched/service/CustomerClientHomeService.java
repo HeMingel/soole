@@ -126,7 +126,7 @@ public class CustomerClientHomeService {
             setName("TEAMWORK_PRODUCT");
         }});
         if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent())) {
-            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(teamworkType.getContent(), 1, 10);
+            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", teamworkType.getContent(), 1, 10);
             data.put("teamworkProducts", products);
         }
 
@@ -135,7 +135,7 @@ public class CustomerClientHomeService {
             setName("PRE_SALE_PRODUCT");
         }});
         if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent())) {
-            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(preSaleType.getContent(), 1, 10);
+            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", preSaleType.getContent(), 1, 10);
             data.put("preSaleProducts", products);
         }
 
