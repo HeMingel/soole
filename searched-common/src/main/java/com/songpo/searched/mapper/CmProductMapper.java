@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘松坡
@@ -21,14 +22,15 @@ public interface CmProductMapper {
      */
     List<SlProduct> selectByActionId(String actionId);
 
-
-    List<ProductDto> findGoods(String name);
+    //List<ProductDto> findGoods(String name);
 
     List<ProductDto> findRecommendProduct();
 
     List<ProductDto> findGoodsByCategory(String goodsType);
+    //根据分类查询商品 + 商品的筛选 + 根据名称查询
+    List<ProductDto> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods,@Param("goodsName")String goodsName);
 
-    List<ProductDto> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods);
+    Map goodsBaseDetail(String goodsId);
 
-    ProductDto goodsBaseDetail(String goodsId);
+    Map goodsImageUrl(String goodsId);
 }

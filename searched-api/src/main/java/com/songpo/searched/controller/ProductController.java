@@ -32,7 +32,7 @@ public class ProductController {
             @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
             @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
     })
-    @GetMapping("goods")
+    @GetMapping("name")
     public BusinessMessage findGoods(String name, Integer page, Integer size) {
         return this.productService.findGoods(name, page, size);
     }
@@ -51,6 +51,7 @@ public class ProductController {
         return this.productService.recommendProduct();
     }
 
+
     /**
      * 根据商品分类查询商品,商品筛选分类 + 筛选
      *
@@ -63,26 +64,25 @@ public class ProductController {
     @ApiOperation(value = "根据商品分类查询商品+筛选商品")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "screenType", value = "筛选条件", paramType = "form", required = true),
+            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form", required = true),
             @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
             @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
     })
     @GetMapping("screen-goods")
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size) {
-        return this.productService.screenGoods(goodsType, screenType, page, size);
+    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size,String name) {
+        return this.productService.screenGoods(goodsType, screenType, page, size,name);
     }
 
-    /**
-     * 未完成
-     */
-    @ApiOperation(value = "根据商品Id查询商品详情")
+
+
+    @ApiOperation(value = "根据商品Id查询商品详情 未完成")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "goodsId", value = "分类ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "Id", value = "分类ID", paramType = "form", required = true)
     })
-    @GetMapping("detail")
-    public BusinessMessage goodsDetail(String goodsId) {
-        if (goodsId != null) {
-            return this.productService.goodsDetail(goodsId);
+    @GetMapping("Id")
+    public BusinessMessage goodsDetail(String Id) {
+        if (Id != null) {
+            return this.productService.goodsDetail(Id);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");

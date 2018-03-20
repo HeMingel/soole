@@ -1,5 +1,6 @@
 package com.songpo.searched.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义商品服务类
@@ -55,38 +57,9 @@ public class CmProductService {
         return new PageInfo<>(list);
     }
 
-    /**
-     * 根据商品名称
-     *
-     * @param name
-     * @param page
-     * @param size
-     * @return
-     */
-    public BusinessMessage findGoods(String name, Integer page, Integer size) {
-        log.debug("查询 商品名称名称{}",name,"页数{}",page,"条数{}",size);
-        BusinessMessage businessMessage = new BusinessMessage();
-        businessMessage.setSuccess(false);
-        PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        try {
-            List<ProductDto> productDtos = this.mapper.findGoods(name);
-            if (productDtos.size() > 0) {
-                businessMessage.setSuccess(true);
-                businessMessage.setData(new PageInfo<>(productDtos));
-                businessMessage.setMsg("查询成功");
-            } else {
-                businessMessage.setMsg("查询无数据");
-                businessMessage.setSuccess(true);
-            }
-        } catch (Exception e) {
-            businessMessage.setMsg("查询失败");
-            log.error("查询商品失败", e);
-        }
-        return businessMessage;
-    }
 
     /**
-     * 首页推荐商品
+     * 商品分类首页推荐商品
      * 规则(按照时间排序 最新的6个)
      *
      * @return
@@ -113,7 +86,7 @@ public class CmProductService {
     }
 
     /**
-     * 根据分类查询商品  +  商品筛选
+     * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
      * @param goodsType  商品分类ID
      * @param screenType 筛选类型
@@ -121,15 +94,17 @@ public class CmProductService {
      * @param size
      * @return
      */
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size) {
-        log.debug("查询 商品分类Id{}",goodsType,"筛选条件{}",screenType,"页数{}",page,"条数{}",size);
+    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size,String name) {
+        log.debug("查询 商品分类Id{}",goodsType,"筛选条件{}",screenType,"页数{}",page,"条数{}",size,"name{}",name);
 
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
+
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
             if (goodsType != null) {
-                List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType);
+                List<ProductDto> productDtos  = this.mapper.screenGoods(goodsType, screenType,name);
+                //List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType);
                 if (productDtos.size() > 0) {
                     businessMessage.setMsg("查询成功");
                     businessMessage.setSuccess(true);
@@ -139,6 +114,7 @@ public class CmProductService {
                     businessMessage.setSuccess(true);
                 }
             }
+
         } catch (Exception e) {
             businessMessage.setMsg("查询异常");
             log.error("查询商品异常", e);
@@ -153,17 +129,21 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage goodsDetail(String goodsId) {
+        JSONObject data = new JSONObject();
         log.debug("查询 商品Id{}",goodsId);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
             //商品基础信息
-            ProductDto productDto = this.mapper.goodsBaseDetail(goodsId);
-            if (productDto.getPrice() != null) {
-
-            } else {
+             Map map = this.mapper.goodsBaseDetail(goodsId);
+             data.put("productBase",map);
+            if (map.isEmpty()) {
                 businessMessage.setMsg("!");
                 businessMessage.setSuccess(true);
+            } else {
+                Map mapImageUrl = this.mapper.goodsImageUrl(goodsId);
+                data.put("productImage",mapImageUrl);
+
             }
 
         } catch (Exception e) {

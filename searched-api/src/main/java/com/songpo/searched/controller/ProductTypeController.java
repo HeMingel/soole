@@ -31,33 +31,15 @@ public class ProductTypeController {
      *
      * @return
      */
-    @ApiOperation(value = "搜索一级分类")
-    @RequestMapping(value = "/find-category", method = RequestMethod.POST)
-    @ApiImplicitParams(value = {
-
-    })
-    public BusinessMessage findCategory() {
-        return this.productTypeService.findCategory();
-    }
-
-    /**
-     * 通过父ID 搜索二级分类
-     *
-     * @param parentId
-     * @return
-     */
-    @ApiOperation(value = "通过父ID 搜索二级分类")
+    @ApiOperation(value = "搜索分类")
+    @RequestMapping(value = "/category", method = RequestMethod.POST)
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "parentId", value = "商品名称", paramType = "form", required = true)
     })
-    @RequestMapping(value = "/find-category-by-parentId", method = RequestMethod.POST)
-    public BusinessMessage findCategoryByParentId(String parentId) {
-        if (parentId == null) {
-            BusinessMessage businessMessage = new BusinessMessage();
-            businessMessage.setSuccess(false);
-            businessMessage.setMsg("父ID为空!");
-            return businessMessage;
-        }
-        return this.productTypeService.findCategoryByParentId(parentId);
+    public BusinessMessage findCategory(String parentId) {
+        return this.productTypeService.findCategory(parentId);
     }
+
+
+
 }

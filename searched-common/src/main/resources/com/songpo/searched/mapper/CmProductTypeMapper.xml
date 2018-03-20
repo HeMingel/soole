@@ -16,9 +16,9 @@
     </sql>
 
     <select id="findCategoryByParentId" parameterType="String"
-            resultType="com.songpo.searched.domain.ProductCategoryDto">
+            resultType="Map">
         select
-        t.id as id,t.name as name ,st.name as tagName,t.parent_id as parentId
+        t.id as id,t.name as name ,st.name as tagName,t.parent_id as parentId,t.image_url
         FROM sl_product_type t
         left join sl_product_type_tags tt
         on t.tag_id = tt.id
