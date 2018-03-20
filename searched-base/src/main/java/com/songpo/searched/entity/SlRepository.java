@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_repository")
 public class SlRepository implements Serializable {
@@ -14,24 +14,6 @@ public class SlRepository implements Serializable {
     private String id;
 
     /**
-     * 店铺唯一标识
-     */
-    @Column(name = "shop_id")
-    private String shopId;
-
-    /**
-     * 商品唯一标识
-     */
-    @Column(name = "product_id")
-    private String productId;
-
-    /**
-     * 规格唯一标识符
-     */
-    @Column(name = "specification_id")
-    private String specificationId;
-
-    /**
      * 备注
      */
     private String remark;
@@ -40,6 +22,12 @@ public class SlRepository implements Serializable {
      * 平台价格
      */
     private BigDecimal price;
+
+    /**
+     * 邮费
+     */
+    @Column(name = "post_fee")
+    private BigDecimal postFee;
 
     /**
      * 折扣
@@ -60,28 +48,6 @@ public class SlRepository implements Serializable {
      * 评分
      */
     private BigDecimal score;
-
-    /**
-     * 创建人
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
 
     /**
      * 参考价格
@@ -119,7 +85,7 @@ public class SlRepository implements Serializable {
     private BigDecimal weight;
 
     /**
-     * 是否包邮
+     * 是否包邮(1:包邮 2:不包邮)
      */
     @Column(name = "isShip")
     private Boolean isship;
@@ -147,12 +113,6 @@ public class SlRepository implements Serializable {
     @Column(name = "sale_type")
     private Integer saleType;
 
-    /**
-     * 邮费
-     */
-    @Column(name = "post_fee")
-    private BigDecimal postFee;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -171,60 +131,6 @@ public class SlRepository implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
-    }
-
-    /**
-     * 获取店铺唯一标识
-     *
-     * @return shop_id - 店铺唯一标识
-     */
-    public String getShopId() {
-        return shopId;
-    }
-
-    /**
-     * 设置店铺唯一标识
-     *
-     * @param shopId 店铺唯一标识
-     */
-    public void setShopId(String shopId) {
-        this.shopId = shopId == null ? null : shopId.trim();
-    }
-
-    /**
-     * 获取商品唯一标识
-     *
-     * @return product_id - 商品唯一标识
-     */
-    public String getProductId() {
-        return productId;
-    }
-
-    /**
-     * 设置商品唯一标识
-     *
-     * @param productId 商品唯一标识
-     */
-    public void setProductId(String productId) {
-        this.productId = productId == null ? null : productId.trim();
-    }
-
-    /**
-     * 获取规格唯一标识符
-     *
-     * @return specification_id - 规格唯一标识符
-     */
-    public String getSpecificationId() {
-        return specificationId;
-    }
-
-    /**
-     * 设置规格唯一标识符
-     *
-     * @param specificationId 规格唯一标识符
-     */
-    public void setSpecificationId(String specificationId) {
-        this.specificationId = specificationId == null ? null : specificationId.trim();
     }
 
     /**
@@ -261,6 +167,24 @@ public class SlRepository implements Serializable {
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    /**
+     * 获取邮费
+     *
+     * @return post_fee - 邮费
+     */
+    public BigDecimal getPostFee() {
+        return postFee;
+    }
+
+    /**
+     * 设置邮费
+     *
+     * @param postFee 邮费
+     */
+    public void setPostFee(BigDecimal postFee) {
+        this.postFee = postFee;
     }
 
     /**
@@ -333,78 +257,6 @@ public class SlRepository implements Serializable {
      */
     public void setScore(BigDecimal score) {
         this.score = score;
-    }
-
-    /**
-     * 获取创建人
-     *
-     * @return creator - 创建人
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 设置创建人
-     *
-     * @param creator 创建人
-     */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
     /**
@@ -516,18 +368,18 @@ public class SlRepository implements Serializable {
     }
 
     /**
-     * 获取是否包邮
+     * 获取是否包邮(1:包邮 2:不包邮)
      *
-     * @return isShip - 是否包邮
+     * @return isShip - 是否包邮(1:包邮 2:不包邮)
      */
     public Boolean getIsship() {
         return isship;
     }
 
     /**
-     * 设置是否包邮
+     * 设置是否包邮(1:包邮 2:不包邮)
      *
-     * @param isship 是否包邮
+     * @param isship 是否包邮(1:包邮 2:不包邮)
      */
     public void setIsship(Boolean isship) {
         this.isship = isship;
@@ -605,24 +457,6 @@ public class SlRepository implements Serializable {
         this.saleType = saleType;
     }
 
-    /**
-     * 获取邮费
-     *
-     * @return post_fee - 邮费
-     */
-    public BigDecimal getPostFee() {
-        return postFee;
-    }
-
-    /**
-     * 设置邮费
-     *
-     * @param postFee 邮费
-     */
-    public void setPostFee(BigDecimal postFee) {
-        this.postFee = postFee;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -630,19 +464,13 @@ public class SlRepository implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", shopId=").append(shopId);
-        sb.append(", productId=").append(productId);
-        sb.append(", specificationId=").append(specificationId);
         sb.append(", remark=").append(remark);
         sb.append(", price=").append(price);
+        sb.append(", postFee=").append(postFee);
         sb.append(", discount=").append(discount);
         sb.append(", state=").append(state);
         sb.append(", count=").append(count);
         sb.append(", score=").append(score);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", costPrice=").append(costPrice);
         sb.append(", collagePrice=").append(collagePrice);
@@ -654,7 +482,6 @@ public class SlRepository implements Serializable {
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
         sb.append(", saleType=").append(saleType);
-        sb.append(", postFee=").append(postFee);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -29,6 +29,12 @@ public class SlProductType implements Serializable {
     @Column(name = "tag_id")
     private String tagId;
 
+    /**
+     * 商品分类图片
+     */
+    @Column(name = "image_url")
+    private String imageUrl;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -103,6 +109,24 @@ public class SlProductType implements Serializable {
         this.tagId = tagId == null ? null : tagId.trim();
     }
 
+    /**
+     * 获取商品分类图片
+     *
+     * @return image_url - 商品分类图片
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    /**
+     * 设置商品分类图片
+     *
+     * @param imageUrl 商品分类图片
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -113,6 +137,7 @@ public class SlProductType implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", parentId=").append(parentId);
         sb.append(", tagId=").append(tagId);
+        sb.append(", imageUrl=").append(imageUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

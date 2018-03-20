@@ -14,8 +14,8 @@
     <result column="page_ios" jdbcType="VARCHAR" property="pageIos" />
     <result column="type_id" jdbcType="VARCHAR" property="typeId" />
     <result column="serial_number" jdbcType="INTEGER" property="serialNumber" />
-      <result column="size" jdbcType="INTEGER" property="size"/>
-      <result column="position" jdbcType="INTEGER" property="position"/>
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="position" jdbcType="INTEGER" property="position" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -25,7 +25,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, description, image_url, url, page_android, page_ios, type_id, serial_number,
-      size, position, creator, create_time, modifier, modification_time
+    id, title, description, image_url, url, page_android, page_ios, type_id, serial_number, 
+    size, position, creator, create_time, modifier, modification_time
   </sql>
 </mapper>

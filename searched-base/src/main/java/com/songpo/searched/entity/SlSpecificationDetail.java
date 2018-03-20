@@ -3,8 +3,8 @@ package com.songpo.searched.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Table(name = "sl_specification")
-public class SlSpecification implements Serializable {
+@Table(name = "sl_specification_detail")
+public class SlSpecificationDetail implements Serializable {
     /**
      * 唯一标识符
      */
@@ -13,7 +13,7 @@ public class SlSpecification implements Serializable {
     private String id;
 
     /**
-     * 规格
+     * 名称，比如颜色中的某一种，红
      */
     private String name;
 
@@ -21,6 +21,12 @@ public class SlSpecification implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 规格唯一标识符
+     */
+    @Column(name = "specification_id")
+    private String specificationId;
 
     private static final long serialVersionUID = 1L;
 
@@ -43,18 +49,18 @@ public class SlSpecification implements Serializable {
     }
 
     /**
-     * 获取规格
+     * 获取名称，比如颜色中的某一种，红
      *
-     * @return name - 规格
+     * @return name - 名称，比如颜色中的某一种，红
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置规格
+     * 设置名称，比如颜色中的某一种，红
      *
-     * @param name 规格
+     * @param name 名称，比如颜色中的某一种，红
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
@@ -78,6 +84,24 @@ public class SlSpecification implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    /**
+     * 获取规格唯一标识符
+     *
+     * @return specification_id - 规格唯一标识符
+     */
+    public String getSpecificationId() {
+        return specificationId;
+    }
+
+    /**
+     * 设置规格唯一标识符
+     *
+     * @param specificationId 规格唯一标识符
+     */
+    public void setSpecificationId(String specificationId) {
+        this.specificationId = specificationId == null ? null : specificationId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -87,6 +111,7 @@ public class SlSpecification implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
+        sb.append(", specificationId=").append(specificationId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
