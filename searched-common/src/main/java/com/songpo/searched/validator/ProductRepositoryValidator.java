@@ -3,8 +3,8 @@ package com.songpo.searched.validator;
 import com.baidu.unbiz.fluentvalidator.ValidationError;
 import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
-import com.songpo.searched.entity.SlRepository;
-import com.songpo.searched.service.RepositoryService;
+import com.songpo.searched.entity.SlProductRepository;
+import com.songpo.searched.service.ProductRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -15,18 +15,18 @@ import org.springframework.util.StringUtils;
  *
  * @author Y.H
  */
-public class RepositoryValidator extends ValidatorHandler<SlRepository> {
+public class ProductRepositoryValidator extends ValidatorHandler<SlProductRepository> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RepositoryValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProductRepositoryValidator.class);
 
-    private RepositoryService service;
+    private ProductRepositoryService service;
 
-    public RepositoryValidator(RepositoryService service) {
+    public ProductRepositoryValidator(ProductRepositoryService service) {
         this.service = service;
     }
 
     @Override
-    public boolean validate(ValidatorContext context, SlRepository t) {
+    public boolean validate(ValidatorContext context, SlProductRepository t) {
         logger.debug("执行校验：实体信息[{}]", t);
 
         // 初始化验证标识
@@ -42,11 +42,11 @@ public class RepositoryValidator extends ValidatorHandler<SlRepository> {
             flag = false;
         } else {
             // 校验字段
-            if (StringUtils.isEmpty(t.getShopId())) {
+            if (StringUtils.isEmpty(t.getSpecificationDetailGroupId())) {
                 context.addError(new ValidationError() {{
-                    setErrorMsg("店铺Id为空");
-                    setField("shopId");
-                    setInvalidValue(t.getShopId());
+                    setErrorMsg("商品规格属性组唯一标识符为空");
+                    setField("specificationDetailGroupId");
+                    setInvalidValue(t.getSpecificationDetailGroupId());
                 }});
                 flag = false;
             } else if (StringUtils.isEmpty(t.getProductId())) {

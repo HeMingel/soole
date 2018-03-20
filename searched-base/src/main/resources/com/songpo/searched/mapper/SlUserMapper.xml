@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="card_type" jdbcType="BIT" property="cardType" />
@@ -31,8 +32,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, username, password, nick_name, name, card_type, card_number, sex, birthday, phone, 
-    email, avatar, secret, describtion, creator, create_time, modifier, modification_time, 
-    address, industry, group_var
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
+    birthday, phone, email, avatar, secret, describtion, creator, create_time, modifier, 
+    modification_time, address, industry, group_var
   </sql>
 </mapper>

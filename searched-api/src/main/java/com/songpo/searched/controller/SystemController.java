@@ -5,10 +5,15 @@ import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
@@ -23,6 +28,7 @@ import java.util.UUID;
 /**
  * @author liuso
  */
+@Api(description = "系统接口")
 @Slf4j
 @RestController
 @CrossOrigin
@@ -47,6 +53,11 @@ public class SystemController {
      * @param password 密码
      * @return 业务消息
      */
+    @ApiOperation(value = "用户登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
+    })
     @PostMapping("login")
     public BusinessMessage<Map<String, String>> login(String phone, String password) {
         logger.debug("用户登录，账号：{}，密码：{}", phone, password);
@@ -97,11 +108,18 @@ public class SystemController {
      *
      * @param phone 账号
      * @param password 密码
+     * @param code 短信验证码
      * @return 业务信息
      */
+    @ApiOperation(value = "用户注册")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "code", value = "短信验证码", paramType = "form", required = true)
+    })
     @PostMapping("register")
-    public BusinessMessage<SlUser> register(String phone, String password) {
-        logger.debug("用户注册，账号：{}，密码：{}", phone, password);
+    public BusinessMessage<SlUser> register(String phone, String password, String code) {
+        logger.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
         BusinessMessage<SlUser> message = new BusinessMessage<>();
         if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
@@ -140,29 +158,42 @@ public class SystemController {
     /**
      * 获取用户信息
      *
-     * @param authentication 授权信息
      * @return
      */
-    @GetMapping("user")
-    public BusinessMessage<Map<String, Object>> user(OAuth2Authentication authentication) {
-        BusinessMessage<Map<String, Object>> message = new BusinessMessage<>();
+    @ApiOperation(value = "用户信息")
+    @GetMapping("uaa")
+    public BusinessMessage<JSONObject> userInfo() {
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
+        JSONObject data = new JSONObject();
         try {
-            SlUser user = this.userService.selectByPrimaryKey(authentication.getOAuth2Request().getClientId());
-            if (null != user) {
-                message.setSuccess(true);
-                JSONObject json = new JSONObject();
-                // 用户真实姓名
-                json.put("realName", user.getName());
-                // 用户昵称
-                json.put("nickName", user.getNickName());
-                // 用户头像
-                json.put("avatar", user.getAvatar());
-                // 手机号码
-                json.put("phone", user.getPhone());
-                // 电子邮箱
-                json.put("email", user.getEmail());
+            OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
+            String clientId = authentication.getOAuth2Request().getClientId();
+            if (!StringUtils.isEmpty(clientId)) {
+                // 从缓存中取出用户信息，如果不存在，则进行数据库查询
+                SlUser user = this.userCache.get(clientId);
+                if (null == user) {
+                    user = this.userService.selectOne(new SlUser() {{
+                        setPhone(clientId);
+                    }});
+                }
 
-                message.setData(json);
+                if (null != user) {
+                    message.setSuccess(true);
+                    // 用户真实姓名
+                    data.put("realname", user.getName());
+                    // 用户昵称
+                    data.put("nickname", user.getNickName());
+                    // 用户头像
+                    data.put("avatar", user.getAvatar());
+                    // 手机号码
+                    data.put("phone", user.getPhone());
+                    // 电子邮箱
+                    data.put("email", user.getEmail());
+
+                    message.setData(data);
+                } else {
+                    message.setMsg("用户信息不存在");
+                }
             }
         } catch (Exception e) {
             log.error("获取用户信息失败，{}", e);

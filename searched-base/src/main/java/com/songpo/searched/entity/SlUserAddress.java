@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_user_address")
 public class SlUserAddress implements Serializable {
@@ -22,8 +22,6 @@ public class SlUserAddress implements Serializable {
      * 收货人姓名
      */
     private String name;
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 收货人手机号
@@ -66,6 +64,7 @@ public class SlUserAddress implements Serializable {
     @Column(name = "is_default")
     private Boolean isDefault;
 
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

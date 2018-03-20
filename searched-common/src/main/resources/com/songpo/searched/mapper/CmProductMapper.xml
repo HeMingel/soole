@@ -38,12 +38,12 @@
         <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
     </resultMap>
 
-    <select id="selectByActionId" parameterType="String" resultType="com.songpo.searched.entity.SlProduct">
+    <select id="selectAll" resultType="Map">
         SELECT * FROM sl_product p, sl_action_product ap WHERE p.id = ap.product_id AND ap.action_id = #{actionId}
     </select>
 
 
-    <!--根据商品名称查询商品-->
+    <!--根据商品名称查询商品
     <select id="findGoods" parameterType="String" resultMap="BaseResultMap">
         SELECT
         p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
@@ -52,7 +52,7 @@
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
         WHERE p.`name` = #{name}
-    </select>
+    </select>-->
     <!--查询商品前六个 推荐-->
     <select id="findRecommendProduct" resultMap="RecommendResultMap">
         select id as productId,image_url,name from sl_product limit 0,5
@@ -67,14 +67,18 @@
         ON p.`id`= r.product_id
         WHERE p.`product_type_id` = #{id}
     </select>
-    <!--根据分类查询商品 + 商品的筛选-->
+    <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultMap="BaseResultMap">
         select
-        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
+        productTypeId,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
         FROM sl_product p
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
         WHERE 1=1
+        <if test="goodsName != null and goodsName ! ''">
+            p.`name` = #{goodsName}
+        </if>
         <if test="goodsType != null and goodsType !=''">
             p.product_type_id = #{goodsType}
         </if>
@@ -95,10 +99,10 @@
         </if>
 
         <if test="screenGoods != null and screenGoods !='' and screenGoods == 5">
-            and r.sale_Typet == 5
+            and r.sale_Type == 5
         </if>
         <if test="screenGoods != null and screenGoods !='' and screenGoods == 6">
-            and r.sale_Typet == 6
+            and r.sale_Type == 6
         </if>
         <if test="screenGoods != null and screenGoods !='' and screenGoods == 7">
             and r.sale_Typet == 7
@@ -107,11 +111,10 @@
 
     </select>
 
-    <select id="goodsBaseDetail" parameterType="String" resultMap="ResultMap">
+    <select id="goodsBaseDetail" parameterType="String" resultType="Map">
         SELECT
         p.id,
         p.name,
-        p.detail,
         p.introduction,
         r.`sale_num`,
         r.`price`,
@@ -125,6 +128,14 @@
         LEFT JOIN sl_repository r
         ON p.id = r.`product_id`
         WHERE p.id = #{goodsId}
+    </select>
+    <select id="goodsImageUrl" resultType="Map" parameterType="String">
+        SELECT
+        p.`id`,spi.image_url,spi.type
+        FROM
+        sl_product p LEFT JOIN sl_product_image spi
+        ON p.id = spi.`product_id`
+        where p.id= #{goodsId}
     </select>
 </mapper>
 

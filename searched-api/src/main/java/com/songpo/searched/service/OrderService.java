@@ -3,7 +3,7 @@ package com.songpo.searched.service;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
-import com.songpo.searched.entity.SlRepository;
+import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.util.OrderNumGeneration;
@@ -22,7 +22,7 @@ public class OrderService {
     @Autowired
     private UserService userService;
     @Autowired
-    private RepositoryService repositoryService;
+    private ProductRepositoryService productRepositoryService;
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
@@ -57,7 +57,7 @@ public class OrderService {
                         {
                             if (StringUtils.hasLength(slOrderDetail.getProductId()))
                             {
-                                SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setId(slOrderDetail.getProductId());
                                 }});
                                 if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity()))

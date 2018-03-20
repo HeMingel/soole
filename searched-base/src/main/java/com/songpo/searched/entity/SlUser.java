@@ -23,6 +23,12 @@ public class SlUser implements Serializable {
     private String password;
 
     /**
+     * 支付密码
+     */
+    @Column(name = "pay_password")
+    private String payPassword;
+
+    /**
      * 用户昵称
      */
     @Column(name = "nick_name")
@@ -166,6 +172,24 @@ public class SlUser implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    /**
+     * 获取支付密码
+     *
+     * @return pay_password - 支付密码
+     */
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    /**
+     * 设置支付密码
+     *
+     * @param payPassword 支付密码
+     */
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword == null ? null : payPassword.trim();
     }
 
     /**
@@ -493,6 +517,7 @@ public class SlUser implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", password=").append(password);
+        sb.append(", payPassword=").append(payPassword);
         sb.append(", nickName=").append(nickName);
         sb.append(", name=").append(name);
         sb.append(", cardType=").append(cardType);

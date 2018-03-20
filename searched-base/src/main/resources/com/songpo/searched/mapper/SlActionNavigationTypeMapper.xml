@@ -7,12 +7,12 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-      <result column="speed" jdbcType="REAL" property="speed"/>
+    <result column="speed" jdbcType="REAL" property="speed" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, speed
+    id, name, speed
   </sql>
 </mapper>

@@ -46,6 +46,11 @@ public class SlProductImage implements Serializable {
     @Column(name = "modification_time")
     private String modificationTime;
 
+    /**
+     * 图片类型1商品轮播图2商品图文图片
+     */
+    private Integer type;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -174,6 +179,24 @@ public class SlProductImage implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取图片类型1商品轮播图2商品图文图片
+     *
+     * @return type - 图片类型1商品轮播图2商品图文图片
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置图片类型1商品轮播图2商品图文图片
+     *
+     * @param type 图片类型1商品轮播图2商品图文图片
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -187,6 +210,7 @@ public class SlProductImage implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

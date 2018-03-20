@@ -1,28 +1,28 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_action")
 public class SlAction implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 活动名称
      */
     private String name;
+
     /**
      * 活动备注
      */
     private String remark;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -18,6 +19,9 @@ public class CmProductTypeService extends BaseService<SlProductType, String> {
 
     @Autowired
     private SlProductTypeMapper slProductTypeMapper;
+
+    @Autowired
+    private CmProductTypeService productTypeService;
 
     @Autowired
     private CmProductTypeMapper productTypeMapper;
@@ -31,20 +35,27 @@ public class CmProductTypeService extends BaseService<SlProductType, String> {
      *
      * @return
      */
-    public BusinessMessage findCategory() {
+    public BusinessMessage findCategory(String parentId) {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
-            Example example = new Example(SlProductType.class);
-            example.createCriteria().andIsNull("parentId");
-            List<SlProductType> slProductTypeList = this.slProductTypeMapper.selectByExample(example);
-            if (slProductTypeList.size() > 0) {
-                businessMessage.setData(slProductTypeList);
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询成功");
-            } else {
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询无数据!");
+            if(parentId == null){
+                List<SlProductType> slProductTypeList = this.productTypeService.select(new SlProductType(){{
+                    setParentId(null);
+                }});
+                    businessMessage.setData(slProductTypeList);
+                    businessMessage.setSuccess(true);
+                    businessMessage.setMsg("查询成功");
+            }else {
+                Map<String, Object> map = this.productTypeMapper.findCategoryByParentId(parentId);
+                if(map.size() >0){
+                    businessMessage.setData(map);
+                    businessMessage.setSuccess(true);
+                    businessMessage.setMsg("查询成功");
+                }else {
+                    businessMessage.setSuccess(true);
+                    businessMessage.setMsg("查询无数据!");
+                }
             }
         } catch (Exception e) {
             businessMessage.setMsg("查询分类失败");
@@ -52,31 +63,5 @@ public class CmProductTypeService extends BaseService<SlProductType, String> {
         return businessMessage;
     }
 
-    /**
-     * 根据商品parentId 查询商品商品二级分类
-     *
-     * @return
-     */
-    public BusinessMessage findCategoryByParentId(String id) {
-        log.debug("查询: 父id {}",id);
-
-        BusinessMessage businessMessage = new BusinessMessage();
-        businessMessage.setSuccess(false);
-        try {
-            List<ProductCategoryDto> productCategoryDtos = this.productTypeMapper.findCategoryByParentId(id);
-            if (productCategoryDtos.size() > 0) {
-                businessMessage.setData(productCategoryDtos);
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询成功");
-            } else {
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询无数据");
-            }
-        } catch (Exception e) {
-            businessMessage.setMsg("查询失败");
-            log.error("查询二级分类异常",e);
-        }
-        return businessMessage;
-    }
 
 }

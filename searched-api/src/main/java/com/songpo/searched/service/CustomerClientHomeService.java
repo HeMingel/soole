@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMGoods;
-import com.songpo.searched.domain.ProductCategoryDto;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.ProductDto;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmProductMapper;
@@ -19,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘松坡
@@ -55,7 +55,7 @@ public class CustomerClientHomeService {
     private ProductService productService;
 
     @Autowired
-    private RepositoryService repositoryService;
+    private ProductRepositoryService productRepositoryService;
 
     @Autowired
     private SpecificationNameMapper specificationNameMapper;
@@ -126,7 +126,7 @@ public class CustomerClientHomeService {
             setName("TEAMWORK_PRODUCT");
         }});
         if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent())) {
-            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(teamworkType.getContent(), 1, 10);
+            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", teamworkType.getContent(), 1, 10);
             data.put("teamworkProducts", products);
         }
 
@@ -135,7 +135,7 @@ public class CustomerClientHomeService {
             setName("PRE_SALE_PRODUCT");
         }});
         if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent())) {
-            PageInfo<SlProduct> products = this.cmProductService.selectByActionId(preSaleType.getContent(), 1, 10);
+            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", preSaleType.getContent(), 1, 10);
             data.put("preSaleProducts", products);
         }
 
@@ -147,7 +147,7 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size) {
+    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size,String name) {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
@@ -157,12 +157,12 @@ public class CustomerClientHomeService {
         data.put("productTypes", productTypes);
         //通过商品分类parentId 查询二级分类
 
-        List<ProductCategoryDto> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
+        List<Map<String, Object>> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
         data.put("productTypes", productCategoryDtos);
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType);
+        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType,name);
         data.put("products", new PageInfo<>(productDtos));
         //banner图
         // 获取广告轮播图列表
@@ -212,8 +212,7 @@ public class CustomerClientHomeService {
                                 CMGoods.setGoodName(slProduct.getName());// 商品名称
                                 CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
                                 CMGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                                SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
-                                    setSpecificationId(sc.getSpecificationId());
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setProductId(sc.getGoodId());
                                 }});
                                 CMGoods.setPulse(repository.getPulse());// 了豆

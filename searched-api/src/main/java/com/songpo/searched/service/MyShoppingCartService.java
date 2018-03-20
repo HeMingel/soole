@@ -2,10 +2,10 @@ package com.songpo.searched.service;
 
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMGoods;
+import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlRepository;
+import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class MyShoppingCartService {
     @Autowired
     private ProductService productService;
     @Autowired
-    private RepositoryService repositoryService;
+    private ProductRepositoryService productRepositoryService;
 
     /**
      * 新增购物车
@@ -99,8 +99,7 @@ public class MyShoppingCartService {
                                 CMGoods.setGoodName(slProduct.getName());// 商品名称
                                 CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
                                 CMGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                                SlRepository repository = this.repositoryService.selectOne(new SlRepository() {{
-                                    setSpecificationId(sc.getSpecificationId());
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setProductId(sc.getGoodId());
                                 }});
                                 CMGoods.setPulse(repository.getPulse());// 了豆
