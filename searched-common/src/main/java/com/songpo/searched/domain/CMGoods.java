@@ -3,6 +3,7 @@ package com.songpo.searched.domain;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class CMGoods {
@@ -42,10 +43,6 @@ public class CMGoods {
      */
     private int counts;
     /**
-     * 规格名称
-     */
-    private String tagName;
-    /**
      * 销售类型
      */
     private int saleType;
@@ -56,10 +53,14 @@ public class CMGoods {
     /**
      * 商品标签Id
      */
-    private String specificationId;
+    private List<String> specificationId;
+    /**
+     * 规格名称
+     */
+    private String specificationName;
     /**
      * 店铺仓库的ID
      */
-    private String repository;
+    private String repositoryId;
 
 }

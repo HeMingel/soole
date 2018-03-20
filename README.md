@@ -19,7 +19,7 @@
 提供所有的api接口和授权验证接口
 
 # 二、API文档
-- 本地地址: http://localhost:8080/swagger-ui.html
+- 本地地址: http://localhost:8080/sl/swagger-ui.html
 - 线上地址: http://api.搜了.com/swagger-ui.html
 
 ## OAuth2授权

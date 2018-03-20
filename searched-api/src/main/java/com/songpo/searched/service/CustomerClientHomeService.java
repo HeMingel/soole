@@ -43,7 +43,7 @@ public class CustomerClientHomeService {
     private CmProductService cmProductService;
 
     @Autowired
-    private MyShoppingCartService myShoppingCartService;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     private ShoppingCartCache cache;
@@ -86,7 +86,8 @@ public class CustomerClientHomeService {
 
         JSONObject banner = new JSONObject();
 
-        if (null != homeType && !StringUtils.isEmpty(homeType.getContent())) {
+        if (null != homeType && !StringUtils.isEmpty(homeType.getContent()))
+        {
             // 获取广告轮播图列表
             List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
                 // 设置位置编号
@@ -125,7 +126,8 @@ public class CustomerClientHomeService {
         SlSystemConfig teamworkType = this.systemConfigService.selectOne(new SlSystemConfig() {{
             setName("TEAMWORK_PRODUCT");
         }});
-        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent())) {
+        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent()))
+        {
             PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", teamworkType.getContent(), 1, 10);
             data.put("teamworkProducts", products);
         }
@@ -134,7 +136,8 @@ public class CustomerClientHomeService {
         SlSystemConfig preSaleType = this.systemConfigService.selectOne(new SlSystemConfig() {{
             setName("PRE_SALE_PRODUCT");
         }});
-        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent())) {
+        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
+        {
             PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", preSaleType.getContent(), 1, 10);
             data.put("preSaleProducts", products);
         }
@@ -147,7 +150,7 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size,String name) {
+    public JSONObject getClassificationData(String parentId, String goodsType, Integer screenType, Integer page, Integer size, String name) {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
@@ -162,7 +165,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType,name);
+        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
         data.put("products", new PageInfo<>(productDtos));
         //banner图
         // 获取广告轮播图列表
@@ -174,7 +177,7 @@ public class CustomerClientHomeService {
         data.put("banner", bannerList);
         //商品分类首页推荐商品
         List<ProductDto> recommendProducts = this.mapper.findRecommendProduct();
-        data.put("recommendProducts",recommendProducts);
+        data.put("recommendProducts", recommendProducts);
 
         return data;
     }
@@ -204,7 +207,7 @@ public class CustomerClientHomeService {
                         {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
-                                setIsSoldout(false);
+                                setSoldOut(false);
                             }});
                             if (null != slProduct)
                             {
@@ -221,7 +224,7 @@ public class CustomerClientHomeService {
                                 /**
                                  * 查询标签名称 返回null的话 前台就显示失效
                                  */
-                                CMGoods.setTagName(this.specificationNameMapper.findSpecificationContentBySpecificationId(sc.getSpecificationId(), sc.getGoodId()));
+                                CMGoods.setSpecificationName(repository.getSpecificationDetailGroupName());
                                 list.add(CMGoods);
                             }
                         }
