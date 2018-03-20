@@ -147,7 +147,7 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size) {
+    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size,String name) {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
@@ -162,7 +162,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType);
+        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType,name);
         data.put("products", new PageInfo<>(productDtos));
         //banner图
         // 获取广告轮播图列表
