@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "用户管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/base/v1/users")
 public class UserController extends BaseController<SlUser, String> {
 
     private Logger logger = LoggerFactory.getLogger(UserController.class);

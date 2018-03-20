@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商品管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/product")
+@RequestMapping("/api/base/v1/product")
 public class ProductController extends BaseController<SlProduct, String> {
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(SlProduct.class);

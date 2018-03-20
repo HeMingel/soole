@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商店管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/shop")
+@RequestMapping("/api/base/v1/shop")
 public class ShopController extends BaseController<SlShop, String> {
 
     private Logger logger = LoggerFactory.getLogger(ShopController.class);

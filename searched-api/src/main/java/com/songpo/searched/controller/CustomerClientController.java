@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(description = "用户端管理")
 @RestController
-@RequestMapping("/api/v1/customer-client")
+@RequestMapping("/api/common/v1/customer-client")
 public class CustomerClientController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class CustomerClientController {
      *
      * @return
      */
-    @ApiOperation("用户端首页")
+    @ApiOperation(value = "用户端首页", notes = "用于获取首页所有数据")
     @GetMapping("home")
     public BusinessMessage<JSONObject> home() {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();

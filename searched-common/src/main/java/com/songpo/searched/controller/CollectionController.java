@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "我的收藏管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/collection")
+@RequestMapping("/api/base/v1/collection")
 public class CollectionController extends BaseController<SlMyCollection, String> {
 
     public CollectionController(CollectionService service) {

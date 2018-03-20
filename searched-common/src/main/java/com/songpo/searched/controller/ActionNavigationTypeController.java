@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(description = "商品活动管理")
 @RestController
-@RequestMapping("/api/v1/action-navigation-type")
+@RequestMapping("/api/base/v1/action-navigation-type")
 public class ActionNavigationTypeController extends BaseController<SlActionNavigationType, String> {
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(SlActionNavigationType.class);

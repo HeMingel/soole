@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "订单管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/base/v1/order")
 public class OrderController extends BaseController<SlOrder, String> {
     public OrderController(OrderService service) {
         //设置业务服务类

@@ -18,7 +18,7 @@ import java.util.List;
 @Api(description = "订单管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/common/v1/order")
 public class OrderController {
 
     @Autowired

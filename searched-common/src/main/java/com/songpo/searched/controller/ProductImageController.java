@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "商品图片")
 @RestController
-@RequestMapping("/api/v1/product-image")
+@RequestMapping("/api/base/v1/product-image")
 public class ProductImageController extends BaseController<SlProductImage, String> {
 
     private Logger logger = LoggerFactory.getLogger(ProductImageController.class);

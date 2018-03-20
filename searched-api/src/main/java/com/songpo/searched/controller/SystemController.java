@@ -26,7 +26,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/system")
+@RequestMapping("/api/common/v1/system")
 public class SystemController {
 
     @Autowired
