@@ -56,10 +56,10 @@ public class CustomerClientController {
      */
     @ApiOperation("用户端分类")
     @GetMapping("classification")
-    public BusinessMessage<JSONObject> classification(String parentId,String goodsType, Integer screenType, Integer page, Integer size) {
+    public BusinessMessage<JSONObject> classification(String parentId,String goodsType, Integer screenType, Integer page, Integer size,String name) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         try {
-            message.setData(this.customerClientHomeService.getClassificationData(parentId,goodsType,screenType,page,size));
+            message.setData(this.customerClientHomeService.getClassificationData(parentId,goodsType,screenType,page,size,name));
             message.setSuccess(true);
         } catch (Exception e) {
             log.error("获取用户端分类数据失败，{}", e);
