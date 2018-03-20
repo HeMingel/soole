@@ -1,12 +1,15 @@
 package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
+import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.ProductCategoryDto;
+import com.songpo.searched.domain.ProductDto;
 import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.CmProductTypeMapper;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +62,8 @@ public class CustomerClientHomeService {
 
     @Autowired
     private CmProductTypeMapper cmProductTypeMapper;
+    @Autowired
+    private CmProductMapper mapper;
 
     /**
      * 获取首页所有数据
@@ -142,7 +147,7 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String parentId) {
+    public JSONObject getClassificationData(String parentId,String goodsType, Integer screenType, Integer page, Integer size) {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
@@ -150,12 +155,28 @@ public class CustomerClientHomeService {
             setParentId(null);
         }});
         data.put("productTypes", productTypes);
+        //通过商品分类parentId 查询二级分类
 
         List<ProductCategoryDto> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
         data.put("productTypes", productCategoryDtos);
 
+        //筛选商品
+        PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
+        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType);
+        data.put("products", new PageInfo<>(productDtos));
+        //banner图
+        // 获取广告轮播图列表
 
-        return null;
+        List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
+            // 设置类型为 商品页
+            setTypeId("1");
+        }});
+        data.put("banner", bannerList);
+        //商品分类首页推荐商品
+        List<ProductDto> recommendProducts = this.mapper.findRecommendProduct();
+        data.put("recommendProducts",recommendProducts);
+
+        return data;
     }
 
     /**
@@ -165,22 +186,28 @@ public class CustomerClientHomeService {
      */
     public JSONObject getShoppingCartData(String uid) {
         JSONObject object = new JSONObject();
-        if (StringUtils.hasLength(uid)) {
+        if (StringUtils.hasLength(uid))
+        {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setId(uid);
             }});
-            if (null != user) {
+            if (null != user)
+            {
                 CMShoppingCart pojo = this.cache.get(uid);
                 List<CMGoods> list = new ArrayList<>();
                 CMGoods CMGoods = null;
-                if (null != pojo) {
-                    for (CMGoods sc : pojo.getCarts()) {
-                        if (StringUtils.hasLength(sc.getGoodId())) {
+                if (null != pojo)
+                {
+                    for (CMGoods sc : pojo.getCarts())
+                    {
+                        if (StringUtils.hasLength(sc.getGoodId()))
+                        {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
                                 setIsSoldout(false);
                             }});
-                            if (null != slProduct) {
+                            if (null != slProduct)
+                            {
                                 CMGoods = new CMGoods();
                                 CMGoods.setGoodName(slProduct.getName());// 商品名称
                                 CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
