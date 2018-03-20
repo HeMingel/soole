@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "商品评价管理")
 @RestController
-@RequestMapping("/api/v1/product-comment")
+@RequestMapping("/api/base/v1/product-comment")
 public class ProductCommentController extends BaseController<SlProductComment, String> {
 
     private Logger logger = LoggerFactory.getLogger(ProductCommentController.class);

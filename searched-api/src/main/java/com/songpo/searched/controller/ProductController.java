@@ -7,12 +7,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "商品管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/product")
+@RequestMapping("/api/common/v1/product")
 public class ProductController {
 
     @Autowired

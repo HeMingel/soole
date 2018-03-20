@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "文章管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/article")
+@RequestMapping("/api/base/v1/article")
 public class ArticleController extends BaseController<SlArticle, String> {
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(SlArticle.class);

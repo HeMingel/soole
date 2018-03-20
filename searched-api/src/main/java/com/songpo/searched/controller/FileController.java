@@ -23,7 +23,7 @@ import java.util.Map;
 @Api(description = "文件管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/files")
+@RequestMapping("/api/common/v1/files")
 public class FileController {
 
     @Autowired

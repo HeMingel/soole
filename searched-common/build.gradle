@@ -12,7 +12,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
 apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 sourceCompatibility = 1.8
@@ -35,12 +34,11 @@ dependencies {
     // swagger文档管理
     compile("com.spring4all:swagger-spring-boot-starter:$swaggerSpringBootStarterVersion")
 
-    // WEB组件
-    compile('org.springframework.boot:spring-boot-starter-web')
+    // Web组件
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 
     // Redis组件
-    compile('org.springframework.boot:spring-boot-starter-data-redis')
-
+    compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile("org.apache.commons:commons-lang3:$commonsLang3Version")
@@ -55,7 +53,7 @@ dependencies {
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
     // 测试组件
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 

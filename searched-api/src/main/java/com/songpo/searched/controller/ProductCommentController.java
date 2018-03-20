@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商品评论管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/goods-comment")
+@RequestMapping("/api/common/v1/goods-comment")
 public class ProductCommentController {
 
     @Autowired

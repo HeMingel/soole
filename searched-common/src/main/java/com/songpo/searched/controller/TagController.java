@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "标签管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/tag")
+@RequestMapping("/api/base/v1/tag")
 public class TagController extends BaseController<SlTag, String> {
 
     private Logger logger = LoggerFactory.getLogger(TagController.class);

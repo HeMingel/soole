@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商品类型管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/goods-type")
+@RequestMapping("/api/common/v1/goods-type")
 public class ProductTypeController {
 
     @Autowired

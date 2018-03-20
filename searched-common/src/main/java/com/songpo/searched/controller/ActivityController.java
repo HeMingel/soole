@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(description = "商品活动管理")
 @RestController
-@RequestMapping("/api/v1/activity")
+@RequestMapping("/api/base/v1/activity")
 public class ActivityController extends BaseController<SlActivity, String> {
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(SlActivity.class);

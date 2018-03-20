@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商品类型管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/product-type")
+@RequestMapping("/api/base/v1/product-type")
 public class ProductTypeController extends BaseController<SlProductType, String> {
 
     private Logger logger = LoggerFactory.getLogger(ProductTypeController.class);

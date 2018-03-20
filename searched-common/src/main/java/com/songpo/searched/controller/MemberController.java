@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "会员管理")
 @RestController
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/base/v1/member")
 public class MemberController extends BaseController<SlMember, String> {
     public MemberController(MemberService service) {
         // 设置业务服务类

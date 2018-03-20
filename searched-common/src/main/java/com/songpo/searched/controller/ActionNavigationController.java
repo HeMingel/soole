@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "系统动作管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/action-navigation")
+@RequestMapping("/api/base/v1/action-navigation")
 public class ActionNavigationController extends BaseController<SlActionNavigation, String> {
 
     @Autowired
