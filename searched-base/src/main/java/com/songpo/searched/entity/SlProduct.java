@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -100,8 +100,8 @@ public class SlProduct implements Serializable {
     /**
      * 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
-    @Column(name = "sales_model")
-    private Integer salesModel;
+    @Column(name = "sales_mode")
+    private Integer salesMode;
 
     /**
      * 店铺唯一标识符
@@ -408,19 +408,19 @@ public class SlProduct implements Serializable {
     /**
      * 获取销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      *
-     * @return sales_model - 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
+     * @return sales_mode - 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
-    public Integer getSalesModel() {
-        return salesModel;
+    public Integer getSalesMode() {
+        return salesMode;
     }
 
     /**
      * 设置销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      *
-     * @param salesModel 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
+     * @param salesMode 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
-    public void setSalesModel(Integer salesModel) {
-        this.salesModel = salesModel;
+    public void setSalesMode(Integer salesMode) {
+        this.salesMode = salesMode;
     }
 
     /**
@@ -481,7 +481,7 @@ public class SlProduct implements Serializable {
         sb.append(", salesVolume=").append(salesVolume);
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", referencePulse=").append(referencePulse);
-        sb.append(", salesModel=").append(salesModel);
+        sb.append(", salesMode=").append(salesMode);
         sb.append(", shopId=").append(shopId);
         sb.append(", saleType=").append(saleType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
