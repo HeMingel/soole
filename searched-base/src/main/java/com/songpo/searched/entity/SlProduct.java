@@ -1,6 +1,7 @@
 package com.songpo.searched.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "sl_product")
@@ -83,6 +84,12 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "sales_volume")
     private Integer salesVolume;
+
+    /**
+     * 参考价格
+     */
+    @Column(name = "reference_price")
+    private BigDecimal referencePrice;
 
     private static final long serialVersionUID = 1L;
 
@@ -338,6 +345,24 @@ public class SlProduct implements Serializable {
         this.salesVolume = salesVolume;
     }
 
+    /**
+     * 获取参考价格
+     *
+     * @return reference_price - 参考价格
+     */
+    public BigDecimal getReferencePrice() {
+        return referencePrice;
+    }
+
+    /**
+     * 设置参考价格
+     *
+     * @param referencePrice 参考价格
+     */
+    public void setReferencePrice(BigDecimal referencePrice) {
+        this.referencePrice = referencePrice;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -358,6 +383,7 @@ public class SlProduct implements Serializable {
         sb.append(", soldOut=").append(soldOut);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
+        sb.append(", referencePrice=").append(referencePrice);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

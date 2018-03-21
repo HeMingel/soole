@@ -19,6 +19,12 @@ public class SlSpecificationDetailGroup implements Serializable {
     private String productId;
 
     /**
+     * 序列号
+     */
+    @Column(name = "serial_number")
+    private String serialNumber;
+
+    /**
      * 规格明细唯一标识符
      */
     @Column(name = "specification_detail_id")
@@ -63,6 +69,24 @@ public class SlSpecificationDetailGroup implements Serializable {
     }
 
     /**
+     * 获取序列号
+     *
+     * @return serial_number - 序列号
+     */
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    /**
+     * 设置序列号
+     *
+     * @param serialNumber 序列号
+     */
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber == null ? null : serialNumber.trim();
+    }
+
+    /**
      * 获取规格明细唯一标识符
      *
      * @return specification_detail_id - 规格明细唯一标识符
@@ -88,6 +112,7 @@ public class SlSpecificationDetailGroup implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
+        sb.append(", serialNumber=").append(serialNumber);
         sb.append(", specificationDetailId=").append(specificationDetailId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

@@ -19,12 +19,13 @@
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
+    <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction, 
-    detail, product_type_id, sold_out, comment_num, sales_volume
+    detail, product_type_id, sold_out, comment_num, sales_volume, reference_price
   </sql>
 </mapper>
