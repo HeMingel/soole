@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -98,7 +98,7 @@ public class SlProduct implements Serializable {
     private Integer referencePulse;
 
     /**
-     * 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     * 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
     @Column(name = "sales_model")
     private Integer salesModel;
@@ -406,18 +406,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     * 获取销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      *
-     * @return sales_model - 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     * @return sales_model - 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
     public Integer getSalesModel() {
         return salesModel;
     }
 
     /**
-     * 设置销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     * 设置销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      *
-     * @param salesModel 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     * @param salesModel 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
      */
     public void setSalesModel(Integer salesModel) {
         this.salesModel = salesModel;

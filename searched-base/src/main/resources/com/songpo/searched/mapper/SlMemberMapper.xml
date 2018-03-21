@@ -19,6 +19,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, user_id, level, exp, is_push, creator, create_time, modifier, modification_time
+    id, user_id, level, exp, is_push, creator, create_time, modifier, modification_time
   </sql>
 </mapper>

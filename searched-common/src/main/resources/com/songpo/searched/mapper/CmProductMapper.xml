@@ -19,7 +19,7 @@
                 AND p.name LIKE #{pName}
             </if>
             <if test="salesMode != null">
-                AND p.sales_mode = #{salesMode}
+                AND p.sales_model = #{salesMode}
             </if>
         </where>
     </select>
