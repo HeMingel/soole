@@ -6,8 +6,7 @@ public class OrderNumGeneration {
     public static String getOrderIdByUUId() {
         int machineId = 1;//最大支持1-9个集群机器部署
         int hashCodeV = UUID.randomUUID().toString().hashCode();
-        if (hashCodeV < 0)
-        {//有可能是负数
+        if (hashCodeV < 0) {//有可能是负数
             hashCodeV = -hashCodeV;
         }
         // 0 代表前面补充0

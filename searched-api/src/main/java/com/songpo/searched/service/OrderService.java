@@ -40,28 +40,21 @@ public class OrderService {
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
         int pulse = 0;
-        try
-        {
-            if (StringUtils.hasLength(slOrder.getUserId()))
-            {
+        try {
+            if (StringUtils.hasLength(slOrder.getUserId())) {
                 SlUser user = userService.selectOne(new SlUser() {{
                     setId(slOrder.getUserId());
                 }});
-                if (null != user)
-                {
-                    if (StringUtils.hasLength(slOrder.getShippngAddressId()))
-                    {
+                if (null != user) {
+                    if (StringUtils.hasLength(slOrder.getShippngAddressId())) {
                         slOrder.setSerialNumber(OrderNumGeneration.getOrderIdByUUId());// 生成订单编号
                         orderMapper.insertSelective(slOrder);
-                        for (SlOrderDetail slOrderDetail : orderDetail)
-                        {
-                            if (StringUtils.hasLength(slOrderDetail.getProductId()))
-                            {
+                        for (SlOrderDetail slOrderDetail : orderDetail) {
+                            if (StringUtils.hasLength(slOrderDetail.getProductId())) {
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setId(slOrderDetail.getProductId());
                                 }});
-                                if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity()))
-                                {
+                                if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
                                     pulse += repository.getPulse(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
@@ -88,20 +81,16 @@ public class OrderService {
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
                         }}, example);
-                    } else
-                    {
+                    } else {
                         message.setMsg("收货地址不能为空");
                     }
-                } else
-                {
+                } else {
                     message.setMsg("用户不存在");
                 }
-            } else
-            {
+            } else {
                 message.setMsg("用户ID为空");
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             log.debug("error:", e.getMessage());
         }
         return message;

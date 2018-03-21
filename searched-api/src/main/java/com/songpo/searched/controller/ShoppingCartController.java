@@ -40,7 +40,7 @@ public class ShoppingCartController {
             @ApiImplicitParam(name = "repositoryId", value = "店铺仓库的ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "specificationName", value = "规格名称", paramType = "form")
     })
-    @PostMapping
+    @PostMapping("add")
     public BusinessMessage addmyShoppingCart(CMShoppingCart pojo) {
         return this.shoppingCartService.addmyShoppingCart(pojo);
     }

@@ -167,7 +167,7 @@ public class SystemController {
                 SlUser user = this.userCache.get(clientId);
                 if (null == user) {
                     user = this.userService.selectOne(new SlUser() {{
-                        setPhone(clientId);
+                        setClientId(clientId);
                     }});
                 }
 
