@@ -13,16 +13,16 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="longitude" jdbcType="DECIMAL" property="longitude" />
     <result column="latitude" jdbcType="DECIMAL" property="latitude" />
-      <result column="total_sales" jdbcType="DECIMAL" property="totalSales"/>
-      <result column="money" jdbcType="DECIMAL" property="money"/>
-      <result column="coin" jdbcType="INTEGER" property="coin"/>
-      <result column="silver" jdbcType="INTEGER" property="silver"/>
+    <result column="total_sales" jdbcType="DECIMAL" property="totalSales" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="coin" jdbcType="INTEGER" property="coin" />
+    <result column="silver" jdbcType="INTEGER" property="silver" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, owner_id, name, description, image_url, address, longitude, latitude, total_sales,
-      money, coin, silver
+    id, owner_id, name, description, image_url, address, longitude, latitude, total_sales, 
+    money, coin, silver
   </sql>
 </mapper>

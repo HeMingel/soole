@@ -54,11 +54,13 @@ public class Oauth2Config {
                     // 不拦截授权接口
                     .antMatchers("/oauth/**").permitAll()
                     // 不拦截SwaggerUi
-                    .antMatchers("/swagger-ui.html", "/swagger-resources/**").permitAll()
+                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**").permitAll()
                     // 不拦截登录接口
                     .antMatchers("/api/common/v1/system/login").permitAll()
                     // 不拦截注册接口
                     .antMatchers("/api/common/v1/system/register").permitAll()
+                    // 不拦截商品相关接口
+                    .antMatchers("/api/v2/**").permitAll()
                     // 其他请求都需要经过授权
                     .anyRequest().authenticated();
         }

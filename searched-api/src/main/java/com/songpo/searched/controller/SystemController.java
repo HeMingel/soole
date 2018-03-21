@@ -1,6 +1,7 @@
 package com.songpo.searched.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlUser;
@@ -10,8 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
 
 /**
  * @author liuso
@@ -41,7 +43,8 @@ public class SystemController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private Logger logger = LoggerFactory.getLogger(SystemController.class);
+    @Autowired
+    private SmsVerifyCodeCache smsVerifyCodeCache;
 
     /**
      * 登录
@@ -57,7 +60,7 @@ public class SystemController {
     })
     @PostMapping("login")
     public BusinessMessage<Map<String, String>> login(String phone, String password) {
-        logger.debug("用户登录，账号：{}，密码：{}", phone, password);
+        log.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
         if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
@@ -93,7 +96,7 @@ public class SystemController {
                     message.setSuccess(true);
                 }
             } catch (Exception e) {
-                logger.error("登录失败：{}", e);
+                log.error("登录失败：{}", e);
                 message.setMsg("登录失败：" + e.getMessage());
             }
         }
@@ -115,35 +118,54 @@ public class SystemController {
             @ApiImplicitParam(name = "code", value = "短信验证码", paramType = "form", required = true)
     })
     @PostMapping("register")
-    public BusinessMessage<SlUser> register(String phone, String password, String code) {
-        logger.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
-        BusinessMessage<SlUser> message = new BusinessMessage<>();
+    public BusinessMessage<JSONObject> register(String phone, String password, String code) {
+        log.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
         } else if (StringUtils.isEmpty(password)) {
             message.setMsg("密码为空");
+        } else if (StringUtils.isEmpty(code)) {
+            message.setMsg("短信验证码为空");
         } else {
-            try {
-                SlUser user = this.userService.selectOne(new SlUser() {{
-                    setPhone(phone);
-                }});
+            String cacheCode = smsVerifyCodeCache.get(phone);
+            if (StringUtils.isEmpty(cacheCode) || !code.contentEquals(cacheCode)) {
+                message.setMsg("短信验证码已过期，请重试");
+            } else {
+                try {
+                    SlUser user = this.userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
 
-                if (null != user) {
-                    message.setMsg("账号已存在");
-                } else {
-                    user = new SlUser();
-                    user.setPhone(phone);
-                    user.setPassword(passwordEncoder.encode(password));
+                    if (null != user) {
+                        message.setMsg("账号已存在");
+                    } else {
+                        user = new SlUser();
+                        user.setPhone(phone);
+                        user.setPassword(passwordEncoder.encode(password));
 
-                    // 添加
-                    userService.insertSelective(user);
+                        // 定义生成字符串范围
+                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}, {'=', '!', '@', '#', '$'}};
+                        // 初始化随机生成器
+                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(DIGITS).build();
 
-                    message.setData(user);
-                    message.setSuccess(true);
+                        user.setClientId(generator.generate(16));
+                        user.setPassword(generator.generate(64));
+
+                        // 添加
+                        userService.insertSelective(user);
+
+                        JSONObject data = new JSONObject();
+                        data.put("clientId", user.getClientId());
+                        data.put("clientSecret", user.getClientSecret());
+
+                        message.setData(data);
+                        message.setSuccess(true);
+                    }
+                } catch (Exception e) {
+                    log.error("注册失败：{}", e);
+                    message.setMsg("注册失败：" + e.getMessage());
                 }
-            } catch (Exception e) {
-                logger.error("注册失败：{}", e);
-                message.setMsg("注册失败：" + e.getMessage());
             }
         }
         return message;
