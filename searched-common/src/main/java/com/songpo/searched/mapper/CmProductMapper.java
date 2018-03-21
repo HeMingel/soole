@@ -29,13 +29,14 @@ public interface CmProductMapper {
      */
     List<Map<String, Object>> selectTeamworkProduct(String actionId);
 
-    //List<ProductDto> findGoods(String name);
-
+    /**
+     * 商品分类查询推荐商品 最新的6个
+     * @return
+     */
     List<ProductDto> findRecommendProduct();
 
-    List<ProductDto> findGoodsByCategory(String goodsType);
     //根据分类查询商品 + 商品的筛选 + 根据名称查询
-    List<ProductDto> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods,@Param("goodsName")String goodsName);
+    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenType") Integer screenType,@Param("goodsName")String name);
 
     Map goodsBaseDetail(String goodsId);
 
