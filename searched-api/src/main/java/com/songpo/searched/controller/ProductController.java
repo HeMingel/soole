@@ -78,10 +78,10 @@ public class ProductController {
      */
     @ApiOperation(value = "根据商品分类查询商品+筛选商品")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form", required = true),
-            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form", required = true),
-            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form", required = true)
+            @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form"),
+            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form"),
+            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form"),
+            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form")
     })
     @GetMapping("screen-goods")
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size,String name) {
