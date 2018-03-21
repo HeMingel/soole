@@ -42,18 +42,4 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    /**
-     * 短信验证码缓存模板
-     *
-     * @param factory
-     * @return
-     */
-    @Bean
-    public RedisTemplate<String, String> smsVerifyCodeRedisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(factory);
-        return redisTemplate;
-    }
 }
