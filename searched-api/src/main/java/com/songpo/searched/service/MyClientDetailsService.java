@@ -32,12 +32,12 @@ public class MyClientDetailsService implements ClientDetailsService {
         SlUser user = this.cache.get(clientId);
         if (null == user) {
             user = this.mapper.selectOne(new SlUser() {{
-                setPhone(clientId);
+                setClientId(clientId);
             }});
 
             // 加入缓存
             if (null != user) {
-                this.cache.put(clientId, user);
+                this.cache.put(user.getPhone(), user);
             }
         }
 
