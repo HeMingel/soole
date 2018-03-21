@@ -51,10 +51,14 @@ public class Oauth2Config {
                     .authorizeRequests()
                     // 不拦截获取token的请求
                     .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                    // 不拦截授权接口
                     .antMatchers("/oauth/**").permitAll()
-                    // SwaggerUi
-                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**", "/api/v2/**", "/api/v1/myShoppingCart/**").permitAll()
-                    .antMatchers("/api/v1/system/login", "/api/v1/system/register").permitAll()
+                    // 不拦截SwaggerUi
+                    .antMatchers("/swagger-ui.html", "/swagger-resources/**").permitAll()
+                    // 不拦截登录接口
+                    .antMatchers("/api/common/v1/system/login").permitAll()
+                    // 不拦截注册接口
+                    .antMatchers("/api/common/v1/system/register").permitAll()
                     // 其他请求都需要经过授权
                     .anyRequest().authenticated();
         }
