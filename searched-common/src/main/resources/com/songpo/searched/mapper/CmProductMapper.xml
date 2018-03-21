@@ -19,7 +19,7 @@
                 AND p.name LIKE #{pName}
             </if>
             <if test="salesMode != null">
-                AND p.sales_mode = #{salesMode}
+                AND p.sales_model = #{salesMode}
             </if>
         </where>
     </select>
@@ -32,7 +32,7 @@
     </select>
 
     <!--查询商品前六个 推荐-->
-    <select id="findRecommendProduct" resultMap="RecommendResultMap">
+    <select id="findRecommendProduct" resultMap="RecommendResultMap" >
         select id as productId,image_url,name from sl_product limit 0,5
     </select>
 

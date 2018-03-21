@@ -8,8 +8,8 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
-      <result column="product_detail_group_serial_number" jdbcType="VARCHAR" property="productDetailGroupSerialNumber"/>
-      <result column="product_detail_group_name" jdbcType="VARCHAR" property="productDetailGroupName"/>
+    <result column="product_detail_group_serial_number" jdbcType="VARCHAR" property="productDetailGroupSerialNumber" />
+    <result column="product_detail_group_name" jdbcType="VARCHAR" property="productDetailGroupName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
@@ -33,7 +33,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name,
+    id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name, 
     remark, price, post_fee, discount, state, count, score, reference_price, cost_price, 
     collage_price, personal_price, price_spike, weight, isShip, pulse, comment_num, sale_num, 
     sale_type
