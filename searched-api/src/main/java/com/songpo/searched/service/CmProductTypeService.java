@@ -38,26 +38,32 @@ public class CmProductTypeService extends BaseService<SlProductType, String> {
     public BusinessMessage findCategory(String parentId) {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
-        try {
-            if(parentId == null){
-                List<SlProductType> slProductTypeList = this.productTypeService.select(new SlProductType(){{
+        try
+        {
+            if (parentId == null)
+            {
+                List<SlProductType> slProductTypeList = this.productTypeService.select(new SlProductType() {{
                     setParentId(null);
                 }});
-                    businessMessage.setData(slProductTypeList);
-                    businessMessage.setSuccess(true);
-                    businessMessage.setMsg("查询成功");
-            }else {
-                Map<String, Object> map = this.productTypeMapper.findCategoryByParentId(parentId);
-                if(map.size() >0){
+                businessMessage.setData(slProductTypeList);
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询成功");
+            } else
+            {
+                List<Map<String, Object>> map = this.productTypeMapper.findCategoryByParentId(parentId);
+                if (map.size() > 0)
+                {
                     businessMessage.setData(map);
                     businessMessage.setSuccess(true);
                     businessMessage.setMsg("查询成功");
-                }else {
+                } else
+                {
                     businessMessage.setSuccess(true);
                     businessMessage.setMsg("查询无数据!");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             businessMessage.setMsg("查询分类失败");
         }
         return businessMessage;

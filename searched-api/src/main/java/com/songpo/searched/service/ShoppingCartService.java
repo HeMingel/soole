@@ -8,6 +8,7 @@ import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SpecificationNameMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MyShoppingCartService {
+@Slf4j
+public class ShoppingCartService {
     @Autowired
     private SpecificationNameMapper specificationNameMapper;
     @Autowired
@@ -79,7 +81,7 @@ public class MyShoppingCartService {
             {
                 CMShoppingCart pojo = this.cache.get(uid);
                 List<CMGoods> list = new ArrayList<>();
-                CMGoods CMGoods = null;
+                CMGoods cmGoods = null;
                 if (null != pojo)
                 {
                     for (CMGoods sc : pojo.getCarts())
@@ -91,25 +93,25 @@ public class MyShoppingCartService {
                         {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
-                                setIsSoldout(false);
+                                setSoldOut(false);
                             }});
                             if (null != slProduct)
                             {
-                                CMGoods = new CMGoods();
-                                CMGoods.setGoodName(slProduct.getName());// 商品名称
-                                CMGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                CMGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
+                                cmGoods = new CMGoods();
+                                cmGoods.setGoodName(slProduct.getName());// 商品名称
+                                cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                                cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setProductId(sc.getGoodId());
                                 }});
-                                CMGoods.setPulse(repository.getPulse());// 了豆
-                                CMGoods.setSaleType(repository.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
-                                CMGoods.setPrice(repository.getPrice());// 商品价格
+                                cmGoods.setPulse(repository.getPulse());// 了豆
+                                cmGoods.setSaleType(repository.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                cmGoods.setPrice(repository.getPrice());// 商品价格
                                 /**
-                                 * 查询标签名称 返回null的话 前台就显示失效
+                                 * 查询规格名称 返回null的话 前台就显示失效
                                  */
-                                CMGoods.setTagName(this.specificationNameMapper.findSpecificationContentBySpecificationId(sc.getSpecificationId(), sc.getGoodId()));
-                                list.add(CMGoods);
+                                cmGoods.setSpecificationName(repository.getSpecificationDetailGroupName());
+                                list.add(cmGoods);
                             } else
                             {
                                 message.setMsg("商品已下架");

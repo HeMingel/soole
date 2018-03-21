@@ -1,27 +1,30 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_specification_detail_group")
 public class SlSpecificationDetailGroup implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 规格明细唯一标识符
      */
     @Column(name = "specification_detail_id")
     private String specificationDetailId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
