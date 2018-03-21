@@ -54,7 +54,7 @@ public class Oauth2Config {
                     // 不拦截授权接口
                     .antMatchers("/oauth/**").permitAll()
                     // 不拦截SwaggerUi
-                    .antMatchers("/swagger-ui.html", "/swagger-resources/**").permitAll()
+                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**").permitAll()
                     // 不拦截登录接口
                     .antMatchers("/api/common/v1/system/login").permitAll()
                     // 不拦截注册接口

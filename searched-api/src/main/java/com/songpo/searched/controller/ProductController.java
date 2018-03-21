@@ -34,7 +34,7 @@ public class ProductController {
      * @param pageSize  容量
      * @return 商品分页列表
      */
-    @ApiOperation(value = "根据活动唯一标识符分页查询商品列表")
+    @ApiOperation(value = "根据销售模式查询商品列表")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
             @ApiImplicitParam(name = "salesMode", value = "销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚", paramType = "form"),
