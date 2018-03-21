@@ -32,7 +32,7 @@ token是我们获取的授权令牌，可以通过获取当前时间戳和过期
 判断当前时间是否大于或等于过期时间戳
 
 ```
-请求地址：http://localhost:8080/oauth/check_token?token=1cfc3404-056d-4ce3-a882-377eacf82e61
+请求地址：http://api1.搜了.com/sl/oauth/check_token?token=1cfc3404-056d-4ce3-a882-377eacf82e61
 响应结果：
 {
      "scope": [
