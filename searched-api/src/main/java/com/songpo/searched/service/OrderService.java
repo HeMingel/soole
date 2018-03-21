@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlProductRepository;
@@ -35,7 +36,7 @@ public class OrderService {
      * @param orderDetail
      * @return
      */
-    public BusinessMessage addOrder(SlOrder slOrder, List<SlOrderDetail> orderDetail) {
+    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail) {
         Logger log = LoggerFactory.getLogger(SlOrderDetail.class);
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
@@ -47,12 +48,13 @@ public class OrderService {
                 }});
                 if (null != user) {
                     if (StringUtils.hasLength(slOrder.getShippngAddressId())) {
+                        slOrder.setId(UUID.randomUUID().toString());
                         slOrder.setSerialNumber(OrderNumGeneration.getOrderIdByUUId());// 生成订单编号
                         orderMapper.insertSelective(slOrder);
-                        for (SlOrderDetail slOrderDetail : orderDetail) {
-                            if (StringUtils.hasLength(slOrderDetail.getProductId())) {
+                        for (SlOrderDetail slOrderDetail : orderDetail.getSlOrderDetails()) {
+                            if (null != slOrderDetail.getRepositoryId()) {
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                    setId(slOrderDetail.getProductId());
+                                    setId(slOrderDetail.getRepositoryId()); // 根据仓库ID 去查询商品的详细信息(选好规格的价格,金豆等等)
                                 }});
                                 if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
@@ -62,7 +64,7 @@ public class OrderService {
                                         setOrderId(slOrder.getId()); // 订单ID
                                         setQuantity(slOrderDetail.getQuantity()); // 商品数量
                                         setPrice(repository.getPrice()); // 单个商品价格
-                                        setProductId(slOrderDetail.getProductId());// 商品ID
+                                        setProductId(repository.getProductId());// 商品ID
                                         setShopId(repository.getShopId());// 店铺唯一标识
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
                                         setDeductPulse(repository.getPulse()); // 扣除单个商品了豆数量
@@ -81,6 +83,9 @@ public class OrderService {
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
                         }}, example);
+                        message.setData(1);
+                        message.setSuccess(true);
+                        message.setMsg("创建订单成功");
                     } else {
                         message.setMsg("收货地址不能为空");
                     }
