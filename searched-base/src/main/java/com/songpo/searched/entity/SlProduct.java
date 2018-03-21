@@ -1,7 +1,8 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -83,6 +84,24 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "sales_volume")
     private Integer salesVolume;
+
+    /**
+     * 参考价格
+     */
+    @Column(name = "reference_price")
+    private BigDecimal referencePrice;
+
+    /**
+     * 销售模式唯一标识符
+     */
+    @Column(name = "sales_model_id")
+    private String salesModelId;
+
+    /**
+     * 店铺唯一标识符
+     */
+    @Column(name = "shop_id")
+    private String shopId;
 
     private static final long serialVersionUID = 1L;
 
@@ -338,6 +357,60 @@ public class SlProduct implements Serializable {
         this.salesVolume = salesVolume;
     }
 
+    /**
+     * 获取参考价格
+     *
+     * @return reference_price - 参考价格
+     */
+    public BigDecimal getReferencePrice() {
+        return referencePrice;
+    }
+
+    /**
+     * 设置参考价格
+     *
+     * @param referencePrice 参考价格
+     */
+    public void setReferencePrice(BigDecimal referencePrice) {
+        this.referencePrice = referencePrice;
+    }
+
+    /**
+     * 获取销售模式唯一标识符
+     *
+     * @return sales_model_id - 销售模式唯一标识符
+     */
+    public String getSalesModelId() {
+        return salesModelId;
+    }
+
+    /**
+     * 设置销售模式唯一标识符
+     *
+     * @param salesModelId 销售模式唯一标识符
+     */
+    public void setSalesModelId(String salesModelId) {
+        this.salesModelId = salesModelId == null ? null : salesModelId.trim();
+    }
+
+    /**
+     * 获取店铺唯一标识符
+     *
+     * @return shop_id - 店铺唯一标识符
+     */
+    public String getShopId() {
+        return shopId;
+    }
+
+    /**
+     * 设置店铺唯一标识符
+     *
+     * @param shopId 店铺唯一标识符
+     */
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -358,6 +431,9 @@ public class SlProduct implements Serializable {
         sb.append(", soldOut=").append(soldOut);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
+        sb.append(", referencePrice=").append(referencePrice);
+        sb.append(", salesModelId=").append(salesModelId);
+        sb.append(", shopId=").append(shopId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

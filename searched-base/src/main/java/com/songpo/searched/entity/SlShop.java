@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
@@ -51,26 +51,25 @@ public class SlShop implements Serializable {
     private BigDecimal latitude;
 
     /**
-     * 创建人
+     * 总销售额
      */
-    private String creator;
+    @Column(name = "total_sales")
+    private BigDecimal totalSales;
 
     /**
-     * 创建时间
+     * 资金
      */
-    @Column(name = "create_time")
-    private String createTime;
+    private BigDecimal money;
 
     /**
-     * 修改人
+     * 金币
      */
-    private String modifier;
+    private Integer coin;
 
     /**
-     * 修改时间
+     * 银币
      */
-    @Column(name = "modification_time")
-    private String modificationTime;
+    private Integer silver;
 
     private static final long serialVersionUID = 1L;
 
@@ -219,75 +218,75 @@ public class SlShop implements Serializable {
     }
 
     /**
-     * 获取创建人
+     * 获取总销售额
      *
-     * @return creator - 创建人
+     * @return total_sales - 总销售额
      */
-    public String getCreator() {
-        return creator;
+    public BigDecimal getTotalSales() {
+        return totalSales;
     }
 
     /**
-     * 设置创建人
+     * 设置总销售额
      *
-     * @param creator 创建人
+     * @param totalSales 总销售额
      */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setTotalSales(BigDecimal totalSales) {
+        this.totalSales = totalSales;
     }
 
     /**
-     * 获取创建时间
+     * 获取资金
      *
-     * @return create_time - 创建时间
+     * @return money - 资金
      */
-    public String getCreateTime() {
-        return createTime;
+    public BigDecimal getMoney() {
+        return money;
     }
 
     /**
-     * 设置创建时间
+     * 设置资金
      *
-     * @param createTime 创建时间
+     * @param money 资金
      */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
     /**
-     * 获取修改人
+     * 获取金币
      *
-     * @return modifier - 修改人
+     * @return coin - 金币
      */
-    public String getModifier() {
-        return modifier;
+    public Integer getCoin() {
+        return coin;
     }
 
     /**
-     * 设置修改人
+     * 设置金币
      *
-     * @param modifier 修改人
+     * @param coin 金币
      */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
+    public void setCoin(Integer coin) {
+        this.coin = coin;
     }
 
     /**
-     * 获取修改时间
+     * 获取银币
      *
-     * @return modification_time - 修改时间
+     * @return silver - 银币
      */
-    public String getModificationTime() {
-        return modificationTime;
+    public Integer getSilver() {
+        return silver;
     }
 
     /**
-     * 设置修改时间
+     * 设置银币
      *
-     * @param modificationTime 修改时间
+     * @param silver 银币
      */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
+    public void setSilver(Integer silver) {
+        this.silver = silver;
     }
 
     @Override
@@ -304,10 +303,10 @@ public class SlShop implements Serializable {
         sb.append(", address=").append(address);
         sb.append(", longitude=").append(longitude);
         sb.append(", latitude=").append(latitude);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", totalSales=").append(totalSales);
+        sb.append(", money=").append(money);
+        sb.append(", coin=").append(coin);
+        sb.append(", silver=").append(silver);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

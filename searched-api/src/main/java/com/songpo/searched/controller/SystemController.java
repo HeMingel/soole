@@ -19,11 +19,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author liuso
@@ -90,8 +87,8 @@ public class SystemController {
                 } else {
                     SlUser finalUser = user;
                     message.setData(new HashMap<String, String>() {{
-                        put("clientId", finalUser.getPhone());
-                        put("clientSecret", finalUser.getSecret());
+                        put("clientId", finalUser.getClientId());
+                        put("clientSecret", finalUser.getClientSecret());
                     }});
                     message.setSuccess(true);
                 }
@@ -137,9 +134,6 @@ public class SystemController {
                     user = new SlUser();
                     user.setPhone(phone);
                     user.setPassword(passwordEncoder.encode(password));
-                    user.setSecret(UUID.randomUUID().toString());
-                    user.setCreator("admin");
-                    user.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                     // 添加
                     userService.insertSelective(user);
@@ -161,7 +155,7 @@ public class SystemController {
      * @return
      */
     @ApiOperation(value = "用户信息")
-    @GetMapping("uaa")
+    @GetMapping("user")
     public BusinessMessage<JSONObject> userInfo() {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         JSONObject data = new JSONObject();

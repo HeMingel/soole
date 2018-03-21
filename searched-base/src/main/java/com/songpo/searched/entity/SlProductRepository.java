@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -26,16 +26,16 @@ public class SlProductRepository implements Serializable {
     private String productId;
 
     /**
-     * 商品规格明细组合唯一标识符
+     * 商品规格属性序列号
      */
-    @Column(name = "specification_detail_group_id")
-    private String specificationDetailGroupId;
+    @Column(name = "product_detail_group_serial_number")
+    private String productDetailGroupSerialNumber;
 
     /**
-     * 商品规格明细组合名称
+     * 商品规格属性组合名称
      */
-    @Column(name = "specification_detail_group_name")
-    private String specificationDetailGroupName;
+    @Column(name = "product_detail_group_name")
+    private String productDetailGroupName;
 
     /**
      * 备注
@@ -194,39 +194,39 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取商品规格明细组合唯一标识符
+     * 获取商品规格属性序列号
      *
-     * @return specification_detail_group_id - 商品规格明细组合唯一标识符
+     * @return product_detail_group_serial_number - 商品规格属性序列号
      */
-    public String getSpecificationDetailGroupId() {
-        return specificationDetailGroupId;
+    public String getProductDetailGroupSerialNumber() {
+        return productDetailGroupSerialNumber;
     }
 
     /**
-     * 设置商品规格明细组合唯一标识符
+     * 设置商品规格属性序列号
      *
-     * @param specificationDetailGroupId 商品规格明细组合唯一标识符
+     * @param productDetailGroupSerialNumber 商品规格属性序列号
      */
-    public void setSpecificationDetailGroupId(String specificationDetailGroupId) {
-        this.specificationDetailGroupId = specificationDetailGroupId == null ? null : specificationDetailGroupId.trim();
+    public void setProductDetailGroupSerialNumber(String productDetailGroupSerialNumber) {
+        this.productDetailGroupSerialNumber = productDetailGroupSerialNumber == null ? null : productDetailGroupSerialNumber.trim();
     }
 
     /**
-     * 获取商品规格明细组合名称
+     * 获取商品规格属性组合名称
      *
-     * @return specification_detail_group_name - 商品规格明细组合名称
+     * @return product_detail_group_name - 商品规格属性组合名称
      */
-    public String getSpecificationDetailGroupName() {
-        return specificationDetailGroupName;
+    public String getProductDetailGroupName() {
+        return productDetailGroupName;
     }
 
     /**
-     * 设置商品规格明细组合名称
+     * 设置商品规格属性组合名称
      *
-     * @param specificationDetailGroupName 商品规格明细组合名称
+     * @param productDetailGroupName 商品规格属性组合名称
      */
-    public void setSpecificationDetailGroupName(String specificationDetailGroupName) {
-        this.specificationDetailGroupName = specificationDetailGroupName == null ? null : specificationDetailGroupName.trim();
+    public void setProductDetailGroupName(String productDetailGroupName) {
+        this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
     }
 
     /**
@@ -562,8 +562,8 @@ public class SlProductRepository implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
         sb.append(", productId=").append(productId);
-        sb.append(", specificationDetailGroupId=").append(specificationDetailGroupId);
-        sb.append(", specificationDetailGroupName=").append(specificationDetailGroupName);
+        sb.append(", productDetailGroupSerialNumber=").append(productDetailGroupSerialNumber);
+        sb.append(", productDetailGroupName=").append(productDetailGroupName);
         sb.append(", remark=").append(remark);
         sb.append(", price=").append(price);
         sb.append(", postFee=").append(postFee);

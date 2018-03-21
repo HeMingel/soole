@@ -43,6 +43,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile("org.apache.commons:commons-lang3:$commonsLang3Version")
 
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.2'
+
     // 业务模型校验
     // https://mvnrepository.com/artifact/com.baidu.unbiz/fluent-validator
     compile('com.baidu.unbiz:fluent-validator:1.0.9') {

@@ -1,14 +1,10 @@
 package com.songpo.searched.controller;
 
-import com.songpo.searched.entity.SlAction;
 import com.songpo.searched.entity.SlSpecification;
-import com.songpo.searched.service.ActionService;
 import com.songpo.searched.service.SpecificationService;
-import com.songpo.searched.validator.ActionValidator;
 import com.songpo.searched.validator.SpecificationValidator;
 import io.swagger.annotations.Api;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -21,6 +21,14 @@ public interface CmProductMapper {
      */
     List<Map<String, Object>> selectAll(@Param("name") String name, @Param("actionId") String actionId);
 
+    /**
+     * 查询拼团商品
+     *
+     * @param actionId 拼团活动唯一标识符
+     * @return
+     */
+    List<Map<String, Object>> selectTeamworkProduct(String actionId);
+
     //List<ProductDto> findGoods(String name);
 
     List<ProductDto> findRecommendProduct();
@@ -32,4 +40,5 @@ public interface CmProductMapper {
     Map goodsBaseDetail(String goodsId);
 
     Map goodsImageUrl(String goodsId);
+
 }

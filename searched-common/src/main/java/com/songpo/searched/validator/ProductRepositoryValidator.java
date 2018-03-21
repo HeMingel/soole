@@ -42,11 +42,11 @@ public class ProductRepositoryValidator extends ValidatorHandler<SlProductReposi
             flag = false;
         } else {
             // 校验字段
-            if (StringUtils.isEmpty(t.getSpecificationDetailGroupId())) {
+            if (StringUtils.isEmpty(t.getProductDetailGroupSerialNumber())) {
                 context.addError(new ValidationError() {{
-                    setErrorMsg("商品规格属性组唯一标识符为空");
+                    setErrorMsg("商品规格属性组序列号为空");
                     setField("specificationDetailGroupId");
-                    setInvalidValue(t.getSpecificationDetailGroupId());
+                    setInvalidValue(t.getProductDetailGroupSerialNumber());
                 }});
                 flag = false;
             } else if (StringUtils.isEmpty(t.getProductId())) {

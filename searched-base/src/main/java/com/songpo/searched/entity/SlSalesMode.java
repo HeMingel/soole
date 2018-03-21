@@ -1,10 +1,13 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
-@Table(name = "sl_action")
-public class SlAction implements Serializable {
+@Table(name = "sl_sales_mode")
+public class SlSalesMode implements Serializable {
     /**
      * 唯一标识符
      */
@@ -13,12 +16,12 @@ public class SlAction implements Serializable {
     private String id;
 
     /**
-     * 活动名称
+     * 名称
      */
     private String name;
 
     /**
-     * 活动备注
+     * 备注
      */
     private String remark;
 
@@ -43,36 +46,36 @@ public class SlAction implements Serializable {
     }
 
     /**
-     * 获取活动名称
+     * 获取名称
      *
-     * @return name - 活动名称
+     * @return name - 名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置活动名称
+     * 设置名称
      *
-     * @param name 活动名称
+     * @param name 名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
 
     /**
-     * 获取活动备注
+     * 获取备注
      *
-     * @return remark - 活动备注
+     * @return remark - 备注
      */
     public String getRemark() {
         return remark;
     }
 
     /**
-     * 设置活动备注
+     * 设置备注
      *
-     * @param remark 活动备注
+     * @param remark 备注
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();

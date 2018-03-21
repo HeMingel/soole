@@ -1,8 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_member")
 public class SlMember implements Serializable {
@@ -18,21 +17,6 @@ public class SlMember implements Serializable {
      */
     @Column(name = "user_id")
     private String userId;
-
-    /**
-     * 金豆
-     */
-    private Integer coin;
-
-    /**
-     * 银豆
-     */
-    private Integer silver;
-
-    /**
-     * 余额
-     */
-    private BigDecimal money;
 
     /**
      * 等级
@@ -108,60 +92,6 @@ public class SlMember implements Serializable {
      */
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
-
-    /**
-     * 获取金豆
-     *
-     * @return coin - 金豆
-     */
-    public Integer getCoin() {
-        return coin;
-    }
-
-    /**
-     * 设置金豆
-     *
-     * @param coin 金豆
-     */
-    public void setCoin(Integer coin) {
-        this.coin = coin;
-    }
-
-    /**
-     * 获取银豆
-     *
-     * @return silver - 银豆
-     */
-    public Integer getSilver() {
-        return silver;
-    }
-
-    /**
-     * 设置银豆
-     *
-     * @param silver 银豆
-     */
-    public void setSilver(Integer silver) {
-        this.silver = silver;
-    }
-
-    /**
-     * 获取余额
-     *
-     * @return money - 余额
-     */
-    public BigDecimal getMoney() {
-        return money;
-    }
-
-    /**
-     * 设置余额
-     *
-     * @param money 余额
-     */
-    public void setMoney(BigDecimal money) {
-        this.money = money;
     }
 
     /**
@@ -298,9 +228,6 @@ public class SlMember implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
-        sb.append(", coin=").append(coin);
-        sb.append(", silver=").append(silver);
-        sb.append(", money=").append(money);
         sb.append(", level=").append(level);
         sb.append(", exp=").append(exp);
         sb.append(", isPush=").append(isPush);

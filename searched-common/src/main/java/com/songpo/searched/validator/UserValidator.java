@@ -5,12 +5,11 @@ import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.service.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -81,9 +80,8 @@ public class UserValidator extends ValidatorHandler<SlUser> {
                     }});
                     flag = false;
                 } else {
-                    t.setSecret(UUID.randomUUID().toString());
-                    // 设置创建时间
-                    t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    t.setClientId(RandomStringUtils.random(16, true, true));
+                    t.setClientSecret(UUID.randomUUID().toString());
                 }
             } catch (Exception e) {
                 logger.error("校验失败：{}", e);

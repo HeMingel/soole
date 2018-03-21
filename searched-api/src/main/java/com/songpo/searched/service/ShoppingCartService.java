@@ -110,7 +110,7 @@ public class ShoppingCartService {
                                 /**
                                  * 查询规格名称 返回null的话 前台就显示失效
                                  */
-                                cmGoods.setSpecificationName(repository.getSpecificationDetailGroupName());
+                                cmGoods.setSpecificationName(repository.getProductDetailGroupName());
                                 list.add(cmGoods);
                             } else
                             {

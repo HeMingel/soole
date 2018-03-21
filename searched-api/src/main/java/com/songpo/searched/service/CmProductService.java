@@ -57,6 +57,32 @@ public class CmProductService {
         return new PageInfo<>(list);
     }
 
+    /**
+     * 拼团商品列表
+     *
+     * @param actionId 活动唯一标识符
+     * @param pageNum  页码
+     * @param pageSize 容量
+     * @return 商品分页列表
+     */
+    public PageInfo<Map<String, Object>> selectTeamworkProduct(String actionId, Integer pageNum, Integer pageSize) {
+        log.debug("根据活动唯一标识符查询商品列表，活动唯一标识符：{}，页码：{}，容量：{}", actionId, pageNum, pageSize);
+        if (null == pageNum || pageNum <= 1) {
+            pageNum = 1;
+        }
+
+        if (null == pageSize || pageSize <= 1) {
+            pageSize = 10;
+        }
+
+        // 设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+
+        // 执行查询
+        List<Map<String, Object>> list = this.mapper.selectTeamworkProduct(actionId);
+
+        return new PageInfo<>(list);
+    }
 
     /**
      * 商品分类首页推荐商品
@@ -152,4 +178,6 @@ public class CmProductService {
         }
         return businessMessage;
     }
+
+
 }

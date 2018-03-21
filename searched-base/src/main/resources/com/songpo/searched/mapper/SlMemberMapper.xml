@@ -7,9 +7,6 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="coin" jdbcType="DECIMAL" property="coin" />
-    <result column="silver" jdbcType="DECIMAL" property="silver" />
-    <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="level" jdbcType="DECIMAL" property="level" />
     <result column="exp" jdbcType="DECIMAL" property="exp" />
     <result column="is_push" jdbcType="BIT" property="isPush" />
@@ -22,7 +19,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, coin, silver, money, level, exp, is_push, creator, create_time, modifier, 
-    modification_time
+      id, user_id, level, exp, is_push, creator, create_time, modifier, modification_time
   </sql>
 </mapper>

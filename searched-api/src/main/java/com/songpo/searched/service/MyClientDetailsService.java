@@ -43,10 +43,10 @@ public class MyClientDetailsService implements ClientDetailsService {
 
         if (null != user) {
             details = new BaseClientDetails();
-            details.setClientId(clientId);
-            details.setClientSecret(user.getSecret());
-            // 默认7200秒
-            details.setAccessTokenValiditySeconds(7200);
+            details.setClientId(user.getClientId());
+            details.setClientSecret(user.getClientSecret());
+            // 默认保存15天
+            details.setAccessTokenValiditySeconds(60 * 60 * 24 * 15);
             details.setAuthorizedGrantTypes(Arrays.asList("client_credentials", "password", "implicit", "authorization_code"));
             details.setScope(StringUtils.commaDelimitedListToSet("read"));
         }

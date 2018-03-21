@@ -128,7 +128,7 @@ public class CustomerClientHomeService {
         }});
         if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent()))
         {
-            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", teamworkType.getContent(), 1, 10);
+            PageInfo<Map<String, Object>> products = this.cmProductService.selectTeamworkProduct(teamworkType.getContent(), 1, 10);
             data.put("teamworkProducts", products);
         }
 
@@ -138,8 +138,9 @@ public class CustomerClientHomeService {
         }});
         if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
         {
-            PageInfo<Map<String, Object>> products = this.cmProductService.selectAll("", preSaleType.getContent(), 1, 10);
-            data.put("preSaleProducts", products);
+            // TODO 待修改
+//            PageInfo<Map<String, Object>> products = this.cmProductService.selectPreSaleTypeProduct(preSaleType.getContent(), 1, 10);
+//            data.put("preSaleProducts", products);
         }
 
         return data;
@@ -224,7 +225,7 @@ public class CustomerClientHomeService {
                                 /**
                                  * 查询标签名称 返回null的话 前台就显示失效
                                  */
-                                CMGoods.setSpecificationName(repository.getSpecificationDetailGroupName());
+                                CMGoods.setSpecificationName(repository.getProductDetailGroupName());
                                 list.add(CMGoods);
                             }
                         }

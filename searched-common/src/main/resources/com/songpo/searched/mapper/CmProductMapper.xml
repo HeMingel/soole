@@ -38,10 +38,22 @@
         <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
     </resultMap>
 
-    <select id="selectAll" resultType="Map">
-        SELECT * FROM sl_product p, sl_action_product ap WHERE p.id = ap.product_id AND ap.action_id = #{actionId}
+    <!-- 根据活动标识查询商品 -->
+    <select id="selectTeamworkProduct" resultType="Map">
+        SELECT
+        p.name,
+        p.image_url AS imageUrl,
+        p.price,
+        COUNT(od.order_id) as orderCount
+        FROM sl_product p LEFT JOIN sl_action_product ap ON ap.product_id == p.id LEFT JOIN sl_order_detail od ON
+        od.product_id = p.id
+        <where>
+            WHERE 1 = 1
+            <if test="name != null and name != ''">
+                AND ap.action_id = #{actionId}
+            </if>
+        </where>
     </select>
-
 
     <!--根据商品名称查询商品
     <select id="findGoods" parameterType="String" resultMap="BaseResultMap">
@@ -76,7 +88,7 @@
         LEFT JOIN sl_repository r
         ON p.`id`= r.product_id
         WHERE 1=1
-        <if test="goodsName != null and goodsName ! ''">
+        <if test="goodsName != null and goodsName != ''">
             p.`name` = #{goodsName}
         </if>
         <if test="goodsType != null and goodsType !=''">
@@ -137,6 +149,7 @@
         ON p.id = spi.`product_id`
         where p.id= #{goodsId}
     </select>
+
 </mapper>
 
 

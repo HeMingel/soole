@@ -18,22 +18,22 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="secret" jdbcType="VARCHAR" property="secret" />
     <result column="describtion" jdbcType="VARCHAR" property="describtion" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="industry" jdbcType="VARCHAR" property="industry" />
     <result column="group_var" jdbcType="TINYINT" property="groupVar" />
+      <result column="coin" jdbcType="INTEGER" property="coin"/>
+      <result column="silver" jdbcType="INTEGER" property="silver"/>
+      <result column="money" jdbcType="DECIMAL" property="money"/>
+      <result column="client_id" jdbcType="VARCHAR" property="clientId"/>
+      <result column="client_secret" jdbcType="VARCHAR" property="clientSecret"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
-    birthday, phone, email, avatar, secret, describtion, creator, create_time, modifier, 
-    modification_time, address, industry, group_var
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
+      birthday, phone, email, avatar, describtion, address, industry, group_var, coin,
+      silver, money, client_id, client_secret
   </sql>
 </mapper>

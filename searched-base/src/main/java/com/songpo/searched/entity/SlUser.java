@@ -1,7 +1,8 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -77,36 +78,9 @@ public class SlUser implements Serializable {
     private String avatar;
 
     /**
-     * 密钥
-     */
-    private String secret;
-
-    /**
      * 个性签名描述
      */
     private String describtion;
-
-    /**
-     * 创建人
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
 
     /**
      * 用户常用地址
@@ -117,6 +91,33 @@ public class SlUser implements Serializable {
 
     @Column(name = "group_var")
     private Byte groupVar;
+
+    /**
+     * 金币
+     */
+    private Integer coin;
+
+    /**
+     * 银币
+     */
+    private Integer silver;
+
+    /**
+     * 余额
+     */
+    private BigDecimal money;
+
+    /**
+     * 客户端标识
+     */
+    @Column(name = "client_id")
+    private String clientId;
+
+    /**
+     * 客户端密钥
+     */
+    @Column(name = "client_secret")
+    private String clientSecret;
 
     private static final long serialVersionUID = 1L;
 
@@ -355,24 +356,6 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取密钥
-     *
-     * @return secret - 密钥
-     */
-    public String getSecret() {
-        return secret;
-    }
-
-    /**
-     * 设置密钥
-     *
-     * @param secret 密钥
-     */
-    public void setSecret(String secret) {
-        this.secret = secret == null ? null : secret.trim();
-    }
-
-    /**
      * 获取个性签名描述
      *
      * @return describtion - 个性签名描述
@@ -388,78 +371,6 @@ public class SlUser implements Serializable {
      */
     public void setDescribtion(String describtion) {
         this.describtion = describtion == null ? null : describtion.trim();
-    }
-
-    /**
-     * 获取创建人
-     *
-     * @return creator - 创建人
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 设置创建人
-     *
-     * @param creator 创建人
-     */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
     /**
@@ -508,6 +419,96 @@ public class SlUser implements Serializable {
         this.groupVar = groupVar;
     }
 
+    /**
+     * 获取金币
+     *
+     * @return coin - 金币
+     */
+    public Integer getCoin() {
+        return coin;
+    }
+
+    /**
+     * 设置金币
+     *
+     * @param coin 金币
+     */
+    public void setCoin(Integer coin) {
+        this.coin = coin;
+    }
+
+    /**
+     * 获取银币
+     *
+     * @return silver - 银币
+     */
+    public Integer getSilver() {
+        return silver;
+    }
+
+    /**
+     * 设置银币
+     *
+     * @param silver 银币
+     */
+    public void setSilver(Integer silver) {
+        this.silver = silver;
+    }
+
+    /**
+     * 获取余额
+     *
+     * @return money - 余额
+     */
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    /**
+     * 设置余额
+     *
+     * @param money 余额
+     */
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    /**
+     * 获取客户端标识
+     *
+     * @return client_id - 客户端标识
+     */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
+     * 设置客户端标识
+     *
+     * @param clientId 客户端标识
+     */
+    public void setClientId(String clientId) {
+        this.clientId = clientId == null ? null : clientId.trim();
+    }
+
+    /**
+     * 获取客户端密钥
+     *
+     * @return client_secret - 客户端密钥
+     */
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    /**
+     * 设置客户端密钥
+     *
+     * @param clientSecret 客户端密钥
+     */
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret == null ? null : clientSecret.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -527,15 +528,15 @@ public class SlUser implements Serializable {
         sb.append(", phone=").append(phone);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
-        sb.append(", secret=").append(secret);
         sb.append(", describtion=").append(describtion);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", address=").append(address);
         sb.append(", industry=").append(industry);
         sb.append(", groupVar=").append(groupVar);
+        sb.append(", coin=").append(coin);
+        sb.append(", silver=").append(silver);
+        sb.append(", money=").append(money);
+        sb.append(", clientId=").append(clientId);
+        sb.append(", clientSecret=").append(clientSecret);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
