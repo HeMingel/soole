@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
 
 /**
  * @author liuso
@@ -140,6 +143,14 @@ public class SystemController {
                         user = new SlUser();
                         user.setPhone(phone);
                         user.setPassword(passwordEncoder.encode(password));
+
+                        // 定义生成字符串范围
+                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}, {'=', '!', '@', '#', '$'}};
+                        // 初始化随机生成器
+                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(DIGITS).build();
+
+                        user.setClientId(generator.generate(16));
+                        user.setPassword(generator.generate(64));
 
                         // 添加
                         userService.insertSelective(user);
