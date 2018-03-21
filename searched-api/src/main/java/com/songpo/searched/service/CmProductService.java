@@ -132,7 +132,7 @@ public class CmProductService {
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
                 if(goodsType != null || screenType != null || name != null){
-                    List<Map<String, Object>> list  = this.mapper.screenGoods(goodsType, screenType,name);
+                    List<ProductDto> list = this.mapper.screenGoods(goodsType, screenType, name);
                     if (list.size() > 0) {
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);
