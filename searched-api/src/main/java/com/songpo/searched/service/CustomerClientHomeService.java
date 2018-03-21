@@ -123,25 +123,12 @@ public class CustomerClientHomeService {
         }
 
         // 获取拼团商品列表
-        SlSystemConfig teamworkType = this.systemConfigService.selectOne(new SlSystemConfig() {{
-            setName("TEAMWORK_PRODUCT");
-        }});
-        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent()))
-        {
-            PageInfo<Map<String, Object>> products = this.cmProductService.selectTeamworkProduct(teamworkType.getContent(), 1, 10);
-            data.put("teamworkProducts", products);
-        }
+        PageInfo<SlProduct> teamworkProducts = this.cmProductService.selectBySalesMode("", 2, 1, 10);
+        data.put("teamworkProducts", teamworkProducts);
 
         // 获取预售商品列表
-        SlSystemConfig preSaleType = this.systemConfigService.selectOne(new SlSystemConfig() {{
-            setName("PRE_SALE_PRODUCT");
-        }});
-        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
-        {
-            // TODO 待修改
-//            PageInfo<Map<String, Object>> products = this.cmProductService.selectPreSaleTypeProduct(preSaleType.getContent(), 1, 10);
-//            data.put("preSaleProducts", products);
-        }
+        PageInfo<SlProduct> preSaleProducts = this.cmProductService.selectBySalesMode("", 4, 1, 10);
+        data.put("preSaleProducts", preSaleProducts);
 
         return data;
     }

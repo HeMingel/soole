@@ -41,7 +41,7 @@ public class SlUser implements Serializable {
     private String name;
 
     /**
-     * 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     * 证件类型 1.身份证 2.护照
      */
     @Column(name = "card_type")
     private Boolean cardType;
@@ -230,18 +230,18 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     * 获取证件类型 1.身份证 2.护照
      *
-     * @return card_type - 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     * @return card_type - 证件类型 1.身份证 2.护照
      */
     public Boolean getCardType() {
         return cardType;
     }
 
     /**
-     * 设置证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     * 设置证件类型 1.身份证 2.护照
      *
-     * @param cardType 证件类型  1.身份证   2.驾驶证  3.军官证  4.护照
+     * @param cardType 证件类型 1.身份证 2.护照
      */
     public void setCardType(Boolean cardType) {
         this.cardType = cardType;

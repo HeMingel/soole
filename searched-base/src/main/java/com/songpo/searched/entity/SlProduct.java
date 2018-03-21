@@ -92,16 +92,28 @@ public class SlProduct implements Serializable {
     private BigDecimal referencePrice;
 
     /**
-     * 销售模式唯一标识符
+     * 参考豆子
      */
-    @Column(name = "sales_model_id")
-    private String salesModelId;
+    @Column(name = "reference_pulse")
+    private Integer referencePulse;
+
+    /**
+     * 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     */
+    @Column(name = "sales_model")
+    private Integer salesModel;
 
     /**
      * 店铺唯一标识符
      */
     @Column(name = "shop_id")
     private String shopId;
+
+    /**
+     * 销售类型:5钱6乐豆7钱+了豆
+     */
+    @Column(name = "sale_type")
+    private Integer saleType;
 
     private static final long serialVersionUID = 1L;
 
@@ -376,21 +388,39 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销售模式唯一标识符
+     * 获取参考豆子
      *
-     * @return sales_model_id - 销售模式唯一标识符
+     * @return reference_pulse - 参考豆子
      */
-    public String getSalesModelId() {
-        return salesModelId;
+    public Integer getReferencePulse() {
+        return referencePulse;
     }
 
     /**
-     * 设置销售模式唯一标识符
+     * 设置参考豆子
      *
-     * @param salesModelId 销售模式唯一标识符
+     * @param referencePulse 参考豆子
      */
-    public void setSalesModelId(String salesModelId) {
-        this.salesModelId = salesModelId == null ? null : salesModelId.trim();
+    public void setReferencePulse(Integer referencePulse) {
+        this.referencePulse = referencePulse;
+    }
+
+    /**
+     * 获取销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     *
+     * @return sales_model - 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     */
+    public Integer getSalesModel() {
+        return salesModel;
+    }
+
+    /**
+     * 设置销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     *
+     * @param salesModel 销售模式  1:普通 2：人气拼团 3：随心购 4、预售 5、豆赚 6、优品赚
+     */
+    public void setSalesModel(Integer salesModel) {
+        this.salesModel = salesModel;
     }
 
     /**
@@ -409,6 +439,24 @@ public class SlProduct implements Serializable {
      */
     public void setShopId(String shopId) {
         this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    /**
+     * 获取销售类型:5钱6乐豆7钱+了豆
+     *
+     * @return sale_type - 销售类型:5钱6乐豆7钱+了豆
+     */
+    public Integer getSaleType() {
+        return saleType;
+    }
+
+    /**
+     * 设置销售类型:5钱6乐豆7钱+了豆
+     *
+     * @param saleType 销售类型:5钱6乐豆7钱+了豆
+     */
+    public void setSaleType(Integer saleType) {
+        this.saleType = saleType;
     }
 
     @Override
@@ -432,8 +480,10 @@ public class SlProduct implements Serializable {
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
         sb.append(", referencePrice=").append(referencePrice);
-        sb.append(", salesModelId=").append(salesModelId);
+        sb.append(", referencePulse=").append(referencePulse);
+        sb.append(", salesModel=").append(salesModel);
         sb.append(", shopId=").append(shopId);
+        sb.append(", saleType=").append(saleType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
