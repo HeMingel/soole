@@ -1,6 +1,7 @@
 package com.songpo.searched.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlUser;
@@ -38,6 +39,9 @@ public class SystemController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SmsVerifyCodeCache smsVerifyCodeCache;
 
     /**
      * 登录
@@ -118,32 +122,39 @@ public class SystemController {
             message.setMsg("账号为空");
         } else if (StringUtils.isEmpty(password)) {
             message.setMsg("密码为空");
+        } else if (StringUtils.isEmpty(code)) {
+            message.setMsg("短信验证码为空");
         } else {
-            try {
-                SlUser user = this.userService.selectOne(new SlUser() {{
-                    setPhone(phone);
-                }});
+            String cacheCode = smsVerifyCodeCache.get(phone);
+            if (StringUtils.isEmpty(cacheCode) || !code.contentEquals(cacheCode)) {
+                message.setMsg("短信验证码已过期，请重试");
+            } else {
+                try {
+                    SlUser user = this.userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
 
-                if (null != user) {
-                    message.setMsg("账号已存在");
-                } else {
-                    user = new SlUser();
-                    user.setPhone(phone);
-                    user.setPassword(passwordEncoder.encode(password));
+                    if (null != user) {
+                        message.setMsg("账号已存在");
+                    } else {
+                        user = new SlUser();
+                        user.setPhone(phone);
+                        user.setPassword(passwordEncoder.encode(password));
 
-                    // 添加
-                    userService.insertSelective(user);
+                        // 添加
+                        userService.insertSelective(user);
 
-                    JSONObject data = new JSONObject();
-                    data.put("clientId", user.getClientId());
-                    data.put("clientSecret", user.getClientSecret());
+                        JSONObject data = new JSONObject();
+                        data.put("clientId", user.getClientId());
+                        data.put("clientSecret", user.getClientSecret());
 
-                    message.setData(data);
-                    message.setSuccess(true);
+                        message.setData(data);
+                        message.setSuccess(true);
+                    }
+                } catch (Exception e) {
+                    log.error("注册失败：{}", e);
+                    message.setMsg("注册失败：" + e.getMessage());
                 }
-            } catch (Exception e) {
-                log.error("注册失败：{}", e);
-                message.setMsg("注册失败：" + e.getMessage());
             }
         }
         return message;
