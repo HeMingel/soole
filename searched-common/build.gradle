@@ -46,6 +46,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-text
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.2'
 
+    // 短信依赖
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-core', version: '3.2.8'
+    compile group: 'com.aliyun', name: 'aliyun-java-sdk-dysmsapi', version: '1.0.0'
+
     // 业务模型校验
     // https://mvnrepository.com/artifact/com.baidu.unbiz/fluent-validator
     compile('com.baidu.unbiz:fluent-validator:1.0.9') {

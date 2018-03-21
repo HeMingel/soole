@@ -10,8 +10,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,8 +39,6 @@ public class SystemController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private Logger logger = LoggerFactory.getLogger(SystemController.class);
-
     /**
      * 登录
      *
@@ -57,7 +53,7 @@ public class SystemController {
     })
     @PostMapping("login")
     public BusinessMessage<Map<String, String>> login(String phone, String password) {
-        logger.debug("用户登录，账号：{}，密码：{}", phone, password);
+        log.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
         if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
@@ -93,7 +89,7 @@ public class SystemController {
                     message.setSuccess(true);
                 }
             } catch (Exception e) {
-                logger.error("登录失败：{}", e);
+                log.error("登录失败：{}", e);
                 message.setMsg("登录失败：" + e.getMessage());
             }
         }
@@ -115,9 +111,9 @@ public class SystemController {
             @ApiImplicitParam(name = "code", value = "短信验证码", paramType = "form", required = true)
     })
     @PostMapping("register")
-    public BusinessMessage<SlUser> register(String phone, String password, String code) {
-        logger.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
-        BusinessMessage<SlUser> message = new BusinessMessage<>();
+    public BusinessMessage<JSONObject> register(String phone, String password, String code) {
+        log.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isEmpty(phone)) {
             message.setMsg("账号为空");
         } else if (StringUtils.isEmpty(password)) {
@@ -138,11 +134,15 @@ public class SystemController {
                     // 添加
                     userService.insertSelective(user);
 
-                    message.setData(user);
+                    JSONObject data = new JSONObject();
+                    data.put("clientId", user.getClientId());
+                    data.put("clientSecret", user.getClientSecret());
+
+                    message.setData(data);
                     message.setSuccess(true);
                 }
             } catch (Exception e) {
-                logger.error("注册失败：{}", e);
+                log.error("注册失败：{}", e);
                 message.setMsg("注册失败：" + e.getMessage());
             }
         }
