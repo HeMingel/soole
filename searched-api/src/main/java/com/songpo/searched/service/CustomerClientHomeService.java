@@ -123,25 +123,12 @@ public class CustomerClientHomeService {
         }
 
         // 获取拼团商品列表
-        SlSystemConfig teamworkType = this.systemConfigService.selectOne(new SlSystemConfig() {{
-            setName("TEAMWORK_PRODUCT");
-        }});
-        if (null != teamworkType && !StringUtils.isEmpty(teamworkType.getContent()))
-        {
-            PageInfo<Map<String, Object>> products = this.cmProductService.selectTeamworkProduct(teamworkType.getContent(), 1, 10);
-            data.put("teamworkProducts", products);
-        }
+        PageInfo<SlProduct> teamworkProducts = this.cmProductService.selectBySalesMode("", 2, 1, 10);
+        data.put("teamworkProducts", teamworkProducts);
 
         // 获取预售商品列表
-        SlSystemConfig preSaleType = this.systemConfigService.selectOne(new SlSystemConfig() {{
-            setName("PRE_SALE_PRODUCT");
-        }});
-        if (null != preSaleType && !StringUtils.isEmpty(preSaleType.getContent()))
-        {
-            // TODO 待修改
-//            PageInfo<Map<String, Object>> products = this.cmProductService.selectPreSaleTypeProduct(preSaleType.getContent(), 1, 10);
-//            data.put("preSaleProducts", products);
-        }
+        PageInfo<SlProduct> preSaleProducts = this.cmProductService.selectBySalesMode("", 4, 1, 10);
+        data.put("preSaleProducts", preSaleProducts);
 
         return data;
     }
@@ -166,7 +153,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<Map<String,Object>> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
+        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
         data.put("products", new PageInfo<>(productDtos));
         //banner图
         // 获取广告轮播图列表

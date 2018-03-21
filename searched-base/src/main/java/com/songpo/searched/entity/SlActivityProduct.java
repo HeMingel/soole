@@ -6,41 +6,48 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 活动唯一标识符
      */
     @Column(name = "activity_id")
     private String activityId;
+
     /**
      * 活动价格
      */
     private BigDecimal price;
+
     /**
      * 活动开始时间
      */
     @Column(name = "begin_time")
     private String beginTime;
+
     /**
      * 活动结束时间
      */
     @Column(name = "end_time")
     private String endTime;
+
     /**
      * 参与活动的商品数量
      */
     private Integer count;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

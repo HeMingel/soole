@@ -20,15 +20,17 @@
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
       <result column="reference_price" jdbcType="DECIMAL" property="referencePrice"/>
-      <result column="sales_model_id" jdbcType="VARCHAR" property="salesModelId"/>
+      <result column="reference_pulse" jdbcType="INTEGER" property="referencePulse"/>
+      <result column="sales_model" jdbcType="INTEGER" property="salesModel"/>
       <result column="shop_id" jdbcType="VARCHAR" property="shopId"/>
+      <result column="sale_type" jdbcType="INTEGER" property="saleType"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction,
-      detail, product_type_id, sold_out, comment_num, sales_volume, reference_price, sales_model_id,
-      shop_id
+      id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction,
+      detail, product_type_id, sold_out, comment_num, sales_volume, reference_price, reference_pulse,
+      sales_model, shop_id, sale_type
   </sql>
 </mapper>

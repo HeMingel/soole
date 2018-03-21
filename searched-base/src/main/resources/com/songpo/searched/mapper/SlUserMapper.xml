@@ -32,7 +32,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
+      id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
       birthday, phone, email, avatar, describtion, address, industry, group_var, coin,
       silver, money, client_id, client_secret
   </sql>

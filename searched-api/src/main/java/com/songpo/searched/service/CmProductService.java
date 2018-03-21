@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.ProductDto;
+import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +34,13 @@ public class CmProductService {
      * 根据活动唯一标识符分页查询商品列表
      *
      * @param name 商品名称
-     * @param actionId 活动唯一标识符
+     * @param salesMode 销售模式
      * @param pageNum 页码
      * @param pageSize 容量
      * @return 商品分页列表
      */
-    public PageInfo<Map<String, Object>> selectAll(String name, String actionId, Integer pageNum, Integer pageSize) {
-        log.debug("根据活动唯一标识符查询商品列表，活动唯一标识符：{}，页码：{}，容量：{}", actionId, pageNum, pageSize);
+    public PageInfo<SlProduct> selectBySalesMode(String name, Integer salesMode, Integer pageNum, Integer pageSize) {
+        log.debug("根据活动唯一标识符查询商品列表，名称：{}，销售模式：{}，页码：{}，容量：{}", name, salesMode, pageNum, pageSize);
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -48,11 +49,15 @@ public class CmProductService {
             pageSize = 10;
         }
 
+        if (null == salesMode || salesMode <= 1) {
+            salesMode = 1;
+        }
+
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectAll(name, actionId);
+        List<SlProduct> list = this.mapper.selectBySalesMode(name, salesMode);
 
         return new PageInfo<>(list);
     }
@@ -65,7 +70,7 @@ public class CmProductService {
      * @param pageSize 容量
      * @return 商品分页列表
      */
-    public PageInfo<Map<String, Object>> selectTeamworkProduct(String actionId, Integer pageNum, Integer pageSize) {
+    public PageInfo<SlProduct> selectByAction(String actionId, Integer pageNum, Integer pageSize) {
         log.debug("根据活动唯一标识符查询商品列表，活动唯一标识符：{}，页码：{}，容量：{}", actionId, pageNum, pageSize);
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
@@ -79,7 +84,7 @@ public class CmProductService {
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectTeamworkProduct(actionId);
+        List<SlProduct> list = this.mapper.selectByAction(actionId);
 
         return new PageInfo<>(list);
     }
@@ -127,7 +132,7 @@ public class CmProductService {
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
                 if(goodsType != null || screenType != null || name != null){
-                    List<Map<String, Object>> list  = this.mapper.screenGoods(goodsType, screenType,name);
+                    List<ProductDto> list = this.mapper.screenGoods(goodsType, screenType, name);
                     if (list.size() > 0) {
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);
@@ -177,4 +182,5 @@ public class CmProductService {
         }
         return businessMessage;
     }
+
 }

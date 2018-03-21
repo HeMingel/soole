@@ -10,21 +10,25 @@
     </resultMap>
 
 
-    <!-- 根据活动标识查询商品 -->
-    <select id="selectTeamworkProduct" resultType="Map">
-        SELECT
-        p.name,
-        p.image_url AS imageUrl,
-        p.price,
-        COUNT(od.order_id) as orderCount
-        FROM sl_product p LEFT JOIN sl_action_product ap ON ap.product_id == p.id LEFT JOIN sl_order_detail od ON
-        od.product_id = p.id
+    <!-- 根据销售模式查询商品 -->
+    <select id="selectBySalesMode" resultType="SlProduct">
+        SELECT * FROM sl_product p
         <where>
-            WHERE 1 = 1
             <if test="name != null and name != ''">
-                AND ap.action_id = #{actionId}
+                <bind name="pName" value="'%' + name + '%'"/>
+                AND p.name LIKE #{pName}
+            </if>
+            <if test="salesMode != null">
+                AND p.sales_mode = #{salesMode}
             </if>
         </where>
+    </select>
+
+    <!-- 根据活动唯一标识符查询商品 -->
+    <select id="selectByAction" resultType="slProduct">
+        SELECT *
+        FROM sl_product p LEFT JOIN sl_activity_product ap ON ap.product_id = p.id
+        WHERE ap.action_id = #{actionId}
     </select>
 
     <!--查询商品前六个 推荐-->
