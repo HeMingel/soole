@@ -25,6 +25,7 @@ public interface CmProductMapper {
 
     /**
      * 根据活动唯一标识符查询商品列表
+     *
      * @param actionId 活动唯一标识符
      * @return 商品集合
      */

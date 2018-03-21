@@ -53,7 +53,7 @@ public class CMGoods {
     /**
      * 商品标签Id
      */
-    private List<String> specificationId;
+    private String specificationId;
     /**
      * 规格名称
      */

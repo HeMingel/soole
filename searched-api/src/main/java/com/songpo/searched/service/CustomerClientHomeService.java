@@ -153,7 +153,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
+        List<Map<String,Object>> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
         data.put("products", new PageInfo<>(productDtos));
         //banner图
         // 获取广告轮播图列表

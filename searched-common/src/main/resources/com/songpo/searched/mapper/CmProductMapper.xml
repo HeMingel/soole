@@ -2,18 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
-    <resultMap id="BaseResultMap" type="com.songpo.searched.domain.ProductDto">
-        <id column="productId" jdbcType="VARCHAR" property="productId"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
-        <result column="detail" jdbcType="VARCHAR" property="detail"/>
-        <result column="price" jdbcType="DECIMAL" property="price"/>
-        <result column="comment_num" jdbcType="INTEGER" property="commentNum"/>
-        <result column="sale_num" jdbcType="INTEGER" property="saleNum"/>
-        <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
-        <result column="sale_type" jdbcType="INTEGER" property="saleType"/>
-    </resultMap>
 
     <resultMap id="RecommendResultMap" type="com.songpo.searched.domain.ProductDto">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
@@ -21,22 +9,6 @@
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
     </resultMap>
 
-    <resultMap id="ResultMap" type="com.songpo.searched.domain.ProductDto">
-        <id column="productId" jdbcType="VARCHAR" property="productId"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
-        <result column="detail" jdbcType="VARCHAR" property="detail"/>
-        <result column="price" jdbcType="DECIMAL" property="price"/>
-        <result column="reference_price" jdbcType="DECIMAL" property="referencePrice"/>
-        <result column="cost_price" jdbcType="DECIMAL" property="costPrice"/>
-        <result column="collage_price" jdbcType="DECIMAL" property="collagePrice"/>
-        <result column="personal_price" jdbcType="DECIMAL" property="personalPrice"/>
-        <result column="price_spike" jdbcType="DECIMAL" property="priceSpike"/>
-        <result column="weight" jdbcType="DECIMAL" property="weight"/>
-        <result column="isShip" jdbcType="BIT" property="isship"/>
-        <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId"/>
-    </resultMap>
 
     <!-- 根据销售模式查询商品 -->
     <select id="selectBySalesMode" resultType="SlProduct">
@@ -59,69 +31,47 @@
         WHERE ap.action_id = #{actionId}
     </select>
 
-    <!--根据商品名称查询商品
-    <select id="findGoods" parameterType="String" resultMap="BaseResultMap">
-        SELECT
-        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
-        productTypeId,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
-        FROM sl_product p
-        LEFT JOIN sl_repository r
-        ON p.`id`= r.product_id
-        WHERE p.`name` = #{name}
-    </select>-->
     <!--查询商品前六个 推荐-->
     <select id="findRecommendProduct" resultMap="RecommendResultMap">
         select id as productId,image_url,name from sl_product limit 0,5
     </select>
-    <!--根据分类id查询商品-->
-    <select id="findGoodsByCategory" parameterType="String" resultMap="BaseResultMap">
-        select
-        p.`id` as
-        productId,p.`name`,p.`introduction`,p.image_url,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse,r.sale_type
-        FROM sl_product p
-        LEFT JOIN sl_repository r
-        ON p.`id`= r.product_id
-        WHERE p.`product_type_id` = #{id}
-    </select>
+
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
-    <select id="screenGoods" resultMap="BaseResultMap">
+    <select id="screenGoods" resultType="Map">
         select
         p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
-        productTypeId,r.`comment_num`,r.`sale_num`,r.`price`,r.pulse
+        productTypeId,p.`comment_num`,p.`sales_volume`,p.`reference_price`,p.reference_pulse
         FROM sl_product p
-        LEFT JOIN sl_repository r
-        ON p.`id`= r.product_id
         WHERE 1=1
         <if test="goodsName != null and goodsName != ''">
-            p.`name` = #{goodsName}
+           and p.`name` like "%"#{goodsName}"%"
         </if>
         <if test="goodsType != null and goodsType !=''">
-            p.product_type_id = #{goodsType}
+            AND p.product_type_id = #{goodsType}
         </if>
-        <if test="screenGoods == null and screenGoods ==''">
-            order By (r.sale_num +r.comment_num) Desc
+        <if test="screenType != null and screenType !='' and screenType == 5">
+            AND p.sale_Type = 5
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 1">
-            order By r.sale_num desc
+        <if test="screenType != null and screenType !='' and screenType == 6">
+            AND p.sale_Type = 6
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 2">
-            order By r.sale_num asc
+        <if test="screenType != null and screenType !='' and screenType == 7">
+            AND p.sale_Type = 7
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
-            order By r.price desc
+        <if test="screenType == null and screenType ==''">
+            ORDER BY (p.sales_volume + p.comment_num) DESC
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 4">
-            order By r.price asc
+        <if test="screenType != null and screenType !='' and screenType == 1">
+            ORDER BY p.sales_volume DESC
         </if>
-
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 5">
-            and r.sale_Type == 5
+        <if test="screenType != null and screenType !='' and screenType == 2">
+            ORDER BY p.sales_volume ASC
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 6">
-            and r.sale_Type == 6
+        <if test="screenType != null and screenType !='' and screenType == 3">
+            ORDER BY p.reference_price DESC
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenGoods == 7">
-            and r.sale_Typet == 7
+        <if test="screenType != null and screenType !='' and screenType == 4">
+            ORDER BY p.reference_price ASC
         </if>
 
 
