@@ -88,32 +88,28 @@
 
     </select>
 
-    <select id="goodsBaseDetail" parameterType="String" resultType="Map">
+    <select id="goodsBaseInfo" parameterType="String" resultType="Map">
         SELECT
-        p.id,
-        p.name,
-        p.introduction,
-        r.`sale_num`,
-        r.`price`,
-        r.pulse,
-        r.sale_type,
-        r.shop_id,
-        r.isShip,
-        r.weight
-        FROM
-        sl_product p
-        LEFT JOIN sl_repository r
-        ON p.id = r.`product_id`
-        WHERE p.id = #{goodsId}
+        NAME,
+        introduction,
+        comment_num,
+        sales_volume,
+        reference_price,
+        reference_pulse,
+        /*sales_mode,*/
+        sale_type
+          FROM
+            sl_product
+        where id= #{goodsId}
     </select>
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
         SELECT
-        p.`id`,spi.image_url,spi.type
+          image_url,type
         FROM
-        sl_product p LEFT JOIN sl_product_image spi
-        ON p.id = spi.`product_id`
-        where p.id= #{goodsId}
+          sl_product_image
+        WHERE product_id = #{goodsId}
     </select>
+
 
 </mapper>
 

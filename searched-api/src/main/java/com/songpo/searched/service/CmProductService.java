@@ -6,12 +6,14 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.mapper.CmProductCommentMapper;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class CmProductService {
     private CmProductMapper mapper;
 
     @Autowired
-    private SlProductMapper slProductMapper;
+    private CmProductCommentMapper cmProductCommentMapper;
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -169,9 +171,24 @@ public class CmProductService {
             } else {
                 List<Map<String,Object>>  mapImageUrls = this.mapper.goodsImageUrl(goodsId);
                 data.put("productImages",mapImageUrls);
-                List<Map<String,Object>> mapComments = this.mapper.goodsComments(goodsId);
+                List<Map<String,Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId,null);
+                Map goodsComment = mapComments.get(0);
+                //如果第一条数据有图 则查询图片 没有图 直接返回第一条数据
+                if(goodsComment.get("status").equals(4)){
+                    //查询评论图片
+                    mapComments.get(0).get("id").toString();
+                    List<Map<String,Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
+                    List list = new ArrayList();
+                    list.add(commentImages);
+                    list.add(goodsComment);
+                    data.put("productComments",list);
+                }else {
+                    data.put("productComments",goodsComment);
+                }
             }
-
+            businessMessage.setSuccess(true);
+            businessMessage.setData(data);
+            businessMessage.setMsg("查询成功");
         } catch (Exception e) {
             businessMessage.setMsg("查询异常");
             log.error("查询商品异常", e);

@@ -47,9 +47,9 @@ public class CMGoods {
      */
     private int saleType;
     /**
-     * 了豆
+     * 银豆
      */
-    private int pulse;
+    private int silver;
     /**
      * 商品标签Id
      */
@@ -66,5 +66,9 @@ public class CMGoods {
      * 仓库商品剩余数量
      */
     private Integer remainingqty;
+    /**
+     * 返了豆数量
+     */
+    private Integer rebatePulse;
 
 }

@@ -44,7 +44,6 @@ public interface CmProductMapper {
     Map goodsBaseInfo(String goodsId);
     //获取product_image 表中图片
     List<Map<String,Object>> goodsImageUrl(String goodsId);
-    //获取商品评论
-    List<Map<String,Object>> goodsComments(String goodsId);
+
 
 }

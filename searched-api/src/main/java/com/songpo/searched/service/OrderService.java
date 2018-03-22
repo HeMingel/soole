@@ -11,6 +11,7 @@ import com.songpo.searched.util.OrderNumGeneration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -37,6 +38,7 @@ public class OrderService {
      * @param orderDetail
      * @return
      */
+    @Transactional
     public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail) {
         Logger log = LoggerFactory.getLogger(SlOrderDetail.class);
         BusinessMessage message = new BusinessMessage();
@@ -60,7 +62,7 @@ public class OrderService {
                                 }});
                                 if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
-//                                    pulse += repository.getPulse(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
+                                    pulse += repository.getSilver(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());
                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -71,7 +73,7 @@ public class OrderService {
                                         setProductId(repository.getProductId());// 商品ID
                                         setShopId(repository.getShopId());// 店铺唯一标识
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
-//                                        setDeductPulse(repository.getPulse()); // 扣除单个商品了豆数量
+                                        setDeductTotalSilver(repository.getSilver()); // 扣除单个商品了豆数量
                                     }});
                                 }
                             }
@@ -80,9 +82,7 @@ public class OrderService {
                         Example example = new Example(SlOrder.class);
                         example.createCriteria().andEqualTo("id", slOrder.getId());
                         int totalPulse = pulse;
-                        /**
-                         * 统计好总价和总豆再次更新好订单表
-                         */
+                        //统计好总价和总豆再次更新好订单表
                         orderMapper.updateByExampleSelective(new SlOrder() {{
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
