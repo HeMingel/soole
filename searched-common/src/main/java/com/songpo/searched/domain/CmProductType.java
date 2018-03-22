@@ -3,7 +3,7 @@ package com.songpo.searched.domain;
 import lombok.Data;
 
 @Data
-public class ProductCategoryDto {
+public class CmProductType {
 
     private String id;
     /**
@@ -20,4 +20,9 @@ public class ProductCategoryDto {
      * 父Id
      */
     private String parentId;
+
+    /**
+     * 图片地址
+     */
+    private String imageUrl;
 }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.ProductDto;
+import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.SlProductMapper;
@@ -99,11 +99,11 @@ public class CmProductService {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
-            List<ProductDto> productDtos = this.mapper.findRecommendProduct();
-            if (productDtos.size() > 0) {
+            List<CmProduct> cmProducts = this.mapper.findRecommendProduct();
+            if (cmProducts.size() > 0) {
                 businessMessage.setMsg("查询成功");
                 businessMessage.setSuccess(true);
-                businessMessage.setData(productDtos);
+                businessMessage.setData(cmProducts);
             } else {
                 businessMessage.setMsg("查询无数据");
                 businessMessage.setSuccess(true);
@@ -132,7 +132,7 @@ public class CmProductService {
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
                 if(goodsType != null || screenType != null || name != null){
-                    List<ProductDto> list = this.mapper.screenGoods(goodsType, screenType, name);
+                    List<CmProduct> list = this.mapper.screenGoods(goodsType, screenType, name);
                     if (list.size() > 0) {
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);

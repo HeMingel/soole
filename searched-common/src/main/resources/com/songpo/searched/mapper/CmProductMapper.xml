@@ -3,7 +3,7 @@
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
 
-    <resultMap id="RecommendResultMap" type="com.songpo.searched.domain.ProductDto">
+    <resultMap id="RecommendResultMap" type="com.songpo.searched.domain.CmProduct">
         <id column="productId" jdbcType="VARCHAR" property="productId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>

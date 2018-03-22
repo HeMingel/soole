@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import java.math.BigDecimal;
 
 @Data
-public class ProductDto {
+public class CmProduct {
 
     private String productId;
 

@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.CmProductTypeMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.domain.ProductCategoryDto">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="tagName" jdbcType="VARCHAR"/>
-        <result column="parentId" jdbcType="VARCHAR"/>
-
+    <resultMap id="BaseResultMap" type="com.songpo.searched.domain.CmProductType">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="tagName" property="tagName" jdbcType="VARCHAR"/>
+        <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, tagName
+        id, name, tagName, image_url, parent_id
     </sql>
 
-    <select id="findCategoryByParentId" parameterType="String" resultType="Map">
-        select
-        t.id as id,t.name as name ,st.name as tagName,t.parent_id as parentId,t.image_url
-        FROM sl_product_type t
-        left join sl_product_type_tags tt
-        on t.tag_id = tt.id
-        left join sl_tag st
-        on tt.product_tag_id  = st.id
-        where t.parent_id = #{id}
+    <select id="selectAll" resultType="java.util.HashMap">
+        SELECT
+        pt.id, pt.name, t.`name` AS tagName, pt.`image_url` AS imageUrl, pt.parent_id AS parentId
+        FROM
+        sl_product_type pt
+        LEFT JOIN sl_product_type_tags ptt
+        ON pt.`id` = ptt.product_type_id
+        LEFT JOIN sl_tag t
+        ON ptt.product_tag_id = t.id
+        <where>
+            <if test="null == parentId or parentId == ''">
+                ISNULL(pt.parent_id)
+            </if>
+            <if test="null != parentId and parentId != ''">
+                pt.parent_id = #{parentId}
+            </if>
+        </where>
     </select>
 </mapper>

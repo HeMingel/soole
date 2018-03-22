@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.domain.ProductDto;
+import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.CmProductTypeMapper;
@@ -74,9 +74,7 @@ public class CustomerClientHomeService {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        List<SlProductType> productTypes = this.productTypeService.select(new SlProductType() {{
-            setParentId(null);
-        }});
+        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
 
         // 获取首页配置主键
@@ -142,19 +140,16 @@ public class CustomerClientHomeService {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        List<SlProductType> productTypes = this.productTypeService.select(new SlProductType() {{
-            setParentId(null);
-        }});
+        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
         //通过商品分类parentId 查询二级分类
-
-        List<Map<String, Object>> productCategoryDtos = this.cmProductTypeMapper.findCategoryByParentId(parentId);
+        List<Map<String, Object>> productCategoryDtos = this.productTypeService.findAll(parentId);
         data.put("productTypes", productCategoryDtos);
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<ProductDto> productDtos = this.mapper.screenGoods(goodsType, screenType, name);
-        data.put("products", new PageInfo<>(productDtos));
+        List<CmProduct> cmProducts = this.mapper.screenGoods(goodsType, screenType, name);
+        data.put("products", new PageInfo<>(cmProducts));
         //banner图
         // 获取广告轮播图列表
 
@@ -164,7 +159,7 @@ public class CustomerClientHomeService {
         }});
         data.put("banner", bannerList);
         //商品分类首页推荐商品
-        List<ProductDto> recommendProducts = this.mapper.findRecommendProduct();
+        List<CmProduct> recommendProducts = this.mapper.findRecommendProduct();
         data.put("recommendProducts", recommendProducts);
 
         return data;
