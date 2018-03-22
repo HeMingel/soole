@@ -10,18 +10,18 @@
 
 
     <!-- 根据销售模式查询商品 -->
-    <select id="selectBySalesMode" resultType="Map">
+    <select id="selectBySalesMode" resultType="map">
         SELECT
         p.id,
         p.name,
         p.reference_price AS price,
         p.image_url AS imageUrl
-        <if test="null != salesModeId">
+        <if test="null != salesModeId and salesModeId != ''">
             , psmoc.count
         </if>
         FROM sl_product p
         LEFT JOIN sl_product_repository pr ON pr.product_id = p.id
-        <if test="null != salesModeId">
+        <if test="null != salesModeId and salesModeId != ''">
             LEFT JOIN sl_product_sale_mode_order_count psmoc ON psmoc.product_id = p.id
         </if>
         <where>
@@ -29,8 +29,8 @@
                 <bind name="pName" value="'%' + name + '%'"/>
                 AND p.name LIKE #{pName}
             </if>
-            <if test="salesModeId != null">
-                AND psmoc.salesModeId = #{salesModeId}
+            <if test="salesModeId != null and salesModeId != ''">
+                AND psmoc.sales_mode_id = #{salesModeId}
             </if>
         </where>
     </select>
