@@ -17,7 +17,6 @@ import tk.mybatis.mapper.entity.Example;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.UUID;
 
 public class OrderService {
@@ -61,7 +60,7 @@ public class OrderService {
                                 }});
                                 if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
-                                    pulse += repository.getPulse(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
+//                                    pulse += repository.getPulse(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());
                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -72,7 +71,7 @@ public class OrderService {
                                         setProductId(repository.getProductId());// 商品ID
                                         setShopId(repository.getShopId());// 店铺唯一标识
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
-                                        setDeductPulse(repository.getPulse()); // 扣除单个商品了豆数量
+//                                        setDeductPulse(repository.getPulse()); // 扣除单个商品了豆数量
                                     }});
                                 }
                             }

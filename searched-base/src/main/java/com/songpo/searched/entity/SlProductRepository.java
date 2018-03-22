@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -109,15 +109,19 @@ public class SlProductRepository implements Serializable {
     private BigDecimal weight;
 
     /**
-     * 是否包邮(1:包邮 2:不包邮)
+     * 是否包邮(1:包邮 0:不包邮)
      */
-    @Column(name = "isShip")
-    private Boolean isship;
+    private Boolean ship;
 
     /**
-     * 了豆
+     * 金币
      */
-    private Integer pulse;
+    private Integer gold;
+
+    /**
+     * 银币
+     */
+    private Integer silver;
 
     /**
      * 评论数量
@@ -130,6 +134,30 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "sale_num")
     private Integer saleNum;
+
+    /**
+     * 是否可用金币支付
+     */
+    @Column(name = "use_gold")
+    private Boolean useGold;
+
+    /**
+     * 是否可用银币支付
+     */
+    @Column(name = "use_silver")
+    private Boolean useSilver;
+
+    /**
+     * 是否可用余额支付
+     */
+    @Column(name = "use_money")
+    private Boolean useMoney;
+
+    /**
+     * 销售模式唯一标识符
+     */
+    @Column(name = "sales_mode_id")
+    private String salesModeId;
 
     private static final long serialVersionUID = 1L;
 
@@ -458,39 +486,57 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取是否包邮(1:包邮 2:不包邮)
+     * 获取是否包邮(1:包邮 0:不包邮)
      *
-     * @return isShip - 是否包邮(1:包邮 2:不包邮)
+     * @return ship - 是否包邮(1:包邮 0:不包邮)
      */
-    public Boolean getIsship() {
-        return isship;
+    public Boolean getShip() {
+        return ship;
     }
 
     /**
-     * 设置是否包邮(1:包邮 2:不包邮)
+     * 设置是否包邮(1:包邮 0:不包邮)
      *
-     * @param isship 是否包邮(1:包邮 2:不包邮)
+     * @param ship 是否包邮(1:包邮 0:不包邮)
      */
-    public void setIsship(Boolean isship) {
-        this.isship = isship;
+    public void setShip(Boolean ship) {
+        this.ship = ship;
     }
 
     /**
-     * 获取了豆
+     * 获取金币
      *
-     * @return pulse - 了豆
+     * @return gold - 金币
      */
-    public Integer getPulse() {
-        return pulse;
+    public Integer getGold() {
+        return gold;
     }
 
     /**
-     * 设置了豆
+     * 设置金币
      *
-     * @param pulse 了豆
+     * @param gold 金币
      */
-    public void setPulse(Integer pulse) {
-        this.pulse = pulse;
+    public void setGold(Integer gold) {
+        this.gold = gold;
+    }
+
+    /**
+     * 获取银币
+     *
+     * @return silver - 银币
+     */
+    public Integer getSilver() {
+        return silver;
+    }
+
+    /**
+     * 设置银币
+     *
+     * @param silver 银币
+     */
+    public void setSilver(Integer silver) {
+        this.silver = silver;
     }
 
     /**
@@ -529,6 +575,78 @@ public class SlProductRepository implements Serializable {
         this.saleNum = saleNum;
     }
 
+    /**
+     * 获取是否可用金币支付
+     *
+     * @return use_gold - 是否可用金币支付
+     */
+    public Boolean getUseGold() {
+        return useGold;
+    }
+
+    /**
+     * 设置是否可用金币支付
+     *
+     * @param useGold 是否可用金币支付
+     */
+    public void setUseGold(Boolean useGold) {
+        this.useGold = useGold;
+    }
+
+    /**
+     * 获取是否可用银币支付
+     *
+     * @return use_silver - 是否可用银币支付
+     */
+    public Boolean getUseSilver() {
+        return useSilver;
+    }
+
+    /**
+     * 设置是否可用银币支付
+     *
+     * @param useSilver 是否可用银币支付
+     */
+    public void setUseSilver(Boolean useSilver) {
+        this.useSilver = useSilver;
+    }
+
+    /**
+     * 获取是否可用余额支付
+     *
+     * @return use_money - 是否可用余额支付
+     */
+    public Boolean getUseMoney() {
+        return useMoney;
+    }
+
+    /**
+     * 设置是否可用余额支付
+     *
+     * @param useMoney 是否可用余额支付
+     */
+    public void setUseMoney(Boolean useMoney) {
+        this.useMoney = useMoney;
+    }
+
+    /**
+     * 获取销售模式唯一标识符
+     *
+     * @return sales_mode_id - 销售模式唯一标识符
+     */
+    public String getSalesModeId() {
+        return salesModeId;
+    }
+
+    /**
+     * 设置销售模式唯一标识符
+     *
+     * @param salesModeId 销售模式唯一标识符
+     */
+    public void setSalesModeId(String salesModeId) {
+        this.salesModeId = salesModeId == null ? null : salesModeId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -553,10 +671,15 @@ public class SlProductRepository implements Serializable {
         sb.append(", personalPrice=").append(personalPrice);
         sb.append(", priceSpike=").append(priceSpike);
         sb.append(", weight=").append(weight);
-        sb.append(", isship=").append(isship);
-        sb.append(", pulse=").append(pulse);
+        sb.append(", ship=").append(ship);
+        sb.append(", gold=").append(gold);
+        sb.append(", silver=").append(silver);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
+        sb.append(", useGold=").append(useGold);
+        sb.append(", useSilver=").append(useSilver);
+        sb.append(", useMoney=").append(useMoney);
+        sb.append(", salesModeId=").append(salesModeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

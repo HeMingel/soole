@@ -9,9 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class ProductValidator extends ValidatorHandler<SlProduct> {
 
     private static final Logger logger = LoggerFactory.getLogger(SlProduct.class);
@@ -57,8 +54,13 @@ public class ProductValidator extends ValidatorHandler<SlProduct> {
         // 校验是否存在，如果不存在，则进行初始化工作
         if (flag) {
             try {
-                // 设置创建时间
-                t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                // 检测商品是否存在
+                int count = this.service.selectCount(new SlProduct() {{
+                    setName(t.getName());
+                }});
+                if (count == 0) {
+                    flag = true;
+                }
             } catch (Exception e) {
                 logger.error("校验失败：{}", e);
 

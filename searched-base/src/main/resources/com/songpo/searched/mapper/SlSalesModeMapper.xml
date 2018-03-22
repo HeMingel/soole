@@ -8,11 +8,14 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="use_gold" jdbcType="BIT" property="useGold"/>
+      <result column="use_silver" jdbcType="BIT" property="useSilver"/>
+      <result column="use_money" jdbcType="BIT" property="useMoney"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, remark
+      id, name, remark, use_gold, use_silver, use_money
   </sql>
 </mapper>

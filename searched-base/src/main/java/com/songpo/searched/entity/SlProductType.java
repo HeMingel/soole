@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product_type")
 public class SlProductType implements Serializable {
@@ -22,12 +22,6 @@ public class SlProductType implements Serializable {
      */
     @Column(name = "parent_id")
     private String parentId;
-
-    /**
-     * 标签唯一标识符
-     */
-    @Column(name = "tag_id")
-    private String tagId;
 
     /**
      * 商品分类图片
@@ -92,24 +86,6 @@ public class SlProductType implements Serializable {
     }
 
     /**
-     * 获取标签唯一标识符
-     *
-     * @return tag_id - 标签唯一标识符
-     */
-    public String getTagId() {
-        return tagId;
-    }
-
-    /**
-     * 设置标签唯一标识符
-     *
-     * @param tagId 标签唯一标识符
-     */
-    public void setTagId(String tagId) {
-        this.tagId = tagId == null ? null : tagId.trim();
-    }
-
-    /**
      * 获取商品分类图片
      *
      * @return image_url - 商品分类图片
@@ -136,7 +112,6 @@ public class SlProductType implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", parentId=").append(parentId);
-        sb.append(", tagId=").append(tagId);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

@@ -8,13 +8,12 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <result column="tag_id" jdbcType="VARCHAR" property="tagId" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, parent_id, tag_id, image_url
+      id, name, parent_id, image_url
   </sql>
 </mapper>

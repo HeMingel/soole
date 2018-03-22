@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_sales_mode")
 public class SlSalesMode implements Serializable {
@@ -21,6 +21,24 @@ public class SlSalesMode implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 是否可用金币支付
+     */
+    @Column(name = "use_gold")
+    private Boolean useGold;
+
+    /**
+     * 是否可用银币支付
+     */
+    @Column(name = "use_silver")
+    private Boolean useSilver;
+
+    /**
+     * 是否可用余额支付
+     */
+    @Column(name = "use_money")
+    private Boolean useMoney;
 
     private static final long serialVersionUID = 1L;
 
@@ -78,6 +96,60 @@ public class SlSalesMode implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    /**
+     * 获取是否可用金币支付
+     *
+     * @return use_gold - 是否可用金币支付
+     */
+    public Boolean getUseGold() {
+        return useGold;
+    }
+
+    /**
+     * 设置是否可用金币支付
+     *
+     * @param useGold 是否可用金币支付
+     */
+    public void setUseGold(Boolean useGold) {
+        this.useGold = useGold;
+    }
+
+    /**
+     * 获取是否可用银币支付
+     *
+     * @return use_silver - 是否可用银币支付
+     */
+    public Boolean getUseSilver() {
+        return useSilver;
+    }
+
+    /**
+     * 设置是否可用银币支付
+     *
+     * @param useSilver 是否可用银币支付
+     */
+    public void setUseSilver(Boolean useSilver) {
+        this.useSilver = useSilver;
+    }
+
+    /**
+     * 获取是否可用余额支付
+     *
+     * @return use_money - 是否可用余额支付
+     */
+    public Boolean getUseMoney() {
+        return useMoney;
+    }
+
+    /**
+     * 设置是否可用余额支付
+     *
+     * @param useMoney 是否可用余额支付
+     */
+    public void setUseMoney(Boolean useMoney) {
+        this.useMoney = useMoney;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -87,6 +159,9 @@ public class SlSalesMode implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
+        sb.append(", useGold=").append(useGold);
+        sb.append(", useSilver=").append(useSilver);
+        sb.append(", useMoney=").append(useMoney);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

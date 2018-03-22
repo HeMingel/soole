@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Slf4j
 @Api(description = "商品管理")
 @CrossOrigin
@@ -29,7 +31,7 @@ public class ProductController {
      * 根据活动唯一标识符分页查询商品列表
      *
      * @param name      商品名称
-     * @param salesMode 销售模式
+     * @param salesModeId 销售模式唯一标识符
      * @param pageNum   页码
      * @param pageSize  容量
      * @return 商品分页列表
@@ -37,16 +39,16 @@ public class ProductController {
     @ApiOperation(value = "根据销售模式查询商品列表")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
-            @ApiImplicitParam(name = "salesMode", value = "销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚", paramType = "form"),
+            @ApiImplicitParam(name = "salesModeId", value = "销售模式唯一标识符", paramType = "form", required = true),
             @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
             @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
     })
     @GetMapping("by-sales-mode")
-    public BusinessMessage<PageInfo<SlProduct>> selectBySalesMode(String name, Integer salesMode, Integer pageNum, Integer pageSize) {
-        log.debug("分页查询商品，页码：{}，数量：{}", pageNum, pageSize);
-        BusinessMessage<PageInfo<SlProduct>> message = new BusinessMessage<>();
+    public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name, String salesModeId, Integer pageNum, Integer pageSize) {
+        log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，页码：{}，容量：{}", name, salesModeId, pageNum, pageSize);
+        BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         try {
-            PageInfo<SlProduct> data = this.productService.selectBySalesMode(name, salesMode, pageNum, pageSize);
+            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId, pageNum, pageSize);
 
             message.setData(data);
             message.setSuccess(true);
@@ -66,14 +68,14 @@ public class ProductController {
      * @param pageSize 容量
      * @return 商品分页列表
      */
-    @ApiOperation(value = "根据活动唯一标识符分页查询商品列表")
+    @ApiOperation(value = "根据活动分页查询商品列表")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "actionId", value = "活动唯一标识符", paramType = "form", required = true),
             @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
             @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
     })
-    @GetMapping("by-action")
-    public BusinessMessage<PageInfo<SlProduct>> page(String actionId, Integer pageNum, Integer pageSize) {
+    @GetMapping("by-activity")
+    public BusinessMessage<PageInfo<SlProduct>> selectByActivity(String actionId, Integer pageNum, Integer pageSize) {
         log.debug("分页查询商品，页码：{}，数量：{}", pageNum, pageSize);
         BusinessMessage<PageInfo<SlProduct>> message = new BusinessMessage<>();
         try {

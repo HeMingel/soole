@@ -34,13 +34,13 @@ public class CmProductService {
      * 根据活动唯一标识符分页查询商品列表
      *
      * @param name 商品名称
-     * @param salesMode 销售模式
+     * @param salesModeId 销售模式唯一标识符
      * @param pageNum 页码
      * @param pageSize 容量
      * @return 商品分页列表
      */
-    public PageInfo<SlProduct> selectBySalesMode(String name, Integer salesMode, Integer pageNum, Integer pageSize) {
-        log.debug("根据活动唯一标识符查询商品列表，名称：{}，销售模式：{}，页码：{}，容量：{}", name, salesMode, pageNum, pageSize);
+    public PageInfo<Map<String, Object>> selectBySalesMode(String name, String salesModeId, Integer pageNum, Integer pageSize) {
+        log.debug("查询商品列表，名称：{}，销售模式唯一标识符：{}，页码：{}，容量：{}", name, salesModeId, pageNum, pageSize);
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -49,15 +49,11 @@ public class CmProductService {
             pageSize = 10;
         }
 
-        if (null == salesMode || salesMode <= 1) {
-            salesMode = 1;
-        }
-
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<SlProduct> list = this.mapper.selectBySalesMode(name, salesMode);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId);
 
         return new PageInfo<>(list);
     }

@@ -119,15 +119,6 @@ public class CustomerClientHomeService {
             }});
             data.put("action", actionList);
         }
-
-        // 获取拼团商品列表
-        PageInfo<SlProduct> teamworkProducts = this.cmProductService.selectBySalesMode("", 2, 1, 10);
-        data.put("teamworkProducts", teamworkProducts);
-
-        // 获取预售商品列表
-        PageInfo<SlProduct> preSaleProducts = this.cmProductService.selectBySalesMode("", 4, 1, 10);
-        data.put("preSaleProducts", preSaleProducts);
-
         return data;
     }
 
@@ -148,7 +139,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<CmProduct> cmProducts = this.mapper.screenGoods(goodsType, screenType, name);
+        List<Map<String, Object>> cmProducts = this.mapper.screenGoods(goodsType, screenType, name);
         data.put("products", new PageInfo<>(cmProducts));
         //banner图
         // 获取广告轮播图列表
@@ -202,7 +193,7 @@ public class CustomerClientHomeService {
                                     setId(sc.getRepositoryId());
                                     setProductId(sc.getGoodId());
                                 }});
-                                cmGoods.setPulse(repository.getPulse());// 了豆
+//                                cmGoods.setPulse(repository.getPulse());// 了豆
                                 cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
                                 cmGoods.setPrice(repository.getPrice());// 商品价格
                                 cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称

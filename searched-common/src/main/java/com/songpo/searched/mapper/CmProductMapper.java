@@ -18,10 +18,10 @@ public interface CmProductMapper {
      * 根据销售模式查询商品列表
      *
      * @param name 商品名称
-     * @param salesMode 销售模式
+     * @param salesModeId 销售模式唯一标识符
      * @return 商品集合
      */
-    List<SlProduct> selectBySalesMode(@Param("name") String name, @Param("salesMode") Integer salesMode);
+    List<Map<String, Object>> selectBySalesMode(@Param("name") String name, @Param("salesModeId") String salesModeId);
 
     /**
      * 根据活动唯一标识符查询商品列表

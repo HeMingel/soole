@@ -8,10 +8,6 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
@@ -21,7 +17,6 @@
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
     <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
     <result column="reference_pulse" jdbcType="INTEGER" property="referencePulse" />
-      <result column="sales_mode" jdbcType="INTEGER" property="salesMode"/>
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="sale_type" jdbcType="INTEGER" property="saleType" />
   </resultMap>
@@ -29,8 +24,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, remark, creator, create_time, modifier, modification_time, image_url, introduction, 
-    detail, product_type_id, sold_out, comment_num, sales_volume, reference_price, reference_pulse,
-      sales_mode, shop_id, sale_type
+      id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num,
+      sales_volume, reference_price, reference_pulse, shop_id, sale_type
   </sql>
 </mapper>

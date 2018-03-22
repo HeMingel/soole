@@ -24,28 +24,6 @@ public class SlProduct implements Serializable {
     private String remark;
 
     /**
-     * 创建人
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
-
-    /**
      * 图片
      */
     @Column(name = "image_url")
@@ -96,12 +74,6 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "reference_pulse")
     private Integer referencePulse;
-
-    /**
-     * 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
-     */
-    @Column(name = "sales_mode")
-    private Integer salesMode;
 
     /**
      * 店铺唯一标识符
@@ -169,78 +141,6 @@ public class SlProduct implements Serializable {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取创建人
-     *
-     * @return creator - 创建人
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 设置创建人
-     *
-     * @param creator 创建人
-     */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
     /**
@@ -406,24 +306,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
-     *
-     * @return sales_mode - 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
-     */
-    public Integer getSalesMode() {
-        return salesMode;
-    }
-
-    /**
-     * 设置销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
-     *
-     * @param salesMode 销售模式  1:普通 2：人气拼团 3：随心购 4：预售 5：豆赚 6：优品赚
-     */
-    public void setSalesMode(Integer salesMode) {
-        this.salesMode = salesMode;
-    }
-
-    /**
      * 获取店铺唯一标识符
      *
      * @return shop_id - 店铺唯一标识符
@@ -468,10 +350,6 @@ public class SlProduct implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
@@ -481,7 +359,6 @@ public class SlProduct implements Serializable {
         sb.append(", salesVolume=").append(salesVolume);
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", referencePulse=").append(referencePulse);
-        sb.append(", salesMode=").append(salesMode);
         sb.append(", shopId=").append(shopId);
         sb.append(", saleType=").append(saleType);
         sb.append(", serialVersionUID=").append(serialVersionUID);

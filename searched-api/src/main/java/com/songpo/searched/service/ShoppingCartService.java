@@ -6,7 +6,6 @@ import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +96,7 @@ public class ShoppingCartService {
                                         setId(sc.getRepositoryId());
                                         setProductId(sc.getGoodId());
                                     }});
-                                    cmGoods.setPulse(repository.getPulse());// 了豆
+//                                    cmGoods.setPulse(repository.getPulse());// 了豆
                                     cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
                                     cmGoods.setPrice(repository.getPrice());// 商品价格
                                     cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称

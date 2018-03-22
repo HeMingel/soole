@@ -49,13 +49,6 @@ public class ProductTypeValidator extends ValidatorHandler<SlProductType> {
                     setInvalidValue(t.getName());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getTagId())) {
-                context.addError(new ValidationError() {{
-                    setErrorMsg("标签Id为空");
-                    setField("tagId");
-                    setInvalidValue(t.getTagId());
-                }});
-                flag = false;
             }
         }
 
