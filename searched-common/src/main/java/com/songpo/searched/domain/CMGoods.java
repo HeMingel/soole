@@ -62,5 +62,9 @@ public class CMGoods {
      * 店铺仓库的ID
      */
     private String repositoryId;
+    /**
+     * 仓库商品剩余数量
+     */
+    private Integer remainingqty;
 
 }

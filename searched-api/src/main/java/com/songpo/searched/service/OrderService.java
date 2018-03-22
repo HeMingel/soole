@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +51,7 @@ public class OrderService {
                 if (null != user) {
                     if (StringUtils.hasLength(slOrder.getShippngAddressId())) {
                         slOrder.setId(UUID.randomUUID().toString());
+                        slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         slOrder.setSerialNumber(OrderNumGeneration.getOrderIdByUUId());// 生成订单编号
                         orderMapper.insertSelective(slOrder);
                         for (SlOrderDetail slOrderDetail : orderDetail.getSlOrderDetails()) {
@@ -61,6 +64,8 @@ public class OrderService {
                                     pulse += repository.getPulse(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());
+                                        setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                                        setCreator(slOrder.getUserId()); // 用户id
                                         setOrderId(slOrder.getId()); // 订单ID
                                         setQuantity(slOrderDetail.getQuantity()); // 商品数量
                                         setPrice(repository.getPrice()); // 单个商品价格

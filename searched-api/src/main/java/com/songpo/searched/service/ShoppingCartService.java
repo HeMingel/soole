@@ -6,6 +6,7 @@ import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
+import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SpecificationNameMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ public class ShoppingCartService {
     private ProductService productService;
     @Autowired
     private ProductRepositoryService productRepositoryService;
+    @Autowired
+    private ShopService shopService;
 
     /**
      * 新增购物车
@@ -74,40 +77,42 @@ public class ShoppingCartService {
             if (null != user) {
                 CMShoppingCart pojo = this.cache.get(uid);
                 if (pojo != null) {
-                List<CMGoods> list = new ArrayList<>();
-                CMGoods cmGoods = null;
-                if (null != pojo) {
-                    for (CMGoods sc : pojo.getCarts()) {
-                        if (StringUtils.isEmpty(sc.getGoodId())) {
-                            message.setMsg("获取商品ID错误");
-                        } else {
-                            SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
-                                setId(sc.getGoodId());
-                                setSoldOut(false);
-                            }});
-                            if (null != slProduct) {
-                                cmGoods = new CMGoods();
-                                cmGoods.setGoodName(slProduct.getName());// 商品名称
-                                cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                    setId(sc.getRepositoryId());
-                                    setProductId(sc.getGoodId());
-                                }});
-                                cmGoods.setPulse(repository.getPulse());// 了豆
-                                cmGoods.setSaleType(repository.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
-                                cmGoods.setPrice(repository.getPrice());// 商品价格
-                                // 查询规格名称 返回null的话 前台就显示失效
-                                cmGoods.setSpecificationName(repository.getProductDetailGroupName());
-                                list.add(cmGoods);
+                    List<CMGoods> list = new ArrayList<>();
+                    CMGoods cmGoods = null;
+                    if (null != pojo) {
+                        for (CMGoods sc : pojo.getCarts()) {
+                            if (StringUtils.isEmpty(sc.getGoodId())) {
+                                message.setMsg("获取商品ID错误");
                             } else {
-                                message.setMsg("商品已下架");
-                                message.setSuccess(true);
-                                list.add(new CMGoods());
+                                SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
+                                    setId(sc.getGoodId());
+                                    setSoldOut(false);
+                                }});
+                                if (null != slProduct) {
+                                    cmGoods = new CMGoods();
+                                    cmGoods.setGoodName(slProduct.getName());// 商品名称
+                                    cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                                    cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
+                                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                        setId(sc.getRepositoryId());
+                                        setProductId(sc.getGoodId());
+                                    }});
+                                    cmGoods.setPulse(repository.getPulse());// 了豆
+                                    cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                    cmGoods.setPrice(repository.getPrice());// 商品价格
+                                    cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
+                                    cmGoods.setShopId(sc.getShopId());// 店铺id
+                                    cmGoods.setShopName(sc.getShopName());// 店铺名称
+                                    cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                                    list.add(cmGoods);
+                                } else {
+                                    message.setMsg("商品已下架");
+                                    message.setSuccess(true);
+                                    list.add(new CMGoods());
+                                }
                             }
                         }
                     }
-                }
                     pojo.setCarts(list);// 把查询好的list 加入pojo中
                     message.setMsg("查询状态为空");
                     message.setData(null);
