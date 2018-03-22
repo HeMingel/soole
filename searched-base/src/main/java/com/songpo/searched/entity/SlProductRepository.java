@@ -159,6 +159,12 @@ public class SlProductRepository implements Serializable {
     @Column(name = "sales_mode_id")
     private String salesModeId;
 
+    /**
+     * 返了豆数量
+     */
+    @Column(name = "rebate_pulse")
+    private Integer rebatePulse;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -647,6 +653,24 @@ public class SlProductRepository implements Serializable {
         this.salesModeId = salesModeId == null ? null : salesModeId.trim();
     }
 
+    /**
+     * 获取返了豆数量
+     *
+     * @return rebate_pulse - 返了豆数量
+     */
+    public Integer getRebatePulse() {
+        return rebatePulse;
+    }
+
+    /**
+     * 设置返了豆数量
+     *
+     * @param rebatePulse 返了豆数量
+     */
+    public void setRebatePulse(Integer rebatePulse) {
+        this.rebatePulse = rebatePulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -680,6 +704,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", useSilver=").append(useSilver);
         sb.append(", useMoney=").append(useMoney);
         sb.append(", salesModeId=").append(salesModeId);
+        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

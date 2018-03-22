@@ -31,7 +31,7 @@ public class SmsService {
      * 发送短信验证码
      *
      * @param mobile 手机号码
-     * @return
+     * @return 发送结果
      */
     public BusinessMessage<SendSmsResponse> sendSms(String mobile) {
         log.debug("发送短信验证码，手机号码：{}", mobile);
