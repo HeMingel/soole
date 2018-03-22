@@ -33,6 +33,7 @@ public class CmProductCommentService {
      * @return
      */
     public BusinessMessage findGoodsCommentsByGoodsId(String goodsId,Integer status,Integer page, Integer size){
+        log.debug("查询 商品Id:{},评论好中差:{},页数:{},条数:{}",goodsId,status,page,size);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
