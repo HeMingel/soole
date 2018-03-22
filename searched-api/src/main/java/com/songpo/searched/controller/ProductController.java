@@ -30,10 +30,10 @@ public class ProductController {
     /**
      * 根据活动唯一标识符分页查询商品列表
      *
-     * @param name      商品名称
+     * @param name        商品名称
      * @param salesModeId 销售模式唯一标识符
-     * @param pageNum   页码
-     * @param pageSize  容量
+     * @param pageNum     页码
+     * @param pageSize    容量
      * @return 商品分页列表
      */
     @ApiOperation(value = "根据销售模式查询商品列表")
@@ -110,22 +110,22 @@ public class ProductController {
     /**
      * 根据商品分类查询商品,商品筛选分类 + 筛选
      *
-     * @param goodsType    商品分类ID
-     * @param screenType   筛选类型
-     * @param page
-     * @param size
+     * @param goodsType  商品分类ID
+     * @param screenType 筛选类型
+     * @param page       页码
+     * @param size       数量
      * @return
      */
     @ApiOperation(value = "根据商品分类查询商品+筛选商品")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form"),
             @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form"),
-            @ApiImplicitParam(name = "page", value = "当前页数", paramType = "form"),
-            @ApiImplicitParam(name = "size", value = "每页条数", paramType = "form")
+            @ApiImplicitParam(name = "page", value = "页码", paramType = "form"),
+            @ApiImplicitParam(name = "size", value = "页码", paramType = "form")
     })
     @GetMapping("screen-goods")
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size,String name) {
-        return this.productService.screenGoods(goodsType, screenType, page, size,name);
+    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
+        return this.productService.screenGoods(goodsType, screenType, page, size, name);
     }
 
 
