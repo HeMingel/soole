@@ -129,7 +129,7 @@ public class ProductController {
     }
 
 
-    @ApiOperation(value = "根据商品Id查询商品详情 未完成")
+    @ApiOperation(value = "根据商品Id查询商品详情")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "Id", value = "分类ID", paramType = "form", required = true)
     })
