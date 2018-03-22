@@ -10,10 +10,10 @@ import com.aliyuncs.profile.IClientProfile;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.domain.BusinessMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 
@@ -39,7 +39,7 @@ public class SmsService {
 
         // 从缓存获取短信验证码
         String code = this.cache.get(mobile);
-        if (StringUtils.isEmpty(code)) {
+        if (!StringUtils.isBlank(code)) {
             message.setMsg("验证码尚未过期，请勿重复发送");
         } else {
             try {
