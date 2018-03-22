@@ -12,7 +12,8 @@
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="quantity" jdbcType="VARCHAR" property="quantity" />
     <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="deduct_pulse" jdbcType="INTEGER" property="deductPulse" />
+    <result column="deduct_total_silver" jdbcType="INTEGER" property="deductTotalSilver" />
+    <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
     <result column="discount" jdbcType="INTEGER" property="discount" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
@@ -23,7 +24,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, order_id, shop_id, repository_id, product_id, quantity, price, deduct_pulse, 
-    discount, creator, create_time, modifier, modification_time
+    id, order_id, shop_id, repository_id, product_id, quantity, price, deduct_total_silver, 
+    deduct_total_gold, discount, creator, create_time, modifier, modification_time
   </sql>
 </mapper>

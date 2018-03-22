@@ -96,16 +96,16 @@ public class ShoppingCartService {
                                         setId(sc.getRepositoryId());
                                         setProductId(sc.getGoodId());
                                     }});
-//                                    cmGoods.setPulse(repository.getPulse());// 了豆
+                                    cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
                                     cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
                                     cmGoods.setPrice(repository.getPrice());// 商品价格
                                     cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                     cmGoods.setShopId(sc.getShopId());// 店铺id
                                     cmGoods.setShopName(sc.getShopName());// 店铺名称
                                     cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                                    cmGoods.setRebatePulse(repository.getRebatePulse());// 纯金钱商品返了豆数量
                                     list.add(cmGoods);
                                 } else {
-                                    message.setMsg("商品已下架");
                                     message.setSuccess(true);
                                     list.add(new CMGoods());
                                 }

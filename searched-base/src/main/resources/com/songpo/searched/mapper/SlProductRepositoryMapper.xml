@@ -23,23 +23,24 @@
     <result column="personal_price" jdbcType="DECIMAL" property="personalPrice" />
     <result column="price_spike" jdbcType="DECIMAL" property="priceSpike" />
     <result column="weight" jdbcType="DECIMAL" property="weight" />
-      <result column="ship" jdbcType="BIT" property="ship"/>
-      <result column="gold" jdbcType="INTEGER" property="gold"/>
-      <result column="silver" jdbcType="INTEGER" property="silver"/>
+    <result column="ship" jdbcType="BIT" property="ship" />
+    <result column="gold" jdbcType="INTEGER" property="gold" />
+    <result column="silver" jdbcType="INTEGER" property="silver" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
-      <result column="use_gold" jdbcType="BIT" property="useGold"/>
-      <result column="use_silver" jdbcType="BIT" property="useSilver"/>
-      <result column="use_money" jdbcType="BIT" property="useMoney"/>
-      <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId"/>
+    <result column="use_gold" jdbcType="BIT" property="useGold" />
+    <result column="use_silver" jdbcType="BIT" property="useSilver" />
+    <result column="use_money" jdbcType="BIT" property="useMoney" />
+    <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
+    <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name, 
-    remark, price, post_fee, discount, state, count, score, reference_price, cost_price,
-      collage_price, personal_price, price_spike, weight, ship, gold, silver, comment_num,
-      sale_num, use_gold, use_silver, use_money, sales_mode_id
+    remark, price, post_fee, discount, state, count, score, reference_price, cost_price, 
+    collage_price, personal_price, price_spike, weight, ship, gold, silver, comment_num, 
+    sale_num, use_gold, use_silver, use_money, sales_mode_id, rebate_pulse
   </sql>
 </mapper>

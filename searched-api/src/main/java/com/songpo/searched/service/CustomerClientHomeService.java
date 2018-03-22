@@ -84,8 +84,7 @@ public class CustomerClientHomeService {
 
         JSONObject banner = new JSONObject();
 
-        if (null != homeType && !StringUtils.isEmpty(homeType.getContent()))
-        {
+        if (null != homeType && !StringUtils.isEmpty(homeType.getContent())) {
             // 获取广告轮播图列表
             List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
                 // 设置位置编号
@@ -163,28 +162,22 @@ public class CustomerClientHomeService {
      */
     public JSONObject getShoppingCartData(String uid) {
         JSONObject object = new JSONObject();
-        if (StringUtils.hasLength(uid))
-        {
+        if (StringUtils.hasLength(uid)) {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setId(uid);
             }});
-            if (null != user)
-            {
+            if (null != user) {
                 CMShoppingCart pojo = this.cache.get(uid);
                 List<CMGoods> list = new ArrayList<>();
                 CMGoods cmGoods = null;
-                if (null != pojo)
-                {
-                    for (CMGoods sc : pojo.getCarts())
-                    {
-                        if (StringUtils.hasLength(sc.getGoodId()))
-                        {
+                if (null != pojo) {
+                    for (CMGoods sc : pojo.getCarts()) {
+                        if (StringUtils.hasLength(sc.getGoodId())) {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
                                 setSoldOut(false);
                             }});
-                            if (null != slProduct)
-                            {
+                            if (null != slProduct) {
                                 cmGoods = new CMGoods();
                                 cmGoods.setGoodName(slProduct.getName());// 商品名称
                                 cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量

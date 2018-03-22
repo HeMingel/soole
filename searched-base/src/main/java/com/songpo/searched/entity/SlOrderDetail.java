@@ -48,10 +48,16 @@ public class SlOrderDetail implements Serializable {
     private BigDecimal price;
 
     /**
-     * 扣除的金豆数量
+     * 单个商品扣除的银豆数量
      */
-    @Column(name = "deduct_pulse")
-    private Integer deductPulse;
+    @Column(name = "deduct_total_silver")
+    private Integer deductTotalSilver;
+
+    /**
+     * 单个商品扣除的金豆数量
+     */
+    @Column(name = "deduct_total_gold")
+    private Integer deductTotalGold;
 
     /**
      * 折扣
@@ -209,21 +215,39 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取扣除的金豆数量
+     * 获取单个商品扣除的银豆数量
      *
-     * @return deduct_pulse - 扣除的金豆数量
+     * @return deduct_total_silver - 单个商品扣除的银豆数量
      */
-    public Integer getDeductPulse() {
-        return deductPulse;
+    public Integer getDeductTotalSilver() {
+        return deductTotalSilver;
     }
 
     /**
-     * 设置扣除的金豆数量
+     * 设置单个商品扣除的银豆数量
      *
-     * @param deductPulse 扣除的金豆数量
+     * @param deductTotalSilver 单个商品扣除的银豆数量
      */
-    public void setDeductPulse(Integer deductPulse) {
-        this.deductPulse = deductPulse;
+    public void setDeductTotalSilver(Integer deductTotalSilver) {
+        this.deductTotalSilver = deductTotalSilver;
+    }
+
+    /**
+     * 获取单个商品扣除的金豆数量
+     *
+     * @return deduct_total_gold - 单个商品扣除的金豆数量
+     */
+    public Integer getDeductTotalGold() {
+        return deductTotalGold;
+    }
+
+    /**
+     * 设置单个商品扣除的金豆数量
+     *
+     * @param deductTotalGold 单个商品扣除的金豆数量
+     */
+    public void setDeductTotalGold(Integer deductTotalGold) {
+        this.deductTotalGold = deductTotalGold;
     }
 
     /**
@@ -329,7 +353,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
-        sb.append(", deductPulse=").append(deductPulse);
+        sb.append(", deductTotalSilver=").append(deductTotalSilver);
+        sb.append(", deductTotalGold=").append(deductTotalGold);
         sb.append(", discount=").append(discount);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
