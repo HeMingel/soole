@@ -23,7 +23,7 @@
     <result column="personal_price" jdbcType="DECIMAL" property="personalPrice" />
     <result column="price_spike" jdbcType="DECIMAL" property="priceSpike" />
     <result column="weight" jdbcType="DECIMAL" property="weight" />
-    <result column="isShip" jdbcType="BIT" property="isship" />
+    <result column="ship" jdbcType="BIT" property="ship" />
     <result column="pulse" jdbcType="INTEGER" property="pulse" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
@@ -34,6 +34,6 @@
     -->
     id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name, 
     remark, price, post_fee, discount, state, count, score, reference_price, cost_price, 
-    collage_price, personal_price, price_spike, weight, isShip, pulse, comment_num, sale_num
+    collage_price, personal_price, price_spike, weight, ship, pulse, comment_num, sale_num
   </sql>
 </mapper>

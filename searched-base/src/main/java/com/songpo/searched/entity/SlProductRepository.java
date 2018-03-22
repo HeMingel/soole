@@ -109,10 +109,9 @@ public class SlProductRepository implements Serializable {
     private BigDecimal weight;
 
     /**
-     * 是否包邮(1:包邮 2:不包邮)
+     * 是否包邮(1:包邮 0:不包邮)
      */
-    @Column(name = "isShip")
-    private Boolean isship;
+    private Boolean ship;
 
     /**
      * 了豆
@@ -458,21 +457,21 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取是否包邮(1:包邮 2:不包邮)
+     * 获取是否包邮(1:包邮 0:不包邮)
      *
-     * @return isShip - 是否包邮(1:包邮 2:不包邮)
+     * @return ship - 是否包邮(1:包邮 0:不包邮)
      */
-    public Boolean getIsship() {
-        return isship;
+    public Boolean getShip() {
+        return ship;
     }
 
     /**
-     * 设置是否包邮(1:包邮 2:不包邮)
+     * 设置是否包邮(1:包邮 0:不包邮)
      *
-     * @param isship 是否包邮(1:包邮 2:不包邮)
+     * @param ship 是否包邮(1:包邮 0:不包邮)
      */
-    public void setIsship(Boolean isship) {
-        this.isship = isship;
+    public void setShip(Boolean ship) {
+        this.ship = ship;
     }
 
     /**
@@ -553,7 +552,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", personalPrice=").append(personalPrice);
         sb.append(", priceSpike=").append(priceSpike);
         sb.append(", weight=").append(weight);
-        sb.append(", isship=").append(isship);
+        sb.append(", ship=").append(ship);
         sb.append(", pulse=").append(pulse);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
