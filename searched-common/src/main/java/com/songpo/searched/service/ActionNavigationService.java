@@ -23,13 +23,13 @@ public class ActionNavigationService extends BaseService<SlActionNavigation, Str
      * @return
      */
     public BusinessMessage goodsCategoryBanner() {
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<List<SlActionNavigation>> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             Example example = new Example(SlActionNavigation.class);
             example.createCriteria().andEqualTo("typeId", 1);
             List<SlActionNavigation> slActionNavigations = selectByExample(example);
-            if (slActionNavigations.size() > 0) {
+            if (null != slActionNavigations && slActionNavigations.size() > 0) {
                 businessMessage.setSuccess(true);
                 businessMessage.setMsg("查询成功");
                 businessMessage.setData(slActionNavigations);

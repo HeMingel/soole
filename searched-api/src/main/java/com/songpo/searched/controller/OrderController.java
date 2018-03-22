@@ -4,9 +4,7 @@ package com.songpo.searched.controller;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.service.OrderService;
-import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Api(description = "订单管理")
 @RestController
@@ -39,7 +34,7 @@ public class OrderController {
     @ApiOperation(value = "添加预下单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "shippngAddressId", value = "地址Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "shippingAddressId", value = "地址Id", paramType = "form", required = true),
             @ApiImplicitParam(name = "repositoryId", value = "店铺仓库唯一标识", paramType = "form", required = true),
             @ApiImplicitParam(name = "quantity", value = "订单商品数量", paramType = "form", required = true),
             @ApiImplicitParam(name = "paymentState", value = "支付状态(0：待支付1：支付成功 2：支付失败)", paramType = "form"),
