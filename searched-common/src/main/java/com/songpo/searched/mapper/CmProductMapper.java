@@ -31,14 +31,20 @@ public interface CmProductMapper {
      */
     List<SlProduct> selectByAction(String actionId);
 
+    /**
+     * 查询推荐商品 最新商品前6个
+     * @return
+     */
     List<CmProduct> findRecommendProduct();
 
-    List<CmProduct> findGoodsByCategory(String goodsType);
     //根据分类查询商品 + 商品的筛选 + 根据名称查询
-    List<CmProduct> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("goodsName") String goodsName);
+    List<Map<String,Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("goodsName") String goodsName);
 
-    Map goodsBaseDetail(String goodsId);
-
-    Map goodsImageUrl(String goodsId);
+    //获取product表中相关信息
+    Map goodsBaseInfo(String goodsId);
+    //获取product_image 表中图片
+    List<Map<String,Object>> goodsImageUrl(String goodsId);
+    //获取商品评论
+    List<Map<String,Object>> goodsComments(String goodsId);
 
 }

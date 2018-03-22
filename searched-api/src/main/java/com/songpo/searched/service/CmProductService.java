@@ -132,7 +132,7 @@ public class CmProductService {
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
                 if(goodsType != null || screenType != null || name != null){
-                    List<CmProduct> list = this.mapper.screenGoods(goodsType, screenType, name);
+                    List<Map<String,Object>> list = this.mapper.screenGoods(goodsType, screenType, name);
                     if (list.size() > 0) {
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);
@@ -165,15 +165,15 @@ public class CmProductService {
         businessMessage.setSuccess(false);
         try {
             //商品基础信息
-             Map map = this.mapper.goodsBaseDetail(goodsId);
+             Map map = this.mapper.goodsBaseInfo(goodsId);
              data.put("productBase",map);
             if (map.isEmpty()) {
-                businessMessage.setMsg("!");
+                businessMessage.setMsg("未查到商品相关信息");
                 businessMessage.setSuccess(true);
             } else {
-                Map mapImageUrl = this.mapper.goodsImageUrl(goodsId);
-                data.put("productImage",mapImageUrl);
-
+                List<Map<String,Object>>  mapImageUrls = this.mapper.goodsImageUrl(goodsId);
+                data.put("productImages",mapImageUrls);
+                List<Map<String,Object>> mapComments = this.mapper.goodsComments(goodsId);
             }
 
         } catch (Exception e) {
