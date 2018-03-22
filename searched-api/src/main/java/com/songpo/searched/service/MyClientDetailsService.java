@@ -37,7 +37,7 @@ public class MyClientDetailsService implements ClientDetailsService {
 
             // 加入缓存
             if (null != user) {
-                this.cache.put(user.getPhone(), user);
+                this.cache.put(clientId, user);
             }
         }
 
