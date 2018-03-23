@@ -5,27 +5,32 @@ import java.io.Serializable;
 
 @Table(name = "sl_member_growth_task")
 public class SlMemberGrowthTask implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 成长任务标题
      */
     private String title;
+
     /**
      * 成长任务内容
      */
     private String content;
+
     /**
      * 成长任务图标
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 成长任务描述
      */
     private String descriptional;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

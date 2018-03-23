@@ -5,67 +5,79 @@ import java.io.Serializable;
 
 @Table(name = "sl_business_application")
 public class SlBusinessApplication implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 经营类目
      */
     @Column(name = "product_type_id")
     private String productTypeId;
+
     /**
      * 公司地址
      */
     @Column(name = "company_address")
     private String companyAddress;
+
     /**
      * 公司名称
      */
     @Column(name = "company_name")
     private String companyName;
+
     /**
      * 员工数量
      */
     @Column(name = "employee_count")
     private String employeeCount;
+
     /**
      * 企业需要清仓的原因
      */
     @Column(name = "reasons_for_clearance")
     private String reasonsForClearance;
+
     /**
      * 企业需要清仓的产品
      */
     @Column(name = "products_for_clearance")
     private String productsForClearance;
+
     /**
      * 姓名
      */
     @Column(name = "real_name")
     private String realName;
+
     /**
      * 电话
      */
     private String phone;
+
     /**
      * 身份证正面
      */
     @Column(name = "id_card_front_image_url")
     private String idCardFrontImageUrl;
+
     /**
      * 身份证反面
      */
     @Column(name = "id_card_back_image_url")
     private String idCardBackImageUrl;
+
     /**
      * 手持身份证
      */
     @Column(name = "id_card_hand_image_url")
     private String idCardHandImageUrl;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

@@ -30,25 +30,52 @@ public class ProductController {
     /**
      * 根据活动唯一标识符分页查询商品列表
      *
-     * @param name        商品名称
-     * @param salesModeId 销售模式唯一标识符
-     * @param pageNum     页码
-     * @param pageSize    容量
+     * @param name         商品名称
+     * @param salesModeId  销售模式唯一标识符
+     * @param longitudeMin 最小经度
+     * @param longitudeMax 最大经度
+     * @param latitudeMin  最小维度
+     * @param latitudeMax  最大维度
+     * @param sortByPrice  按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
+     * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
+     * @param pageNum      页码
+     * @param pageSize     容量
      * @return 商品分页列表
      */
     @ApiOperation(value = "根据销售模式查询商品列表")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
-            @ApiImplicitParam(name = "salesModeId", value = "销售模式唯一标识符", paramType = "form", required = true),
+            @ApiImplicitParam(name = "salesModeId", value = "销售模式唯一标识符", paramType = "form"),
+            @ApiImplicitParam(name = "longitudeMin", value = "最小经度，经维度一起使用，缺一不可", paramType = "form"),
+            @ApiImplicitParam(name = "longitudeMax", value = "最大经度，经维度一起使用，缺一不可", paramType = "form"),
+            @ApiImplicitParam(name = "latitudeMin", value = "最小维度，经维度一起使用，缺一不可", paramType = "form"),
+            @ApiImplicitParam(name = "latitudeMax", value = "最大维度，经维度一起使用，缺一不可", paramType = "form"),
+            @ApiImplicitParam(name = "sortByPrice", value = "按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序", paramType = "form"),
+            @ApiImplicitParam(name = "sortByRating", value = "按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序", paramType = "form"),
+            @ApiImplicitParam(name = "priceMin", value = "价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格", paramType = "form"),
+            @ApiImplicitParam(name = "priceMax", value = "价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格", paramType = "form"),
             @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
             @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
     })
     @GetMapping("by-sales-mode")
-    public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name, String salesModeId, Integer pageNum, Integer pageSize) {
-        log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，页码：{}，容量：{}", name, salesModeId, pageNum, pageSize);
+    public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name,
+                                                                            String salesModeId,
+                                                                            Double longitudeMin,
+                                                                            Double longitudeMax,
+                                                                            Double latitudeMin,
+                                                                            Double latitudeMax,
+                                                                            String sortByPrice,
+                                                                            String sortByRating,
+                                                                            Integer priceMin,
+                                                                            Integer priceMax,
+                                                                            Integer pageNum,
+                                                                            Integer pageSize) {
+        log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，最小经度：{}，最大经度：{}，最小维度：{}，最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，容量：{}", name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         try {
-            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId, pageNum, pageSize);
+            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize);
 
             message.setData(data);
             message.setSuccess(true);
@@ -125,7 +152,7 @@ public class ProductController {
     })
     @GetMapping("screen-goods")
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
-        log.debug("分页查询商品，分类Id:{},筛选Id:{},页码：{}，数量：{},商品名称:{},", goodsType,page, size,name);
+        log.debug("分页查询商品，分类Id:{},筛选Id:{},页码：{}，数量：{},商品名称:{},", goodsType, page, size, name);
         return this.productService.screenGoods(goodsType, screenType, page, size, name);
     }
 

@@ -17,11 +17,28 @@ public interface CmProductMapper {
     /**
      * 根据销售模式查询商品列表
      *
-     * @param name 商品名称
-     * @param salesModeId 销售模式唯一标识符
+     * @param name         商品名称
+     * @param salesModeId  销售模式唯一标识符
+     * @param longitudeMin 最小经度
+     * @param longitudeMax 最大经度
+     * @param latitudeMin  最小维度
+     * @param latitudeMax  最大维度
+     * @param sortByPrice  按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
+     * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
      * @return 商品集合
      */
-    List<Map<String, Object>> selectBySalesMode(@Param("name") String name, @Param("salesModeId") String salesModeId);
+    List<Map<String, Object>> selectBySalesMode(@Param("name") String name,
+                                                @Param("salesModeId") String salesModeId,
+                                                @Param("longitudeMin") Double longitudeMin,
+                                                @Param("longitudeMax") Double longitudeMax,
+                                                @Param("latitudeMin") Double latitudeMin,
+                                                @Param("latitudeMax") Double latitudeMax,
+                                                @Param("sortByPrice") String sortByPrice,
+                                                @Param("sortByRating") String sortByRating,
+                                                @Param("priceMin") Integer priceMin,
+                                                @Param("priceMax") Integer priceMax);
 
     /**
      * 根据活动唯一标识符查询商品列表
@@ -33,17 +50,19 @@ public interface CmProductMapper {
 
     /**
      * 查询推荐商品 最新商品前6个
+     *
      * @return
      */
     List<CmProduct> findRecommendProduct();
 
     //根据分类查询商品 + 商品的筛选 + 根据名称查询
-    List<Map<String,Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("goodsName") String goodsName);
+    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("goodsName") String goodsName);
 
     //获取product表中相关信息
     Map goodsBaseInfo(String goodsId);
+
     //获取product_image 表中图片
-    List<Map<String,Object>> goodsImageUrl(String goodsId);
+    List<Map<String, Object>> goodsImageUrl(String goodsId);
 
 
 }

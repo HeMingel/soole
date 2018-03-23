@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -85,6 +85,12 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "modification_time")
     private String modificationTime;
+
+    /**
+     * 快递费
+     */
+    @Column(name = "post_fee")
+    private BigDecimal postFee;
 
     private static final long serialVersionUID = 1L;
 
@@ -340,6 +346,24 @@ public class SlOrderDetail implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
+    /**
+     * 获取快递费
+     *
+     * @return post_fee - 快递费
+     */
+    public BigDecimal getPostFee() {
+        return postFee;
+    }
+
+    /**
+     * 设置快递费
+     *
+     * @param postFee 快递费
+     */
+    public void setPostFee(BigDecimal postFee) {
+        this.postFee = postFee;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -360,6 +384,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", postFee=").append(postFee);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -16,23 +16,50 @@
         p.name,
         p.reference_price AS price,
         p.image_url AS imageUrl
-        <if test="null != salesModeId and salesModeId != ''">
+        <if test="salesModeId != ''">
             , psmoc.count
         </if>
         FROM sl_product p
         LEFT JOIN sl_product_repository pr ON pr.product_id = p.id
-        <if test="null != salesModeId and salesModeId != ''">
+        LEFT JOIN sl_shop s ON s.id = p.shop_id
+        <if test="salesModeId != ''">
             LEFT JOIN sl_product_sale_mode_order_count psmoc ON psmoc.product_id = p.id
         </if>
         <where>
-            <if test="name != null and name != ''">
+            <if test="name != ''">
                 <bind name="pName" value="'%' + name + '%'"/>
                 AND p.name LIKE #{pName}
             </if>
-            <if test="salesModeId != null and salesModeId != ''">
+            <if test="salesModeId != ''">
                 AND psmoc.sales_mode_id = #{salesModeId}
             </if>
+            <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
+            <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
+                AND s.longitude BETWEEN #{longitudeMin} - 10 AND #{longitudeMax}
+                AND s.latitude BETWEEN #{latitudeMin} - 10 AND #{latitudeMax}
+            </if>
+            <!-- 如果价格区间最小值不为空，最大值为空，则选择商品价格大于或等于价格区间最小值 -->
+            <if test="null != priceMin and null == priceMax">
+                AND p.reference_price &gt;= #{priceMin}
+            </if>
+            <!-- 如果价格区间最大值不为空，最小值为空，则选择商品价格小于或等于价格区间最大值 -->
+            <if test="null == priceMin and null != priceMax">
+                AND p.reference_price &lt;= #{priceMax}
+            </if>
+            <!-- 如果价格区间最小值不为空，最大值不为空，则选择商品价格大于价格区间最小值和小于价格区间最大值 -->
+            <if test="null != priceMin and null != priceMax">
+                AND p.reference_price BETWEEN #{priceMin} AND #{priceMax}
+            </if>
         </where>
+        <!-- 动态拼接排序规则，自动取出多余的逗号 -->
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="sortByPrice != ''">
+                p.reference_price ${sortByPrice},
+            </if>
+            <if test="sortByRating != ''">
+                s.rating ${sortByRating},
+            </if>
+        </trim>
     </select>
 
     <!-- 根据活动唯一标识符查询商品 -->

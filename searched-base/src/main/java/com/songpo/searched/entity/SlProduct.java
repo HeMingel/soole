@@ -87,6 +87,12 @@ public class SlProduct implements Serializable {
     @Column(name = "sale_type")
     private Integer saleType;
 
+    /**
+     * 销售模式唯一标识符
+     */
+    @Column(name = "sales_mode_id")
+    private String salesModeId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -341,6 +347,24 @@ public class SlProduct implements Serializable {
         this.saleType = saleType;
     }
 
+    /**
+     * 获取销售模式唯一标识符
+     *
+     * @return sales_mode_id - 销售模式唯一标识符
+     */
+    public String getSalesModeId() {
+        return salesModeId;
+    }
+
+    /**
+     * 设置销售模式唯一标识符
+     *
+     * @param salesModeId 销售模式唯一标识符
+     */
+    public void setSalesModeId(String salesModeId) {
+        this.salesModeId = salesModeId == null ? null : salesModeId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -361,6 +385,7 @@ public class SlProduct implements Serializable {
         sb.append(", referencePulse=").append(referencePulse);
         sb.append(", shopId=").append(shopId);
         sb.append(", saleType=").append(saleType);
+        sb.append(", salesModeId=").append(salesModeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

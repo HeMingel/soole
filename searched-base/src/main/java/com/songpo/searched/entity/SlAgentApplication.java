@@ -5,54 +5,64 @@ import java.io.Serializable;
 
 @Table(name = "sl_agent_application")
 public class SlAgentApplication implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 省份
      */
     private String province;
+
     /**
      * 城市
      */
     private String city;
+
     /**
      * 区县
      */
     private String county;
+
     /**
      * 是否有公司或团队，0：没有 1：有
      */
     @Column(name = "own_a_company")
     private Boolean ownACompany;
+
     /**
      * 姓名
      */
     @Column(name = "real_name")
     private String realName;
+
     /**
      * 电话
      */
     private String phone;
+
     /**
      * 身份证正面
      */
     @Column(name = "id_card_front_image_url")
     private String idCardFrontImageUrl;
+
     /**
      * 身份证反面
      */
     @Column(name = "id_card_back_image_url")
     private String idCardBackImageUrl;
+
     /**
      * 手持身份证
      */
     @Column(name = "id_card_hand_image_url")
     private String idCardHandImageUrl;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

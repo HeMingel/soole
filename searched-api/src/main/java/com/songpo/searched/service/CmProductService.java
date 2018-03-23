@@ -8,8 +8,8 @@ import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.CmProductCommentMapper;
 import com.songpo.searched.mapper.CmProductMapper;
-import com.songpo.searched.mapper.SlProductMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +35,32 @@ public class CmProductService {
     /**
      * 根据活动唯一标识符分页查询商品列表
      *
-     * @param name 商品名称
-     * @param salesModeId 销售模式唯一标识符
-     * @param pageNum 页码
-     * @param pageSize 容量
+     * @param name         商品名称
+     * @param salesModeId  销售模式唯一标识符
+     * @param longitudeMin 最小经度
+     * @param longitudeMax 最大经度
+     * @param latitudeMin  最小维度
+     * @param latitudeMax  最大维度
+     * @param sortByPrice  按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
+     * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
+     * @param pageNum      页码
+     * @param pageSize     容量
      * @return 商品分页列表
      */
-    public PageInfo<Map<String, Object>> selectBySalesMode(String name, String salesModeId, Integer pageNum, Integer pageSize) {
-        log.debug("查询商品列表，名称：{}，销售模式唯一标识符：{}，页码：{}，容量：{}", name, salesModeId, pageNum, pageSize);
+    public PageInfo<Map<String, Object>> selectBySalesMode(String name,
+                                                           String salesModeId,
+                                                           Double longitudeMin,
+                                                           Double longitudeMax,
+                                                           Double latitudeMin,
+                                                           Double latitudeMax,
+                                                           String sortByPrice,
+                                                           String sortByRating,
+                                                           Integer priceMin,
+                                                           Integer priceMax,
+                                                           Integer pageNum,
+                                                           Integer pageSize) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -51,11 +69,24 @@ public class CmProductService {
             pageSize = 10;
         }
 
+        // 排序规则字符串
+        String[] orderStrArray = new String[]{"DESC", "desc", "ASC", "asc"};
+
+        // 过滤价格排序规则中的非法字符
+        if (!StringUtils.containsAny(sortByPrice, orderStrArray)) {
+            sortByPrice = StringUtils.trimToEmpty(sortByPrice);
+        }
+
+        // 过滤评分排序规则中的非法字符
+        if (!StringUtils.containsAny(sortByRating, orderStrArray)) {
+            sortByRating = StringUtils.trimToEmpty(sortByRating);
+        }
+
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax);
 
         return new PageInfo<>(list);
     }

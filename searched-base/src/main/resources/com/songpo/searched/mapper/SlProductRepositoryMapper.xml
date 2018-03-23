@@ -38,7 +38,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name,
+      id, shop_id, product_id, product_detail_group_serial_number, product_detail_group_name,
       remark, price, post_fee, discount, state, count, score, reference_price, cost_price,
       collage_price, personal_price, price_spike, weight, ship, gold, silver, comment_num,
       sale_num, use_gold, use_silver, use_money, sales_mode_id, rebate_pulse

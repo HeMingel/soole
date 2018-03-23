@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -14,7 +14,7 @@ public class SlOrder implements Serializable {
     private String id;
 
     /**
-     * 编号
+     * 订单编号
      */
     @Column(name = "serial_number")
     private String serialNumber;
@@ -134,18 +134,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取编号
+     * 获取订单编号
      *
-     * @return serial_number - 编号
+     * @return serial_number - 订单编号
      */
     public String getSerialNumber() {
         return serialNumber;
     }
 
     /**
-     * 设置编号
+     * 设置订单编号
      *
-     * @param serialNumber 编号
+     * @param serialNumber 订单编号
      */
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber == null ? null : serialNumber.trim();

@@ -5,28 +5,33 @@ import java.io.Serializable;
 
 @Table(name = "sl_member_level_gift")
 public class SlMemberLevelGift implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 礼包对应等级id
      */
     @Column(name = "level_id")
     private String levelId;
+
     /**
      * 礼包姓名
      */
     private String name;
+
     /**
      * 礼包图标
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 礼包描述
      */
     private String descriptional;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
