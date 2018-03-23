@@ -1,16 +1,19 @@
 package com.songpo.searched.service;
-
+import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.util.OrderNumGeneration;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -18,9 +21,11 @@ import tk.mybatis.mapper.entity.Example;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.*;
 
-public class OrderService {
+@Slf4j
+@Service
+public class CmOrderService {
 
     @Autowired
     private UserService userService;
@@ -30,6 +35,8 @@ public class OrderService {
     private OrderDetailService orderDetailService;
     @Autowired
     private SlOrderMapper orderMapper;
+    @Autowired
+    private CmOrderMapper cmOrderMapper;
 
     /**
      * 新增预下单订单
@@ -101,6 +108,45 @@ public class OrderService {
             }
         } catch (Exception e) {
             log.debug("error:", e.getMessage());
+        }
+        return message;
+    }
+
+    /**
+     * 查询我的订单列表
+     *
+     * @param clientId
+     * @return
+     */
+    public BusinessMessage findList(String clientId) {
+        log.debug("查询我的订单列表:clientId{}", clientId);
+        BusinessMessage message = new BusinessMessage();
+        JSONObject object = new JSONObject();
+        try {
+            SlUser user = this.userService.selectOne(new SlUser() {{
+                setClientId(clientId);
+            }});
+            if (null != user) {
+                List<Map<String,Object>> list = this.cmOrderMapper.findList(user.getId());
+                List<String> userAvatarList = new ArrayList<>();
+                for (Map map : list) {
+                    Object orderId = map.get("orderId");
+                    if (orderId.equals('2')) {
+                        userAvatarList.add(this.cmOrderMapper.findUserAvatar(orderId));
+                    }
+                }
+                object.put("list", list);
+                if (userAvatarList.size() > 0) {
+                    object.put("userAvatarList", userAvatarList);
+                }
+                message.setMsg("查询成功");
+                message.setSuccess(true);
+                message.setData(object);
+            } else {
+                message.setMsg("用户不存在");
+            }
+        } catch (Exception e) {
+            log.error("查询失败:{}", e);
         }
         return message;
     }

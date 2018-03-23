@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmOrderMapper">
+
+    <select id="findList" parameterType="String" resultType="java.util.Map">
+        select
+        ss.name shopName,
+        sp.name productName,
+        spr.product_detail_group_name groupName,
+        sp.image_url goodimageUrl,
+        sod.quantity counts,
+        so.payment_state paymentState,
+        so.shipping_state shippingState,
+        sod.price price,
+        sod.deduct_total_silver pulse,
+        sod.post_fee postFee,
+        ss.image_url shopImageUrl,
+        sp.sales_mode_id salesModeId,
+        so.id orderId
+        from sl_order_detail sod
+        LEFT JOIN sl_order so ON so.id = sod.order_id
+        LEFT JOIN sl_product sp ON sod.product_id = sp.id
+        LEFT JOIN sl_shop ss ON sod.shop_id = ss.id
+        LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
+        LEFT JOIN sl_sales_mode ssm ON ssm.id = spr.sales_mode_id
+        WHERE so.status = 1 AND so.user_id = #{userId}
+        ORDER BY so.create_time DESC
+    </select>
+
+    <select id="findUserAvatar" resultType="java.lang.String">
+        select su.avatar avatar
+        from sl_user su
+        LEFT JOIN sl_order so ON su.id = so.user_id
+        WHERE so.payment_state = '1' AND so.serial_number = #{orderId}
+        limit 10
+    </select>
+
+</mapper>
