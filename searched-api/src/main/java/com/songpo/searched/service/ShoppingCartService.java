@@ -113,13 +113,13 @@ public class ShoppingCartService {
                         }
                     }
                     pojo.setCarts(list);// 把查询好的list 加入pojo中
-                    message.setMsg("查询状态为空");
-                    message.setData(null);
-                    message.setSuccess(true);
-                } else {
+                    message.setMsg("查询成功");
                     message.setData(pojo);
                     message.setSuccess(true);
-                    message.setMsg("查询成功");
+                } else {
+                    message.setData(null);
+                    message.setSuccess(true);
+                    message.setMsg("查询状态为空");
                 }
             } else {
                 message.setMsg("传入用户ID不存在");
