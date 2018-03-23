@@ -19,13 +19,13 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
-      <result column="post_fee" jdbcType="DECIMAL" property="postFee"/>
+    <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, order_id, shop_id, repository_id, product_id, quantity, price, deduct_total_silver,
-      deduct_total_gold, discount, creator, create_time, modifier, modification_time, post_fee
+    id, order_id, shop_id, repository_id, product_id, quantity, price, deduct_total_silver, 
+    deduct_total_gold, discount, creator, create_time, modifier, modification_time, post_fee
   </sql>
 </mapper>
