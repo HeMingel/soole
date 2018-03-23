@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlMemberGrowthTaskMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlMemberGrowthTask">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="descriptional" jdbcType="VARCHAR" property="descriptional"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, title, content, image_url, descriptional
+    </sql>
+</mapper>

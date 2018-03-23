@@ -5,32 +5,37 @@ import java.io.Serializable;
 
 @Table(name = "sl_product_sale_mode_order_count")
 public class SlProductSaleModeOrderCount implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 店铺唯一标识符
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 销售模式唯一标识符
      */
     @Column(name = "sales_mode_id")
     private String salesModeId;
+
     /**
      * 销售数量
      */
     private Integer count;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

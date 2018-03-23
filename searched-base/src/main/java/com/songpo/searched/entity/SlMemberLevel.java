@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_member_level")
 public class SlMemberLevel implements Serializable {
@@ -10,7 +10,7 @@ public class SlMemberLevel implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
     /**
      * 等级名称
@@ -18,10 +18,10 @@ public class SlMemberLevel implements Serializable {
     private String name;
 
     /**
-     * logo的路径
+     * image的路径
      */
-    @Column(name = "logo_url")
-    private String logoUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     /**
      * 该等级范围最大值
@@ -40,7 +40,7 @@ public class SlMemberLevel implements Serializable {
      *
      * @return id - 唯一标识符
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -49,8 +49,8 @@ public class SlMemberLevel implements Serializable {
      *
      * @param id 唯一标识符
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**
@@ -72,21 +72,21 @@ public class SlMemberLevel implements Serializable {
     }
 
     /**
-     * 获取logo的路径
+     * 获取image的路径
      *
-     * @return logo_url - logo的路径
+     * @return image_url - image的路径
      */
-    public String getLogoUrl() {
-        return logoUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     /**
-     * 设置logo的路径
+     * 设置image的路径
      *
-     * @param logoUrl logo的路径
+     * @param imageUrl image的路径
      */
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
     }
 
     /**
@@ -133,7 +133,7 @@ public class SlMemberLevel implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", logoUrl=").append(logoUrl);
+        sb.append(", imageUrl=").append(imageUrl);
         sb.append(", maximum=").append(maximum);
         sb.append(", descriptional=").append(descriptional);
         sb.append(", serialVersionUID=").append(serialVersionUID);

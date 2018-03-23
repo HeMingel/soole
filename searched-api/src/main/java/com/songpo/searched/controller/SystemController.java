@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
 
 /**
  * @author liuso
@@ -133,9 +134,19 @@ public class SystemController {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
-                    SlUser user = this.userService.selectOne(new SlUser() {{
-                        setPhone(phone);
-                    }});
+                    // 从缓存检测用户信息
+                    SlUser user = this.userCache.get(phone);
+
+                    // 从数据库查询用户信息
+                    if (null == user) {
+                        user = this.userService.selectOne(new SlUser() {{
+                            setPhone(phone);
+                        }});
+
+                        if (null != user) {
+                            this.userCache.put(phone, user);
+                        }
+                    }
 
                     if (null != user) {
                         message.setMsg("账号已存在");
@@ -145,12 +156,12 @@ public class SystemController {
                         user.setPassword(passwordEncoder.encode(password));
 
                         // 定义生成字符串范围
-                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}, {'=', '!', '@', '#', '$'}};
+                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                         // 初始化随机生成器
-                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(DIGITS).build();
+                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
 
                         user.setClientId(generator.generate(16));
-                        user.setPassword(generator.generate(64));
+                        user.setClientSecret(generator.generate(64));
 
                         // 添加
                         userService.insertSelective(user);
@@ -161,6 +172,9 @@ public class SystemController {
 
                         message.setData(data);
                         message.setSuccess(true);
+
+                        // 清除短信验证码
+                        this.smsVerifyCodeCache.evict(phone);
                     }
                 } catch (Exception e) {
                     log.error("注册失败：{}", e);

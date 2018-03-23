@@ -5,25 +5,29 @@ import java.io.Serializable;
 
 @Table(name = "sl_member_bankcard")
 public class SlMemberBankcard implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 银行名称
      */
     @Column(name = "bank_name")
     private String bankName;
+
     /**
      * 银行卡号
      */
     @Column(name = "card_number")
     private Integer cardNumber;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

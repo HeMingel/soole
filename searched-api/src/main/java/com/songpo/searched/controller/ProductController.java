@@ -116,7 +116,7 @@ public class ProductController {
      * @param size       数量
      * @return
      */
-    @ApiOperation(value = "根据商品分类查询商品+筛选商品")
+    @ApiOperation(value = "根据商品分类查询商品+筛选商品+商品名称")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form"),
             @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form"),
@@ -125,16 +125,18 @@ public class ProductController {
     })
     @GetMapping("screen-goods")
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
+        log.debug("分页查询商品，分类Id:{},筛选Id:{},页码：{}，数量：{},商品名称:{},", goodsType,page, size,name);
         return this.productService.screenGoods(goodsType, screenType, page, size, name);
     }
 
 
-    @ApiOperation(value = "根据商品Id查询商品详情 未完成")
+    @ApiOperation(value = "根据商品Id查询商品详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "Id", value = "分类ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "Id", value = "商品ID", paramType = "form", required = true)
     })
     @GetMapping("Id")
     public BusinessMessage goodsDetail(String Id) {
+        log.debug("根据商品Id查询商品，商品Id：{}", Id);
         if (Id != null) {
             return this.productService.goodsDetail(Id);
         } else {
