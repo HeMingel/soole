@@ -35,7 +35,7 @@ public class CmShopService {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try{
-            Map<String,Object> map = new HashMap<String,Object>();
+            Map<String,Object> map = new HashMap<>();
             //查询商铺
             SlShop shop = this.slShopMapper.selectByPrimaryKey(new SlShop () {{
                 setId(id);
