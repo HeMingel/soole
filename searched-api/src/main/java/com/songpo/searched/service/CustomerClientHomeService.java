@@ -10,7 +10,7 @@ import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.CmProductTypeMapper;
-import com.songpo.searched.mapper.SpecificationNameMapper;
+import com.songpo.searched.mapper.CmOrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ public class CustomerClientHomeService {
     private ProductRepositoryService productRepositoryService;
 
     @Autowired
-    private SpecificationNameMapper specificationNameMapper;
+    private CmOrderMapper specificationNameMapper;
 
     @Autowired
     private CmProductTypeMapper cmProductTypeMapper;

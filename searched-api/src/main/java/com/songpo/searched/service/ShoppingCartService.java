@@ -7,7 +7,7 @@ import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.SpecificationNameMapper;
+import com.songpo.searched.mapper.CmOrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class ShoppingCartService {
     @Autowired
-    private SpecificationNameMapper specificationNameMapper;
+    private CmOrderMapper specificationNameMapper;
     @Autowired
     private UserService userService;
     @Autowired
@@ -36,18 +36,19 @@ public class ShoppingCartService {
      * 新增购物车
      *
      * @param pojo
+     * @param clientId
      * @return
      */
-    public BusinessMessage addmyShoppingCart(CMShoppingCart pojo) {
+    public BusinessMessage addmyShoppingCart(CMShoppingCart pojo, String clientId) {
         BusinessMessage message = new BusinessMessage();
-        if (StringUtils.isEmpty(pojo.getUserId())) {
+        if (StringUtils.isEmpty(clientId)) {
             message.setMsg("用户ID为空");
         } else {
             SlUser user = this.userService.selectOne(new SlUser() {{
-                setId(pojo.getUserId());
+                setClientId(clientId);
             }});
             if (null != user) {
-                this.cache.put(pojo.getUserId(), pojo);
+                this.cache.put(user.getId(), pojo);
                 message.setMsg("添加成功");
                 message.setSuccess(true);
                 message.setData(1);
@@ -62,19 +63,20 @@ public class ShoppingCartService {
      * 查询购物车
      *
      * @param uid
+     * @param clientId
      * @return
      */
-    public BusinessMessage findCart(String uid) {
+    public BusinessMessage findCart(String clientId) {
         BusinessMessage message = new BusinessMessage();
-        if (StringUtils.isEmpty(uid)) {
-            message.setMsg("用户ID为空");
+        if (StringUtils.isEmpty(clientId)) {
+            message.setMsg("用户为空");
             message.setData(null);
         } else {
             SlUser user = this.userService.selectOne(new SlUser() {{
-                setId(uid);
+                setClientId(clientId);
             }});
             if (null != user) {
-                CMShoppingCart pojo = this.cache.get(uid);
+                CMShoppingCart pojo = this.cache.get(user.getId());
                 if (pojo != null) {
                     List<CMGoods> list = new ArrayList<>();
                     CMGoods cmGoods = null;
