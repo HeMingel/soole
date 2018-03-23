@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_specification_detail_group")
 public class SlSpecificationDetailGroup implements Serializable {
@@ -19,7 +19,7 @@ public class SlSpecificationDetailGroup implements Serializable {
     private String productId;
 
     /**
-     * 序列号
+     * 序列号(组的编号)
      */
     @Column(name = "serial_number")
     private String serialNumber;
@@ -69,18 +69,18 @@ public class SlSpecificationDetailGroup implements Serializable {
     }
 
     /**
-     * 获取序列号
+     * 获取序列号(组的编号)
      *
-     * @return serial_number - 序列号
+     * @return serial_number - 序列号(组的编号)
      */
     public String getSerialNumber() {
         return serialNumber;
     }
 
     /**
-     * 设置序列号
+     * 设置序列号(组的编号)
      *
-     * @param serialNumber 序列号
+     * @param serialNumber 序列号(组的编号)
      */
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber == null ? null : serialNumber.trim();

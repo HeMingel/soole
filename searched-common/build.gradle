@@ -1,18 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
-        maven { url "https://plugins.gradle.org/m2/" }
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "gradle.plugin.com.cuisongliu.plugin:mybatis-generator:0.9.6"
-    }
-}
-
 apply plugin: 'java'
-apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -24,9 +10,6 @@ dependencies {
 
     // 实体编译组件
     compile('org.projectlombok:lombok')
-
-    // 依赖基础工程
-    compile project(':searched-base')
 
     // JSON序列化
     compile("com.alibaba:fastjson:$fastjsonVersion")

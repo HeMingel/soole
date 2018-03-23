@@ -6,25 +6,29 @@ import java.util.Date;
 
 @Table(name = "sl_member_complete_task")
 public class SlMemberCompleteTask implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 任务id
      */
     @Column(name = "task_id")
     private String taskId;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 完成时间
      */
     @Column(name = "create_time")
     private Date createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

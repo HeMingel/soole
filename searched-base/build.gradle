@@ -47,6 +47,14 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+// 打包时，保留资源目录下的指定文件
+jar {
+//    from('src/main/resources') {
+//        exclude 'generatorConfig.xml'
+//    }
+    exclude 'generatorConfig.xml'
+}
+
 // Mybatis生成文件配置
 mbg {
     overwrite = true

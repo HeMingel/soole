@@ -23,7 +23,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, owner_id, name, description, image_url, address, longitude, latitude, total_sales,
+      id, owner_id, name, description, image_url, address, longitude, latitude, total_sales,
       money, coin, silver, rating
   </sql>
 </mapper>
