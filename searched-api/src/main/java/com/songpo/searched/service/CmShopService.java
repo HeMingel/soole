@@ -49,7 +49,11 @@ public class CmShopService {
             Example example = new Example(SlProduct.class);
             example.createCriteria().andEqualTo("shopId",id);
             List<SlProduct> slProductList = this.slProductMapper.selectByExample(example);
-            map.put("shopGoods",slProductList);
+            if(slProductList.size()>0){
+                map.put("shopGoods",slProductList);
+            }else {
+                map.put("shopGoods","查询无商品");
+            }
 
             businessMessage.setData(map);
             businessMessage.setSuccess(true);
