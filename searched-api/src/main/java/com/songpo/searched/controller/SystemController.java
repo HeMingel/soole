@@ -12,12 +12,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -67,9 +67,9 @@ public class SystemController {
     public BusinessMessage<Map<String, String>> login(String phone, String password) {
         log.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
-        if (StringUtils.isEmpty(phone)) {
+        if (StringUtils.isBlank(phone)) {
             message.setMsg("账号为空");
-        } else if (StringUtils.isEmpty(password)) {
+        } else if (StringUtils.isBlank(password)) {
             message.setMsg("密码为空");
         } else {
             try {
@@ -126,15 +126,15 @@ public class SystemController {
     public BusinessMessage<JSONObject> register(String phone, String password, String code) {
         log.debug("用户注册，账号：{}，密码：{}，验证码：{}", phone, password, code);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
-        if (StringUtils.isEmpty(phone)) {
+        if (StringUtils.isBlank(phone)) {
             message.setMsg("账号为空");
-        } else if (StringUtils.isEmpty(password)) {
+        } else if (StringUtils.isBlank(password)) {
             message.setMsg("密码为空");
-        } else if (StringUtils.isEmpty(code)) {
+        } else if (StringUtils.isBlank(code)) {
             message.setMsg("短信验证码为空");
         } else {
             String cacheCode = smsVerifyCodeCache.get(phone);
-            if (StringUtils.isEmpty(cacheCode) || !code.contentEquals(cacheCode)) {
+            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
@@ -202,7 +202,7 @@ public class SystemController {
         try {
             OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
             String clientId = authentication.getOAuth2Request().getClientId();
-            if (!StringUtils.isEmpty(clientId)) {
+            if (StringUtils.isNotBlank(clientId)) {
                 // 从缓存中取出用户信息，如果不存在，则进行数据库查询
                 SlUser user = this.userCache.get(clientId);
                 if (null == user) {
@@ -251,9 +251,9 @@ public class SystemController {
     public BusinessMessage<Void> resetPassword(String oldPassword, String newPassword) {
         log.debug("用户修改密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
         BusinessMessage<Void> message = new BusinessMessage<>();
-        if (StringUtils.isEmpty(oldPassword)) {
+        if (StringUtils.isBlank(oldPassword)) {
             message.setMsg("原始密码为空");
-        } else if (StringUtils.isEmpty(newPassword)) {
+        } else if (StringUtils.isBlank(newPassword)) {
             message.setMsg("新密码为空");
         } else {
             try {
@@ -277,6 +277,73 @@ public class SystemController {
             } catch (Exception e) {
                 log.error("注册失败：{}", e);
                 message.setMsg("注册失败：" + e.getMessage());
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 忘记密码
+     *
+     * @param phone    手机号码
+     * @param password 原始密码
+     * @param code     短信验证码
+     * @return
+     */
+    @ApiOperation(value = "忘记密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "password", value = "新密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true)
+    })
+    @PostMapping("forgot-password")
+    public BusinessMessage<Void> forgotPassword(String phone, String password, String code) {
+        log.debug("忘记密码，手机号码：{}，密码：{}，验证码：{}", phone, password, code);
+        BusinessMessage<Void> message = new BusinessMessage<>();
+        if (StringUtils.isBlank(phone)) {
+            message.setMsg("手机号码为空");
+        } else if (StringUtils.isBlank(password)) {
+            message.setMsg("新密码为空");
+        } else if (StringUtils.isBlank(code)) {
+            message.setMsg("验证码为空");
+        } else {
+            // 校验短信验证码
+            String cacheCode = this.smsVerifyCodeCache.get(phone);
+            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
+                message.setMsg("短信验证码已过期，请重试");
+            } else {
+                try {
+                    // 从缓存检测用户信息
+                    SlUser user = this.userCache.get(phone);
+
+                    // 如果用户不存在，则从数据库查询
+                    if (null == user) {
+                        user = userService.selectOne(new SlUser() {{
+                            setPhone(phone);
+                        }});
+
+                        // 缓存用户信息
+                        if (null != user) {
+                            this.userCache.put(phone, user);
+                        }
+                    }
+
+                    if (null == user) {
+                        message.setMsg("账号信息不存在");
+                    } else {
+                        user.setPassword(passwordEncoder.encode(password));
+                        this.userService.updateByPrimaryKey(user);
+
+                        // 更新用户缓存
+                        this.userCache.put(user.getPhone(), user);
+                        this.userCache.put(user.getClientId(), user);
+
+                        message.setSuccess(true);
+                    }
+                } catch (Exception e) {
+                    log.error("注册失败：{}", e);
+                    message.setMsg("注册失败：" + e.getMessage());
+                }
             }
         }
         return message;
