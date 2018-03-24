@@ -10,6 +10,7 @@ import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.util.OrderNumGeneration;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,9 +96,12 @@ public class CmOrderService {
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
                         }}, example);
+                        /*1800000*/
                         message.setData(1);
                         message.setSuccess(true);
                         message.setMsg("创建订单成功");
+                        CmOrderService service = new CmOrderService();
+                        service.updOrderState(slOrder.getId());
                     } else {
                         message.setMsg("收货地址不能为空");
                     }
@@ -149,5 +153,20 @@ public class CmOrderService {
             log.error("查询失败:{}", e);
         }
         return message;
+    }
+
+    void updOrderState(String orderId) {
+        Timer timer = new Timer();
+        // 线程用于关闭订单
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Example example = new Example(SlOrder.class);
+                example.createCriteria().andEqualTo("id", orderId);
+                orderMapper.updateByExampleSelective(new SlOrder() {{
+                    setPaymentState(2);
+                }}, example);
+            }
+        }, new Date().getSeconds() + /*60000*/30000);
     }
 }
