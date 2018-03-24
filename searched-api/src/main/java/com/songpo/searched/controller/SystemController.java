@@ -5,6 +5,7 @@ import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -40,6 +41,9 @@ public class SystemController {
 
     @Autowired
     private UserCache userCache;
+
+    @Autowired
+    private LoginUserService loginUserService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -231,4 +235,50 @@ public class SystemController {
         return message;
     }
 
+    /**
+     * 重置密码
+     *
+     * @param oldPassword 原始密码
+     * @param newPassword 新密码
+     * @return
+     */
+    @ApiOperation(value = "重置密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "原始密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", paramType = "form", required = true)
+    })
+    @PostMapping("reset-password")
+    public BusinessMessage<Void> resetPassword(String oldPassword, String newPassword) {
+        log.debug("用户修改密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
+        BusinessMessage<Void> message = new BusinessMessage<>();
+        if (StringUtils.isEmpty(oldPassword)) {
+            message.setMsg("原始密码为空");
+        } else if (StringUtils.isEmpty(newPassword)) {
+            message.setMsg("新密码为空");
+        } else {
+            try {
+                // 从缓存检测用户信息
+                SlUser user = this.loginUserService.getCurrentLoginUser();
+
+                if (null == user) {
+                    message.setMsg("账号信息不存在");
+                } else if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                    message.setMsg("原始密码不匹配");
+                } else {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                    this.userService.updateByPrimaryKey(user);
+
+                    // 更新用户缓存
+                    this.userCache.put(user.getPhone(), user);
+                    this.userCache.put(user.getClientId(), user);
+
+                    message.setSuccess(true);
+                }
+            } catch (Exception e) {
+                log.error("注册失败：{}", e);
+                message.setMsg("注册失败：" + e.getMessage());
+            }
+        }
+        return message;
+    }
 }

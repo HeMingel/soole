@@ -15,6 +15,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 添加FastJSOn消息转换器
         converters.add(new FastJsonHttpMessageConverter());
         super.configureMessageConverters(converters);
     }
