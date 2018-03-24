@@ -11,5 +11,5 @@ public interface CmOrderMapper {
 
     List<Map<String,Object>> findList(@Param("userId") String userId);
 
-    String findUserAvatar(@Param("orderId") Object orderId);
+    List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
 }

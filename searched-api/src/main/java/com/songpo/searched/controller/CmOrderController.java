@@ -64,5 +64,4 @@ public class CmOrderController {
         return this.cmOrderService.findList(oAuth2Authentication.getOAuth2Request().getClientId());
     }
 
-
 }
