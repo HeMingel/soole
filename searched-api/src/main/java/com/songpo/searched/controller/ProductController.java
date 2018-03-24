@@ -24,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/api/common/v1/product")
 public class ProductController {
 
+
     @Autowired
     private CmProductService productService;
 
@@ -174,7 +175,19 @@ public class ProductController {
         }
     }
 
+    /**
+     * 商品规格详情
+     */
+    @ApiOperation(value = "根据商品Id查询商品规格")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+    })
+    @GetMapping("goods-specification")
+    public BusinessMessage goodsSpecification(String id){
+        log.debug("商品规格,商品Id:{}",id);
+        return this.productService.goodsSpecification(id);
 
+    }
 }
 
 

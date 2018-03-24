@@ -63,6 +63,14 @@ public interface CmProductMapper {
 
     //获取product_image 表中图片
     List<Map<String, Object>> goodsImageUrl(String goodsId);
+    //查询商品specificationDetail
+    List<Map<String,Object>> goodsSpecificationDetail(String goodsId);
+    //查询商品specification
+    List<Map<String,Object>> goodsSpecification(String goodsId);
+    //查询商品库存
+    List<Map<String,Object>> goodsRepository(String goodsId);
+    //查询商品库存规格
+    List<Map<String,Object>> goodsRepositorySpecification(String product_detail_group_serial_number);
 
 
 }

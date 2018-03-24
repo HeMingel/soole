@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -227,4 +228,58 @@ public class CmProductService {
         return businessMessage;
     }
 
+    /**
+     * 根据商品Id 查询商品规格
+     * @param id
+     * @return
+     */
+    public BusinessMessage goodsSpecification(String id){
+        log.debug("商品规格详情,商品id:{}",id);
+        JSONObject data = new JSONObject();
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try {
+            //搜索商品规格Detail
+            List<Map<String,Object>> specificationDetailMap = this.mapper.goodsSpecificationDetail(id);
+            if(specificationDetailMap.size() >0){
+                //查询商品规格名称
+                List<Map<String,Object>> specificationMap = this.mapper.goodsSpecification(id);
+                List list = new ArrayList();
+                for(int i = 0; i<specificationMap.size();i++ ){
+                    Map map = new HashMap();
+                    map.put("specification",specificationMap.get(i));
+                    for (int j = 0; j<specificationDetailMap.size();j++){
+                        if(specificationDetailMap.get(j).get("specification_id").equals(specificationMap.get(i).get("specification_id"))){
+                            map.put("specificationDetail",specificationDetailMap.get(j));
+                        }
+                    }
+                    list.add(map);
+                }
+                //step 1查询商品对应的库存
+                List<Map<String,Object>> goodsRepositoryList = this.mapper.goodsRepository(id);
+                //step 2根据商品分组查询对应的规格信息
+                if(goodsRepositoryList.size()>0) {
+                    List lists = new ArrayList();
+                    for(int i =0;i<goodsRepositoryList.size();i++){
+                        Map map = new HashMap();
+                        List<Map<String,Object>> goodsRepositorySpecification = this.mapper.goodsRepositorySpecification(goodsRepositoryList.get(i).get("product_detail_group_serial_number").toString());
+                        map.put("goodsRepositorySpecification",goodsRepositorySpecification);
+                        map.put("goodsRepository",goodsRepositoryList.get(i));
+                        lists.add(map);
+                    }
+                    list.add(lists);
+                }
+
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询成功");
+                businessMessage.setData(list);
+            } else {
+                businessMessage.setMsg("该商品无规格");
+            }
+        } catch (Exception e){
+            log.error("查询商品规格异常",e);
+            businessMessage.setMsg("查询异常");
+        }
+        return businessMessage;
+    }
 }
