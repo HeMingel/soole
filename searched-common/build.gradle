@@ -53,25 +53,3 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
-mbg {
-    overwrite = true
-    consoleable = true
-    generatorFile = "src/main/resources/generatorConfig.xml"
-    jdbc{
-        driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://rm-2ze5l09532t3f23wiio.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "liusongpo"
-        password = "Liusp1987"
-    }
-    xml{
-        tableName = 'sl'
-        objectName = 'SL'
-        resourcesProject = "src/main/java"
-        mapperPlugin = tk.mybatis.mapper.generator.MapperPlugin.class
-        mapperMapper = "tk.mybatis.mapper.common.Mapper"
-        mapperPackage= "com.songpo.searched.mapper"
-        modelPackage = "com.songpo.searched.entity"
-        xmlPackage =   "com.songpo.searched.mapper"
-    }
-}
