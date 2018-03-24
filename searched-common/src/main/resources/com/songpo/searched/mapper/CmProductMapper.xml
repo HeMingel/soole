@@ -114,7 +114,7 @@
 
 
     </select>
-
+    <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
         SELECT
         NAME,
@@ -129,6 +129,7 @@
             sl_product
         where id= #{goodsId}
     </select>
+    <!--搜索商品所有图片-->
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
         SELECT
           image_url,type
@@ -136,7 +137,56 @@
           sl_product_image
         WHERE product_id = #{goodsId}
     </select>
-
+    <!--搜索商品规格detail-->
+    <select id="goodsSpecificationDetail" parameterType="String" resultType="Map">
+        SELECT
+          sd.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_specification_detail_group sdg
+          ON p.`id`=sdg.`product_id`
+          LEFT JOIN sl_specification_detail sd
+          ON sdg.`specification_detail_id` = sd.`id`
+          WHERE p.`id`= #{goodsId}
+          GROUP BY sd.name
+    </select>
+    <!--查询商品规格-->
+    <select id="goodsSpecification" resultType="Map" parameterType="String">
+        SELECT
+          s.id AS specification_id,s.name
+        FROM
+          sl_product p
+          LEFT JOIN sl_specification_detail_group sdg
+          ON p.`id`=sdg.`product_id`
+          LEFT JOIN sl_specification_detail sd
+          ON sdg.`specification_detail_id` = sd.`id`
+          LEFT JOIN sl_specification s
+          ON sd.specification_id = s.id
+          WHERE p.`id` = #{goodsId}
+          GROUP BY sd.specification_id
+    </select>
+    <!--查询商品库存-->
+    <select id="goodsRepository" resultType="Map" parameterType="String">
+        SELECT
+          p.`sale_type`,pr.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_product_repository pr
+          ON p.`id` = pr.`product_id`
+          WHERE p.`id` = #{goodsId}
+    </select>
+    <!--查询商品库存规格-->
+    <select id="goodsRepositorySpecification" parameterType="String" resultType="Map">
+        SELECT
+          sd.`id` AS specification_detail_id,sd.`name`
+        FROM
+          sl_product_repository pr
+          LEFT JOIN sl_specification_detail_group sdg
+            ON sdg.`serial_number` = pr.`product_detail_group_serial_number`
+            LEFT JOIN sl_specification_detail sd
+            ON sdg.`specification_detail_id` = sd.`id`
+            WHERE pr.`product_detail_group_serial_number` = #{product_detail_group_serial_number}
+    </select>
 
 </mapper>
 
