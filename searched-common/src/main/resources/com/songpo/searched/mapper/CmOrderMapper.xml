@@ -16,7 +16,10 @@
         sod.post_fee postFee,
         ss.image_url shopImageUrl,
         sp.sales_mode_id salesModeId,
-        so.id orderId
+        so.id orderId,
+        spr.ship ship,
+        so.type type,
+        so.serial_number serialNumber
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
@@ -28,10 +31,11 @@
     </select>
 
     <select id="findUserAvatar" resultType="java.lang.String">
-        select su.avatar avatar
+        select
+        su.avatar avatar
         from sl_user su
         LEFT JOIN sl_order so ON su.id = so.user_id
-        WHERE so.payment_state = '1' AND so.serial_number = #{orderId}
+        WHERE so.payment_state = '1' AND so.serial_number = #{serialNumber}
         limit 10
     </select>
 

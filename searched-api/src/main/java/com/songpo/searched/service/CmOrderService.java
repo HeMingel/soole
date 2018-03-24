@@ -1,4 +1,5 @@
 package com.songpo.searched.service;
+
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
@@ -121,27 +122,26 @@ public class CmOrderService {
     public BusinessMessage findList(String clientId) {
         log.debug("查询我的订单列表:clientId{}", clientId);
         BusinessMessage message = new BusinessMessage();
-        JSONObject object = new JSONObject();
         try {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setClientId(clientId);
             }});
             if (null != user) {
-                List<Map<String,Object>> list = this.cmOrderMapper.findList(user.getId());
+                List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId());
                 List<String> userAvatarList = new ArrayList<>();
+                Map<String, Object> userAvatar = new HashMap<>();
                 for (Map map : list) {
-                    Object orderId = map.get("orderId");
-                    if (orderId.equals('2')) {
-                        userAvatarList.add(this.cmOrderMapper.findUserAvatar(orderId));
+                    Object type = map.get("type");
+                    Object serialNumber = map.get("serialNumber");
+                    if (type.equals(2)) {
+                        userAvatarList = this.cmOrderMapper.findUserAvatar(serialNumber);
                     }
                 }
-                object.put("list", list);
-                if (userAvatarList.size() > 0) {
-                    object.put("userAvatarList", userAvatarList);
-                }
+                userAvatar.put("userAvatarList", userAvatarList);
+                list.add(userAvatar);
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-                message.setData(object);
+                message.setData(list);
             } else {
                 message.setMsg("用户不存在");
             }
