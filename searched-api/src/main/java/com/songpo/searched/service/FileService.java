@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -80,8 +81,12 @@ public class FileService {
             // 目标文件名
             String fileName = UUID.randomUUID().toString() + "." + suffix;
 
+            if (!Files.exists(Paths.get(fullPath))) {
+                Files.createDirectories(Paths.get(fullPath));
+            }
+
             // 写出文件
-            Files.write(Paths.get(fullPath + File.separator + fileName), file.getBytes());
+            Files.write(Paths.get(fullPath + File.separator + fileName), file.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
             SlFileInfo uploadFile = new SlFileInfo();
             uploadFile.setTargetName(fileName);
