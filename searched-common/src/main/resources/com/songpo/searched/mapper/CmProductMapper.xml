@@ -204,6 +204,7 @@
         LEFT JOIN sl_order_detail od
         ON od.`product_id` = p.`id`
         WHERE sc.name = 'SALES_MODE_TEAMWORK'
+        LIMIT 20
     </select>
 
     <!-- 查询预售商品列表 -->
@@ -222,6 +223,7 @@
         LEFT JOIN sl_order_detail od
         ON od.`product_id` = p.`id`
         WHERE sc.name = 'SALES_MODE_PRE_SALES'
+        LIMIT 20
     </select>
 
 </mapper>
