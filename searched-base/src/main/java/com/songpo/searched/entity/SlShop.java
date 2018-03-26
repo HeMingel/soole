@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
@@ -75,6 +75,11 @@ public class SlShop implements Serializable {
      * 评分
      */
     private Double rating;
+
+    /**
+     * 店铺电话
+     */
+    private String phone;
 
     private static final long serialVersionUID = 1L;
 
@@ -312,6 +317,24 @@ public class SlShop implements Serializable {
         this.rating = rating;
     }
 
+    /**
+     * 获取店铺电话
+     *
+     * @return phone - 店铺电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * 设置店铺电话
+     *
+     * @param phone 店铺电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -331,6 +354,7 @@ public class SlShop implements Serializable {
         sb.append(", coin=").append(coin);
         sb.append(", silver=").append(silver);
         sb.append(", rating=").append(rating);
+        sb.append(", phone=").append(phone);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

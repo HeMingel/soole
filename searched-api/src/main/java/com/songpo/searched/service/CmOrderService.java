@@ -37,9 +37,11 @@ public class CmOrderService {
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
-    private SlOrderMapper orderMapper;
+    private OrderService orderService;
     @Autowired
     private CmOrderMapper cmOrderMapper;
+    @Autowired
+    private LoginUserService loginUserService;
 
     /**
      * 新增预下单订单
@@ -64,7 +66,7 @@ public class CmOrderService {
                         slOrder.setId(UUID.randomUUID().toString());
                         slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         slOrder.setSerialNumber(OrderNumGeneration.getOrderIdByUUId());// 生成订单编号
-                        orderMapper.insertSelective(slOrder);
+                        orderService.insertSelective(slOrder);
                         for (SlOrderDetail slOrderDetail : orderDetail.getSlOrderDetails()) {
                             if (null != slOrderDetail.getRepositoryId()) {
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
@@ -76,7 +78,7 @@ public class CmOrderService {
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());
                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                                        setCreator(slOrder.getUserId()); // 用户id
+                                        setCreator(slOrder.getUserId()); // 拼团订单去这个属性判断是哪个人的
                                         setOrderId(slOrder.getId()); // 订单ID
                                         setQuantity(slOrderDetail.getQuantity()); // 商品数量
                                         setPrice(repository.getPrice()); // 单个商品价格
@@ -84,6 +86,7 @@ public class CmOrderService {
                                         setShopId(repository.getShopId());// 店铺唯一标识
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
                                         setDeductTotalSilver(repository.getSilver()); // 扣除单个商品了豆数量
+                                        setReturnPulse(repository.getRebatePulse());// 返了豆数量只限纯金钱模式
                                     }});
                                 }
                             }
@@ -93,7 +96,7 @@ public class CmOrderService {
                         example.createCriteria().andEqualTo("id", slOrder.getId());
                         int totalPulse = pulse;
                         //统计好总价和总豆再次更新好订单表
-                        orderMapper.updateByExampleSelective(new SlOrder() {{
+                        orderService.updateByExampleSelective(new SlOrder() {{
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
                         }}, example);
@@ -150,6 +153,27 @@ public class CmOrderService {
             }
         } catch (Exception e) {
             log.error("查询失败:{}", e);
+        }
+        return message;
+    }
+
+    /**
+     * 我的订单详情(这里只是查的订单的一些详情,关联的商品信息前端从上一页面带过来)
+     * @param orderId
+     * @return
+     */
+    public BusinessMessage orderInfo(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            SlUser user = this.loginUserService.getCurrentLoginUser();
+            Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), orderId);
+            if (null != orderInfo) {
+                message.setData(orderInfo);
+                message.setSuccess(true);
+                message.setMsg("查询成功");
+            }
+        } catch (Exception e) {
+            log.error("查询失败", e);
         }
         return message;
     }

@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -91,6 +91,18 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "post_fee")
     private BigDecimal postFee;
+
+    /**
+     * 买家留言
+     */
+    @Column(name = "buyer_message")
+    private String buyerMessage;
+
+    /**
+     * 单个商品返了豆数量
+     */
+    @Column(name = "return_pulse")
+    private Integer returnPulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -364,6 +376,42 @@ public class SlOrderDetail implements Serializable {
         this.postFee = postFee;
     }
 
+    /**
+     * 获取买家留言
+     *
+     * @return buyer_message - 买家留言
+     */
+    public String getBuyerMessage() {
+        return buyerMessage;
+    }
+
+    /**
+     * 设置买家留言
+     *
+     * @param buyerMessage 买家留言
+     */
+    public void setBuyerMessage(String buyerMessage) {
+        this.buyerMessage = buyerMessage == null ? null : buyerMessage.trim();
+    }
+
+    /**
+     * 获取单个商品返了豆数量
+     *
+     * @return return_pulse - 单个商品返了豆数量
+     */
+    public Integer getReturnPulse() {
+        return returnPulse;
+    }
+
+    /**
+     * 设置单个商品返了豆数量
+     *
+     * @param returnPulse 单个商品返了豆数量
+     */
+    public void setReturnPulse(Integer returnPulse) {
+        this.returnPulse = returnPulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -385,6 +433,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
         sb.append(", postFee=").append(postFee);
+        sb.append(", buyerMessage=").append(buyerMessage);
+        sb.append(", returnPulse=").append(returnPulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
