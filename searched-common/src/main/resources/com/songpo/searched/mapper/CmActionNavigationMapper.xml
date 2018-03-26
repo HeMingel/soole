@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmActionNavigationMapper">
+
+    <!-- 根据配置项的KEY查询活动唯一标识符 -->
+    <select id="selectByConfigKey" resultType="map">
+        SELECT an.*
+        FROM sl_action_navigation an
+        LEFT JOIN sl_action_navigation_type ant ON an.type_id = ant.id
+        LEFT JOIN sl_system_config sc ON sc.content = ant.id
+        WHERE sc.name = #{configKey}
+    </select>
+</mapper>

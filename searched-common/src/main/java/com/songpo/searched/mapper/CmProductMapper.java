@@ -72,5 +72,17 @@ public interface CmProductMapper {
     //查询商品库存规格
     List<Map<String,Object>> goodsRepositorySpecification(String product_detail_group_serial_number);
 
+    /**
+     * 查询拼团商品列表
+     *
+     * @return 商品列表
+     */
+    List<Map<String, Object>> selectByTeamwork();
 
+    /**
+     * 查询预售商品列表
+     *
+     * @return 商品列表
+     */
+    List<Map<String, Object>> selectByPreSales();
 }
