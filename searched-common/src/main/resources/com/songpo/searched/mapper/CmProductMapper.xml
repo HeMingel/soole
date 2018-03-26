@@ -188,6 +188,42 @@
             WHERE pr.`product_detail_group_serial_number` = #{product_detail_group_serial_number}
     </select>
 
+    <!-- 查询预售商品列表 -->
+    <select id="selectByTeamwork" resultType="map">
+        SELECT
+        p.*,
+        COUNT(od.`order_id`) AS orderCount
+        FROM
+        sl_product p
+        LEFT JOIN sl_product_repository pr
+        ON pr.product_id = p.id
+        LEFT JOIN sl_sales_mode sm
+        ON pr.sales_mode_id = sm.id
+        LEFT JOIN sl_system_config sc
+        ON sc.content = sm.id
+        LEFT JOIN sl_order_detail od
+        ON od.`product_id` = p.`id`
+        WHERE sc.name = 'SALES_MODE_TEAMWORK'
+    </select>
+
+    <!-- 查询预售商品列表 -->
+    <select id="selectByPreSales" resultType="map">
+        SELECT
+        p.*,
+        COUNT(od.`order_id`) AS orderCount
+        FROM
+        sl_product p
+        LEFT JOIN sl_product_repository pr
+        ON pr.product_id = p.id
+        LEFT JOIN sl_sales_mode sm
+        ON pr.sales_mode_id = sm.id
+        LEFT JOIN sl_system_config sc
+        ON sc.content = sm.id
+        LEFT JOIN sl_order_detail od
+        ON od.`product_id` = p.`id`
+        WHERE sc.name = 'SALES_MODE_PRE_SALES'
+    </select>
+
 </mapper>
 
 

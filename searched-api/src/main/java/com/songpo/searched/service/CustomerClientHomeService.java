@@ -7,10 +7,14 @@ import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CmProduct;
-import com.songpo.searched.entity.*;
+import com.songpo.searched.entity.SlActionNavigation;
+import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.SlProductRepository;
+import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.CmActionNavigationMapper;
+import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.CmProductMapper;
 import com.songpo.searched.mapper.CmProductTypeMapper;
-import com.songpo.searched.mapper.CmOrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,9 +65,12 @@ public class CustomerClientHomeService {
     private CmOrderMapper specificationNameMapper;
 
     @Autowired
+    private CmActionNavigationMapper actionNavigationMapper;
+
+    @Autowired
     private CmProductTypeMapper cmProductTypeMapper;
     @Autowired
-    private CmProductMapper mapper;
+    private CmProductMapper productMapper;
 
     /**
      * 获取首页所有数据
@@ -77,47 +84,28 @@ public class CustomerClientHomeService {
         List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
 
-        // 获取首页配置主键
-        SlSystemConfig homeType = this.systemConfigService.selectOne(new SlSystemConfig() {{
-            setName("CUSTOMER_CLIENT_HOME");
-        }});
-
         JSONObject banner = new JSONObject();
 
-        if (null != homeType && !StringUtils.isEmpty(homeType.getContent())) {
-            // 获取广告轮播图列表
-            List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
-                // 设置位置编号
-                setSerialNumber(1);
-                // 设置类型为首页
-                setTypeId(homeType.getContent());
-            }});
-            banner.put("data", bannerList);
+        // 获取广告轮播图列表
+        List<Map<String, Object>> bannerList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_BANNER");
+        data.put("banners", bannerList);
 
-            // 获取轮播图播放速度
-            SlActionNavigationType bannerSpeed = this.actionNavigationTypeService.selectByPrimaryKey(homeType.getId());
-            banner.put("speed", bannerSpeed.getSpeed());
+        // 获取入口列表
+        List<Map<String, Object>> gatewayList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_SALES_MODE");
+        data.put("gateways", gatewayList);
 
-            data.put("banner", banner);
+        // 获取活动列表
+        List<Map<String, Object>> actionList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_ACTIVITY");
+        data.put("actions", actionList);
 
-            // 获取入口列表
-            List<SlActionNavigation> gatewayList = this.actionNavigationService.select(new SlActionNavigation() {{
-                // 设置位置编号
-                setSerialNumber(2);
-                // 设置类型为首页
-                setTypeId(homeType.getId());
-            }});
-            data.put("gateway", gatewayList);
+        // 获取拼团商品
+        List<Map<String, Object>> teamworkProductList = this.productMapper.selectByTeamwork();
+        data.put("teamworkProductList", teamworkProductList);
 
-            // 获取活动列表
-            List<SlActionNavigation> actionList = this.actionNavigationService.select(new SlActionNavigation() {{
-                // 设置位置编号
-                setSerialNumber(3);
-                // 设置类型为首页
-                setTypeId(homeType.getId());
-            }});
-            data.put("action", actionList);
-        }
+        // 获取拼团商品
+        List<Map<String, Object>> preSalesProductList = this.productMapper.selectByPreSales();
+        data.put("preSalesProductList", preSalesProductList);
+
         return data;
     }
 
@@ -138,7 +126,7 @@ public class CustomerClientHomeService {
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<Map<String, Object>> cmProducts = this.mapper.screenGoods(goodsType, screenType, name);
+        List<Map<String, Object>> cmProducts = this.productMapper.screenGoods(goodsType, screenType, name);
         data.put("products", new PageInfo<>(cmProducts));
         //banner图
         // 获取广告轮播图列表
@@ -149,7 +137,7 @@ public class CustomerClientHomeService {
         }});
         data.put("banner", bannerList);
         //商品分类首页推荐商品
-        List<CmProduct> recommendProducts = this.mapper.findRecommendProduct();
+        List<CmProduct> recommendProducts = this.productMapper.findRecommendProduct();
         data.put("recommendProducts", recommendProducts);
 
         return data;

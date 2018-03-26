@@ -1,4 +1,4 @@
-package com.songpo.searched.service;
+package com.songpo.searched.oauth2;
 
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.SlUser;

@@ -1,6 +1,5 @@
-package com.songpo.searched.config;
+package com.songpo.searched.oauth2;
 
-import com.songpo.searched.service.MyClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

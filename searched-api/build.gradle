@@ -20,6 +20,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2
     compile('org.springframework.cloud:spring-cloud-starter-oauth2:1.2.2.RELEASE')
 
+    // WebSocket组件
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+
     // 微信支付SDK
     compile 'com.github.wxpay:WXPay-SDK-Java:0.0.4'
 
