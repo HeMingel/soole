@@ -70,5 +70,10 @@ public class CMGoods {
      * 返了豆数量
      */
     private Integer rebatePulse;
+    /**
+     * 我的豆子总和
+     */
+    private Integer myBeansCounts;
+
 
 }

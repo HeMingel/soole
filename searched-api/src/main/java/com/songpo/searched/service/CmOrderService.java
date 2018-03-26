@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -100,8 +101,6 @@ public class CmOrderService {
                         message.setData(1);
                         message.setSuccess(true);
                         message.setMsg("创建订单成功");
-                        CmOrderService service = new CmOrderService();
-                        service.updOrderState(slOrder.getId());
                     } else {
                         message.setMsg("收货地址不能为空");
                     }
@@ -153,20 +152,5 @@ public class CmOrderService {
             log.error("查询失败:{}", e);
         }
         return message;
-    }
-
-    void updOrderState(String orderId) {
-        Timer timer = new Timer();
-        // 线程用于关闭订单
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Example example = new Example(SlOrder.class);
-                example.createCriteria().andEqualTo("id", orderId);
-                orderMapper.updateByExampleSelective(new SlOrder() {{
-                    setPaymentState(2);
-                }}, example);
-            }
-        }, new Date().getSeconds() + /*60000*/30000);
     }
 }
