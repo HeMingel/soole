@@ -1,18 +1,12 @@
 package com.songpo.searched.config;
-
 import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.service.CmOrderService;
 import com.songpo.searched.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +22,6 @@ public class CommonConfig {
 
     @Scheduled(cron = "0 30 * * * *")
     void updOrderState() {
-        //15:01 start
         try {
             Example example = new Example(SlOrder.class);
             example.setOrderByClause("create_time ASC");

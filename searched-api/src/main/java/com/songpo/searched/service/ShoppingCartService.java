@@ -106,6 +106,7 @@ public class ShoppingCartService {
                                     cmGoods.setShopName(sc.getShopName());// 店铺名称
                                     cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
                                     cmGoods.setRebatePulse(repository.getRebatePulse());// 纯金钱商品返了豆数量
+                                    cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
                                     list.add(cmGoods);
                                 } else {
                                     message.setSuccess(true);
