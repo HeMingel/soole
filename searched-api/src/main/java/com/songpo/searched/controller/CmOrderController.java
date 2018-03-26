@@ -5,6 +5,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.service.CmOrderService;
+import com.songpo.searched.service.LoginUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -62,6 +63,20 @@ public class CmOrderController {
     @GetMapping("list")
     public BusinessMessage list(OAuth2Authentication oAuth2Authentication) {
         return this.cmOrderService.findList(oAuth2Authentication.getOAuth2Request().getClientId());
+    }
+
+    /**
+     * 我的订单详情
+     *
+     * @return
+     */
+    @ApiOperation(value = "我的订单详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+    })
+    @GetMapping("orderInfo")
+    public BusinessMessage orderInfo(String orderId) {
+        return this.cmOrderService.orderInfo(orderId);
     }
 
 }

@@ -19,7 +19,9 @@
         so.id orderId,
         spr.ship ship,
         so.type type,
-        so.serial_number serialNumber
+        so.serial_number serialNumber,
+        sod.buyer_message buyerMessage,
+        ss.phone shopPhone
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
@@ -37,6 +39,36 @@
         LEFT JOIN sl_order so ON su.id = so.user_id
         WHERE so.payment_state = '1' AND so.serial_number = #{serialNumber}
         limit 10
+    </select>
+
+    <select id="selectMyOrderInfo" resultType="Map">
+        select
+        sua.name consigneeName,
+        sua.phone phone,
+        sua.province province,
+        sua.city city,
+        sua.county county,
+        sua.detailed detailed,
+        so.create_time createTime,
+        so.total_amount totalAmount
+        so.deduct_total_pulse totalPulse,
+        so.serial_number orderNum,
+        so.type AS type
+        from sl_order so
+        LEFT JOIN sl_user_address AS sua ON sua.id = so.shippng_address_id
+        LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
+        WHERE so.user_id = #{userId} and so.id = #{orderId}
+    </select>
+
+    <select id="goodsInfo" resultType="map">
+        select
+        sp.name productName,
+        sod.buyer_message buyerMessage,
+
+        from sl_order_detail sod
+        LEFT JOIN sl_product sp ON sp.id = sod.product_id
+        LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
+        WHERE sod.creator = #{userId} and sod.order_id = #{orderId}
     </select>
 
 </mapper>
