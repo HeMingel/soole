@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -43,7 +43,7 @@ public class SlOrder implements Serializable {
     private BigDecimal fee;
 
     /**
-     * 0：待支付1：支付成功 2：支付失败
+     * 0：待支付1：支付成功 2：支付失败 -1为已失效
      */
     @Column(name = "payment_state")
     private Integer paymentState;
@@ -224,18 +224,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取0：待支付1：支付成功 2：支付失败
+     * 获取0：待支付1：支付成功 2：支付失败 -1为已失效
      *
-     * @return payment_state - 0：待支付1：支付成功 2：支付失败
+     * @return payment_state - 0：待支付1：支付成功 2：支付失败 -1为已失效
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置0：待支付1：支付成功 2：支付失败
+     * 设置0：待支付1：支付成功 2：支付失败 -1为已失效
      *
-     * @param paymentState 0：待支付1：支付成功 2：支付失败
+     * @param paymentState 0：待支付1：支付成功 2：支付失败 -1为已失效
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
