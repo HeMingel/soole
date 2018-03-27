@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_admin_user")
 public class SlAdminUser implements Serializable {
@@ -10,7 +10,7 @@ public class SlAdminUser implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     /**
      * 帐号
@@ -97,7 +97,7 @@ public class SlAdminUser implements Serializable {
      *
      * @return id - ID
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -106,8 +106,8 @@ public class SlAdminUser implements Serializable {
      *
      * @param id ID
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

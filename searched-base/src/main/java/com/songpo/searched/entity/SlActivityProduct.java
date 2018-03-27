@@ -47,6 +47,17 @@ public class SlActivityProduct implements Serializable {
      */
     private Integer count;
 
+    /**
+     * 拼团人数
+     */
+    @Column(name = "people_num")
+    private Integer peopleNum;
+
+    /**
+     * 预售多少天后发货
+     */
+    private Integer days;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -175,6 +186,42 @@ public class SlActivityProduct implements Serializable {
         this.count = count;
     }
 
+    /**
+     * 获取拼团人数
+     *
+     * @return people_num - 拼团人数
+     */
+    public Integer getPeopleNum() {
+        return peopleNum;
+    }
+
+    /**
+     * 设置拼团人数
+     *
+     * @param peopleNum 拼团人数
+     */
+    public void setPeopleNum(Integer peopleNum) {
+        this.peopleNum = peopleNum;
+    }
+
+    /**
+     * 获取预售多少天后发货
+     *
+     * @return days - 预售多少天后发货
+     */
+    public Integer getDays() {
+        return days;
+    }
+
+    /**
+     * 设置预售多少天后发货
+     *
+     * @param days 预售多少天后发货
+     */
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -188,6 +235,8 @@ public class SlActivityProduct implements Serializable {
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", count=").append(count);
+        sb.append(", peopleNum=").append(peopleNum);
+        sb.append(", days=").append(days);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

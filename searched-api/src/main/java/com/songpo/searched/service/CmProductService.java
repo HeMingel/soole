@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CmProduct;
+import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.mapper.CmProductCommentMapper;
-import com.songpo.searched.mapper.CmProductMapper;
+import com.songpo.searched.entity.SlProductSaleModeOrderCount;
+import com.songpo.searched.mapper.*;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,11 @@ public class CmProductService {
 
     @Autowired
     private CmProductCommentMapper cmProductCommentMapper;
+    @Autowired
+    private SlActivityProductMapper slActivityProductMapper;
+    @Autowired
+    private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
+
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -155,25 +162,25 @@ public class CmProductService {
      * @param size
      * @return
      */
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size,String name) {
-        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}",goodsType,screenType,page,size,name);
+    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
+        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-                if(goodsType != null || screenType != null || name != null){
-                    List<Map<String,Object>> list = this.mapper.screenGoods(goodsType, screenType, name);
-                    if (list.size() > 0) {
-                        businessMessage.setMsg("查询成功");
-                        businessMessage.setSuccess(true);
-                        businessMessage.setData(new PageInfo<>(list));
-                    } else {
-                        businessMessage.setMsg("查询无数据!");
-                        businessMessage.setSuccess(true);
-                    }
-                }else{
-                    businessMessage.setMsg("请传入正确参数");
+            if (goodsType != null || screenType != null || name != null) {
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, name);
+                if (list.size() > 0) {
+                    businessMessage.setMsg("查询成功");
+                    businessMessage.setSuccess(true);
+                    businessMessage.setData(new PageInfo<>(list));
+                } else {
+                    businessMessage.setMsg("查询无数据!");
+                    businessMessage.setSuccess(true);
                 }
+            } else {
+                businessMessage.setMsg("请传入正确参数");
+            }
 
         } catch (Exception e) {
             businessMessage.setMsg("查询异常");
@@ -186,37 +193,81 @@ public class CmProductService {
      * 根据商品Id 查询商品详情
      *
      * @param goodsId
+     * @param saleModeType 商品销售类型,1普通 2拼团 3预收 4秒杀
      * @return
      */
-    public BusinessMessage goodsDetail(String goodsId) {
+    public BusinessMessage goodsDetail(String goodsId, Integer saleModeType) {
         JSONObject data = new JSONObject();
-        log.debug("查询 商品Id{}",goodsId);
+        log.debug("查询 商品Id{}", goodsId);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
             //商品基础信息
-             Map map = this.mapper.goodsBaseInfo(goodsId);
-             data.put("productBase",map);
+            Map map = this.mapper.goodsBaseInfo(goodsId);
+            data.put("productBase", map);
             if (map.isEmpty()) {
                 businessMessage.setMsg("未查到商品相关信息");
                 businessMessage.setSuccess(true);
             } else {
-                List<Map<String,Object>>  mapImageUrls = this.mapper.goodsImageUrl(goodsId);
-                data.put("productImages",mapImageUrls);
-                List<Map<String,Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId,null);
+                //商品图片
+                List<Map<String, Object>> mapImageUrls = this.mapper.goodsImageUrl(goodsId);
+                data.put("productImages", mapImageUrls);
+                //商品评论
+                List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, null);
                 Map goodsComment = mapComments.get(0);
                 //如果第一条数据有图 则查询图片 没有图 直接返回第一条数据
-                if(goodsComment.get("status").equals(4)){
+                if (goodsComment.get("status").equals(4)) {
                     //查询评论图片
                     mapComments.get(0).get("id").toString();
-                    List<Map<String,Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
+                    List<Map<String, Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
                     List list = new ArrayList();
                     list.add(commentImages);
                     list.add(goodsComment);
-                    data.put("productComments",list);
-                }else {
-                    data.put("productComments",goodsComment);
+                    data.put("productComments", list);
+                } else {
+                    data.put("productComments", goodsComment);
                 }
+
+                if (saleModeType != null) {
+                    //查询商品活动表 查出来相关活动需要的时间或者人数
+                    SlActivityProduct goodsActivity = this.slActivityProductMapper.selectOne(new SlActivityProduct() {{
+                        setProductId(goodsId);
+                        //商品基础信息表里查出来的销售模式
+                        setActivityId(map.get("sales_mode_id").toString());
+                    }});
+                    data.put("productActivityInfo",goodsActivity);
+                    if (goodsActivity != null) {
+                        //查询该商品销售模式订单成交量
+                        SlProductSaleModeOrderCount productSaleModeOrderCount = this.slProductSaleModeOrderCountMapper.selectOne(new SlProductSaleModeOrderCount() {{
+                            setProductId(goodsId);
+                            setSalesModeId(map.get("sales_mode_id").toString());
+                        }});
+                        data.put("productSaleModeOrderCount",productSaleModeOrderCount);
+                    }
+
+                    //如果是拼团 1查询 所有关于这个商品的订单, 不同的订单有一个count
+                    if (saleModeType == 3) {
+                        //查询该商品拼团未完成 订单编号
+                       List<Map<String,Object>> unFinishOrder = this.mapper.findGroupOrder(goodsId,saleModeType,goodsActivity.getPeopleNum());
+                       //根据订单编号查询第一个完成支付的小伙子
+
+                        List list = new ArrayList();
+                        for(int i =0; i < unFinishOrder.size(); i++){
+                            Map groupMap = new HashMap();
+                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("orderNum").toString()) ;
+                            groupMap.put("groupUserInfo",userMap);
+                            groupMap.put("unFinishOrder",unFinishOrder.get(i));
+                            list.add(groupMap);
+
+                        }
+                        data.put("unFinishOrder",list);
+
+                    }
+
+
+                }
+
+
             }
             businessMessage.setSuccess(true);
             businessMessage.setData(data);
@@ -230,41 +281,42 @@ public class CmProductService {
 
     /**
      * 根据商品Id 查询商品规格
+     *
      * @param id
      * @return
      */
-    public BusinessMessage goodsSpecification(String id){
-        log.debug("商品规格详情,商品id:{}",id);
+    public BusinessMessage goodsSpecification(String id) {
+        log.debug("商品规格详情,商品id:{}", id);
         JSONObject data = new JSONObject();
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
             //搜索商品规格Detail
-            List<Map<String,Object>> specificationDetailMap = this.mapper.goodsSpecificationDetail(id);
-            if(specificationDetailMap.size() >0){
+            List<Map<String, Object>> specificationDetailMap = this.mapper.goodsSpecificationDetail(id);
+            if (specificationDetailMap.size() > 0) {
                 //查询商品规格名称
-                List<Map<String,Object>> specificationMap = this.mapper.goodsSpecification(id);
+                List<Map<String, Object>> specificationMap = this.mapper.goodsSpecification(id);
                 List list = new ArrayList();
-                for(int i = 0; i<specificationMap.size();i++ ){
+                for (int i = 0; i < specificationMap.size(); i++) {
                     Map map = new HashMap();
-                    map.put("specification",specificationMap.get(i));
-                    for (int j = 0; j<specificationDetailMap.size();j++){
-                        if(specificationDetailMap.get(j).get("specification_id").equals(specificationMap.get(i).get("specification_id"))){
-                            map.put("specificationDetail",specificationDetailMap.get(j));
+                    map.put("specification", specificationMap.get(i));
+                    for (int j = 0; j < specificationDetailMap.size(); j++) {
+                        if (specificationDetailMap.get(j).get("specification_id").equals(specificationMap.get(i).get("specification_id"))) {
+                            map.put("specificationDetail", specificationDetailMap.get(j));
                         }
                     }
                     list.add(map);
                 }
                 //step 1查询商品对应的库存
-                List<Map<String,Object>> goodsRepositoryList = this.mapper.goodsRepository(id);
+                List<Map<String, Object>> goodsRepositoryList = this.mapper.goodsRepository(id);
                 //step 2根据商品分组查询对应的规格信息
-                if(goodsRepositoryList.size()>0) {
+                if (goodsRepositoryList.size() > 0) {
                     List lists = new ArrayList();
-                    for(int i =0;i<goodsRepositoryList.size();i++){
+                    for (int i = 0; i < goodsRepositoryList.size(); i++) {
                         Map map = new HashMap();
-                        List<Map<String,Object>> goodsRepositorySpecification = this.mapper.goodsRepositorySpecification(goodsRepositoryList.get(i).get("product_detail_group_serial_number").toString());
-                        map.put("goodsRepositorySpecification",goodsRepositorySpecification);
-                        map.put("goodsRepository",goodsRepositoryList.get(i));
+                        List<Map<String, Object>> goodsRepositorySpecification = this.mapper.goodsRepositorySpecification(goodsRepositoryList.get(i).get("product_detail_group_serial_number").toString());
+                        map.put("goodsRepositorySpecification", goodsRepositorySpecification);
+                        map.put("goodsRepository", goodsRepositoryList.get(i));
                         lists.add(map);
                     }
                     list.add(lists);
@@ -276,8 +328,8 @@ public class CmProductService {
             } else {
                 businessMessage.setMsg("该商品无规格");
             }
-        } catch (Exception e){
-            log.error("查询商品规格异常",e);
+        } catch (Exception e) {
+            log.error("查询商品规格异常", e);
             businessMessage.setMsg("查询异常");
         }
         return businessMessage;
