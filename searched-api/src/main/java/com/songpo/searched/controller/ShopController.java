@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商铺管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/shop")
-///common
+@RequestMapping("/api/common/v1/shop")
+
 public class ShopController {
     @Autowired
     private CmShopService cmShopService;
