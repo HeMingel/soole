@@ -254,7 +254,7 @@ public class CmProductService {
                         List list = new ArrayList();
                         for(int i =0; i < unFinishOrder.size(); i++){
                             Map groupMap = new HashMap();
-                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("orderNum").toString()) ;
+                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("serial_number").toString()) ;
                             groupMap.put("groupUserInfo",userMap);
                             groupMap.put("unFinishOrder",unFinishOrder.get(i));
                             list.add(groupMap);

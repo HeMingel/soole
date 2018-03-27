@@ -231,7 +231,11 @@
         SELECT  od.id AS orderDetailId,od.serial_number,COUNT(od.serial_number) AS orderNum
         FROM
           sl_order_detail od
+           sl_order o
+        LEFT JOIN sl_user u
+        ON o.user_id = u.id
         WHERE product_id = #{goodsId}
+        AND o.payment_state = 1
         GROUP BY od.serial_number HAVING COUNT(od.serial_number) &lt; #{peopleNum}
     </select>
         <!--查询该订单第一个发起人-->
