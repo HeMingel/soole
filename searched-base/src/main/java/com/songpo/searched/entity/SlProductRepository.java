@@ -20,6 +20,18 @@ public class SlProductRepository implements Serializable {
     private String shopId;
 
     /**
+     * 商品名称
+     */
+    @Column(name = "product_name")
+    private String productName;
+
+    /**
+     * 规格明细图片
+     */
+    @Column(name = "product_image_url")
+    private String productImageUrl;
+
+    /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
@@ -201,6 +213,42 @@ public class SlProductRepository implements Serializable {
      */
     public void setShopId(String shopId) {
         this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    /**
+     * 获取商品名称
+     *
+     * @return product_name - 商品名称
+     */
+    public String getProductName() {
+        return productName;
+    }
+
+    /**
+     * 设置商品名称
+     *
+     * @param productName 商品名称
+     */
+    public void setProductName(String productName) {
+        this.productName = productName == null ? null : productName.trim();
+    }
+
+    /**
+     * 获取规格明细图片
+     *
+     * @return product_image_url - 规格明细图片
+     */
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    /**
+     * 设置规格明细图片
+     *
+     * @param productImageUrl 规格明细图片
+     */
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
     }
 
     /**
@@ -679,6 +727,8 @@ public class SlProductRepository implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
+        sb.append(", productName=").append(productName);
+        sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", productId=").append(productId);
         sb.append(", productDetailGroupSerialNumber=").append(productDetailGroupSerialNumber);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);

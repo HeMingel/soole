@@ -26,12 +26,6 @@ public class SlOrder implements Serializable {
     private String userId;
 
     /**
-     * 收货地址id
-     */
-    @Column(name = "shippng_address_id")
-    private String shippngAddressId;
-
-    /**
      * 订单总金额(可能是一个商品可能是多个商品)
      */
     @Column(name = "total_amount")
@@ -85,18 +79,6 @@ public class SlOrder implements Serializable {
     private Integer shippingState;
 
     /**
-     * 发货时间
-     */
-    @Column(name = "shipping_time")
-    private String shippingTime;
-
-    /**
-     * 快递单号
-     */
-    @Column(name = "ship_number")
-    private String shipNumber;
-
-    /**
      * 记录状态 1:正常 0:删除
      */
     private Integer status;
@@ -108,10 +90,36 @@ public class SlOrder implements Serializable {
     private Integer deductTotalPulse;
 
     /**
-     * 买家留言
+     * 收件人姓名
      */
-    @Column(name = "buyer_message")
-    private String buyerMessage;
+    @Column(name = "consigneeName")
+    private String consigneename;
+
+    /**
+     * 收件人电话
+     */
+    @Column(name = "consigneePhone")
+    private String consigneephone;
+
+    /**
+     * 收件人省地址
+     */
+    private String province;
+
+    /**
+     * 收件人市地址
+     */
+    private String city;
+
+    /**
+     * 收件人区地址
+     */
+    private String county;
+
+    /**
+     * 收件人详细地址
+     */
+    private String detailed;
 
     private static final long serialVersionUID = 1L;
 
@@ -167,24 +175,6 @@ public class SlOrder implements Serializable {
      */
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
-
-    /**
-     * 获取收货地址id
-     *
-     * @return shippng_address_id - 收货地址id
-     */
-    public String getShippngAddressId() {
-        return shippngAddressId;
-    }
-
-    /**
-     * 设置收货地址id
-     *
-     * @param shippngAddressId 收货地址id
-     */
-    public void setShippngAddressId(String shippngAddressId) {
-        this.shippngAddressId = shippngAddressId == null ? null : shippngAddressId.trim();
     }
 
     /**
@@ -358,42 +348,6 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取发货时间
-     *
-     * @return shipping_time - 发货时间
-     */
-    public String getShippingTime() {
-        return shippingTime;
-    }
-
-    /**
-     * 设置发货时间
-     *
-     * @param shippingTime 发货时间
-     */
-    public void setShippingTime(String shippingTime) {
-        this.shippingTime = shippingTime == null ? null : shippingTime.trim();
-    }
-
-    /**
-     * 获取快递单号
-     *
-     * @return ship_number - 快递单号
-     */
-    public String getShipNumber() {
-        return shipNumber;
-    }
-
-    /**
-     * 设置快递单号
-     *
-     * @param shipNumber 快递单号
-     */
-    public void setShipNumber(String shipNumber) {
-        this.shipNumber = shipNumber == null ? null : shipNumber.trim();
-    }
-
-    /**
      * 获取记录状态 1:正常 0:删除
      *
      * @return status - 记录状态 1:正常 0:删除
@@ -430,21 +384,111 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取买家留言
+     * 获取收件人姓名
      *
-     * @return buyer_message - 买家留言
+     * @return consigneeName - 收件人姓名
      */
-    public String getBuyerMessage() {
-        return buyerMessage;
+    public String getConsigneename() {
+        return consigneename;
     }
 
     /**
-     * 设置买家留言
+     * 设置收件人姓名
      *
-     * @param buyerMessage 买家留言
+     * @param consigneename 收件人姓名
      */
-    public void setBuyerMessage(String buyerMessage) {
-        this.buyerMessage = buyerMessage == null ? null : buyerMessage.trim();
+    public void setConsigneename(String consigneename) {
+        this.consigneename = consigneename == null ? null : consigneename.trim();
+    }
+
+    /**
+     * 获取收件人电话
+     *
+     * @return consigneePhone - 收件人电话
+     */
+    public String getConsigneephone() {
+        return consigneephone;
+    }
+
+    /**
+     * 设置收件人电话
+     *
+     * @param consigneephone 收件人电话
+     */
+    public void setConsigneephone(String consigneephone) {
+        this.consigneephone = consigneephone == null ? null : consigneephone.trim();
+    }
+
+    /**
+     * 获取收件人省地址
+     *
+     * @return province - 收件人省地址
+     */
+    public String getProvince() {
+        return province;
+    }
+
+    /**
+     * 设置收件人省地址
+     *
+     * @param province 收件人省地址
+     */
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    /**
+     * 获取收件人市地址
+     *
+     * @return city - 收件人市地址
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 设置收件人市地址
+     *
+     * @param city 收件人市地址
+     */
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    /**
+     * 获取收件人区地址
+     *
+     * @return county - 收件人区地址
+     */
+    public String getCounty() {
+        return county;
+    }
+
+    /**
+     * 设置收件人区地址
+     *
+     * @param county 收件人区地址
+     */
+    public void setCounty(String county) {
+        this.county = county == null ? null : county.trim();
+    }
+
+    /**
+     * 获取收件人详细地址
+     *
+     * @return detailed - 收件人详细地址
+     */
+    public String getDetailed() {
+        return detailed;
+    }
+
+    /**
+     * 设置收件人详细地址
+     *
+     * @param detailed 收件人详细地址
+     */
+    public void setDetailed(String detailed) {
+        this.detailed = detailed == null ? null : detailed.trim();
     }
 
     @Override
@@ -456,7 +500,6 @@ public class SlOrder implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", userId=").append(userId);
-        sb.append(", shippngAddressId=").append(shippngAddressId);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);
@@ -466,11 +509,14 @@ public class SlOrder implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", payTime=").append(payTime);
         sb.append(", shippingState=").append(shippingState);
-        sb.append(", shippingTime=").append(shippingTime);
-        sb.append(", shipNumber=").append(shipNumber);
         sb.append(", status=").append(status);
         sb.append(", deductTotalPulse=").append(deductTotalPulse);
-        sb.append(", buyerMessage=").append(buyerMessage);
+        sb.append(", consigneename=").append(consigneename);
+        sb.append(", consigneephone=").append(consigneephone);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", county=").append(county);
+        sb.append(", detailed=").append(detailed);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

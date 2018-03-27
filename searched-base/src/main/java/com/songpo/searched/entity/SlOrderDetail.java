@@ -14,10 +14,16 @@ public class SlOrderDetail implements Serializable {
     private String id;
 
     /**
-     * 订单唯一标识符
+     * 订单唯一标识
      */
     @Column(name = "order_id")
     private String orderId;
+
+    /**
+     * 订单编号
+     */
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     /**
      * 店铺唯一标识符
@@ -36,6 +42,18 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "product_id")
     private String productId;
+
+    /**
+     * 商品名称
+     */
+    @Column(name = "produce_name")
+    private String produceName;
+
+    /**
+     * 商品图片
+     */
+    @Column(name = "product_image_url")
+    private String productImageUrl;
 
     /**
      * 数量
@@ -104,6 +122,18 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "return_pulse")
     private Integer returnPulse;
 
+    /**
+     * 发货时间
+     */
+    @Column(name = "shipping_time")
+    private String shippingTime;
+
+    /**
+     * 物流单号
+     */
+    @Column(name = "ship_number")
+    private String shipNumber;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -125,21 +155,39 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取订单唯一标识符
+     * 获取订单唯一标识
      *
-     * @return order_id - 订单唯一标识符
+     * @return order_id - 订单唯一标识
      */
     public String getOrderId() {
         return orderId;
     }
 
     /**
-     * 设置订单唯一标识符
+     * 设置订单唯一标识
      *
-     * @param orderId 订单唯一标识符
+     * @param orderId 订单唯一标识
      */
     public void setOrderId(String orderId) {
         this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    /**
+     * 获取订单编号
+     *
+     * @return serial_number - 订单编号
+     */
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    /**
+     * 设置订单编号
+     *
+     * @param serialNumber 订单编号
+     */
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber == null ? null : serialNumber.trim();
     }
 
     /**
@@ -194,6 +242,42 @@ public class SlOrderDetail implements Serializable {
      */
     public void setProductId(String productId) {
         this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
+     * 获取商品名称
+     *
+     * @return produce_name - 商品名称
+     */
+    public String getProduceName() {
+        return produceName;
+    }
+
+    /**
+     * 设置商品名称
+     *
+     * @param produceName 商品名称
+     */
+    public void setProduceName(String produceName) {
+        this.produceName = produceName == null ? null : produceName.trim();
+    }
+
+    /**
+     * 获取商品图片
+     *
+     * @return product_image_url - 商品图片
+     */
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    /**
+     * 设置商品图片
+     *
+     * @param productImageUrl 商品图片
+     */
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
     }
 
     /**
@@ -412,6 +496,42 @@ public class SlOrderDetail implements Serializable {
         this.returnPulse = returnPulse;
     }
 
+    /**
+     * 获取发货时间
+     *
+     * @return shipping_time - 发货时间
+     */
+    public String getShippingTime() {
+        return shippingTime;
+    }
+
+    /**
+     * 设置发货时间
+     *
+     * @param shippingTime 发货时间
+     */
+    public void setShippingTime(String shippingTime) {
+        this.shippingTime = shippingTime == null ? null : shippingTime.trim();
+    }
+
+    /**
+     * 获取物流单号
+     *
+     * @return ship_number - 物流单号
+     */
+    public String getShipNumber() {
+        return shipNumber;
+    }
+
+    /**
+     * 设置物流单号
+     *
+     * @param shipNumber 物流单号
+     */
+    public void setShipNumber(String shipNumber) {
+        this.shipNumber = shipNumber == null ? null : shipNumber.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -420,9 +540,12 @@ public class SlOrderDetail implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", orderId=").append(orderId);
+        sb.append(", serialNumber=").append(serialNumber);
         sb.append(", shopId=").append(shopId);
         sb.append(", repositoryId=").append(repositoryId);
         sb.append(", productId=").append(productId);
+        sb.append(", produceName=").append(produceName);
+        sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", deductTotalSilver=").append(deductTotalSilver);
@@ -435,6 +558,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", postFee=").append(postFee);
         sb.append(", buyerMessage=").append(buyerMessage);
         sb.append(", returnPulse=").append(returnPulse);
+        sb.append(", shippingTime=").append(shippingTime);
+        sb.append(", shipNumber=").append(shipNumber);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
