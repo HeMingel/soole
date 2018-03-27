@@ -58,14 +58,54 @@
         WHERE so.user_id = #{userId} and so.id = #{orderId}
     </select>
 
-    <select id="findGroup" resultType="java.lang.String">
+    <select id="findGroup" resultType="java.util.Map">
+       SELECT
+          sod.serial_number serialNumber
+         (SELECT
+            COUNT(1)
+          FROM
+            sl_order_detail sod
+            LEFT JOIN sl_order so
+              ON so.id = sod.order_id
+            LEFT JOIN sl_activity_product sap
+              ON sap.product_id = sod.product_id
+          WHERE sod.create_time BETWEEN sap.begin_time
+            AND sap.end_time
+            AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
+            AND so.type = 2
+            AND sod.product_id = #{productId}
+             AND so.payment_state = 0
+            OR so.payment_state = 1) orderCounts
+        FROM
+          sl_order_detail sod
+          LEFT JOIN sl_order so ON so.id = sod.order_id
+          LEFT JOIN sl_activity_product AS sap ON sap.product_id = sod.product_id
+        WHERE sod.create_time BETWEEN sap.begin_time
+          AND sap.end_time
+          AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
+          AND so.type = 2
+          AND sod.product_id = #{productId}
+          AND so.payment_state = 0 OR so.payment_state = 1
+        ORDER BY sod.create_time DESC
+        LIMIT 1
+    </select>
+
+    <select id="findActivityProduct" resultType="java.util.Map">
         select
-        sod.serial_number serialNumber
-        from sl_order_detail sod
-        LEFT JOIN sl_order so ON so.id = sod.order_id
-        LEFT JOIN sl_activity_product sap ON sap.product_id = sod.
-        WHERE so.type = 2 AND sod.product_id = #{productId}
-        order by sod.create_time DESC
+        sap.count counts,
+        sap.people_num peopleNum,
+        sap.id activityProductId,
+        sap.begin_time beginTime,
+        sap.end_time endTime,
+        sap.orders_num ordersNum,
+        sap.surplus_product_count surplusProductCount
+        from sl_activity_product sap
+        LEFT JOIN sl_activity sa ON sap.activity_id = sa.id
+        WHERE
+        sap.product_id = #{productId}
+        and
+        now() &lt; sap.end_time
+        order by sap.begin_time DESC
         limit 1
     </select>
 

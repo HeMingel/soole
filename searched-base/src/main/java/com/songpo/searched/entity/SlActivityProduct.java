@@ -47,6 +47,29 @@ public class SlActivityProduct implements Serializable {
      */
     private Integer count;
 
+    /**
+     * 拼团人数
+     */
+    @Column(name = "people_num")
+    private Integer peopleNum;
+
+    /**
+     * 预售多少天后发货
+     */
+    private Integer days;
+
+    /**
+     * 已拼单人数
+     */
+    @Column(name = "orders_num")
+    private Integer ordersNum;
+
+    /**
+     * 剩余商品数量
+     */
+    @Column(name = "surplus_product_count")
+    private Integer surplusProductCount;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -175,6 +198,78 @@ public class SlActivityProduct implements Serializable {
         this.count = count;
     }
 
+    /**
+     * 获取拼团人数
+     *
+     * @return people_num - 拼团人数
+     */
+    public Integer getPeopleNum() {
+        return peopleNum;
+    }
+
+    /**
+     * 设置拼团人数
+     *
+     * @param peopleNum 拼团人数
+     */
+    public void setPeopleNum(Integer peopleNum) {
+        this.peopleNum = peopleNum;
+    }
+
+    /**
+     * 获取预售多少天后发货
+     *
+     * @return days - 预售多少天后发货
+     */
+    public Integer getDays() {
+        return days;
+    }
+
+    /**
+     * 设置预售多少天后发货
+     *
+     * @param days 预售多少天后发货
+     */
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
+    /**
+     * 获取已拼单人数
+     *
+     * @return orders_num - 已拼单人数
+     */
+    public Integer getOrdersNum() {
+        return ordersNum;
+    }
+
+    /**
+     * 设置已拼单人数
+     *
+     * @param ordersNum 已拼单人数
+     */
+    public void setOrdersNum(Integer ordersNum) {
+        this.ordersNum = ordersNum;
+    }
+
+    /**
+     * 获取剩余商品数量
+     *
+     * @return surplus_product_count - 剩余商品数量
+     */
+    public Integer getSurplusProductCount() {
+        return surplusProductCount;
+    }
+
+    /**
+     * 设置剩余商品数量
+     *
+     * @param surplusProductCount 剩余商品数量
+     */
+    public void setSurplusProductCount(Integer surplusProductCount) {
+        this.surplusProductCount = surplusProductCount;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -188,6 +283,10 @@ public class SlActivityProduct implements Serializable {
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", count=").append(count);
+        sb.append(", peopleNum=").append(peopleNum);
+        sb.append(", days=").append(days);
+        sb.append(", ordersNum=").append(ordersNum);
+        sb.append(", surplusProductCount=").append(surplusProductCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
