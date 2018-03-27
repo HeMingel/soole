@@ -42,13 +42,6 @@ public class OrderValidator extends ValidatorHandler<SlOrder> {
                     setInvalidValue(t.getUserId());
                 }});
                 flag = false;
-            } else if (StringUtils.isEmpty(t.getShippngAddressId())) {
-                context.addError(new ValidationError() {{
-                    setErrorMsg("收货地址为空");
-                    setField("ShippingAddressId");
-                    setInvalidValue(t.getShippngAddressId());
-                }});
-                flag = false;
             } else if (StringUtils.isEmpty(t.getTotalAmount())) {
                 context.addError(new ValidationError() {{
                     setErrorMsg("订单总金额为空");
