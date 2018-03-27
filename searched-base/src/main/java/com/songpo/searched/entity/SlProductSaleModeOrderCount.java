@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_product_sale_mode_order_count")
 public class SlProductSaleModeOrderCount implements Serializable {

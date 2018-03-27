@@ -12,11 +12,13 @@
     <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
     <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
+    <result column="days" jdbcType="INTEGER" property="days" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, activity_id, price, begin_time, end_time, count
+    id, product_id, activity_id, price, begin_time, end_time, count, people_num, days
   </sql>
 </mapper>

@@ -85,4 +85,18 @@ public interface CmProductMapper {
      * @return 商品列表
      */
     List<Map<String, Object>> selectByPreSales();
+
+    /**
+     *
+     * @param goodsId 商品Id
+     * @param saleModeType  商品销售模式分类
+     * @return 该商品拼团信息
+     */
+    List<Map<String,Object>> findGroupOrder(@Param("goodsId")String goodsId,@Param("saleModeType")Integer saleModeType,@Param("peopleNum")Integer peopleNum);
+
+    /**
+     * @param orderNum 订单编号
+     * @return 第一个发起人信息
+     */
+    Map<String,Object> findGroupPeople(String orderNum);
 }

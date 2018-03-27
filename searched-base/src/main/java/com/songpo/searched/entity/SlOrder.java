@@ -37,13 +37,13 @@ public class SlOrder implements Serializable {
     private BigDecimal fee;
 
     /**
-     * 0：待支付1：支付成功 2：支付失败 -1为已失效
+     * 0：待支付 1：支付成功 2：支付失败 -1为已失效
      */
     @Column(name = "payment_state")
     private Integer paymentState;
 
     /**
-     * 1：普通订单2：拼团订单3:预售订单
+     * 1：普通订单2：拼团订单3:预售订单4:秒杀
      */
     private Integer type;
 
@@ -214,36 +214,36 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取0：待支付1：支付成功 2：支付失败 -1为已失效
+     * 获取0：待支付 1：支付成功 2：支付失败 -1为已失效
      *
-     * @return payment_state - 0：待支付1：支付成功 2：支付失败 -1为已失效
+     * @return payment_state - 0：待支付 1：支付成功 2：支付失败 -1为已失效
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置0：待支付1：支付成功 2：支付失败 -1为已失效
+     * 设置0：待支付 1：支付成功 2：支付失败 -1为已失效
      *
-     * @param paymentState 0：待支付1：支付成功 2：支付失败 -1为已失效
+     * @param paymentState 0：待支付 1：支付成功 2：支付失败 -1为已失效
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
     }
 
     /**
-     * 获取1：普通订单2：拼团订单3:预售订单
+     * 获取1：普通订单2：拼团订单3:预售订单4:秒杀
      *
-     * @return type - 1：普通订单2：拼团订单3:预售订单
+     * @return type - 1：普通订单2：拼团订单3:预售订单4:秒杀
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置1：普通订单2：拼团订单3:预售订单
+     * 设置1：普通订单2：拼团订单3:预售订单4:秒杀
      *
-     * @param type 1：普通订单2：拼团订单3:预售订单
+     * @param type 1：普通订单2：拼团订单3:预售订单4:秒杀
      */
     public void setType(Integer type) {
         this.type = type;

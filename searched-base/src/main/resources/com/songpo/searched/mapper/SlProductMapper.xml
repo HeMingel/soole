@@ -19,13 +19,13 @@
     <result column="reference_pulse" jdbcType="INTEGER" property="referencePulse" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="sale_type" jdbcType="INTEGER" property="saleType" />
-      <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId"/>
+    <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num,
-      sales_volume, reference_price, reference_pulse, shop_id, sale_type, sales_mode_id
+    id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num, 
+    sales_volume, reference_price, reference_pulse, shop_id, sale_type, sales_mode_id
   </sql>
 </mapper>

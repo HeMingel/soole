@@ -71,7 +71,7 @@
 
     <!--查询商品前六个 推荐-->
     <select id="findRecommendProduct" resultMap="RecommendResultMap" >
-        select id as productId,image_url,name from sl_product limit 0,5
+        select id as productId,image_url,name from sl_product limit 0,
     </select>
 
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
@@ -117,13 +117,14 @@
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
         SELECT
-        NAME,
+        id as productId,
+        name,
         introduction,
         comment_num,
         sales_volume,
         reference_price,
         reference_pulse,
-        /*sales_mode,*/
+        sales_mode_id,
         sale_type
           FROM
             sl_product
@@ -224,6 +225,25 @@
         ON od.`product_id` = p.`id`
         WHERE sc.name = 'SALES_MODE_PRE_SALES'
         LIMIT 20
+    </select>
+    <!--查询该未完成拼单的单子-->
+    <select id="findGroupOrder" resultType="Map">
+        SELECT  od.id AS orderDetailId,od.serial_number,COUNT(od.serial_number) AS orderNum
+        FROM
+          sl_order_detail od
+        WHERE product_id = #{goodsId}
+        GROUP BY od.serial_number HAVING COUNT(od.serial_number) &lt; #{peopleNum}
+    </select>
+        <!--查询该订单第一个发起人-->
+    <select id="findGroupPeople" resultType="Map" parameterType="String">
+        SELECT
+         u.avatar,u.nick_name
+        FROM sl_order o
+        LEFT JOIN sl_user u
+        ON o.user_id = u.id
+        WHERE  o.serial_number = #{orderNum} and o.payment_state = 1
+        ORDER BY o.create_time ASC
+        LIMIT 0,1
     </select>
 
 </mapper>

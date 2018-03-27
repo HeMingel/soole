@@ -5,9 +5,6 @@ import javax.persistence.*;
 
 @Table(name = "sl_file")
 public class SlFile implements Serializable {
-    /**
-     * 唯一标识符
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,16 +22,12 @@ public class SlFile implements Serializable {
     /**
      * 保存路径
      */
-    private String folder;
+    private String floder;
+
+    private String mimetype;
 
     /**
      * 文件类型
-     */
-    @Column(name = "mime_type")
-    private String mimeType;
-
-    /**
-     * 文件扩展名
      */
     private String extension;
 
@@ -80,18 +73,14 @@ public class SlFile implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取唯一标识符
-     *
-     * @return id - 唯一标识符
+     * @return id
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * 设置唯一标识符
-     *
-     * @param id 唯一标识符
+     * @param id
      */
     public void setId(Integer id) {
         this.id = id;
@@ -136,52 +125,48 @@ public class SlFile implements Serializable {
     /**
      * 获取保存路径
      *
-     * @return folder - 保存路径
+     * @return floder - 保存路径
      */
-    public String getFolder() {
-        return folder;
+    public String getFloder() {
+        return floder;
     }
 
     /**
      * 设置保存路径
      *
-     * @param folder 保存路径
+     * @param floder 保存路径
      */
-    public void setFolder(String folder) {
-        this.folder = folder == null ? null : folder.trim();
+    public void setFloder(String floder) {
+        this.floder = floder == null ? null : floder.trim();
+    }
+
+    /**
+     * @return mimetype
+     */
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    /**
+     * @param mimetype
+     */
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype == null ? null : mimetype.trim();
     }
 
     /**
      * 获取文件类型
      *
-     * @return mime_type - 文件类型
-     */
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    /**
-     * 设置文件类型
-     *
-     * @param mimeType 文件类型
-     */
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType == null ? null : mimeType.trim();
-    }
-
-    /**
-     * 获取文件扩展名
-     *
-     * @return extension - 文件扩展名
+     * @return extension - 文件类型
      */
     public String getExtension() {
         return extension;
     }
 
     /**
-     * 设置文件扩展名
+     * 设置文件类型
      *
-     * @param extension 文件扩展名
+     * @param extension 文件类型
      */
     public void setExtension(String extension) {
         this.extension = extension == null ? null : extension.trim();
@@ -322,8 +307,8 @@ public class SlFile implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", size=").append(size);
-        sb.append(", folder=").append(folder);
-        sb.append(", mimeType=").append(mimeType);
+        sb.append(", floder=").append(floder);
+        sb.append(", mimetype=").append(mimetype);
         sb.append(", extension=").append(extension);
         sb.append(", sourceName=").append(sourceName);
         sb.append(", markType=").append(markType);

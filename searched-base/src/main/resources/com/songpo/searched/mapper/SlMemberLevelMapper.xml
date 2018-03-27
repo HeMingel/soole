@@ -5,9 +5,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-      <id column="id" jdbcType="VARCHAR" property="id"/>
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-      <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="maximum" jdbcType="INTEGER" property="maximum" />
     <result column="descriptional" jdbcType="VARCHAR" property="descriptional" />
   </resultMap>
@@ -15,6 +15,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, image_url, maximum, descriptional
+    id, name, image_url, maximum, descriptional
   </sql>
 </mapper>
