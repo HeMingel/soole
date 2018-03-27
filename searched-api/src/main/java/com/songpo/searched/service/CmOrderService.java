@@ -3,12 +3,10 @@ package com.songpo.searched.service;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
-import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.SlOrderMapper;
+import com.songpo.searched.mapper.SlUserAddressMapper;
 import com.songpo.searched.util.OrderNumGeneration;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -42,31 +40,43 @@ public class CmOrderService {
     private CmOrderMapper cmOrderMapper;
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private SlUserAddressMapper slUserAddressMapper;
 
     /**
      * 新增预下单订单
      *
      * @param slOrder
      * @param orderDetail
+     * @param shippngAddressId
      * @return
      */
     @Transactional
-    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail) {
+    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail, String shippngAddressId) {
         Logger log = LoggerFactory.getLogger(SlOrderDetail.class);
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
         int pulse = 0;
         try {
-            if (StringUtils.hasLength(slOrder.getUserId())) {
-                SlUser user = userService.selectOne(new SlUser() {{
-                    setId(slOrder.getUserId());
-                }});
-                if (null != user) {
-                    if (StringUtils.hasLength(slOrder.getShippngAddressId())) {
-                        slOrder.setId(UUID.randomUUID().toString());
-                        slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                        slOrder.setSerialNumber(OrderNumGeneration.getOrderIdByUUId());// 生成订单编号
-                        orderService.insertSelective(slOrder);
+            SlUser user = loginUserService.getCurrentLoginUser();
+            if (null != user) {
+                if (StringUtils.hasLength(shippngAddressId)) {
+                    slOrder.setId(UUID.randomUUID().toString());
+                    slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    String orderNum = OrderNumGeneration.getOrderIdByUUId();// 生成订单编号
+                    slOrder.setSerialNumber(orderNum);// 订单编号
+                    SlUserAddress slUserAddress = this.slUserAddressMapper.selectOne(new SlUserAddress() {{
+                        setId(shippngAddressId);
+                        setUserId(user.getId());
+                    }});
+                    if (null != slUserAddress) {
+                        slOrder.setProvince(slUserAddress.getProvince());// 订单省的地址
+                        slOrder.setCity(slUserAddress.getCity()); // 订单市的收货地址
+                        slOrder.setCounty(slUserAddress.getCounty()); //订单区的收货地址
+                        slOrder.setDetailed(slUserAddress.getDetailed()); // 订单详细收货地址
+                        slOrder.setConsigneename(slUserAddress.getName());// 收货人姓名
+                        slOrder.setConsigneephone(slUserAddress.getPhone());// 收货人的联系方式
+                        orderService.insertSelective(slOrder);// 插入订单表
                         for (SlOrderDetail slOrderDetail : orderDetail.getSlOrderDetails()) {
                             if (null != slOrderDetail.getRepositoryId()) {
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
@@ -75,6 +85,9 @@ public class CmOrderService {
                                 if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
                                     pulse += repository.getSilver(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
+                                    if (slOrder.getType() == 2) {
+                                        String orderNums = this.cmOrderMapper.findGroup(repository.getProductId());
+                                    }
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());
                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -87,6 +100,8 @@ public class CmOrderService {
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
                                         setDeductTotalSilver(repository.getSilver()); // 扣除单个商品了豆数量
                                         setReturnPulse(repository.getRebatePulse());// 返了豆数量只限纯金钱模式
+                                        setProduceName(repository.getProductName());// 下单时的商品名称
+                                        setProductImageUrl(repository.getProductImageUrl());// 下单时的商品图片
                                     }});
                                 }
                             }
@@ -100,21 +115,20 @@ public class CmOrderService {
                             setTotalAmount(amount);
                             setDeductTotalPulse(totalPulse);
                         }}, example);
-                        /*1800000*/
                         message.setData(1);
                         message.setSuccess(true);
                         message.setMsg("创建订单成功");
                     } else {
-                        message.setMsg("收货地址不能为空");
+                        message.setMsg("订单不存在");
                     }
                 } else {
-                    message.setMsg("用户不存在");
+                    message.setMsg("收货地址不能为空");
                 }
             } else {
-                message.setMsg("用户ID为空");
+                message.setMsg("用户不存在");
             }
         } catch (Exception e) {
-            log.debug("error:", e.getMessage());
+            log.debug("error:{}", e.getMessage());
         }
         return message;
     }
@@ -126,7 +140,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage findList(String clientId) {
-        log.debug("查询我的订单列表:clientId{}", clientId);
+        log.debug("查询我的订单列表clientId:{}", clientId);
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.userService.selectOne(new SlUser() {{
@@ -159,6 +173,7 @@ public class CmOrderService {
 
     /**
      * 我的订单详情(这里只是查的订单的一些详情,关联的商品信息前端从上一页面带过来)
+     *
      * @param orderId
      * @return
      */
