@@ -5,16 +5,16 @@ import com.songpo.searched.entity.SlSystemConfig;
 import com.songpo.searched.mapper.SlFileInfoMapper;
 import com.songpo.searched.mapper.SlSystemConfigMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -119,26 +119,20 @@ public class FileService {
         return fileUrl;
     }
 
-    public ResponseEntity<byte[]> download(String name) {
-        HttpHeaders headers = new HttpHeaders();
-
-        ResponseEntity<byte[]> entity = null;
-        try {
+    public void download(HttpServletResponse response, String name) {
+        try (OutputStream os = response.getOutputStream()) {
             SlFileInfo fileInfo = this.fileMapper.selectOne(new SlFileInfo() {{
                 setTargetName(name);
             }});
 
-            headers.add("Content-Length", fileInfo.getSize().toString());
-            headers.add("Content-Type", fileInfo.getContentType());
+            response.setHeader("Content-Type", fileInfo.getContentType());
             // 解决中文文件名乱码关键行
             String fileName = URLEncoder.encode(fileInfo.getSourceName(), StandardCharsets.UTF_8.toString());
-            headers.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
 
-            byte[] bytes = Files.readAllBytes(Paths.get(fileInfo.getPath()));
-            entity = new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+            os.write(FileUtils.readFileToByteArray(new File(fileInfo.getPath())));
         } catch (IOException e) {
             log.error("下载文件失败，{}", e);
         }
-        return entity;
     }
 }

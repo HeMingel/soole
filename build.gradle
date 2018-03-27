@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '1.5.10.RELEASE'
-        druidSpringVersion = '1.1.6'
+        druidSpringVersion = '1.1.9'
         fastjsonVersion = '1.2.46'
         commonsLang3Version = '3.6'
         swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
