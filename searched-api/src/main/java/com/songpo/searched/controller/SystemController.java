@@ -20,9 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
 
@@ -64,9 +61,9 @@ public class SystemController {
             @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
     })
     @PostMapping("login")
-    public BusinessMessage<Map<String, String>> login(String phone, String password) {
+    public BusinessMessage<JSONObject> login(String phone, String password) {
         log.debug("用户登录，账号：{}，密码：{}", phone, password);
-        BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
             message.setMsg("账号为空");
         } else if (StringUtils.isBlank(password)) {
@@ -93,11 +90,21 @@ public class SystemController {
                 } else if (!passwordEncoder.matches(password, user.getPassword())) {
                     message.setMsg("用户信息不匹配");
                 } else {
-                    SlUser finalUser = user;
-                    message.setData(new HashMap<String, String>() {{
-                        put("clientId", finalUser.getClientId());
-                        put("clientSecret", finalUser.getClientSecret());
-                    }});
+                    JSONObject data = new JSONObject();
+                    data.put("clientId", user.getClientId());
+                    data.put("clientSecret", user.getClientSecret());
+                    // 用户真实姓名
+                    data.put("realname", user.getName());
+                    // 用户昵称
+                    data.put("nickname", user.getNickName());
+                    // 用户头像
+                    data.put("avatar", user.getAvatar());
+                    // 手机号码
+                    data.put("phone", user.getPhone());
+                    // 电子邮箱
+                    data.put("email", user.getEmail());
+
+                    message.setData(data);
                     message.setSuccess(true);
                 }
             } catch (Exception e) {
@@ -173,6 +180,16 @@ public class SystemController {
                         JSONObject data = new JSONObject();
                         data.put("clientId", user.getClientId());
                         data.put("clientSecret", user.getClientSecret());
+                        // 用户真实姓名
+                        data.put("realname", user.getName());
+                        // 用户昵称
+                        data.put("nickname", user.getNickName());
+                        // 用户头像
+                        data.put("avatar", user.getAvatar());
+                        // 手机号码
+                        data.put("phone", user.getPhone());
+                        // 电子邮箱
+                        data.put("email", user.getEmail());
 
                         message.setData(data);
                         message.setSuccess(true);

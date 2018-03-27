@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_business_application")
 public class SlBusinessApplication implements Serializable {
@@ -11,6 +11,12 @@ public class SlBusinessApplication implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 店铺申请人ID
+     */
+    @Column(name = "user_id")
+    private String userId;
 
     /**
      * 经营类目
@@ -77,6 +83,24 @@ public class SlBusinessApplication implements Serializable {
     @Column(name = "id_card_hand_image_url")
     private String idCardHandImageUrl;
 
+    /**
+     * 店铺审核状态1待审核2已通过3已拒绝
+     */
+    @Column(name = "business_check_state")
+    private Byte businessCheckState;
+
+    /**
+     * 店铺申请时间
+     */
+    @Column(name = "business_create_time")
+    private String businessCreateTime;
+
+    /**
+     * 店铺审核时间
+     */
+    @Column(name = "business_check_time")
+    private String businessCheckTime;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -95,6 +119,24 @@ public class SlBusinessApplication implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取店铺申请人ID
+     *
+     * @return user_id - 店铺申请人ID
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置店铺申请人ID
+     *
+     * @param userId 店铺申请人ID
+     */
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     /**
@@ -295,6 +337,60 @@ public class SlBusinessApplication implements Serializable {
         this.idCardHandImageUrl = idCardHandImageUrl == null ? null : idCardHandImageUrl.trim();
     }
 
+    /**
+     * 获取店铺审核状态1待审核2已通过3已拒绝
+     *
+     * @return business_check_state - 店铺审核状态1待审核2已通过3已拒绝
+     */
+    public Byte getBusinessCheckState() {
+        return businessCheckState;
+    }
+
+    /**
+     * 设置店铺审核状态1待审核2已通过3已拒绝
+     *
+     * @param businessCheckState 店铺审核状态1待审核2已通过3已拒绝
+     */
+    public void setBusinessCheckState(Byte businessCheckState) {
+        this.businessCheckState = businessCheckState;
+    }
+
+    /**
+     * 获取店铺申请时间
+     *
+     * @return business_create_time - 店铺申请时间
+     */
+    public String getBusinessCreateTime() {
+        return businessCreateTime;
+    }
+
+    /**
+     * 设置店铺申请时间
+     *
+     * @param businessCreateTime 店铺申请时间
+     */
+    public void setBusinessCreateTime(String businessCreateTime) {
+        this.businessCreateTime = businessCreateTime == null ? null : businessCreateTime.trim();
+    }
+
+    /**
+     * 获取店铺审核时间
+     *
+     * @return business_check_time - 店铺审核时间
+     */
+    public String getBusinessCheckTime() {
+        return businessCheckTime;
+    }
+
+    /**
+     * 设置店铺审核时间
+     *
+     * @param businessCheckTime 店铺审核时间
+     */
+    public void setBusinessCheckTime(String businessCheckTime) {
+        this.businessCheckTime = businessCheckTime == null ? null : businessCheckTime.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -302,6 +398,7 @@ public class SlBusinessApplication implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", companyAddress=").append(companyAddress);
         sb.append(", companyName=").append(companyName);
@@ -313,6 +410,9 @@ public class SlBusinessApplication implements Serializable {
         sb.append(", idCardFrontImageUrl=").append(idCardFrontImageUrl);
         sb.append(", idCardBackImageUrl=").append(idCardBackImageUrl);
         sb.append(", idCardHandImageUrl=").append(idCardHandImageUrl);
+        sb.append(", businessCheckState=").append(businessCheckState);
+        sb.append(", businessCreateTime=").append(businessCreateTime);
+        sb.append(", businessCheckTime=").append(businessCheckTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

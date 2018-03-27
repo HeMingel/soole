@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_agent_application")
 public class SlAgentApplication implements Serializable {
@@ -11,6 +11,12 @@ public class SlAgentApplication implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 代理商用户ID
+     */
+    @Column(name = "user_id")
+    private String userId;
 
     /**
      * 省份
@@ -62,6 +68,24 @@ public class SlAgentApplication implements Serializable {
     @Column(name = "id_card_hand_image_url")
     private String idCardHandImageUrl;
 
+    /**
+     * 代理商审核状态1待审核2已通过3已拒绝
+     */
+    @Column(name = "agent_check_state")
+    private Byte agentCheckState;
+
+    /**
+     * 代理商申请时间
+     */
+    @Column(name = "agent_create_time")
+    private String agentCreateTime;
+
+    /**
+     * 代理商审核时间
+     */
+    @Column(name = "agent_check_time")
+    private String agentCheckTime;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -80,6 +104,24 @@ public class SlAgentApplication implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取代理商用户ID
+     *
+     * @return user_id - 代理商用户ID
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置代理商用户ID
+     *
+     * @param userId 代理商用户ID
+     */
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     /**
@@ -244,6 +286,60 @@ public class SlAgentApplication implements Serializable {
         this.idCardHandImageUrl = idCardHandImageUrl == null ? null : idCardHandImageUrl.trim();
     }
 
+    /**
+     * 获取代理商审核状态1待审核2已通过3已拒绝
+     *
+     * @return agent_check_state - 代理商审核状态1待审核2已通过3已拒绝
+     */
+    public Byte getAgentCheckState() {
+        return agentCheckState;
+    }
+
+    /**
+     * 设置代理商审核状态1待审核2已通过3已拒绝
+     *
+     * @param agentCheckState 代理商审核状态1待审核2已通过3已拒绝
+     */
+    public void setAgentCheckState(Byte agentCheckState) {
+        this.agentCheckState = agentCheckState;
+    }
+
+    /**
+     * 获取代理商申请时间
+     *
+     * @return agent_create_time - 代理商申请时间
+     */
+    public String getAgentCreateTime() {
+        return agentCreateTime;
+    }
+
+    /**
+     * 设置代理商申请时间
+     *
+     * @param agentCreateTime 代理商申请时间
+     */
+    public void setAgentCreateTime(String agentCreateTime) {
+        this.agentCreateTime = agentCreateTime == null ? null : agentCreateTime.trim();
+    }
+
+    /**
+     * 获取代理商审核时间
+     *
+     * @return agent_check_time - 代理商审核时间
+     */
+    public String getAgentCheckTime() {
+        return agentCheckTime;
+    }
+
+    /**
+     * 设置代理商审核时间
+     *
+     * @param agentCheckTime 代理商审核时间
+     */
+    public void setAgentCheckTime(String agentCheckTime) {
+        this.agentCheckTime = agentCheckTime == null ? null : agentCheckTime.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -251,6 +347,7 @@ public class SlAgentApplication implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
         sb.append(", county=").append(county);
@@ -260,6 +357,9 @@ public class SlAgentApplication implements Serializable {
         sb.append(", idCardFrontImageUrl=").append(idCardFrontImageUrl);
         sb.append(", idCardBackImageUrl=").append(idCardBackImageUrl);
         sb.append(", idCardHandImageUrl=").append(idCardHandImageUrl);
+        sb.append(", agentCheckState=").append(agentCheckState);
+        sb.append(", agentCreateTime=").append(agentCreateTime);
+        sb.append(", agentCheckTime=").append(agentCheckTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

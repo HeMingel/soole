@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/common/v1/product")
 public class ProductController {
-
+//
 
     @Autowired
     private CmProductService productService;
@@ -149,7 +149,7 @@ public class ProductController {
             @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form"),
             @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form"),
             @ApiImplicitParam(name = "page", value = "页码", paramType = "form"),
-            @ApiImplicitParam(name = "size", value = "页码", paramType = "form")
+            @ApiImplicitParam(name = "size", value = "条数", paramType = "form")
     })
     @GetMapping("screen-goods")
     public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
@@ -160,13 +160,14 @@ public class ProductController {
 
     @ApiOperation(value = "根据商品Id查询商品详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "Id", value = "商品ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1普通 2拼团 3预售 4秒杀", paramType = "form", required = true)
     })
-    @GetMapping("Id")
-    public BusinessMessage goodsDetail(String Id) {
-        log.debug("根据商品Id查询商品，商品Id：{}", Id);
-        if (Id != null) {
-            return this.productService.goodsDetail(Id);
+    @GetMapping("/detail")
+    public BusinessMessage goodsDetail(String id,Integer saleModeType) {
+        log.debug("根据商品Id查询商品，商品Id：{},销售模式:{}", id,saleModeType);
+        if (id != null) {
+            return this.productService.goodsDetail(id,saleModeType);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");

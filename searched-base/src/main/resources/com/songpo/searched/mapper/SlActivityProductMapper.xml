@@ -14,14 +14,11 @@
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
     <result column="days" jdbcType="INTEGER" property="days" />
-    <result column="orders_num" jdbcType="INTEGER" property="ordersNum" />
-    <result column="surplus_product_count" jdbcType="INTEGER" property="surplusProductCount" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, activity_id, price, begin_time, end_time, count, people_num, days, 
-    orders_num, surplus_product_count
+    id, product_id, activity_id, price, begin_time, end_time, count, people_num, days
   </sql>
 </mapper>

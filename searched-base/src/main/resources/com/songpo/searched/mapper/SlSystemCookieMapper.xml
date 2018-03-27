@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlSystemCookieMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlSystemCookie">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="expire_time" jdbcType="INTEGER" property="expireTime" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="ip" jdbcType="CHAR" property="ip" />
+    <result column="user_agent" jdbcType="CHAR" property="userAgent" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlSystemCookie">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="value" jdbcType="LONGVARCHAR" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, name, expire_time, create_time, ip, user_agent
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    value
+  </sql>
+</mapper>
