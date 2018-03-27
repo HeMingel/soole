@@ -21,22 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "商铺管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/common/v1/shop")
+@RequestMapping("/api/v2/shop")
+///common
 public class ShopController {
     @Autowired
     private CmShopService cmShopService;
 
     @ApiOperation(value = "查询商铺")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "商铺Id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "商铺Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form", required = true)
     })
-    @GetMapping("id")
-    public BusinessMessage shopAndGoods(String id) {
+    @GetMapping("{id}")
+    public BusinessMessage shopAndGoods(String id,String userId) {
         if(id == null){
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("id为空");
             businessMessage.setSuccess(false);
         }
-        return this.cmShopService.shopAndGoods(id);
+        return this.cmShopService.shopAndGoods(id,userId);
     }
 }
