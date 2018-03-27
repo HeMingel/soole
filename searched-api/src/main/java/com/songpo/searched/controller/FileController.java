@@ -43,6 +43,7 @@ public class FileController {
     })
     @PostMapping
     public BusinessMessage<Map<String, String>> upload(String type, MultipartFile file) {
+        log.debug("文件上传：名称：{}，类型：{}，大小：{}", file.getOriginalFilename(), file.getContentType(), file.getSize());
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
         try {
             String url = this.fileService.upload(type, file);
@@ -68,6 +69,7 @@ public class FileController {
     })
     @GetMapping("{name:.*}")
     public ResponseEntity<byte[]> download(@PathVariable String name) {
+        log.debug("文件下载：名称：{}", name);
         return this.fileService.download(name);
     }
 }

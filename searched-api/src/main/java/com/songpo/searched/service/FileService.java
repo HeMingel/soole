@@ -15,8 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -80,8 +83,12 @@ public class FileService {
             // 目标文件名
             String fileName = UUID.randomUUID().toString() + "." + suffix;
 
+            if (!Files.exists(Paths.get(fullPath))) {
+                Files.createDirectories(Paths.get(fullPath));
+            }
+
             // 写出文件
-            Files.write(Paths.get(fullPath + File.separator + fileName), file.getBytes());
+            Files.write(Paths.get(fullPath + File.separator + fileName), file.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 
             SlFileInfo uploadFile = new SlFileInfo();
             uploadFile.setTargetName(fileName);
@@ -115,18 +122,19 @@ public class FileService {
     public ResponseEntity<byte[]> download(String name) {
         HttpHeaders headers = new HttpHeaders();
 
-        SlFileInfo fileInfo = this.fileMapper.selectOne(new SlFileInfo() {{
-            setTargetName(name);
-        }});
-
-        headers.add("Content-Length", fileInfo.getSize().toString());
-        headers.add("Content-Type", fileInfo.getContentType());
-        headers.add("Content-Disposition", "attchement;filename=" + fileInfo.getSourceName());
-
-        byte[] bytes;
         ResponseEntity<byte[]> entity = null;
         try {
-            bytes = Files.readAllBytes(Paths.get(fileInfo.getPath()));
+            SlFileInfo fileInfo = this.fileMapper.selectOne(new SlFileInfo() {{
+                setTargetName(name);
+            }});
+
+            headers.add("Content-Length", fileInfo.getSize().toString());
+            headers.add("Content-Type", fileInfo.getContentType());
+            // 解决中文文件名乱码关键行
+            String fileName = URLEncoder.encode(fileInfo.getSourceName(), StandardCharsets.UTF_8.toString());
+            headers.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
+
+            byte[] bytes = Files.readAllBytes(Paths.get(fileInfo.getPath()));
             entity = new ResponseEntity<>(bytes, headers, HttpStatus.OK);
         } catch (IOException e) {
             log.error("下载文件失败，{}", e);

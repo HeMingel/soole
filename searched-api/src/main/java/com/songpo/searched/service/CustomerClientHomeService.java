@@ -106,6 +106,10 @@ public class CustomerClientHomeService {
         List<Map<String, Object>> preSalesProductList = this.productMapper.selectByPreSales();
         data.put("preSalesProductList", preSalesProductList);
 
+        // 获取首页视频信息
+        List<Map<String, Object>> videoList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_VIDEO");
+        data.put("videoInfo", videoList.get(0));
+
         return data;
     }
 
