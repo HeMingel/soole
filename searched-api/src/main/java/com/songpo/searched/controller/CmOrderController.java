@@ -46,8 +46,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form")
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail) {
-        return this.cmOrderService.addOrder(slOrder, cmSlOrderDetail);
+    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail,String shippngAddressId) {
+        return this.cmOrderService.addOrder(slOrder, cmSlOrderDetail,shippngAddressId);
     }
 
     /**

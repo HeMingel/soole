@@ -5,9 +5,9 @@
     <select id="findList" parameterType="String" resultType="java.util.Map">
         select
         ss.name shopName,
-        sp.name productName,
+        spr.product_name productName,
         spr.product_detail_group_name groupName,
-        sp.image_url goodimageUrl,
+        spr.product_image_url goodimageUrl,
         sod.quantity counts,
         so.payment_state paymentState,
         so.shipping_state shippingState,
@@ -28,7 +28,7 @@
         LEFT JOIN sl_shop ss ON sod.shop_id = ss.id
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = spr.sales_mode_id
-        WHERE so.status = 1 AND so.user_id = #{userId}
+        WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
         ORDER BY so.create_time DESC
     </select>
 
@@ -41,34 +41,32 @@
         limit 10
     </select>
 
-    <select id="selectMyOrderInfo" resultType="Map">
+    <select id="selectMyOrderInfo" resultType="java.util.Map">
         select
-        sua.name consigneeName,
-        sua.phone phone,
-        sua.province province,
-        sua.city city,
-        sua.county county,
-        sua.detailed detailed,
+        so.consigneeName consigneeName,
+        so.consigneePhone consigneePhone,
+        so.province province,
+        so.city city,
+        so.county county,
+        so.detailed detailed,
         so.create_time createTime,
         so.total_amount totalAmount
         so.deduct_total_pulse totalPulse,
         so.serial_number orderNum,
         so.type AS type
         from sl_order so
-        LEFT JOIN sl_user_address AS sua ON sua.id = so.shippng_address_id
-        LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
         WHERE so.user_id = #{userId} and so.id = #{orderId}
     </select>
 
-    <select id="goodsInfo" resultType="map">
+    <select id="findGroup" resultType="java.lang.String">
         select
-        sp.name productName,
-        sod.buyer_message buyerMessage,
-
+        sod.serial_number serialNumber
         from sl_order_detail sod
-        LEFT JOIN sl_product sp ON sp.id = sod.product_id
-        LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
-        WHERE sod.creator = #{userId} and sod.order_id = #{orderId}
+        LEFT JOIN sl_order so ON so.id = sod.order_id
+        LEFT JOIN sl_activity_product sap ON sap.product_id = sod.
+        WHERE so.type = 2 AND sod.product_id = #{productId}
+        order by sod.create_time DESC
+        limit 1
     </select>
 
 </mapper>

@@ -16,5 +16,5 @@ public interface CmOrderMapper {
 
     Map<String, Object> selectMyOrderInfo(@Param("userId") String userId, @Param("orderId") String orderId);
 
-    List<Map<String,Object>> goodsInfo(@Param("orderId") String orderId,@Param("userId") String userId);
+    String findGroup(@Param("productId") String productId);
 }
