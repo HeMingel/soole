@@ -61,7 +61,7 @@ public class Oauth2Config {
                     // 不拦截短信接口
                     .antMatchers("/api/common/v1/sms/verify-code").permitAll()
                     // 不拦截忘记密码接口
-                    .antMatchers("/api/common/v1/sms/forgot-password").permitAll()
+                    .antMatchers("/api/common/v1/system/forgot-password").permitAll()
                     // 不拦截商品相关接口
                     .antMatchers("/api/v2/**").permitAll()
                     // 其他请求都需要经过授权
