@@ -21,7 +21,7 @@ import java.util.Map;
 @Api(description = "商品管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/product")
+@RequestMapping("/api/common/v1/product")
 public class ProductController {
 //
 
