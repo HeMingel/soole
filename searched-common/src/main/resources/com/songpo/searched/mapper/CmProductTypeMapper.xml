@@ -24,13 +24,18 @@
         ON pt.`id` = ptt.product_type_id
         LEFT JOIN sl_tag t
         ON ptt.product_tag_id = t.id
-        <where>
-            <if test="null == parentId or parentId == ''">
-                ISNULL(pt.parent_id)
-            </if>
-            <if test="null != parentId and parentId != ''">
-                pt.parent_id = #{parentId}
-            </if>
-        </where>
+        WHERE ISNULL(pt.parent_id)
+    </select>
+
+    <select id="selectTwoMenu" resultType="Map" parameterType="String">
+        SELECT
+        pt.id, pt.name, t.`name` AS tagName, pt.`image_url` AS imageUrl, pt.parent_id AS parentId
+        FROM
+        sl_product_type pt
+        LEFT JOIN sl_product_type_tags ptt
+        ON pt.`id` = ptt.product_type_id
+        LEFT JOIN sl_tag t
+        ON ptt.product_tag_id = t.id
+        where pt.parent_id =#{parentId}
     </select>
 </mapper>
