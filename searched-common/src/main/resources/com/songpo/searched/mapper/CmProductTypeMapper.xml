@@ -15,7 +15,7 @@
         id, name, tagName, image_url, parent_id
     </sql>
 
-    <select id="selectAll" resultType="java.util.HashMap">
+    <select id="selectAll" resultType="java.util.HashMap" parameterType="String">
         SELECT
         pt.id, pt.name, t.`name` AS tagName, pt.`image_url` AS imageUrl, pt.parent_id AS parentId
         FROM
@@ -24,7 +24,14 @@
         ON pt.`id` = ptt.product_type_id
         LEFT JOIN sl_tag t
         ON ptt.product_tag_id = t.id
-        WHERE ISNULL(pt.parent_id)
+        <where>
+            <if test="null == parentId or parentId == ''">
+                ISNULL(pt.parent_id)
+            </if>
+            <if test="null != parentId and parentId != ''">
+                pt.parent_id = #{parentId}
+            </if>
+        </where>
     </select>
 
     <select id="selectTwoMenu" resultType="Map" parameterType="String">

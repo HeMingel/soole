@@ -83,7 +83,7 @@ public class CustomerClientHomeService {
 
         // 获取所有一级商品分类列表
         //List<Map<String, Object>> productTypes = this.productTypeService.findAll();
-        BusinessMessage productTypes = this.productTypeService.findAll();
+        BusinessMessage productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
 
         JSONObject banner = new JSONObject();
@@ -125,7 +125,7 @@ public class CustomerClientHomeService {
 
         // 获取所有一级商品分类列表
         //List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
-        BusinessMessage productTypes = this.productTypeService.findAll();
+        BusinessMessage productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
         //通过商品分类parentId 查询二级分类
         //List<Map<String, Object>> productCategoryDtos = this.productTypeService.findAll(parentId);

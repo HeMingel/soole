@@ -17,7 +17,7 @@ public interface CmProductTypeMapper {
      *
      * @return 商品分类集合
      */
-    List<Map<String, Object>> selectAll();
+    List<Map<String, Object>> selectAll(@Param("parentId") String parentId);
 
     List<Map<String,Object>> selectTwoMenu(String parentId);
 

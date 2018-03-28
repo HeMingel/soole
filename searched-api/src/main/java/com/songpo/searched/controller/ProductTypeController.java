@@ -37,11 +37,12 @@ public class ProductTypeController {
      */
     @ApiOperation(value = "查询商品分类")
     @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "parentId", value = "上级分类唯一标识符", paramType = "query", required = true)
     })
     @GetMapping("list")
-    public BusinessMessage<List<Map<String, Object>>> findAll() {
+    public BusinessMessage<List<Map<String, Object>>> findAll(String parentId) {
 
-        return this.productTypeService.findAll();
+        return this.productTypeService.findAll(parentId);
     }
 
 

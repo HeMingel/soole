@@ -31,21 +31,35 @@ public class CmProductTypeService {
      *
      * @return 商品分类集合
      */
-    public BusinessMessage findAll() {
+    public BusinessMessage findAll(String parentId) {
         BusinessMessage message = new BusinessMessage<>();
+        message.setSuccess(false);
         try {
-            List<Map<String,Object>> parentMenu = this.mapper.selectAll();
-            List list = new ArrayList();
-            for(int i=0;i<parentMenu.size();i++){
-                Map map = new HashMap();
+            if (parentId == null){
+                List<Map<String,Object>> parentMenu = this.mapper.selectAll(null);
+                List list = new ArrayList();
+                for(int i=0;i<parentMenu.size();i++){
+                    Map map = new HashMap();
 
-                List<Map<String,Object>> twoMenu = this.mapper.selectTwoMenu(parentMenu.get(i).get("id").toString());
-                map.put("parentMenu",parentMenu.get(i));
-                map.put("twoMenu",twoMenu);
-                list.add(map);
+                    List<Map<String,Object>> twoMenu = this.mapper.selectTwoMenu(parentMenu.get(i).get("id").toString());
+                    map.put("parentMenu",parentMenu.get(i));
+                    map.put("twoMenu",twoMenu);
+                    list.add(map);
+                }
+                message.setData(list);
+                message.setSuccess(true);
+            }else{
+                List<Map<String,Object>> parentMenu = this.mapper.selectAll(parentId);
+                if(parentMenu.size() >0){
+                    message.setData(parentMenu);
+                    message.setSuccess(true);
+                }else {
+                    message.setSuccess(true);
+                    message.setMsg("查询无数据");
+                }
+
             }
-            message.setData(list);
-            message.setSuccess(true);
+
         } catch (Exception e) {
             log.error("查询商品分类失败，{}", e);
 
