@@ -33,7 +33,6 @@ public class ProductTypeController {
     /**
      * 搜索一级分类
      *
-     * @param parentId 上级分类唯一标识符
      * @return 业务消息
      */
     @ApiOperation(value = "查询商品分类")
@@ -42,16 +41,8 @@ public class ProductTypeController {
     })
     @GetMapping("list")
     public BusinessMessage<List<Map<String, Object>>> findAll(String parentId) {
-        BusinessMessage<List<Map<String, Object>>> message = new BusinessMessage<>();
-        try {
-            message.setData(this.productTypeService.findAll(parentId));
-            message.setSuccess(true);
-        } catch (Exception e) {
-            log.error("查询商品分类失败，{}", e);
 
-            message.setMsg("查询商品分类失败，请重试");
-        }
-        return message;
+        return this.productTypeService.findAll(parentId);
     }
 
 

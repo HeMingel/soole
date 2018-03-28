@@ -7,14 +7,14 @@ import com.songpo.searched.mapper.SlSystemConfigMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,19 +24,26 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+/**
+ * @author 刘松坡
+ */
 @Slf4j
 @Service
 public class FileService {
 
-    public static final String UPLOAD_FILE_DIR_KEY = "UPLOAD_FILE_DIR";
+    private static final String UPLOAD_FILE_DIR_KEY = "UPLOAD_FILE_DIR";
 
-    public static final String BASE_FILE_DOMAIN = "BASE_FILE_DOMAIN";
+    private static final String BASE_FILE_DOMAIN = "BASE_FILE_DOMAIN";
+
+    private final SlSystemConfigMapper configMapper;
+
+    private final SlFileInfoMapper fileMapper;
 
     @Autowired
-    private SlSystemConfigMapper configMapper;
-
-    @Autowired
-    private SlFileInfoMapper fileMapper;
+    public FileService(SlSystemConfigMapper configMapper, SlFileInfoMapper fileMapper) {
+        this.configMapper = configMapper;
+        this.fileMapper = fileMapper;
+    }
 
     public String upload(String type, MultipartFile file) {
         // 初始化图片路径
@@ -119,20 +126,23 @@ public class FileService {
         return fileUrl;
     }
 
-    public void download(HttpServletResponse response, String name) {
-        try (OutputStream os = response.getOutputStream()) {
+    public ResponseEntity<byte[]> download(String name) {
+        try {
             SlFileInfo fileInfo = this.fileMapper.selectOne(new SlFileInfo() {{
                 setTargetName(name);
             }});
 
-            response.setHeader("Content-Type", fileInfo.getContentType());
             // 解决中文文件名乱码关键行
             String fileName = URLEncoder.encode(fileInfo.getSourceName(), StandardCharsets.UTF_8.toString());
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
 
-            os.write(FileUtils.readFileToByteArray(new File(fileInfo.getPath())));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(fileInfo.getContentType()))
+                    .contentLength(fileInfo.getSize())
+                    .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName)
+                    .body(FileUtils.readFileToByteArray(new File(fileInfo.getPath())));
         } catch (IOException e) {
             log.error("下载文件失败，{}", e);
         }
+        return null;
     }
 }

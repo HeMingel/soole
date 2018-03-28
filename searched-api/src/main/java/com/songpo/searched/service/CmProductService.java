@@ -254,20 +254,15 @@ public class CmProductService {
                         List list = new ArrayList();
                         for(int i =0; i < unFinishOrder.size(); i++){
                             Map groupMap = new HashMap();
-                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("orderNum").toString()) ;
+                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("serial_number").toString()) ;
                             groupMap.put("groupUserInfo",userMap);
                             groupMap.put("unFinishOrder",unFinishOrder.get(i));
                             list.add(groupMap);
 
                         }
                         data.put("unFinishOrder",list);
-
                     }
-
-
                 }
-
-
             }
             businessMessage.setSuccess(true);
             businessMessage.setData(data);
@@ -333,5 +328,31 @@ public class CmProductService {
             businessMessage.setMsg("查询异常");
         }
         return businessMessage;
+    }
+    /**
+     *热门推荐商品 四个
+     * @param id 商品Id
+
+     * @return
+     */
+    public BusinessMessage hotGoods(String id){
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try{
+            Map<String,Object> goodsBaseInfo = this.mapper.goodsBaseInfo(id);
+            //根据商品销售模式查询出去本商品的四个商品
+            List<Map<String,Object>> hotGoods = this.mapper.hotGoods(goodsBaseInfo.get("productId").toString(),goodsBaseInfo.get("sales_mode_id").toString());
+            if(hotGoods.size()>0){
+                businessMessage.setMsg("查询成功");
+                businessMessage.setData(hotGoods);
+                businessMessage.setSuccess(true);
+            }else{
+                businessMessage.setMsg("查询无数据");
+                businessMessage.setSuccess(false);
+            }
+        } catch (Exception e){
+            businessMessage.setMsg("查询热门商品推荐失败");
+        }
+        return  businessMessage;
     }
 }

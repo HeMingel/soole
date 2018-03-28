@@ -15,8 +15,10 @@ public interface CmProductTypeMapper {
     /**
      * 查询商品分类
      *
-     * @param parentId 上级分类唯一标识符
      * @return 商品分类集合
      */
     List<Map<String, Object>> selectAll(@Param("parentId") String parentId);
+
+    List<Map<String,Object>> selectTwoMenu(String parentId);
+
 }

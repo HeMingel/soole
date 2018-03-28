@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
+import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CmProduct;
@@ -81,7 +82,8 @@ public class CustomerClientHomeService {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
+        //List<Map<String, Object>> productTypes = this.productTypeService.findAll();
+        BusinessMessage productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
 
         JSONObject banner = new JSONObject();
@@ -122,11 +124,12 @@ public class CustomerClientHomeService {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
+        //List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
+        BusinessMessage productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
         //通过商品分类parentId 查询二级分类
-        List<Map<String, Object>> productCategoryDtos = this.productTypeService.findAll(parentId);
-        data.put("productTypes", productCategoryDtos);
+        //List<Map<String, Object>> productCategoryDtos = this.productTypeService.findAll(parentId);
+        //data.put("productTypes", productCategoryDtos);
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);

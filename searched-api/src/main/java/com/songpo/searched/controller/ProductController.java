@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/common/v1/product")
 public class ProductController {
-//
+
 
     @Autowired
     private CmProductService productService;
@@ -189,6 +189,16 @@ public class ProductController {
         return this.productService.goodsSpecification(id);
 
     }
+
+    @ApiOperation(value = "热品推荐")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+    })
+    @GetMapping("/hotGoods")
+    public BusinessMessage hotGoods(String id){
+        return this.productService.hotGoods(id);
+    }
+
 }
 
 
