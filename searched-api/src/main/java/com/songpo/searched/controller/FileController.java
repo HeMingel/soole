@@ -8,11 +8,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,8 +68,8 @@ public class FileController {
             @ApiImplicitParam(name = "name", value = "文件名称", paramType = "path")
     })
     @GetMapping("{name:.*}")
-    public ResponseEntity<byte[]> download(@PathVariable String name) {
+    public void download(HttpServletResponse response, @PathVariable String name) {
         log.debug("文件下载：名称：{}", name);
-        return this.fileService.download(name);
+        this.fileService.download(response, name);
     }
 }
