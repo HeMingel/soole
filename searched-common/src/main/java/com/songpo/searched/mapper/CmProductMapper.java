@@ -95,8 +95,17 @@ public interface CmProductMapper {
     List<Map<String,Object>> findGroupOrder(@Param("goodsId")String goodsId,@Param("saleModeType")Integer saleModeType,@Param("peopleNum")Integer peopleNum);
 
     /**
+     * 未完成拼团
      * @param orderNum 订单编号
      * @return 第一个发起人信息
      */
     Map<String,Object> findGroupPeople(String orderNum);
+
+    /**
+     * 查询热门商品推荐
+     * @param goodsId 商品ID
+     * @param saleModeId 销售模式id
+     * @return
+     */
+    List<Map<String, Object>> hotGoods(@Param("goodsId")String goodsId,@Param("saleModeId")String saleModeId);
 }
