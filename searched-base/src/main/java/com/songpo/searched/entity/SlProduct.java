@@ -111,6 +111,18 @@ public class SlProduct implements Serializable {
     @Column(name = "return_pulse")
     private Integer returnPulse;
 
+    /**
+     * 拼团人数所需人数
+     */
+    @Column(name = "group_people")
+    private Integer groupPeople;
+
+    /**
+     * 商家奖励额度
+     */
+    @Column(name = "reward_value")
+    private Double rewardValue;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -437,6 +449,42 @@ public class SlProduct implements Serializable {
         this.returnPulse = returnPulse;
     }
 
+    /**
+     * 获取拼团人数所需人数
+     *
+     * @return group_people - 拼团人数所需人数
+     */
+    public Integer getGroupPeople() {
+        return groupPeople;
+    }
+
+    /**
+     * 设置拼团人数所需人数
+     *
+     * @param groupPeople 拼团人数所需人数
+     */
+    public void setGroupPeople(Integer groupPeople) {
+        this.groupPeople = groupPeople;
+    }
+
+    /**
+     * 获取商家奖励额度
+     *
+     * @return reward_value - 商家奖励额度
+     */
+    public Double getRewardValue() {
+        return rewardValue;
+    }
+
+    /**
+     * 设置商家奖励额度
+     *
+     * @param rewardValue 商家奖励额度
+     */
+    public void setRewardValue(Double rewardValue) {
+        this.rewardValue = rewardValue;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -461,6 +509,8 @@ public class SlProduct implements Serializable {
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", returnPulse=").append(returnPulse);
+        sb.append(", groupPeople=").append(groupPeople);
+        sb.append(", rewardValue=").append(rewardValue);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
