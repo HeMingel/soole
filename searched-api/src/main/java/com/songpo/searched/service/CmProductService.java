@@ -162,14 +162,15 @@ public class CmProductService {
      * @param size
      * @return
      */
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
+    public BusinessMessage screenGoods(String goodsType,String name,Integer screenType,String saleMode, Integer page, Integer size) {
         log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
+
             if (goodsType != null || screenType != null || name != null) {
-                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, name);
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType,saleMode, name);
                 if (list.size() > 0) {
                     businessMessage.setMsg("查询成功");
                     businessMessage.setSuccess(true);
@@ -196,7 +197,7 @@ public class CmProductService {
      * @param saleModeType 商品销售类型,1普通 2拼团 3预收 4秒杀
      * @return
      */
-    public BusinessMessage goodsDetail(String goodsId, Integer saleModeType) {
+    public BusinessMessage goodsDetail(String goodsId) {
         JSONObject data = new JSONObject();
         log.debug("查询 商品Id{}", goodsId);
         BusinessMessage businessMessage = new BusinessMessage();
@@ -228,41 +229,6 @@ public class CmProductService {
                     data.put("productComments", goodsComment);
                 }
 
-                if (saleModeType != null) {
-                    //查询商品活动表 查出来相关活动需要的时间或者人数
-                    SlActivityProduct goodsActivity = this.slActivityProductMapper.selectOne(new SlActivityProduct() {{
-                        setProductId(goodsId);
-                        //商品基础信息表里查出来的销售模式
-                        setActivityId(map.get("sales_mode_id").toString());
-                    }});
-                    data.put("productActivityInfo",goodsActivity);
-                    if (goodsActivity != null) {
-                        //查询该商品销售模式订单成交量
-                        SlProductSaleModeOrderCount productSaleModeOrderCount = this.slProductSaleModeOrderCountMapper.selectOne(new SlProductSaleModeOrderCount() {{
-                            setProductId(goodsId);
-                            setSalesModeId(map.get("sales_mode_id").toString());
-                        }});
-                        data.put("productSaleModeOrderCount",productSaleModeOrderCount);
-                    }
-
-                    //如果是拼团 1查询 所有关于这个商品的订单, 不同的订单有一个count
-                    if (saleModeType == 3) {
-                        //查询该商品拼团未完成 订单编号
-                       List<Map<String,Object>> unFinishOrder = this.mapper.findGroupOrder(goodsId,saleModeType,goodsActivity.getPeopleNum());
-                       //根据订单编号查询第一个完成支付的小伙子
-
-                        List list = new ArrayList();
-                        for(int i =0; i < unFinishOrder.size(); i++){
-                            Map groupMap = new HashMap();
-                            Map<String,Object> userMap = this.mapper.findGroupPeople(unFinishOrder.get(i).get("serial_number").toString()) ;
-                            groupMap.put("groupUserInfo",userMap);
-                            groupMap.put("unFinishOrder",unFinishOrder.get(i));
-                            list.add(groupMap);
-
-                        }
-                        data.put("unFinishOrder",list);
-                    }
-                }
             }
             businessMessage.setSuccess(true);
             businessMessage.setData(data);
