@@ -21,7 +21,7 @@ import java.util.Map;
 @Api(description = "商品管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/common/v1/product")
+@RequestMapping("/api/v2/product")
 public class ProductController {
 
 
@@ -136,38 +136,40 @@ public class ProductController {
 
 
     /**
-     * 根据商品分类查询商品,商品筛选分类 + 筛选
+     * 商品分类只查询普通商品 和名字
+     *  商品分类查询商品,商品筛选分类 + 筛选
      *
-     * @param goodsType  商品分类ID
+     * @param goodsTypeId  商品分类ID
      * @param screenType 筛选类型
      * @param page       页码
      * @param size       数量
      * @return
      */
-    @ApiOperation(value = "根据商品分类查询商品+筛选商品+商品名称")
+    @ApiOperation(value = "查询普通类型商品 根据商品分类查询商品+筛选商品+商品名称")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "goodsType", value = "分类ID", paramType = "form"),
-            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序567商品类型", paramType = "form"),
+            @ApiImplicitParam(name = "goodsTypeId", value = "分类ID", paramType = "form"),
+            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序", paramType = "form",required = true),
+            @ApiImplicitParam(name = "saleMode", value = "销售模式", paramType = "form"),
             @ApiImplicitParam(name = "page", value = "页码", paramType = "form"),
             @ApiImplicitParam(name = "size", value = "条数", paramType = "form")
     })
     @GetMapping("screen-goods")
-    public BusinessMessage screenGoods(String goodsType, Integer screenType, Integer page, Integer size, String name) {
-        log.debug("分页查询商品，分类Id:{},筛选Id:{},页码：{}，数量：{},商品名称:{},", goodsType, page, size, name);
-        return this.productService.screenGoods(goodsType, screenType, page, size, name);
+    public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType,String saleMode,Integer page, Integer size) {
+        log.debug("分页查询商品，分类Id:{},筛选Id:{},销售模式:{},页码：{}，数量：{},商品名称:{},", goodsTypeId, screenType,saleMode,page, size, name);
+        return this.productService.screenGoods(goodsTypeId, name, screenType,saleMode, page, size);
     }
 
 
-    @ApiOperation(value = "根据商品Id查询商品详情")
+    @ApiOperation(value = "查询普通商品详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1普通 2拼团 3预售 4秒杀", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+            //@ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1拼团 2预售 3豆赚 4消费返利 5一元购 6普通", paramType = "form", required = true)
     })
-    @GetMapping("/detail")
-    public BusinessMessage goodsDetail(String id,Integer saleModeType) {
-        log.debug("根据商品Id查询商品，商品Id：{},销售模式:{}", id,saleModeType);
+    @GetMapping("/general_detail")
+    public BusinessMessage goodsDetail(String id) {
+        log.debug("根据商品Id查询商品，商品Id：{}", id);
         if (id != null) {
-            return this.productService.goodsDetail(id,saleModeType);
+            return this.productService.goodsDetail(id);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");
