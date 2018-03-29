@@ -82,16 +82,34 @@ public class SlProduct implements Serializable {
     private String shopId;
 
     /**
-     * 销售类型:5钱6乐豆7钱+了豆
-     */
-    @Column(name = "sale_type")
-    private Integer saleType;
-
-    /**
      * 销售模式唯一标识符
      */
     @Column(name = "sales_mode_id")
     private String salesModeId;
+
+    /**
+     * 列表展示最低价格
+     */
+    @Column(name = "min_price")
+    private BigDecimal minPrice;
+
+    /**
+     * 预售发货天数
+     */
+    @Column(name = "presell_shipments_days")
+    private Integer presellShipmentsDays;
+
+    /**
+     * 列表展示返现money
+     */
+    @Column(name = "return_money")
+    private BigDecimal returnMoney;
+
+    /**
+     * 列表展示返豆数量
+     */
+    @Column(name = "return_pulse")
+    private Integer returnPulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -330,24 +348,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销售类型:5钱6乐豆7钱+了豆
-     *
-     * @return sale_type - 销售类型:5钱6乐豆7钱+了豆
-     */
-    public Integer getSaleType() {
-        return saleType;
-    }
-
-    /**
-     * 设置销售类型:5钱6乐豆7钱+了豆
-     *
-     * @param saleType 销售类型:5钱6乐豆7钱+了豆
-     */
-    public void setSaleType(Integer saleType) {
-        this.saleType = saleType;
-    }
-
-    /**
      * 获取销售模式唯一标识符
      *
      * @return sales_mode_id - 销售模式唯一标识符
@@ -363,6 +363,78 @@ public class SlProduct implements Serializable {
      */
     public void setSalesModeId(String salesModeId) {
         this.salesModeId = salesModeId == null ? null : salesModeId.trim();
+    }
+
+    /**
+     * 获取列表展示最低价格
+     *
+     * @return min_price - 列表展示最低价格
+     */
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
+
+    /**
+     * 设置列表展示最低价格
+     *
+     * @param minPrice 列表展示最低价格
+     */
+    public void setMinPrice(BigDecimal minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    /**
+     * 获取预售发货天数
+     *
+     * @return presell_shipments_days - 预售发货天数
+     */
+    public Integer getPresellShipmentsDays() {
+        return presellShipmentsDays;
+    }
+
+    /**
+     * 设置预售发货天数
+     *
+     * @param presellShipmentsDays 预售发货天数
+     */
+    public void setPresellShipmentsDays(Integer presellShipmentsDays) {
+        this.presellShipmentsDays = presellShipmentsDays;
+    }
+
+    /**
+     * 获取列表展示返现money
+     *
+     * @return return_money - 列表展示返现money
+     */
+    public BigDecimal getReturnMoney() {
+        return returnMoney;
+    }
+
+    /**
+     * 设置列表展示返现money
+     *
+     * @param returnMoney 列表展示返现money
+     */
+    public void setReturnMoney(BigDecimal returnMoney) {
+        this.returnMoney = returnMoney;
+    }
+
+    /**
+     * 获取列表展示返豆数量
+     *
+     * @return return_pulse - 列表展示返豆数量
+     */
+    public Integer getReturnPulse() {
+        return returnPulse;
+    }
+
+    /**
+     * 设置列表展示返豆数量
+     *
+     * @param returnPulse 列表展示返豆数量
+     */
+    public void setReturnPulse(Integer returnPulse) {
+        this.returnPulse = returnPulse;
     }
 
     @Override
@@ -384,8 +456,11 @@ public class SlProduct implements Serializable {
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", referencePulse=").append(referencePulse);
         sb.append(", shopId=").append(shopId);
-        sb.append(", saleType=").append(saleType);
         sb.append(", salesModeId=").append(salesModeId);
+        sb.append(", minPrice=").append(minPrice);
+        sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
+        sb.append(", returnMoney=").append(returnMoney);
+        sb.append(", returnPulse=").append(returnPulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

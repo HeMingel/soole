@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="username" jdbcType="INTEGER" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
@@ -27,6 +27,7 @@
     <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
+    <result column="open_id_wechat" jdbcType="VARCHAR" property="openIdWechat" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -34,6 +35,6 @@
     -->
     id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
     birthday, phone, email, avatar, describtion, address, industry, group_var, coin, 
-    silver, money, client_id, client_secret
+    silver, money, client_id, client_secret, open_id_wechat
   </sql>
 </mapper>

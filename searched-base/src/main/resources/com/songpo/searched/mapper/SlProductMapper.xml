@@ -18,14 +18,18 @@
     <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
     <result column="reference_pulse" jdbcType="INTEGER" property="referencePulse" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
-    <result column="sale_type" jdbcType="INTEGER" property="saleType" />
     <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
+    <result column="min_price" jdbcType="DECIMAL" property="minPrice" />
+    <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
+    <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
+    <result column="return_pulse" jdbcType="INTEGER" property="returnPulse" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num, 
-    sales_volume, reference_price, reference_pulse, shop_id, sale_type, sales_mode_id
+    sales_volume, reference_price, reference_pulse, shop_id, sales_mode_id, min_price, 
+    presell_shipments_days, return_money, return_pulse
   </sql>
 </mapper>

@@ -14,9 +14,9 @@ public class SlUser implements Serializable {
     private String id;
 
     /**
-     * 账号
+     * 会员号（自增）
      */
-    private String username;
+    private Integer username;
 
     /**
      * 密码
@@ -119,6 +119,12 @@ public class SlUser implements Serializable {
     @Column(name = "client_secret")
     private String clientSecret;
 
+    /**
+     * 微信OpenId
+     */
+    @Column(name = "open_id_wechat")
+    private String openIdWechat;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -140,21 +146,21 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取账号
+     * 获取会员号（自增）
      *
-     * @return username - 账号
+     * @return username - 会员号（自增）
      */
-    public String getUsername() {
+    public Integer getUsername() {
         return username;
     }
 
     /**
-     * 设置账号
+     * 设置会员号（自增）
      *
-     * @param username 账号
+     * @param username 会员号（自增）
      */
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setUsername(Integer username) {
+        this.username = username;
     }
 
     /**
@@ -509,6 +515,24 @@ public class SlUser implements Serializable {
         this.clientSecret = clientSecret == null ? null : clientSecret.trim();
     }
 
+    /**
+     * 获取微信OpenId
+     *
+     * @return open_id_wechat - 微信OpenId
+     */
+    public String getOpenIdWechat() {
+        return openIdWechat;
+    }
+
+    /**
+     * 设置微信OpenId
+     *
+     * @param openIdWechat 微信OpenId
+     */
+    public void setOpenIdWechat(String openIdWechat) {
+        this.openIdWechat = openIdWechat == null ? null : openIdWechat.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -537,6 +561,7 @@ public class SlUser implements Serializable {
         sb.append(", money=").append(money);
         sb.append(", clientId=").append(clientId);
         sb.append(", clientSecret=").append(clientSecret);
+        sb.append(", openIdWechat=").append(openIdWechat);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -14,10 +14,10 @@ public class SlActivityProduct implements Serializable {
     private String id;
 
     /**
-     * 商品唯一标识符
+     * 商品活动序号
      */
-    @Column(name = "product_id")
-    private String productId;
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     /**
      * 活动唯一标识符
@@ -54,9 +54,38 @@ public class SlActivityProduct implements Serializable {
     private Integer peopleNum;
 
     /**
-     * 预售多少天后发货
+     * 已拼单人数
      */
-    private Integer days;
+    @Column(name = "orders_num")
+    private Integer ordersNum;
+
+    /**
+     * 剩余商品数量
+     */
+    @Column(name = "surplus_product_count")
+    private Integer surplusProductCount;
+
+    /**
+     * 所需了豆
+     */
+    private Integer peas;
+
+    /**
+     * 奖励金豆数量
+     */
+    @Column(name = "award_peas_counts")
+    private Double awardPeasCounts;
+
+    /**
+     * 奖励金额
+     */
+    @Column(name = "awward_money")
+    private Double awwardMoney;
+
+    /**
+     * 是否启用(1:启用 0;禁用)
+     */
+    private Boolean enabled;
 
     private static final long serialVersionUID = 1L;
 
@@ -79,21 +108,21 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取商品唯一标识符
+     * 获取商品活动序号
      *
-     * @return product_id - 商品唯一标识符
+     * @return serial_number - 商品活动序号
      */
-    public String getProductId() {
-        return productId;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     /**
-     * 设置商品唯一标识符
+     * 设置商品活动序号
      *
-     * @param productId 商品唯一标识符
+     * @param serialNumber 商品活动序号
      */
-    public void setProductId(String productId) {
-        this.productId = productId == null ? null : productId.trim();
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber == null ? null : serialNumber.trim();
     }
 
     /**
@@ -205,21 +234,111 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取预售多少天后发货
+     * 获取已拼单人数
      *
-     * @return days - 预售多少天后发货
+     * @return orders_num - 已拼单人数
      */
-    public Integer getDays() {
-        return days;
+    public Integer getOrdersNum() {
+        return ordersNum;
     }
 
     /**
-     * 设置预售多少天后发货
+     * 设置已拼单人数
      *
-     * @param days 预售多少天后发货
+     * @param ordersNum 已拼单人数
      */
-    public void setDays(Integer days) {
-        this.days = days;
+    public void setOrdersNum(Integer ordersNum) {
+        this.ordersNum = ordersNum;
+    }
+
+    /**
+     * 获取剩余商品数量
+     *
+     * @return surplus_product_count - 剩余商品数量
+     */
+    public Integer getSurplusProductCount() {
+        return surplusProductCount;
+    }
+
+    /**
+     * 设置剩余商品数量
+     *
+     * @param surplusProductCount 剩余商品数量
+     */
+    public void setSurplusProductCount(Integer surplusProductCount) {
+        this.surplusProductCount = surplusProductCount;
+    }
+
+    /**
+     * 获取所需了豆
+     *
+     * @return peas - 所需了豆
+     */
+    public Integer getPeas() {
+        return peas;
+    }
+
+    /**
+     * 设置所需了豆
+     *
+     * @param peas 所需了豆
+     */
+    public void setPeas(Integer peas) {
+        this.peas = peas;
+    }
+
+    /**
+     * 获取奖励金豆数量
+     *
+     * @return award_peas_counts - 奖励金豆数量
+     */
+    public Double getAwardPeasCounts() {
+        return awardPeasCounts;
+    }
+
+    /**
+     * 设置奖励金豆数量
+     *
+     * @param awardPeasCounts 奖励金豆数量
+     */
+    public void setAwardPeasCounts(Double awardPeasCounts) {
+        this.awardPeasCounts = awardPeasCounts;
+    }
+
+    /**
+     * 获取奖励金额
+     *
+     * @return awward_money - 奖励金额
+     */
+    public Double getAwwardMoney() {
+        return awwardMoney;
+    }
+
+    /**
+     * 设置奖励金额
+     *
+     * @param awwardMoney 奖励金额
+     */
+    public void setAwwardMoney(Double awwardMoney) {
+        this.awwardMoney = awwardMoney;
+    }
+
+    /**
+     * 获取是否启用(1:启用 0;禁用)
+     *
+     * @return enabled - 是否启用(1:启用 0;禁用)
+     */
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    /**
+     * 设置是否启用(1:启用 0;禁用)
+     *
+     * @param enabled 是否启用(1:启用 0;禁用)
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -229,14 +348,19 @@ public class SlActivityProduct implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", productId=").append(productId);
+        sb.append(", serialNumber=").append(serialNumber);
         sb.append(", activityId=").append(activityId);
         sb.append(", price=").append(price);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", count=").append(count);
         sb.append(", peopleNum=").append(peopleNum);
-        sb.append(", days=").append(days);
+        sb.append(", ordersNum=").append(ordersNum);
+        sb.append(", surplusProductCount=").append(surplusProductCount);
+        sb.append(", peas=").append(peas);
+        sb.append(", awardPeasCounts=").append(awardPeasCounts);
+        sb.append(", awwardMoney=").append(awwardMoney);
+        sb.append(", enabled=").append(enabled);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
