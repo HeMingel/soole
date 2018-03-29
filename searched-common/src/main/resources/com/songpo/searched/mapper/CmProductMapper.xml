@@ -63,7 +63,7 @@
     </select>
 
     <!-- 根据活动唯一标识符查询商品 -->
-    <select id="selectByAction" resultType="slProduct">
+    <select id="selectByAction" resultType="com.songpo.searched.entity.SlProduct">
         SELECT *
         FROM sl_product p LEFT JOIN sl_activity_product ap ON ap.product_id = p.id
         WHERE ap.action_id = #{actionId}
