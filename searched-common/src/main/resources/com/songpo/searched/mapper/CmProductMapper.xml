@@ -92,19 +92,19 @@
     <if test="goodsType != null and goodsType !=''">
         AND p.product_type_id = #{goodsType}
     </if>
-    <if test="screenType == null and screenType ==''">
+    <if test="screenGoods == null and screenGoods ==''">
         ORDER BY (p.sales_volume + p.comment_num) DESC
     </if>
-    <if test="screenType != null and screenType !='' and screenType == 1">
+    <if test="screenGoods != null and screenGoods !='' and screenType == 1">
         ORDER BY p.sales_volume DESC
     </if>
-    <if test="screenType != null and screenType !='' and screenType == 2">
+    <if test="screenGoods != null and screenGoods !='' and screenType == 2">
         ORDER BY p.sales_volume ASC
     </if>
-    <if test="screenType != null and screenType !='' and screenType == 3">
+    <if test="screenGoods != null and screenGoods !='' and screenType == 3">
             ORDER BY p.reference_price DESC
         </if>
-        <if test="screenType != null and screenType !='' and screenType == 4">
+        <if test="screenGoods != null and screenGoods !='' and screenType == 4">
             ORDER BY p.reference_price ASC
         </if>
 
