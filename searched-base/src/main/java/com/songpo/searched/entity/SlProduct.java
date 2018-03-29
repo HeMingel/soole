@@ -112,7 +112,7 @@ public class SlProduct implements Serializable {
     private Integer returnPulse;
 
     /**
-     * 拼团人数所需人数
+     * 所需人数
      */
     @Column(name = "group_people")
     private Integer groupPeople;
@@ -450,18 +450,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取拼团人数所需人数
+     * 获取所需人数
      *
-     * @return group_people - 拼团人数所需人数
+     * @return group_people - 所需人数
      */
     public Integer getGroupPeople() {
         return groupPeople;
     }
 
     /**
-     * 设置拼团人数所需人数
+     * 设置所需人数
      *
-     * @param groupPeople 拼团人数所需人数
+     * @param groupPeople 所需人数
      */
     public void setGroupPeople(Integer groupPeople) {
         this.groupPeople = groupPeople;

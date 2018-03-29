@@ -27,7 +27,9 @@
     <result column="return_pulse" jdbcType="INTEGER" property="returnPulse" />
     <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
     <result column="ship_number" jdbcType="VARCHAR" property="shipNumber" />
+    <result column="group_people" jdbcType="INTEGER" property="groupPeople" />
     <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
+    <result column="return cash_ratio" jdbcType="DOUBLE" property="returnCashRatio" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -36,6 +38,6 @@
     id, order_id, serial_number, shop_id, repository_id, product_id, produce_name, product_image_url, 
     quantity, price, deduct_total_silver, deduct_total_gold, discount, creator, create_time, 
     modifier, modification_time, post_fee, buyer_message, return_pulse, shipping_time, 
-    ship_number, presell_shipments_days
+    ship_number, group_people, presell_shipments_days, `return cash_ratio`
   </sql>
 </mapper>
