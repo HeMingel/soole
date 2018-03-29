@@ -77,38 +77,34 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         select
-        p.`id` as productId,p.`name`,p.`introduction`,p.image_url,p.product_type_id as
-        productTypeId,p.`comment_num`,p.`sales_volume`,p.`reference_price`,p.reference_pulse
+        *
         FROM sl_product p
         WHERE 1=1
-        <if test="goodsName != null and goodsName != ''">
-           and p.`name` like "%"#{goodsName}"%"
-        </if>
-        <if test="goodsType != null and goodsType !=''">
-            AND p.product_type_id = #{goodsType}
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 5">
-            AND p.sale_Type = 5
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 6">
-            AND p.sale_Type = 6
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 7">
-            AND p.sale_Type = 7
-        </if>
-        <if test="screenType == null and screenType ==''">
-            ORDER BY (p.sales_volume + p.comment_num) DESC
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 1">
-            ORDER BY p.sales_volume DESC
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 2">
-            ORDER BY p.sales_volume ASC
-        </if>
-        <if test="screenType != null and screenType !='' and screenType == 3">
+        <if test="saleMode != null and saleMode != ''">
+        and p.sales_mode_id = #{saleMode}
+    </if>
+    <if test="saleMode == null and saleMode == ''">
+        and p.sales_mode_id = 0
+    </if>
+    <if test="goodsName != null and goodsName != ''">
+        and p.`name` like "%"#{goodsName}"%"
+    </if>
+    <if test="goodsType != null and goodsType !=''">
+        AND p.product_type_id = #{goodsType}
+    </if>
+    <if test="screenGoods == null and screenGoods ==''">
+        ORDER BY (p.sales_volume + p.comment_num) DESC
+    </if>
+    <if test="screenGoods != null and screenGoods !='' and screenType == 1">
+        ORDER BY p.sales_volume DESC
+    </if>
+    <if test="screenGoods != null and screenGoods !='' and screenType == 2">
+        ORDER BY p.sales_volume ASC
+    </if>
+    <if test="screenGoods != null and screenGoods !='' and screenType == 3">
             ORDER BY p.reference_price DESC
         </if>
-        <if test="screenType != null and screenType !='' and screenType == 4">
+        <if test="screenGoods != null and screenGoods !='' and screenType == 4">
             ORDER BY p.reference_price ASC
         </if>
 
@@ -124,8 +120,7 @@
         sales_volume,
         reference_price,
         reference_pulse,
-        sales_mode_id,
-        sale_type
+        sales_mode_id
           FROM
             sl_product
         where id= #{goodsId}
