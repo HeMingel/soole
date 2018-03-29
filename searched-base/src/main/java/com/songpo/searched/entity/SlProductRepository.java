@@ -134,12 +134,6 @@ public class SlProductRepository implements Serializable {
     private BigDecimal costPrice;
 
     /**
-     * 所需拼团人数
-     */
-    @Column(name = "group_people")
-    private Integer groupPeople;
-
-    /**
      * 重量
      */
     private BigDecimal weight;
@@ -588,24 +582,6 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取所需拼团人数
-     *
-     * @return group_people - 所需拼团人数
-     */
-    public Integer getGroupPeople() {
-        return groupPeople;
-    }
-
-    /**
-     * 设置所需拼团人数
-     *
-     * @param groupPeople 所需拼团人数
-     */
-    public void setGroupPeople(Integer groupPeople) {
-        this.groupPeople = groupPeople;
-    }
-
-    /**
      * 获取重量
      *
      * @return weight - 重量
@@ -795,7 +771,6 @@ public class SlProductRepository implements Serializable {
         sb.append(", count=").append(count);
         sb.append(", score=").append(score);
         sb.append(", costPrice=").append(costPrice);
-        sb.append(", groupPeople=").append(groupPeople);
         sb.append(", weight=").append(weight);
         sb.append(", ship=").append(ship);
         sb.append(", gold=").append(gold);

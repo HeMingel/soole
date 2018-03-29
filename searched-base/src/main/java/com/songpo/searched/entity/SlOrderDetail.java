@@ -135,10 +135,22 @@ public class SlOrderDetail implements Serializable {
     private String shipNumber;
 
     /**
+     * 所需人数
+     */
+    @Column(name = "group_people")
+    private Integer groupPeople;
+
+    /**
      * 预售发货时间天数
      */
     @Column(name = "presell_shipments_days")
     private Integer presellShipmentsDays;
+
+    /**
+     * 返现比例
+     */
+    @Column(name = "`return cash_ratio`")
+    private Double returnCashRatio;
 
     private static final long serialVersionUID = 1L;
 
@@ -539,6 +551,24 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
+     * 获取所需人数
+     *
+     * @return group_people - 所需人数
+     */
+    public Integer getGroupPeople() {
+        return groupPeople;
+    }
+
+    /**
+     * 设置所需人数
+     *
+     * @param groupPeople 所需人数
+     */
+    public void setGroupPeople(Integer groupPeople) {
+        this.groupPeople = groupPeople;
+    }
+
+    /**
      * 获取预售发货时间天数
      *
      * @return presell_shipments_days - 预售发货时间天数
@@ -554,6 +584,24 @@ public class SlOrderDetail implements Serializable {
      */
     public void setPresellShipmentsDays(Integer presellShipmentsDays) {
         this.presellShipmentsDays = presellShipmentsDays;
+    }
+
+    /**
+     * 获取返现比例
+     *
+     * @return return cash_ratio - 返现比例
+     */
+    public Double getReturnCashRatio() {
+        return returnCashRatio;
+    }
+
+    /**
+     * 设置返现比例
+     *
+     * @param returnCashRatio 返现比例
+     */
+    public void setReturnCashRatio(Double returnCashRatio) {
+        this.returnCashRatio = returnCashRatio;
     }
 
     @Override
@@ -584,7 +632,9 @@ public class SlOrderDetail implements Serializable {
         sb.append(", returnPulse=").append(returnPulse);
         sb.append(", shippingTime=").append(shippingTime);
         sb.append(", shipNumber=").append(shipNumber);
+        sb.append(", groupPeople=").append(groupPeople);
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
+        sb.append(", returnCashRatio=").append(returnCashRatio);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
