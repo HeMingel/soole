@@ -56,7 +56,7 @@ public interface CmProductMapper {
     List<CmProduct> findRecommendProduct();
 
     //根据分类查询商品 + 商品的筛选 + 根据名称查询
-    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods,@Param("saleMode") String saleMode,@Param("goodsName") String goodsName);
+    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName);
 
     //获取product表中相关信息
     Map goodsBaseInfo(String goodsId);

@@ -5,11 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CmProduct;
-import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductSaleModeOrderCount;
-import com.songpo.searched.mapper.*;
-import io.swagger.models.auth.In;
+import com.songpo.searched.mapper.CmProductCommentMapper;
+import com.songpo.searched.mapper.CmProductMapper;
+import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlProductSaleModeOrderCountMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,15 +162,15 @@ public class CmProductService {
      * @param size
      * @return
      */
-    public BusinessMessage screenGoods(String goodsType,String name,Integer screenType,String saleMode, Integer page, Integer size) {
+    public BusinessMessage screenGoods(String goodsType, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
         log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
 
             if (goodsType != null || screenType != null || name != null) {
-                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType,saleMode, name);
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name);
                 if (list.size() > 0) {
                     businessMessage.setMsg("查询成功");
                     businessMessage.setSuccess(true);
@@ -295,30 +295,31 @@ public class CmProductService {
         }
         return businessMessage;
     }
-    /**
-     *热门推荐商品 四个
-     * @param id 商品Id
 
+    /**
+     * 热门推荐商品 四个
+     *
+     * @param id 商品Id
      * @return
      */
-    public BusinessMessage hotGoods(String id){
+    public BusinessMessage hotGoods(String id) {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
-        try{
-            Map<String,Object> goodsBaseInfo = this.mapper.goodsBaseInfo(id);
+        try {
+            Map<String, Object> goodsBaseInfo = this.mapper.goodsBaseInfo(id);
             //根据商品销售模式查询出去本商品的四个商品
-            List<Map<String,Object>> hotGoods = this.mapper.hotGoods(goodsBaseInfo.get("productId").toString(),goodsBaseInfo.get("sales_mode_id").toString());
-            if(hotGoods.size()>0){
+            List<Map<String, Object>> hotGoods = this.mapper.hotGoods(goodsBaseInfo.get("productId").toString(), goodsBaseInfo.get("sales_mode_id").toString());
+            if (hotGoods.size() > 0) {
                 businessMessage.setMsg("查询成功");
                 businessMessage.setData(hotGoods);
                 businessMessage.setSuccess(true);
-            }else{
+            } else {
                 businessMessage.setMsg("查询无数据");
                 businessMessage.setSuccess(false);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             businessMessage.setMsg("查询热门商品推荐失败");
         }
-        return  businessMessage;
+        return businessMessage;
     }
 }

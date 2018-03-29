@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户端的API控制层
- *
+ * <p>
  * 用于配置用户端APP每个页面所有数据统一的接口
  * 比如首页有商品一级分类、拼团秒杀活动等，将这些数据放到一个接口里
  *
@@ -56,10 +56,10 @@ public class CustomerClientController {
      */
     @ApiOperation("用户端分类")
     @GetMapping("classification")
-    public BusinessMessage<JSONObject> classification(String parentId,String goodsType, Integer screenType, Integer page, Integer size,String name) {
+    public BusinessMessage<JSONObject> classification(String goodsType, Integer screenType, Integer page, Integer size, String name) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         try {
-            message.setData(this.customerClientHomeService.getClassificationData(parentId,goodsType,screenType,page,size,name));
+            message.setData(this.customerClientHomeService.getClassificationData(goodsType, screenType, page, size, name));
             message.setSuccess(true);
         } catch (Exception e) {
             log.error("获取用户端分类数据失败，{}", e);

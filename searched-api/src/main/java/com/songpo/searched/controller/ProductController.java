@@ -137,26 +137,26 @@ public class ProductController {
 
     /**
      * 商品分类只查询普通商品 和名字
-     *  商品分类查询商品,商品筛选分类 + 筛选
+     * 商品分类查询商品,商品筛选分类 + 筛选
      *
-     * @param goodsTypeId  商品分类ID
-     * @param screenType 筛选类型
-     * @param page       页码
-     * @param size       数量
+     * @param goodsTypeId 商品分类ID
+     * @param screenType  筛选类型
+     * @param page        页码
+     * @param size        数量
      * @return
      */
     @ApiOperation(value = "查询普通类型商品 根据商品分类查询商品+筛选商品+商品名称")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsTypeId", value = "分类ID", paramType = "form"),
-            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序", paramType = "form",required = true),
+            @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序", paramType = "form", required = true),
             @ApiImplicitParam(name = "saleMode", value = "销售模式", paramType = "form"),
             @ApiImplicitParam(name = "page", value = "页码", paramType = "form"),
             @ApiImplicitParam(name = "size", value = "条数", paramType = "form")
     })
     @GetMapping("screen-goods")
-    public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType,String saleMode,Integer page, Integer size) {
-        log.debug("分页查询商品，分类Id:{},筛选Id:{},销售模式:{},页码：{}，数量：{},商品名称:{},", goodsTypeId, screenType,saleMode,page, size, name);
-        return this.productService.screenGoods(goodsTypeId, name, screenType,saleMode, page, size);
+    public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
+        log.debug("分页查询商品，分类Id:{},筛选Id:{},销售模式:{},页码：{}，数量：{},商品名称:{},", goodsTypeId, screenType, saleMode, page, size, name);
+        return this.productService.screenGoods(goodsTypeId, name, screenType, saleMode, page, size);
     }
 
 
@@ -186,8 +186,8 @@ public class ProductController {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
     })
     @GetMapping("goods-specification")
-    public BusinessMessage goodsSpecification(String id){
-        log.debug("商品规格,商品Id:{}",id);
+    public BusinessMessage goodsSpecification(String id) {
+        log.debug("商品规格,商品Id:{}", id);
         return this.productService.goodsSpecification(id);
 
     }
@@ -197,7 +197,7 @@ public class ProductController {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
     })
     @GetMapping("/hotGoods")
-    public BusinessMessage hotGoods(String id){
+    public BusinessMessage hotGoods(String id) {
         return this.productService.hotGoods(id);
     }
 
