@@ -194,7 +194,6 @@ public class CmProductService {
      * 根据商品Id 查询商品详情
      *
      * @param goodsId
-     * @param saleModeType 商品销售类型,1普通 2拼团 3预收 4秒杀
      * @return
      */
     public BusinessMessage goodsDetail(String goodsId) {
