@@ -134,6 +134,12 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "ship_number")
     private String shipNumber;
 
+    /**
+     * 预售发货时间天数
+     */
+    @Column(name = "presell_shipments_days")
+    private Integer presellShipmentsDays;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -532,6 +538,24 @@ public class SlOrderDetail implements Serializable {
         this.shipNumber = shipNumber == null ? null : shipNumber.trim();
     }
 
+    /**
+     * 获取预售发货时间天数
+     *
+     * @return presell_shipments_days - 预售发货时间天数
+     */
+    public Integer getPresellShipmentsDays() {
+        return presellShipmentsDays;
+    }
+
+    /**
+     * 设置预售发货时间天数
+     *
+     * @param presellShipmentsDays 预售发货时间天数
+     */
+    public void setPresellShipmentsDays(Integer presellShipmentsDays) {
+        this.presellShipmentsDays = presellShipmentsDays;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -560,6 +584,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", returnPulse=").append(returnPulse);
         sb.append(", shippingTime=").append(shippingTime);
         sb.append(", shipNumber=").append(shipNumber);
+        sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

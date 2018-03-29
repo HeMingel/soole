@@ -50,6 +50,12 @@ public class SlProductRepository implements Serializable {
     private String productDetailGroupName;
 
     /**
+     * 活动唯一标识符
+     */
+    @Column(name = "activity_id")
+    private String activityId;
+
+    /**
      * 备注
      */
     private String remark;
@@ -154,6 +160,12 @@ public class SlProductRepository implements Serializable {
     private Integer silver;
 
     /**
+     * 下单获得了豆数量(纯金钱的商品都会返)
+     */
+    @Column(name = "place_order_return_pulse")
+    private Integer placeOrderReturnPulse;
+
+    /**
      * 评论数量
      */
     @Column(name = "comment_num")
@@ -172,16 +184,10 @@ public class SlProductRepository implements Serializable {
     private Float returnPulseRatio;
 
     /**
-     * 返了豆数量(纯金钱的商品都会返)
+     * 返了豆数量
      */
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
-
-    /**
-     * 活动商品组合
-     */
-    @Column(name = "activity_product_id")
-    private String activityProductId;
 
     private static final long serialVersionUID = 1L;
 
@@ -309,6 +315,24 @@ public class SlProductRepository implements Serializable {
      */
     public void setProductDetailGroupName(String productDetailGroupName) {
         this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
+    }
+
+    /**
+     * 获取活动唯一标识符
+     *
+     * @return activity_id - 活动唯一标识符
+     */
+    public String getActivityId() {
+        return activityId;
+    }
+
+    /**
+     * 设置活动唯一标识符
+     *
+     * @param activityId 活动唯一标识符
+     */
+    public void setActivityId(String activityId) {
+        this.activityId = activityId == null ? null : activityId.trim();
     }
 
     /**
@@ -654,6 +678,24 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
+     * 获取下单获得了豆数量(纯金钱的商品都会返)
+     *
+     * @return place_order_return_pulse - 下单获得了豆数量(纯金钱的商品都会返)
+     */
+    public Integer getPlaceOrderReturnPulse() {
+        return placeOrderReturnPulse;
+    }
+
+    /**
+     * 设置下单获得了豆数量(纯金钱的商品都会返)
+     *
+     * @param placeOrderReturnPulse 下单获得了豆数量(纯金钱的商品都会返)
+     */
+    public void setPlaceOrderReturnPulse(Integer placeOrderReturnPulse) {
+        this.placeOrderReturnPulse = placeOrderReturnPulse;
+    }
+
+    /**
      * 获取评论数量
      *
      * @return comment_num - 评论数量
@@ -708,39 +750,21 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取返了豆数量(纯金钱的商品都会返)
+     * 获取返了豆数量
      *
-     * @return rebate_pulse - 返了豆数量(纯金钱的商品都会返)
+     * @return rebate_pulse - 返了豆数量
      */
     public Integer getRebatePulse() {
         return rebatePulse;
     }
 
     /**
-     * 设置返了豆数量(纯金钱的商品都会返)
+     * 设置返了豆数量
      *
-     * @param rebatePulse 返了豆数量(纯金钱的商品都会返)
+     * @param rebatePulse 返了豆数量
      */
     public void setRebatePulse(Integer rebatePulse) {
         this.rebatePulse = rebatePulse;
-    }
-
-    /**
-     * 获取活动商品组合
-     *
-     * @return activity_product_id - 活动商品组合
-     */
-    public String getActivityProductId() {
-        return activityProductId;
-    }
-
-    /**
-     * 设置活动商品组合
-     *
-     * @param activityProductId 活动商品组合
-     */
-    public void setActivityProductId(String activityProductId) {
-        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
     @Override
@@ -756,6 +780,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", productDetailGroupSerialNumber=").append(productDetailGroupSerialNumber);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
+        sb.append(", activityId=").append(activityId);
         sb.append(", remark=").append(remark);
         sb.append(", productProfitRatio=").append(productProfitRatio);
         sb.append(", productProfitMoney=").append(productProfitMoney);
@@ -775,11 +800,11 @@ public class SlProductRepository implements Serializable {
         sb.append(", ship=").append(ship);
         sb.append(", gold=").append(gold);
         sb.append(", silver=").append(silver);
+        sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", saleNum=").append(saleNum);
         sb.append(", returnPulseRatio=").append(returnPulseRatio);
         sb.append(", rebatePulse=").append(rebatePulse);
-        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
