@@ -132,8 +132,8 @@ public class CmProductService {
      *
      * @return
      */
-    public BusinessMessage recommendProduct() {
-        BusinessMessage businessMessage = new BusinessMessage();
+    public BusinessMessage<List<CmProduct>> recommendProduct() {
+        BusinessMessage<List<CmProduct>> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             List<CmProduct> cmProducts = this.mapper.findRecommendProduct();
@@ -158,9 +158,9 @@ public class CmProductService {
      *
      * @param goodsType  商品分类ID
      * @param screenType 筛选类型
-     * @param page
-     * @param size
-     * @return
+     * @param page 商品当前页
+     * @param size 每页容量
+     * @return 商品列表
      */
     public BusinessMessage screenGoods(String goodsType, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
         log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
@@ -193,13 +193,13 @@ public class CmProductService {
     /**
      * 根据商品Id 查询商品详情
      *
-     * @param goodsId
-     * @return
+     * @param goodsId 商品Id
+     * @return 商品详情列表
      */
     public BusinessMessage goodsDetail(String goodsId) {
         JSONObject data = new JSONObject();
         log.debug("查询 商品Id{}", goodsId);
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             //商品基础信息
@@ -220,7 +220,7 @@ public class CmProductService {
                     //查询评论图片
                     mapComments.get(0).get("id").toString();
                     List<Map<String, Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
-                    List list = new ArrayList();
+                    List<Object> list = new ArrayList<>();
                     list.add(commentImages);
                     list.add(goodsComment);
                     data.put("productComments", list);
@@ -242,13 +242,12 @@ public class CmProductService {
     /**
      * 根据商品Id 查询商品规格
      *
-     * @param id
-     * @return
+     * @param id  商品ID
+     * @return 商品规格
      */
     public BusinessMessage goodsSpecification(String id) {
         log.debug("商品规格详情,商品id:{}", id);
-        JSONObject data = new JSONObject();
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             //搜索商品规格Detail
@@ -256,9 +255,9 @@ public class CmProductService {
             if (specificationDetailMap.size() > 0) {
                 //查询商品规格名称
                 List<Map<String, Object>> specificationMap = this.mapper.goodsSpecification(id);
-                List list = new ArrayList();
+                List<Object> list = new ArrayList<>();
                 for (int i = 0; i < specificationMap.size(); i++) {
-                    Map map = new HashMap();
+                    Map<String,Object> map = new HashMap<>(16);
                     map.put("specification", specificationMap.get(i));
                     for (int j = 0; j < specificationDetailMap.size(); j++) {
                         if (specificationDetailMap.get(j).get("specification_id").equals(specificationMap.get(i).get("specification_id"))) {
@@ -271,9 +270,9 @@ public class CmProductService {
                 List<Map<String, Object>> goodsRepositoryList = this.mapper.goodsRepository(id);
                 //step 2根据商品分组查询对应的规格信息
                 if (goodsRepositoryList.size() > 0) {
-                    List lists = new ArrayList();
+                    List<Object> lists = new ArrayList<>();
                     for (int i = 0; i < goodsRepositoryList.size(); i++) {
-                        Map map = new HashMap();
+                        Map<String,Object> map = new HashMap<>(16);
                         List<Map<String, Object>> goodsRepositorySpecification = this.mapper.goodsRepositorySpecification(goodsRepositoryList.get(i).get("product_detail_group_serial_number").toString());
                         map.put("goodsRepositorySpecification", goodsRepositorySpecification);
                         map.put("goodsRepository", goodsRepositoryList.get(i));
@@ -302,7 +301,7 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage hotGoods(String id) {
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<List<Map<String, Object>>> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             Map<String, Object> goodsBaseInfo = this.mapper.goodsBaseInfo(id);

@@ -50,27 +50,54 @@ public interface CmProductMapper {
 
     /**
      * 查询推荐商品 最新商品前6个
-     *
-     * @return
+     * @return 商品列表
      */
     List<CmProduct> findRecommendProduct();
-
-    //根据分类查询商品 + 商品的筛选 + 根据名称查询
+    /**
+     * 分类查询商品 + 商品的筛选 + 根据名称查询
+     * @param goodsType 商品分类
+     * @param screenGoods 筛选条件
+     * @param saleMode 销售模式
+     * @param goodsName 商品名称
+     * @return 商品列表
+     */
     List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName);
-
-    //获取product表中相关信息
-    Map goodsBaseInfo(String goodsId);
-
-    //获取product_image 表中图片
+    /**
+     * 查询商品基础信息
+     * @param goodsId 商品ID
+     * @return 商品product 表相关信息
+     */
+    Map<String,Object> goodsBaseInfo(String goodsId);
+    /**
+     * 查询上商品所有图片
+     * @param goodsId 商品ID
+     * @return 商品图片
+     */
     List<Map<String, Object>> goodsImageUrl(String goodsId);
-    //查询商品specificationDetail
+    /**
+     * 查询商品规格详情
+     * @param goodsId 商品Id
+     * @return 商品规格详情
+     */
     List<Map<String,Object>> goodsSpecificationDetail(String goodsId);
-    //查询商品specification
+    /**
+     * 查询商品规格
+     * @param goodsId 商品ID
+     * @return 商品规格
+     */
     List<Map<String,Object>> goodsSpecification(String goodsId);
-    //查询商品库存
+    /**
+     * 查询商品库存
+     * @param goodsId 商品Id
+     * @return 商品库存
+     */
     List<Map<String,Object>> goodsRepository(String goodsId);
-    //查询商品库存规格
-    List<Map<String,Object>> goodsRepositorySpecification(String product_detail_group_serial_number);
+    /**
+     * 查询商品库存规格规格id名称
+     * @param productDetailGroupSerialNumber 商品分组
+     * @return 商品库存规格id名称
+     */
+    List<Map<String,Object>> goodsRepositorySpecification(String productDetailGroupSerialNumber);
 
     /**
      * 查询拼团商品列表
@@ -87,9 +114,11 @@ public interface CmProductMapper {
     List<Map<String, Object>> selectByPreSales();
 
     /**
+     * 查询商品拼团订单
      *
      * @param goodsId 商品Id
      * @param saleModeType  商品销售模式分类
+     *@param peopleNum 拼团人数
      * @return 该商品拼团信息
      */
     List<Map<String,Object>> findGroupOrder(@Param("goodsId")String goodsId,@Param("saleModeType")Integer saleModeType,@Param("peopleNum")Integer peopleNum);

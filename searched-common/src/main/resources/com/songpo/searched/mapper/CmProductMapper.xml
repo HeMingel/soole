@@ -181,7 +181,7 @@
             ON sdg.`serial_number` = pr.`product_detail_group_serial_number`
             LEFT JOIN sl_specification_detail sd
             ON sdg.`specification_detail_id` = sd.`id`
-            WHERE pr.`product_detail_group_serial_number` = #{product_detail_group_serial_number}
+            WHERE pr.`product_detail_group_serial_number` = #{productDetailGroupSerialNumber}
     </select>
 
     <!-- 查询预售商品列表 -->

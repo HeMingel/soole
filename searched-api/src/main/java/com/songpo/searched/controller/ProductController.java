@@ -123,8 +123,7 @@ public class ProductController {
     /**
      * 分类页面 推荐商品
      * 取最新商品的前6个
-     *
-     * @return
+     * @return 商品列表
      */
     @ApiOperation(value = "分类页面,推荐商品")
     @ApiImplicitParams(value = {
@@ -143,7 +142,7 @@ public class ProductController {
      * @param screenType  筛选类型
      * @param page        页码
      * @param size        数量
-     * @return
+     * @return 商品列表
      */
     @ApiOperation(value = "查询普通类型商品 根据商品分类查询商品+筛选商品+商品名称")
     @ApiImplicitParams(value = {
