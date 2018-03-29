@@ -1,30 +1,34 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_agreement")
 public class SlAgreement implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 标题
      */
     private String title;
+
     /**
      * 协议创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 协议内容
      */
     private String content;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符

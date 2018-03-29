@@ -1,40 +1,46 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_friend")
 public class SlFriend implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 好友id
      */
     @Column(name = "friend_id")
     private String friendId;
+
     /**
      * 自己对好友备注
      */
     @Column(name = "friend_nickname")
     private String friendNickname;
+
     /**
-     * 自己对好友的关系  1. 正常  2.拉黑
+     * 自己对好友的关系  1. 正常  2.拉黑 
      */
     @Column(name = "friend_status")
     private Boolean friendStatus;
+
     /**
      * 添加时间
      */
     @Column(name = "add_time")
     private Date addTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
@@ -105,18 +111,18 @@ public class SlFriend implements Serializable {
     }
 
     /**
-     * 获取自己对好友的关系  1. 正常  2.拉黑
+     * 获取自己对好友的关系  1. 正常  2.拉黑 
      *
-     * @return friend_status - 自己对好友的关系  1. 正常  2.拉黑
+     * @return friend_status - 自己对好友的关系  1. 正常  2.拉黑 
      */
     public Boolean getFriendStatus() {
         return friendStatus;
     }
 
     /**
-     * 设置自己对好友的关系  1. 正常  2.拉黑
+     * 设置自己对好友的关系  1. 正常  2.拉黑 
      *
-     * @param friendStatus 自己对好友的关系  1. 正常  2.拉黑
+     * @param friendStatus 自己对好友的关系  1. 正常  2.拉黑 
      */
     public void setFriendStatus(Boolean friendStatus) {
         this.friendStatus = friendStatus;

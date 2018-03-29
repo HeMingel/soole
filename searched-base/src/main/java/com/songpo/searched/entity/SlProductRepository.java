@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -182,12 +182,6 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "activity_product_id")
     private String activityProductId;
-
-    /**
-     * 预售多少天发货
-     */
-    @Column(name = "presell_shipments_days")
-    private Integer presellShipmentsDays;
 
     private static final long serialVersionUID = 1L;
 
@@ -749,24 +743,6 @@ public class SlProductRepository implements Serializable {
         this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
-    /**
-     * 获取预售多少天发货
-     *
-     * @return presell_shipments_days - 预售多少天发货
-     */
-    public Integer getPresellShipmentsDays() {
-        return presellShipmentsDays;
-    }
-
-    /**
-     * 设置预售多少天发货
-     *
-     * @param presellShipmentsDays 预售多少天发货
-     */
-    public void setPresellShipmentsDays(Integer presellShipmentsDays) {
-        this.presellShipmentsDays = presellShipmentsDays;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -804,7 +780,6 @@ public class SlProductRepository implements Serializable {
         sb.append(", returnPulseRatio=").append(returnPulseRatio);
         sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", activityProductId=").append(activityProductId);
-        sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

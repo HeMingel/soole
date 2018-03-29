@@ -1,43 +1,50 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_friend_add")
 public class SlFriendAdd implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 发起加好友人id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 被加好友人id
      */
     @Column(name = "friend_id")
     private String friendId;
+
     /**
      * 加好友结果  0.等待对方处理  1.同意  2.拒绝
      */
     private Boolean result;
+
     /**
      * 添加好友时备注信息
      */
     private String message;
+
     /**
      * 添加时间
      */
     @Column(name = "add_time")
     private Date addTime;
+
     /**
      * 对方处理信息时间
      */
     @Column(name = "edit_time")
     private Date editTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

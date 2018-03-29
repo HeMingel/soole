@@ -9,12 +9,12 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-      <result column="c_order" jdbcType="INTEGER" property="cOrder"/>
+    <result column="c_order" jdbcType="INTEGER" property="cOrder" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, parent_id, image_url, c_order
+    id, name, parent_id, image_url, c_order
   </sql>
 </mapper>

@@ -1,26 +1,30 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_friend_set")
 public class SlFriendSet implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 1. 直接加好友（好友可直接添加自己为好友）   2. 自行点击同意加好友（需要自己同意才能被被人添加为好友）
      */
     @Column(name = "add_status")
     private Boolean addStatus;
+
     /**
      * 融云token
      */
     @Column(name = "ry_token")
     private String ryToken;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
