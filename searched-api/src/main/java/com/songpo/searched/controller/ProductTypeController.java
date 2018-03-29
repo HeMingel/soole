@@ -41,8 +41,16 @@ public class ProductTypeController {
     })
     @GetMapping("list")
     public BusinessMessage<List<Map<String, Object>>> findAll(String parentId) {
+        BusinessMessage<List<Map<String, Object>>> message = new BusinessMessage<>();
+        try {
+            message.setData(this.productTypeService.findAll(parentId));
+            message.setSuccess(true);
+        } catch (Exception e) {
+            log.error("查询商品分类失败，{}", e);
 
-        return this.productTypeService.findAll(parentId);
+            message.setMsg("查询商品分类失败，请重试");
+        }
+        return message;
     }
 
 

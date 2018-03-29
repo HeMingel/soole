@@ -1,19 +1,15 @@
 package com.songpo.searched.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmOrderMapper;
-import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.mapper.SlUserAddressMapper;
 import com.songpo.searched.util.OrderNumGeneration;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -86,7 +82,8 @@ public class CmOrderService {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
                                     pulse += repository.getSilver(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     if (slOrder.getType() == 2) {
-                                        String orderNums = this.cmOrderMapper.findGroup(repository.getProductId());
+                                        // TODO 注释错误代码
+//                                        String orderNums = this.cmOrderMapper.findGroup(repository.getProductId());
                                     }
                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                         setId(UUID.randomUUID().toString());

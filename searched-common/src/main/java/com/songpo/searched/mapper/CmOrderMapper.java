@@ -1,6 +1,5 @@
 package com.songpo.searched.mapper;
 
-import com.songpo.searched.entity.SlOrder;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

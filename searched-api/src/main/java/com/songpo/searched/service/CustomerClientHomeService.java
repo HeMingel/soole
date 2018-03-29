@@ -1,10 +1,11 @@
 package com.songpo.searched.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CmProduct;
@@ -82,11 +83,8 @@ public class CustomerClientHomeService {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        //List<Map<String, Object>> productTypes = this.productTypeService.findAll();
-        BusinessMessage productTypes = this.productTypeService.findAll(null);
+        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
         data.put("productTypes", productTypes);
-
-        JSONObject banner = new JSONObject();
 
         // 获取广告轮播图列表
         List<Map<String, Object>> bannerList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_BANNER");
@@ -104,7 +102,7 @@ public class CustomerClientHomeService {
         List<Map<String, Object>> teamworkProductList = this.productMapper.selectByTeamwork();
         data.put("teamworkProductList", teamworkProductList);
 
-        // 获取拼团商品
+        // 获取预售商品
         List<Map<String, Object>> preSalesProductList = this.productMapper.selectByPreSales();
         data.put("preSalesProductList", preSalesProductList);
 
@@ -120,20 +118,25 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String parentId, String goodsType, Integer screenType, Integer page, Integer size, String name) {
+    public JSONObject getClassificationData(String goodsType, Integer screenType, Integer page, Integer size, String name) {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
-        //List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
-        BusinessMessage productTypes = this.productTypeService.findAll(null);
-        data.put("productTypes", productTypes);
-        //通过商品分类parentId 查询二级分类
-        //List<Map<String, Object>> productCategoryDtos = this.productTypeService.findAll(parentId);
-        //data.put("productTypes", productCategoryDtos);
+        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
+        JSONArray productTypeJsonArray = new JSONArray();
+        if (null != productTypes) {
+            productTypes.forEach(types -> productTypeJsonArray.add(new JSONObject() {{
+                put("productType", types);
+
+                // 查询子分类
+                put("subTypes", productTypeService.findAll(types.get("id").toString()));
+            }}));
+        }
+        data.put("productTypes", productTypeJsonArray);
 
         //筛选商品
         PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<Map<String, Object>> cmProducts = this.productMapper.screenGoods(goodsType, screenType, name);
+        List<Map<String, Object>> cmProducts = this.productMapper.screenGoods(goodsType, screenType, SalesModeConstant.SALES_MODE_NORMAL, name);
         data.put("products", new PageInfo<>(cmProducts));
         //banner图
         // 获取广告轮播图列表
@@ -182,7 +185,8 @@ public class CustomerClientHomeService {
                                     setProductId(sc.getGoodId());
                                 }});
 //                                cmGoods.setPulse(repository.getPulse());// 了豆
-                                cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                // TODO 注释报错的位置
+//                                cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
                                 cmGoods.setPrice(repository.getPrice());// 商品价格
                                 cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                 cmGoods.setShopId(sc.getShopId());// 店铺id

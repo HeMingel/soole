@@ -51,7 +51,7 @@ public class SystemController {
     /**
      * 登录
      *
-     * @param phone 账号，可以是用户名、手机号码或邮箱
+     * @param phone    账号，可以是用户名、手机号码或邮箱
      * @param password 密码
      * @return 业务消息
      */
@@ -118,9 +118,9 @@ public class SystemController {
     /**
      * 注册
      *
-     * @param phone 账号
+     * @param phone    账号
      * @param password 密码
-     * @param code 短信验证码
+     * @param code     短信验证码
      * @return 业务信息
      */
     @ApiOperation(value = "用户注册")
@@ -361,6 +361,87 @@ public class SystemController {
                     log.error("注册失败：{}", e);
                     message.setMsg("注册失败：" + e.getMessage());
                 }
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 微信第三方登录
+     *
+     * @param openId   手机号码
+     * @param nickname 微信昵称
+     * @param avatar   头像地址
+     * @return 用户信息
+     */
+    @ApiOperation(value = "微信第三方登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "开放账号唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "nickname", value = "微信昵称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true)
+    })
+    @PostMapping("we-chat-login")
+    public BusinessMessage<JSONObject> weChatLogin(String openId, String nickname, String avatar) {
+        log.debug("微信登录，开放账号唯一标识：{}，微信昵称：{}，头像地址：{}", openId, nickname, avatar);
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
+        if (StringUtils.isBlank(openId)) {
+            message.setMsg("唯一标识为空");
+        } else if (StringUtils.isBlank(nickname)) {
+            message.setMsg("微信昵称为空");
+        } else if (StringUtils.isBlank(avatar)) {
+            message.setMsg("头像地址为空");
+        } else {
+            // 从缓存检测用户信息
+            SlUser user = this.userCache.get(openId);
+            // 从数据库查询用户信息
+            if (null == user) {
+                user = this.userService.selectOne(new SlUser() {{
+                    setOpenIdWechat(openId);
+                }});
+
+                if (null != user) {
+                    this.userCache.put(openId, user);
+                }
+            }
+
+            // 从数据库查询用户信息
+            if (null == user) {
+                user = new SlUser();
+                user.setNickName(nickname);
+                user.setAvatar(avatar);
+                user.setOpenIdWechat(openId);
+
+                // 定义生成字符串范围
+                char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
+                // 初始化随机生成器
+                RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
+
+                user.setClientId(generator.generate(16));
+                user.setClientSecret(generator.generate(64));
+
+                // 添加
+                userService.insertSelective(user);
+
+                this.userCache.put(openId, user);
+            }
+
+            if (null != user) {
+                JSONObject data = new JSONObject();
+                data.put("clientId", user.getClientId());
+                data.put("clientSecret", user.getClientSecret());
+                // 用户真实姓名
+                data.put("realname", user.getName());
+                // 用户昵称
+                data.put("nickname", user.getNickName());
+                // 用户头像
+                data.put("avatar", user.getAvatar());
+                // 手机号码
+                data.put("phone", user.getPhone());
+                // 电子邮箱
+                data.put("email", user.getEmail());
+
+                message.setData(data);
+                message.setSuccess(true);
             }
         }
         return message;
