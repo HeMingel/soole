@@ -101,7 +101,7 @@ public class CustomerClientHomeService {
         List<Map<String, Object>> teamworkProductList = this.productMapper.selectByTeamwork();
         data.put("teamworkProductList", teamworkProductList);
 
-        // 获取拼团商品
+        // 获取预售商品
         List<Map<String, Object>> preSalesProductList = this.productMapper.selectByPreSales();
         data.put("preSalesProductList", preSalesProductList);
 

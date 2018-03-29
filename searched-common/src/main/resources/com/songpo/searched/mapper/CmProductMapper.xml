@@ -198,13 +198,9 @@
         sl_product p
         LEFT JOIN sl_product_repository pr
         ON pr.product_id = p.id
-        LEFT JOIN sl_sales_mode sm
-        ON pr.sales_mode_id = sm.id
-        LEFT JOIN sl_system_config sc
-        ON sc.content = sm.id
         LEFT JOIN sl_order_detail od
         ON od.`product_id` = p.`id`
-        WHERE sc.name = 'SALES_MODE_TEAMWORK'
+        WHERE p.sales_mode_id = 1
         LIMIT 20
     </select>
 
@@ -217,13 +213,9 @@
         sl_product p
         LEFT JOIN sl_product_repository pr
         ON pr.product_id = p.id
-        LEFT JOIN sl_sales_mode sm
-        ON pr.sales_mode_id = sm.id
-        LEFT JOIN sl_system_config sc
-        ON sc.content = sm.id
         LEFT JOIN sl_order_detail od
         ON od.`product_id` = p.`id`
-        WHERE sc.name = 'SALES_MODE_PRE_SALES'
+        WHERE p.sales_mode_id = 2
         LIMIT 20
     </select>
     <!--查询该未完成拼单的单子-->
@@ -231,11 +223,7 @@
         SELECT  od.id AS orderDetailId,od.serial_number,COUNT(od.serial_number) AS orderNum
         FROM
           sl_order_detail od
-           sl_order o
-        LEFT JOIN sl_user u
-        ON o.user_id = u.id
         WHERE product_id = #{goodsId}
-        AND o.payment_state = 1
         GROUP BY od.serial_number HAVING COUNT(od.serial_number) &lt; #{peopleNum}
     </select>
         <!--查询该订单第一个发起人-->
@@ -248,15 +236,6 @@
         WHERE  o.serial_number = #{orderNum} and o.payment_state = 1
         ORDER BY o.create_time ASC
         LIMIT 0,1
-    </select>
-    <!--热门推荐-->
-    <select id="hotGoods" parameterType="String" resultType="Map">
-        SELECT
-          *
-        FROM
-          sl_product p
-        WHERE p.`sales_mode_id` = #{saleModeId}
-          AND p.id != #{goodsId}
     </select>
 
 </mapper>
