@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product_type")
 public class SlProductType implements Serializable {
@@ -28,6 +28,12 @@ public class SlProductType implements Serializable {
      */
     @Column(name = "image_url")
     private String imageUrl;
+
+    /**
+     * 分类排序字段（越大越靠前）
+     */
+    @Column(name = "c_order")
+    private Integer cOrder;
 
     private static final long serialVersionUID = 1L;
 
@@ -103,6 +109,24 @@ public class SlProductType implements Serializable {
         this.imageUrl = imageUrl == null ? null : imageUrl.trim();
     }
 
+    /**
+     * 获取分类排序字段（越大越靠前）
+     *
+     * @return c_order - 分类排序字段（越大越靠前）
+     */
+    public Integer getcOrder() {
+        return cOrder;
+    }
+
+    /**
+     * 设置分类排序字段（越大越靠前）
+     *
+     * @param cOrder 分类排序字段（越大越靠前）
+     */
+    public void setcOrder(Integer cOrder) {
+        this.cOrder = cOrder;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -113,6 +137,7 @@ public class SlProductType implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", parentId=").append(parentId);
         sb.append(", imageUrl=").append(imageUrl);
+        sb.append(", cOrder=").append(cOrder);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

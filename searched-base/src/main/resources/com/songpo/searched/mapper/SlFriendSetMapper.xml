@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlFriendSetMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFriendSet">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="add_status" jdbcType="BIT" property="addStatus"/>
+        <result column="ry_token" jdbcType="VARCHAR" property="ryToken"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, user_id, add_status, ry_token
+    </sql>
+</mapper>

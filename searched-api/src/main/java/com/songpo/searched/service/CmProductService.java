@@ -8,8 +8,10 @@ import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductSaleModeOrderCount;
-import com.songpo.searched.mapper.*;
-import io.swagger.models.auth.In;
+import com.songpo.searched.mapper.CmProductCommentMapper;
+import com.songpo.searched.mapper.CmProductMapper;
+import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlProductSaleModeOrderCountMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,7 +233,8 @@ public class CmProductService {
                 if (saleModeType != null) {
                     //查询商品活动表 查出来相关活动需要的时间或者人数
                     SlActivityProduct goodsActivity = this.slActivityProductMapper.selectOne(new SlActivityProduct() {{
-                        setProductId(goodsId);
+                        // TODO 注释报错的位置
+                        //                        setProductId(goodsId);
                         //商品基础信息表里查出来的销售模式
                         setActivityId(map.get("sales_mode_id").toString());
                     }});

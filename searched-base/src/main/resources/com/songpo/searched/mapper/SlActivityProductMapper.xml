@@ -6,19 +6,25 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+      <result column="serial_number" jdbcType="VARCHAR" property="serialNumber"/>
     <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="days" jdbcType="INTEGER" property="days" />
+      <result column="orders_num" jdbcType="INTEGER" property="ordersNum"/>
+      <result column="surplus_product_count" jdbcType="INTEGER" property="surplusProductCount"/>
+      <result column="peas" jdbcType="INTEGER" property="peas"/>
+      <result column="award_peas_counts" jdbcType="DOUBLE" property="awardPeasCounts"/>
+      <result column="awward_money" jdbcType="DOUBLE" property="awwardMoney"/>
+      <result column="enabled" jdbcType="BIT" property="enabled"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, activity_id, price, begin_time, end_time, count, people_num, days
+      id, serial_number, activity_id, price, begin_time, end_time, count, people_num, orders_num,
+      surplus_product_count, peas, award_peas_counts, awward_money, enabled
   </sql>
 </mapper>

@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -80,12 +80,6 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "shop_id")
     private String shopId;
-
-    /**
-     * 销售类型:5钱6乐豆7钱+了豆
-     */
-    @Column(name = "sale_type")
-    private Integer saleType;
 
     /**
      * 销售模式唯一标识符
@@ -330,24 +324,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销售类型:5钱6乐豆7钱+了豆
-     *
-     * @return sale_type - 销售类型:5钱6乐豆7钱+了豆
-     */
-    public Integer getSaleType() {
-        return saleType;
-    }
-
-    /**
-     * 设置销售类型:5钱6乐豆7钱+了豆
-     *
-     * @param saleType 销售类型:5钱6乐豆7钱+了豆
-     */
-    public void setSaleType(Integer saleType) {
-        this.saleType = saleType;
-    }
-
-    /**
      * 获取销售模式唯一标识符
      *
      * @return sales_mode_id - 销售模式唯一标识符
@@ -384,7 +360,6 @@ public class SlProduct implements Serializable {
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", referencePulse=").append(referencePulse);
         sb.append(", shopId=").append(shopId);
-        sb.append(", saleType=").append(saleType);
         sb.append(", salesModeId=").append(salesModeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

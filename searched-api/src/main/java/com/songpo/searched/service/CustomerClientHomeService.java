@@ -184,7 +184,8 @@ public class CustomerClientHomeService {
                                     setProductId(sc.getGoodId());
                                 }});
 //                                cmGoods.setPulse(repository.getPulse());// 了豆
-                                cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                // TODO 注释报错的位置
+//                                cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
                                 cmGoods.setPrice(repository.getPrice());// 商品价格
                                 cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                 cmGoods.setShopId(sc.getShopId());// 店铺id
