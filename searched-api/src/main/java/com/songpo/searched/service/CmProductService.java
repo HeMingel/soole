@@ -166,7 +166,7 @@ public class CmProductService {
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
 
-            if (goodsType != null || screenType != null || name != null) {
+            if (goodsType != null || screenType != null || name != null || saleMode != null) {
                 List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name);
                 if (list.size() > 0) {
                     businessMessage.setMsg("查询成功");
