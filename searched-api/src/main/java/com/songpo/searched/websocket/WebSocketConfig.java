@@ -1,6 +1,6 @@
 package com.songpo.searched.websocket;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -13,9 +13,6 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
-    @Autowired
-    private MyWebSocketHandlerDecoratorFactory decoratorFactory;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -33,9 +30,14 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
     }
 
+    @Bean
+    public MyWebSocketHandlerDecoratorFactory decoratorFactory() {
+        return new MyWebSocketHandlerDecoratorFactory();
+    }
+
     @Override
     public void configureWebSocketTransport(final WebSocketTransportRegistration registration) {
-        registration.addDecoratorFactory(decoratorFactory);
+        registration.addDecoratorFactory(decoratorFactory());
         super.configureWebSocketTransport(registration);
     }
 }

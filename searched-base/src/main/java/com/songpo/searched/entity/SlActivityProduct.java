@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -86,6 +86,17 @@ public class SlActivityProduct implements Serializable {
      * 是否启用(1:启用 0;禁用)
      */
     private Boolean enabled;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    private String createTime;
+
+    /**
+     * 创建人
+     */
+    private String creator;
 
     private static final long serialVersionUID = 1L;
 
@@ -341,6 +352,42 @@ public class SlActivityProduct implements Serializable {
         this.enabled = enabled;
     }
 
+    /**
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
+     */
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取创建人
+     *
+     * @return creator - 创建人
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * 设置创建人
+     *
+     * @param creator 创建人
+     */
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -361,6 +408,8 @@ public class SlActivityProduct implements Serializable {
         sb.append(", awardPeasCounts=").append(awardPeasCounts);
         sb.append(", awwardMoney=").append(awwardMoney);
         sb.append(", enabled=").append(enabled);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", creator=").append(creator);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

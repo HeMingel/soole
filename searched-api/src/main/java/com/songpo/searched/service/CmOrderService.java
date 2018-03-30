@@ -78,7 +78,8 @@ public class CmOrderService {
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setId(slOrderDetail.getRepositoryId()); // 根据仓库ID 去查询商品的详细信息(选好规格的价格,金豆等等)
                                 }});
-                                if (null != repository && StringUtils.hasLength(slOrderDetail.getQuantity())) {
+                                // TODO 修改报错的代码
+                                if (null != repository && null != slOrderDetail.getQuantity()) {
                                     money += repository.getPrice().doubleValue(); // 钱相加 用于统计和添加到订单表扣除总钱里边
                                     pulse += repository.getSilver(); // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                     if (slOrder.getType() == 2) {
@@ -96,7 +97,8 @@ public class CmOrderService {
                                         setShopId(repository.getShopId());// 店铺唯一标识
                                         setRepositoryId(repository.getId()); // 店铺仓库ID
                                         setDeductTotalSilver(repository.getSilver()); // 扣除单个商品了豆数量
-                                        setReturnPulse(repository.getRebatePulse());// 返了豆数量只限纯金钱模式
+                                        // TODO 注释掉报错的代码
+//                                        setReturnPulse(repository.getRebatePulse());// 返了豆数量只限纯金钱模式
                                         setProduceName(repository.getProductName());// 下单时的商品名称
                                         setProductImageUrl(repository.getProductImageUrl());// 下单时的商品图片
                                     }});

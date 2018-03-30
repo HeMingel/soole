@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -37,7 +37,7 @@ public class SlOrder implements Serializable {
     private BigDecimal fee;
 
     /**
-     * 0：待支付 1：支付成功 2：支付失败 -1为已失效
+     * 2：待支付 1：支付成功 0：支付失败 -1为已失效
      */
     @Column(name = "payment_state")
     private Integer paymentState;
@@ -120,6 +120,12 @@ public class SlOrder implements Serializable {
      * 收件人详细地址
      */
     private String detailed;
+
+    /**
+     * -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     */
+    @Column(name = "spell_group_status")
+    private Integer spellGroupStatus;
 
     private static final long serialVersionUID = 1L;
 
@@ -214,18 +220,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取0：待支付 1：支付成功 2：支付失败 -1为已失效
+     * 获取2：待支付 1：支付成功 0：支付失败 -1为已失效
      *
-     * @return payment_state - 0：待支付 1：支付成功 2：支付失败 -1为已失效
+     * @return payment_state - 2：待支付 1：支付成功 0：支付失败 -1为已失效
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置0：待支付 1：支付成功 2：支付失败 -1为已失效
+     * 设置2：待支付 1：支付成功 0：支付失败 -1为已失效
      *
-     * @param paymentState 0：待支付 1：支付成功 2：支付失败 -1为已失效
+     * @param paymentState 2：待支付 1：支付成功 0：支付失败 -1为已失效
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
@@ -491,6 +497,24 @@ public class SlOrder implements Serializable {
         this.detailed = detailed == null ? null : detailed.trim();
     }
 
+    /**
+     * 获取-1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     *
+     * @return spell_group_status - -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     */
+    public Integer getSpellGroupStatus() {
+        return spellGroupStatus;
+    }
+
+    /**
+     * 设置-1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     *
+     * @param spellGroupStatus -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     */
+    public void setSpellGroupStatus(Integer spellGroupStatus) {
+        this.spellGroupStatus = spellGroupStatus;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -517,6 +541,7 @@ public class SlOrder implements Serializable {
         sb.append(", city=").append(city);
         sb.append(", county=").append(county);
         sb.append(", detailed=").append(detailed);
+        sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

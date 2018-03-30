@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -100,13 +100,13 @@ public class SlProduct implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 列表展示返现money
+     * 列表展示返现money(显示规格最高的)
      */
     @Column(name = "return_money")
     private BigDecimal returnMoney;
 
     /**
-     * 列表展示返豆数量
+     * 列表展示返豆数量(显示规格最多的)
      */
     @Column(name = "return_pulse")
     private Integer returnPulse;
@@ -122,6 +122,23 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "reward_value")
     private Double rewardValue;
+
+    /**
+     * 创建人
+     */
+    private String creator;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    private String createTime;
+
+    /**
+     * 限定单数
+     */
+    @Column(name = "restrict_count")
+    private Integer restrictCount;
 
     private static final long serialVersionUID = 1L;
 
@@ -414,36 +431,36 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取列表展示返现money
+     * 获取列表展示返现money(显示规格最高的)
      *
-     * @return return_money - 列表展示返现money
+     * @return return_money - 列表展示返现money(显示规格最高的)
      */
     public BigDecimal getReturnMoney() {
         return returnMoney;
     }
 
     /**
-     * 设置列表展示返现money
+     * 设置列表展示返现money(显示规格最高的)
      *
-     * @param returnMoney 列表展示返现money
+     * @param returnMoney 列表展示返现money(显示规格最高的)
      */
     public void setReturnMoney(BigDecimal returnMoney) {
         this.returnMoney = returnMoney;
     }
 
     /**
-     * 获取列表展示返豆数量
+     * 获取列表展示返豆数量(显示规格最多的)
      *
-     * @return return_pulse - 列表展示返豆数量
+     * @return return_pulse - 列表展示返豆数量(显示规格最多的)
      */
     public Integer getReturnPulse() {
         return returnPulse;
     }
 
     /**
-     * 设置列表展示返豆数量
+     * 设置列表展示返豆数量(显示规格最多的)
      *
-     * @param returnPulse 列表展示返豆数量
+     * @param returnPulse 列表展示返豆数量(显示规格最多的)
      */
     public void setReturnPulse(Integer returnPulse) {
         this.returnPulse = returnPulse;
@@ -485,6 +502,60 @@ public class SlProduct implements Serializable {
         this.rewardValue = rewardValue;
     }
 
+    /**
+     * 获取创建人
+     *
+     * @return creator - 创建人
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * 设置创建人
+     *
+     * @param creator 创建人
+     */
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
+     */
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取限定单数
+     *
+     * @return restrict_count - 限定单数
+     */
+    public Integer getRestrictCount() {
+        return restrictCount;
+    }
+
+    /**
+     * 设置限定单数
+     *
+     * @param restrictCount 限定单数
+     */
+    public void setRestrictCount(Integer restrictCount) {
+        this.restrictCount = restrictCount;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -511,6 +582,9 @@ public class SlProduct implements Serializable {
         sb.append(", returnPulse=").append(returnPulse);
         sb.append(", groupPeople=").append(groupPeople);
         sb.append(", rewardValue=").append(rewardValue);
+        sb.append(", creator=").append(creator);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", restrictCount=").append(restrictCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

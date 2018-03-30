@@ -47,6 +47,7 @@ public class Oauth2Config {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
+                    .headers().frameOptions().sameOrigin().and()
                     .authorizeRequests()
                     // 不拦截获取token的请求
                     .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()

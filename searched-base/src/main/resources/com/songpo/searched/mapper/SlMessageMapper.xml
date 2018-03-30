@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlMessageMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlMessage">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="sourceId" jdbcType="VARCHAR" property="sourceid"/>
+        <result column="sourceName" jdbcType="VARCHAR" property="sourcename"/>
+        <result column="targetId" jdbcType="VARCHAR" property="targetid"/>
+        <result column="targetName" jdbcType="VARCHAR" property="targetname"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="read" jdbcType="INTEGER" property="read"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="read_time" jdbcType="VARCHAR" property="readTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"
+                javaType="com.songpo.searched.typehandler.MessageTypeEnum"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, sourceId, sourceName, targetId, targetName, content, read, create_time, read_time,
+        type
+    </sql>
+</mapper>

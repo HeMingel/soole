@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -50,10 +50,10 @@ public class SlProductRepository implements Serializable {
     private String productDetailGroupName;
 
     /**
-     * 活动唯一标识符
+     * 活动商品唯一标识符
      */
-    @Column(name = "activity_id")
-    private String activityId;
+    @Column(name = "activity_product_id")
+    private String activityProductId;
 
     /**
      * 备注
@@ -84,13 +84,13 @@ public class SlProductRepository implements Serializable {
     private BigDecimal personalPrice;
 
     /**
-     * 返现比例(限消费返利销售模式按商品价格)
+     * 奖励金额比例(限消费返利销售模式按商品价格)
      */
     @Column(name = "`return cash_ratio`")
     private Float returnCashRatio;
 
     /**
-     * 返现金额(消费返利模式)
+     * 奖励金额(消费返利模式)
      */
     @Column(name = "`return cash_money`")
     private BigDecimal returnCashMoney;
@@ -172,13 +172,13 @@ public class SlProductRepository implements Serializable {
     private Integer saleNum;
 
     /**
-     * 返豆比例
+     * 奖励了豆比例(限消费返利销售模式按商品价格)
      */
     @Column(name = "`return pulse_ratio`")
     private Float returnPulseRatio;
 
     /**
-     * 返了豆数量
+     * 奖励了豆数量(消费返利模式)
      */
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
@@ -312,21 +312,21 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取活动唯一标识符
+     * 获取活动商品唯一标识符
      *
-     * @return activity_id - 活动唯一标识符
+     * @return activity_product_id - 活动商品唯一标识符
      */
-    public String getActivityId() {
-        return activityId;
+    public String getActivityProductId() {
+        return activityProductId;
     }
 
     /**
-     * 设置活动唯一标识符
+     * 设置活动商品唯一标识符
      *
-     * @param activityId 活动唯一标识符
+     * @param activityProductId 活动商品唯一标识符
      */
-    public void setActivityId(String activityId) {
-        this.activityId = activityId == null ? null : activityId.trim();
+    public void setActivityProductId(String activityProductId) {
+        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
     /**
@@ -420,36 +420,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取返现比例(限消费返利销售模式按商品价格)
+     * 获取奖励金额比例(限消费返利销售模式按商品价格)
      *
-     * @return return cash_ratio - 返现比例(限消费返利销售模式按商品价格)
+     * @return return cash_ratio - 奖励金额比例(限消费返利销售模式按商品价格)
      */
     public Float getReturnCashRatio() {
         return returnCashRatio;
     }
 
     /**
-     * 设置返现比例(限消费返利销售模式按商品价格)
+     * 设置奖励金额比例(限消费返利销售模式按商品价格)
      *
-     * @param returnCashRatio 返现比例(限消费返利销售模式按商品价格)
+     * @param returnCashRatio 奖励金额比例(限消费返利销售模式按商品价格)
      */
     public void setReturnCashRatio(Float returnCashRatio) {
         this.returnCashRatio = returnCashRatio;
     }
 
     /**
-     * 获取返现金额(消费返利模式)
+     * 获取奖励金额(消费返利模式)
      *
-     * @return return cash_money - 返现金额(消费返利模式)
+     * @return return cash_money - 奖励金额(消费返利模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(消费返利模式)
+     * 设置奖励金额(消费返利模式)
      *
-     * @param returnCashMoney 返现金额(消费返利模式)
+     * @param returnCashMoney 奖励金额(消费返利模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -708,36 +708,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取返豆比例
+     * 获取奖励了豆比例(限消费返利销售模式按商品价格)
      *
-     * @return return pulse_ratio - 返豆比例
+     * @return return pulse_ratio - 奖励了豆比例(限消费返利销售模式按商品价格)
      */
     public Float getReturnPulseRatio() {
         return returnPulseRatio;
     }
 
     /**
-     * 设置返豆比例
+     * 设置奖励了豆比例(限消费返利销售模式按商品价格)
      *
-     * @param returnPulseRatio 返豆比例
+     * @param returnPulseRatio 奖励了豆比例(限消费返利销售模式按商品价格)
      */
     public void setReturnPulseRatio(Float returnPulseRatio) {
         this.returnPulseRatio = returnPulseRatio;
     }
 
     /**
-     * 获取返了豆数量
+     * 获取奖励了豆数量(消费返利模式)
      *
-     * @return rebate_pulse - 返了豆数量
+     * @return rebate_pulse - 奖励了豆数量(消费返利模式)
      */
     public Integer getRebatePulse() {
         return rebatePulse;
     }
 
     /**
-     * 设置返了豆数量
+     * 设置奖励了豆数量(消费返利模式)
      *
-     * @param rebatePulse 返了豆数量
+     * @param rebatePulse 奖励了豆数量(消费返利模式)
      */
     public void setRebatePulse(Integer rebatePulse) {
         this.rebatePulse = rebatePulse;
@@ -756,7 +756,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", productDetailGroupSerialNumber=").append(productDetailGroupSerialNumber);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
-        sb.append(", activityId=").append(activityId);
+        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", remark=").append(remark);
         sb.append(", productProfitRatio=").append(productProfitRatio);
         sb.append(", productProfitMoney=").append(productProfitMoney);

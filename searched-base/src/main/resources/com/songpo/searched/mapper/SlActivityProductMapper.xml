@@ -19,12 +19,15 @@
     <result column="award_peas_counts" jdbcType="DOUBLE" property="awardPeasCounts" />
     <result column="awward_money" jdbcType="DOUBLE" property="awwardMoney" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
+      <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+      <result column="creator" jdbcType="VARCHAR" property="creator"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, activity_id, price, begin_time, end_time, count, people_num, orders_num, 
-    surplus_product_count, peas, award_peas_counts, awward_money, enabled
+    id, serial_number, activity_id, price, begin_time, end_time, count, people_num, orders_num,
+      surplus_product_count, peas, award_peas_counts, awward_money, enabled, create_time,
+      creator
   </sql>
 </mapper>

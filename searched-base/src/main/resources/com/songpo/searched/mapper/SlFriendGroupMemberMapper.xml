@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlFriendGroupMemberMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlFriendGroupMember">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="type" jdbcType="BIT" property="type"/>
+        <result column="member_name" jdbcType="VARCHAR" property="memberName"/>
+        <result column="no_disturb" jdbcType="BIT" property="noDisturb"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, group_id, member_id, type, member_name, no_disturb
+    </sql>
+</mapper>

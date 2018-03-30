@@ -5,8 +5,6 @@ import com.songpo.searched.entity.SlUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.support.GenericMessage;
-import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
@@ -17,7 +15,6 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
  * @author 刘松坡
  */
 @Slf4j
-@Component
 public class MyWebSocketHandlerDecoratorFactory implements WebSocketHandlerDecoratorFactory {
 
     @Autowired
@@ -38,9 +35,6 @@ public class MyWebSocketHandlerDecoratorFactory implements WebSocketHandlerDecor
                 SlUser user = userCache.get(clientId);
 
                 log.info("online: " + clientId);
-
-                // 向用户发送欢迎登录消息
-                messagingTemplate.send("/queue/" + clientId, new GenericMessage<>("欢迎您登录系统"));
 
                 // 向用户所在的群发送该用户登录的消息
 //                messagingTemplate.send("/topic/" + 群的ID, new GenericMessage<>("欢迎您登录系统"));
