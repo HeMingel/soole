@@ -216,7 +216,9 @@ public class CmProductService {
                 List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, null);
                 Map goodsComment = mapComments.get(0);
                 //如果第一条数据有图 则查询图片 没有图 直接返回第一条数据
-                if (goodsComment.get("status").equals(4)) {
+                String status = "status";
+                int type = 4;
+                if (goodsComment.get(status).equals(type)) {
                     //查询评论图片
                     mapComments.get(0).get("id").toString();
                     List<Map<String, Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
