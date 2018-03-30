@@ -233,6 +233,16 @@
         LIMIT 0,1
     </select>
 
+    <!--热门推荐-->
+    <select id="hotGoods" parameterType="String" resultType="Map">
+        SELECT
+          *
+        FROM
+          sl_product p
+        WHERE p.`sales_mode_id` = #{saleModeId}
+          AND p.id != #{goodsId}
+    </select>
+
 </mapper>
 
 

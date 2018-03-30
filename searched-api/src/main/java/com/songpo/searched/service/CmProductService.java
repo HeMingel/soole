@@ -15,10 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 自定义商品服务类
@@ -300,21 +297,29 @@ public class CmProductService {
      * 热门推荐商品 四个
      *
      * @param id 商品Id
-     * @return
+     * @return 热门商品列表
      */
     public BusinessMessage hotGoods(String id) {
-        BusinessMessage<List<Map<String, Object>>> businessMessage = new BusinessMessage<>();
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             Map<String, Object> goodsBaseInfo = this.mapper.goodsBaseInfo(id);
             //根据商品销售模式查询出去本商品的四个商品
             List<Map<String, Object>> hotGoods = this.mapper.hotGoods(goodsBaseInfo.get("productId").toString(), goodsBaseInfo.get("sales_mode_id").toString());
-            if (hotGoods.size() > 0) {
+            if (hotGoods.size() > 4) {
+                Random random = new Random();
+                List<Object> hotGoodsList = new ArrayList<>();
+                for(int i=0;i<4;i++){
+                    //随机取
+                   int hostGoodsIndex = random.nextInt(hotGoods.size());
+                    hotGoodsList.add(hotGoods.get(hostGoodsIndex));
+                    hotGoods.remove(hostGoodsIndex);
+                }
                 businessMessage.setMsg("查询成功");
-                businessMessage.setData(hotGoods);
+                businessMessage.setData(hotGoodsList);
                 businessMessage.setSuccess(true);
             } else {
-                businessMessage.setMsg("查询无数据");
+                businessMessage.setMsg("查询数据不足");
                 businessMessage.setSuccess(false);
             }
         } catch (Exception e) {
