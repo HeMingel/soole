@@ -320,7 +320,7 @@ public class CmProductService {
                 businessMessage.setSuccess(true);
             } else {
                 businessMessage.setMsg("查询数据不足");
-                businessMessage.setSuccess(false);
+                businessMessage.setSuccess(true);
             }
         } catch (Exception e) {
             businessMessage.setMsg("查询热门商品推荐失败");
