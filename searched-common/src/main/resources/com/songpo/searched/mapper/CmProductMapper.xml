@@ -164,7 +164,7 @@
     <!--查询商品库存-->
     <select id="goodsRepository" resultType="Map" parameterType="String">
         SELECT
-          p.`sale_type`,pr.*
+          p.sales_mode_id,pr.*
         FROM
           sl_product p
           LEFT JOIN sl_product_repository pr
