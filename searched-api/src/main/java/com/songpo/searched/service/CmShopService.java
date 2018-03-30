@@ -37,7 +37,7 @@ public class CmShopService {
     public BusinessMessage shopAndGoods(String id,String userId) {
         log.debug("商户Id:{},用户id:{}",id,userId);
 
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<Map<String,Object>> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try{
             Map<String,Object> map = new HashMap<>();

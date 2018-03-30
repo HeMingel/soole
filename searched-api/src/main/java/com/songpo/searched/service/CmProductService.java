@@ -6,14 +6,12 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.mapper.CmProductCommentMapper;
-import com.songpo.searched.mapper.CmProductMapper;
-import com.songpo.searched.mapper.SlActivityProductMapper;
-import com.songpo.searched.mapper.SlProductSaleModeOrderCountMapper;
+import com.songpo.searched.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -32,7 +30,7 @@ public class CmProductService {
     @Autowired
     private CmProductCommentMapper cmProductCommentMapper;
     @Autowired
-    private SlActivityProductMapper slActivityProductMapper;
+    private SlProductMapper slProductMapper;
     @Autowired
     private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
 
@@ -223,10 +221,9 @@ public class CmProductService {
                     list.add(commentImages);
                     list.add(goodsComment);
                     data.put("productComments", list);
-                } else {
+                } else{
                     data.put("productComments", goodsComment);
                 }
-
             }
             businessMessage.setSuccess(true);
             businessMessage.setData(data);
@@ -323,8 +320,39 @@ public class CmProductService {
                 businessMessage.setSuccess(true);
             }
         } catch (Exception e) {
+            log.error("查询热门商品推荐异常", e);
             businessMessage.setMsg("查询热门商品推荐失败");
         }
         return businessMessage;
     }
+
+    /**
+     * 根据名称查询店铺商品
+     * @param shopId  店铺Id
+     * @param goodsName 商品名称
+     * @return 商品列表
+     */
+    public BusinessMessage shopGoods(String shopId,String goodsName) {
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(false);
+        try {
+            Example example = new Example(SlProduct.class);
+            example.createCriteria().andEqualTo("shopId",shopId).andLike("name","%"+goodsName+"%");
+            List<SlProduct> slProductList = this.slProductMapper.selectByExample(example);
+            if(slProductList.size() >0){
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询成功");
+                businessMessage.setData(slProductList);
+            } else{
+                businessMessage.setMsg("查询无数据");
+                businessMessage.setSuccess(true);
+            }
+        } catch (Exception e){
+            log.error("查询店铺商品异常", e);
+            businessMessage.setMsg("查询店铺商品异常");
+        }
+        return businessMessage;
+    }
+
+
 }
