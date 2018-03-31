@@ -28,22 +28,22 @@ public class CmProductCommentService {
      * 查询商品评论
      * @param goodsId 商品Id
      * @param status 好中差 有图 状态
-     * @param page
-     * @param size
-     * @return
+     * @param page 页码
+     * @param size 容量
+     * @return 商品评论
      */
     public BusinessMessage findGoodsCommentsByGoodsId(String goodsId,Integer status,Integer page, Integer size){
         log.debug("查询 商品Id:{},评论好中差:{},页数:{},条数:{}",goodsId,status,page,size);
-        BusinessMessage businessMessage = new BusinessMessage();
+        BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
             List<Map<String,Object>> mapComments = this.mapper.goodsComments(goodsId,status);
             if(mapComments.size() >0){
                 if (status !=null && status != 4){
-                    businessMessage.setData(mapComments);
+                    businessMessage.setData(new PageInfo<>(mapComments));
                 }else{
-                    List list = new ArrayList();
+                    List<Object> list = new ArrayList<>();
                     for(int i=0;i<mapComments.size();i++){
                         Map map = mapComments.get(i);
                         if(map.get("status").equals(4)){
