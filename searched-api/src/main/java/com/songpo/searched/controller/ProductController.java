@@ -121,8 +121,7 @@ public class ProductController {
 
 
     /**
-     * 分类页面 推荐商品
-     * 取最新商品的前6个
+     * 推荐商品
      * @return 商品列表
      */
     @ApiOperation(value = "分类页面,推荐商品")

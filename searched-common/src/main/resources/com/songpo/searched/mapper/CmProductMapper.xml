@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
-    <resultMap id="RecommendResultMap" type="com.songpo.searched.domain.CmProduct">
-        <id column="productId" jdbcType="VARCHAR" property="productId"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-    </resultMap>
-
     <!-- 根据销售模式查询商品 -->
     <select id="selectBySalesMode" resultType="map">
         SELECT
@@ -69,8 +63,8 @@
     </select>
 
     <!--查询商品前六个 推荐-->
-    <select id="findRecommendProduct" resultMap="RecommendResultMap" >
-        select id as productId,image_url,name from sl_product limit 0,
+    <select id="findRecommendProduct" resultType="Map" >
+        select p.* from sl_product p where p.recommend =1
     </select>
 
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->

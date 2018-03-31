@@ -12,7 +12,7 @@ import java.util.Map;
  * @author 刘松坡
  */
 @Mapper
-public interface CmProductMapper {
+public interface CmProductMapper{
 
     /**
      * 根据销售模式查询商品列表
@@ -52,7 +52,7 @@ public interface CmProductMapper {
      * 查询推荐商品 最新商品前6个
      * @return 商品列表
      */
-    List<CmProduct> findRecommendProduct();
+    List<Map<String,Object>> findRecommendProduct();
     /**
      * 分类查询商品 + 商品的筛选 + 根据名称查询
      * @param goodsType 商品分类

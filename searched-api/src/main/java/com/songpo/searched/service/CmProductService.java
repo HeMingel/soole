@@ -123,15 +123,13 @@ public class CmProductService {
 
     /**
      * 商品分类首页推荐商品
-     * 规则(按照时间排序 最新的6个)
-     *
-     * @return
+     * @return 推荐商品列表
      */
-    public BusinessMessage<List<CmProduct>> recommendProduct() {
-        BusinessMessage<List<CmProduct>> businessMessage = new BusinessMessage<>();
+    public BusinessMessage recommendProduct() {
+        BusinessMessage<List<Map<String,Object>>> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
-            List<CmProduct> cmProducts = this.mapper.findRecommendProduct();
+            List<Map<String,Object>> cmProducts = this.mapper.findRecommendProduct();
             if (cmProducts.size() > 0) {
                 businessMessage.setMsg("查询成功");
                 businessMessage.setSuccess(true);

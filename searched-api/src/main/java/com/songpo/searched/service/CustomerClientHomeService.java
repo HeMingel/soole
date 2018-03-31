@@ -43,9 +43,6 @@ public class CustomerClientHomeService {
     private SystemConfigService systemConfigService;
 
     @Autowired
-    private CmProductService cmProductService;
-
-    @Autowired
     private ShoppingCartService shoppingCartService;
 
     @Autowired
@@ -142,7 +139,7 @@ public class CustomerClientHomeService {
         }});
         data.put("banner", bannerList);
         //商品分类首页推荐商品
-        List<CmProduct> recommendProducts = this.cmProductMapper.findRecommendProduct();
+        List<Map<String,Object>> recommendProducts = this.cmProductMapper.findRecommendProduct();
         data.put("recommendProducts", recommendProducts);
 
         return data;
