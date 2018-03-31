@@ -374,15 +374,16 @@ public class SystemController {
      * @param avatar   头像地址
      * @return 用户信息
      */
-    @ApiOperation(value = "微信第三方登录")
+    @ApiOperation(value = "第三方登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "开放账号唯一标识", paramType = "form", required = true),
             @ApiImplicitParam(name = "nickname", value = "微信昵称", paramType = "form", required = true),
-            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true)
+            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true),
+            @ApiImplicitParam(name = "type", value = "登录类型1：微信  2：QQ ", paramType = "form", required = true)
     })
-    @PostMapping("we-chat-login")
-    public BusinessMessage<JSONObject> weChatLogin(String openId, String nickname, String avatar) {
-        log.debug("微信登录，开放账号唯一标识：{}，微信昵称：{}，头像地址：{}", openId, nickname, avatar);
+    @PostMapping("third-party-login")
+    public BusinessMessage<JSONObject> weChatLogin(String openId, String nickname, String avatar,Integer type) {
+        log.debug("账号唯一标识：{}，微信昵称：{}，头像地址：{}, 登录类型", openId, nickname, avatar,type);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("唯一标识为空");
@@ -390,18 +391,20 @@ public class SystemController {
             message.setMsg("微信昵称为空");
         } else if (StringUtils.isBlank(avatar)) {
             message.setMsg("头像地址为空");
+        } else if (type == null) {
+            message.setMsg("登录类型为空");
         } else {
             // 从缓存检测用户信息
             SlUser user = this.userCache.get(openId);
             // 从数据库查询用户信息
             if (null == user) {
-                user = this.userService.selectOne(new SlUser() {{
-                    setOpenIdWechat(openId);
-                }});
+                    user = this.userService.selectOne(new SlUser() {{
+                        setOpenId(openId);
+                    }});
 
-                if (null != user) {
-                    this.userCache.put(openId, user);
-                }
+                    if (null != user) {
+                        this.userCache.put(openId, user);
+                    }
             }
 
             // 从数据库查询用户信息
@@ -409,8 +412,8 @@ public class SystemController {
                 user = new SlUser();
                 user.setNickName(nickname);
                 user.setAvatar(avatar);
-                user.setOpenIdWechat(openId);
-
+                user.setOpenId(openId);
+                user.setType(type);
                 // 定义生成字符串范围
                 char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                 // 初始化随机生成器

@@ -27,7 +27,8 @@
     <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
-    <result column="open_id_wechat" jdbcType="VARCHAR" property="openIdWechat" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -35,6 +36,6 @@
     -->
     id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
     birthday, phone, email, avatar, describtion, address, industry, group_var, coin, 
-    silver, money, client_id, client_secret, open_id_wechat
+    silver, money, client_id, client_secret, open_id, type
   </sql>
 </mapper>

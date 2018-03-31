@@ -122,8 +122,13 @@ public class SlUser implements Serializable {
     /**
      * 微信OpenId
      */
-    @Column(name = "open_id_wechat")
-    private String openIdWechat;
+    @Column(name = "open_id")
+    private String openId;
+
+    /**
+     * 1：微信  2：QQ  登录方式
+     */
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
@@ -518,19 +523,37 @@ public class SlUser implements Serializable {
     /**
      * 获取微信OpenId
      *
-     * @return open_id_wechat - 微信OpenId
+     * @return open_id - 微信OpenId
      */
-    public String getOpenIdWechat() {
-        return openIdWechat;
+    public String getOpenId() {
+        return openId;
     }
 
     /**
      * 设置微信OpenId
      *
-     * @param openIdWechat 微信OpenId
+     * @param openId 微信OpenId
      */
-    public void setOpenIdWechat(String openIdWechat) {
-        this.openIdWechat = openIdWechat == null ? null : openIdWechat.trim();
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
+    }
+
+    /**
+     * 获取1：微信  2：QQ  登录方式
+     *
+     * @return type - 1：微信  2：QQ  登录方式
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置1：微信  2：QQ  登录方式
+     *
+     * @param type 1：微信  2：QQ  登录方式
+     */
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override
@@ -561,7 +584,8 @@ public class SlUser implements Serializable {
         sb.append(", money=").append(money);
         sb.append(", clientId=").append(clientId);
         sb.append(", clientSecret=").append(clientSecret);
-        sb.append(", openIdWechat=").append(openIdWechat);
+        sb.append(", openId=").append(openId);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

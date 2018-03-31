@@ -22,6 +22,7 @@
     <result column="enabled" jdbcType="BIT" property="enabled" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="restrict_count" jdbcType="INTEGER" property="restrictCount" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -29,6 +30,6 @@
     -->
     id, serial_number, activity_id, activity_product_repository_serial_number, price, 
     begin_time, end_time, count, people_num, orders_num, surplus_product_count, peas, 
-    award_peas_counts, awward_money, enabled, create_time, creator
+    award_peas_counts, awward_money, enabled, create_time, creator, restrict_count
   </sql>
 </mapper>

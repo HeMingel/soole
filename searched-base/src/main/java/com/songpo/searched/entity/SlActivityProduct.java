@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -37,13 +37,13 @@ public class SlActivityProduct implements Serializable {
     private BigDecimal price;
 
     /**
-     * 活动开始时间
+     * 活动开始时间(必须设置开始时间)
      */
     @Column(name = "begin_time")
     private String beginTime;
 
     /**
-     * 活动结束时间
+     * 活动结束时间(必须设置结束时间)
      */
     @Column(name = "end_time")
     private String endTime;
@@ -103,6 +103,12 @@ public class SlActivityProduct implements Serializable {
      * 创建人
      */
     private String creator;
+
+    /**
+     * 活动限制单数
+     */
+    @Column(name = "restrict_count")
+    private Integer restrictCount;
 
     private static final long serialVersionUID = 1L;
 
@@ -197,36 +203,36 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取活动开始时间
+     * 获取活动开始时间(必须设置开始时间)
      *
-     * @return begin_time - 活动开始时间
+     * @return begin_time - 活动开始时间(必须设置开始时间)
      */
     public String getBeginTime() {
         return beginTime;
     }
 
     /**
-     * 设置活动开始时间
+     * 设置活动开始时间(必须设置开始时间)
      *
-     * @param beginTime 活动开始时间
+     * @param beginTime 活动开始时间(必须设置开始时间)
      */
     public void setBeginTime(String beginTime) {
         this.beginTime = beginTime == null ? null : beginTime.trim();
     }
 
     /**
-     * 获取活动结束时间
+     * 获取活动结束时间(必须设置结束时间)
      *
-     * @return end_time - 活动结束时间
+     * @return end_time - 活动结束时间(必须设置结束时间)
      */
     public String getEndTime() {
         return endTime;
     }
 
     /**
-     * 设置活动结束时间
+     * 设置活动结束时间(必须设置结束时间)
      *
-     * @param endTime 活动结束时间
+     * @param endTime 活动结束时间(必须设置结束时间)
      */
     public void setEndTime(String endTime) {
         this.endTime = endTime == null ? null : endTime.trim();
@@ -412,6 +418,24 @@ public class SlActivityProduct implements Serializable {
         this.creator = creator == null ? null : creator.trim();
     }
 
+    /**
+     * 获取活动限制单数
+     *
+     * @return restrict_count - 活动限制单数
+     */
+    public Integer getRestrictCount() {
+        return restrictCount;
+    }
+
+    /**
+     * 设置活动限制单数
+     *
+     * @param restrictCount 活动限制单数
+     */
+    public void setRestrictCount(Integer restrictCount) {
+        this.restrictCount = restrictCount;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -435,6 +459,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", enabled=").append(enabled);
         sb.append(", createTime=").append(createTime);
         sb.append(", creator=").append(creator);
+        sb.append(", restrictCount=").append(restrictCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

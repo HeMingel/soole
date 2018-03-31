@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -43,7 +43,7 @@ public class SlOrder implements Serializable {
     private Integer paymentState;
 
     /**
-     * 1：普通订单2：拼团订单3:预售订单4:秒杀
+     * 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
      */
     private Integer type;
 
@@ -238,18 +238,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取1：普通订单2：拼团订单3:预售订单4:秒杀
+     * 获取1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
      *
-     * @return type - 1：普通订单2：拼团订单3:预售订单4:秒杀
+     * @return type - 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置1：普通订单2：拼团订单3:预售订单4:秒杀
+     * 设置1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
      *
-     * @param type 1：普通订单2：拼团订单3:预售订单4:秒杀
+     * @param type 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
      */
     public void setType(Integer type) {
         this.type = type;

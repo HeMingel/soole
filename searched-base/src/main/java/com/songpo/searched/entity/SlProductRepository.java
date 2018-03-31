@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -172,13 +172,13 @@ public class SlProductRepository implements Serializable {
     private Integer saleNum;
 
     /**
-     * 奖励了豆比例(限消费返利销售模式按商品价格)
+     * 奖励了豆比例(限推荐奖励活动)
      */
     @Column(name = "`return pulse_ratio`")
     private Float returnPulseRatio;
 
     /**
-     * 奖励了豆数量(消费返利模式)
+     * 奖励了豆数量(仅限推荐奖励活动模式)
      */
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
@@ -708,36 +708,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取奖励了豆比例(限消费返利销售模式按商品价格)
+     * 获取奖励了豆比例(限推荐奖励活动)
      *
-     * @return return pulse_ratio - 奖励了豆比例(限消费返利销售模式按商品价格)
+     * @return return pulse_ratio - 奖励了豆比例(限推荐奖励活动)
      */
     public Float getReturnPulseRatio() {
         return returnPulseRatio;
     }
 
     /**
-     * 设置奖励了豆比例(限消费返利销售模式按商品价格)
+     * 设置奖励了豆比例(限推荐奖励活动)
      *
-     * @param returnPulseRatio 奖励了豆比例(限消费返利销售模式按商品价格)
+     * @param returnPulseRatio 奖励了豆比例(限推荐奖励活动)
      */
     public void setReturnPulseRatio(Float returnPulseRatio) {
         this.returnPulseRatio = returnPulseRatio;
     }
 
     /**
-     * 获取奖励了豆数量(消费返利模式)
+     * 获取奖励了豆数量(仅限推荐奖励活动模式)
      *
-     * @return rebate_pulse - 奖励了豆数量(消费返利模式)
+     * @return rebate_pulse - 奖励了豆数量(仅限推荐奖励活动模式)
      */
     public Integer getRebatePulse() {
         return rebatePulse;
     }
 
     /**
-     * 设置奖励了豆数量(消费返利模式)
+     * 设置奖励了豆数量(仅限推荐奖励活动模式)
      *
-     * @param rebatePulse 奖励了豆数量(消费返利模式)
+     * @param rebatePulse 奖励了豆数量(仅限推荐奖励活动模式)
      */
     public void setRebatePulse(Integer rebatePulse) {
         this.rebatePulse = rebatePulse;
