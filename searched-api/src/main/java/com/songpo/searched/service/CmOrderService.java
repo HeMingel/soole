@@ -99,7 +99,7 @@ public class CmOrderService {
                                         setDeductTotalSilver(repository.getSilver()); // 扣除单个商品了豆数量
                                         // TODO 注释掉报错的代码
 //                                        setReturnPulse(repository.getRebatePulse());// 返了豆数量只限纯金钱模式
-                                        setProduceName(repository.getProductName());// 下单时的商品名称
+//                                        setProduceName(repository.getProductName());// 下单时的商品名称
                                         setProductImageUrl(repository.getProductImageUrl());// 下单时的商品图片
                                     }});
                                 }

@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -46,8 +46,8 @@ public class SlOrderDetail implements Serializable {
     /**
      * 商品名称
      */
-    @Column(name = "produce_name")
-    private String produceName;
+    @Column(name = "product_name")
+    private String productName;
 
     /**
      * 商品图片
@@ -117,7 +117,7 @@ public class SlOrderDetail implements Serializable {
     private String buyerMessage;
 
     /**
-     * 返了豆数量(限消费返利模式)
+     * 返了豆数量(限推荐奖励活动)
      */
     @Column(name = "return_cash_pulse")
     private Integer returnCashPulse;
@@ -147,7 +147,7 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现金额(限消费返利模式)
+     * 返现金额(限消费奖励模式和推荐奖励活动)
      */
     @Column(name = "`return cash_money`")
     private BigDecimal returnCashMoney;
@@ -271,19 +271,19 @@ public class SlOrderDetail implements Serializable {
     /**
      * 获取商品名称
      *
-     * @return produce_name - 商品名称
+     * @return product_name - 商品名称
      */
-    public String getProduceName() {
-        return produceName;
+    public String getProductName() {
+        return productName;
     }
 
     /**
      * 设置商品名称
      *
-     * @param produceName 商品名称
+     * @param productName 商品名称
      */
-    public void setProduceName(String produceName) {
-        this.produceName = produceName == null ? null : produceName.trim();
+    public void setProductName(String productName) {
+        this.productName = productName == null ? null : productName.trim();
     }
 
     /**
@@ -503,18 +503,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返了豆数量(限消费返利模式)
+     * 获取返了豆数量(限推荐奖励活动)
      *
-     * @return return_cash_pulse - 返了豆数量(限消费返利模式)
+     * @return return_cash_pulse - 返了豆数量(限推荐奖励活动)
      */
     public Integer getReturnCashPulse() {
         return returnCashPulse;
     }
 
     /**
-     * 设置返了豆数量(限消费返利模式)
+     * 设置返了豆数量(限推荐奖励活动)
      *
-     * @param returnCashPulse 返了豆数量(限消费返利模式)
+     * @param returnCashPulse 返了豆数量(限推荐奖励活动)
      */
     public void setReturnCashPulse(Integer returnCashPulse) {
         this.returnCashPulse = returnCashPulse;
@@ -593,18 +593,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现金额(限消费返利模式)
+     * 获取返现金额(限消费奖励模式和推荐奖励活动)
      *
-     * @return return cash_money - 返现金额(限消费返利模式)
+     * @return return cash_money - 返现金额(限消费奖励模式和推荐奖励活动)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(限消费返利模式)
+     * 设置返现金额(限消费奖励模式和推荐奖励活动)
      *
-     * @param returnCashMoney 返现金额(限消费返利模式)
+     * @param returnCashMoney 返现金额(限消费奖励模式和推荐奖励活动)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -640,7 +640,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", repositoryId=").append(repositoryId);
         sb.append(", productId=").append(productId);
-        sb.append(", produceName=").append(produceName);
+        sb.append(", productName=").append(productName);
         sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
