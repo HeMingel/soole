@@ -12,7 +12,7 @@
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="product_detail_group_serial_number" jdbcType="VARCHAR" property="productDetailGroupSerialNumber" />
     <result column="product_detail_group_name" jdbcType="VARCHAR" property="productDetailGroupName" />
-    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="product_profit_ratio" jdbcType="REAL" property="productProfitRatio" />
     <result column="product_profit_money" jdbcType="DECIMAL" property="productProfitMoney" />
@@ -42,7 +42,7 @@
       WARNING - @mbg.generated
     -->
     id, shop_id, product_name, product_image_url, product_id, product_detail_group_serial_number, 
-    product_detail_group_name, activity_id, remark, product_profit_ratio, product_profit_money, 
+    product_detail_group_name, activity_product_id, remark, product_profit_ratio, product_profit_money, 
     price, personal_price, `return cash_ratio`, `return cash_money`, post_fee, discount, 
     reference_price, state, count, score, cost_price, weight, ship, gold, silver, place_order_return_pulse, 
     comment_num, sale_num, `return pulse_ratio`, rebate_pulse

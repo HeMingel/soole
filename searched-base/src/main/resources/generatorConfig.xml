@@ -64,6 +64,48 @@
             <property name="selectAllOrderByClause" value="true"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+        <!--<table tableName="sl_product" domainObjectName="SlProduct"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="sl_order" domainObjectName="SlOrder"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="sl_order_detail" domainObjectName="SlOrderDetail"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="sl_activity_product" domainObjectName="SlActivityProduct"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="sl_activity_product_repository" domainObjectName="SlActivityProductRepository"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="sl_product_repository" domainObjectName="SlProductRepository"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+        <!--<property name="useActualColumnNames" value="false"/>-->
+        <!--<property name="selectAllOrderByClause" value="true"/>-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
 
     </context>

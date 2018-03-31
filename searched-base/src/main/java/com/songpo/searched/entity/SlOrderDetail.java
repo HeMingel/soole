@@ -58,7 +58,7 @@ public class SlOrderDetail implements Serializable {
     /**
      * 数量
      */
-    private String quantity;
+    private Integer quantity;
 
     /**
      * 单个商品价格
@@ -117,10 +117,10 @@ public class SlOrderDetail implements Serializable {
     private String buyerMessage;
 
     /**
-     * 单个商品返了豆数量
+     * 返了豆数量(限消费返利模式)
      */
-    @Column(name = "return_pulse")
-    private Integer returnPulse;
+    @Column(name = "return_cash_pulse")
+    private Integer returnCashPulse;
 
     /**
      * 发货时间
@@ -147,10 +147,16 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现比例
+     * 返现金额(限消费返利模式)
      */
-    @Column(name = "`return cash_ratio`")
-    private Double returnCashRatio;
+    @Column(name = "`return cash_money`")
+    private BigDecimal returnCashMoney;
+
+    /**
+     * 下单返了豆(纯现金返了豆)
+     */
+    @Column(name = "place_order_return_pulse")
+    private Integer placeOrderReturnPulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -303,7 +309,7 @@ public class SlOrderDetail implements Serializable {
      *
      * @return quantity - 数量
      */
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -312,8 +318,8 @@ public class SlOrderDetail implements Serializable {
      *
      * @param quantity 数量
      */
-    public void setQuantity(String quantity) {
-        this.quantity = quantity == null ? null : quantity.trim();
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     /**
@@ -497,21 +503,21 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取单个商品返了豆数量
+     * 获取返了豆数量(限消费返利模式)
      *
-     * @return return_pulse - 单个商品返了豆数量
+     * @return return_cash_pulse - 返了豆数量(限消费返利模式)
      */
-    public Integer getReturnPulse() {
-        return returnPulse;
+    public Integer getReturnCashPulse() {
+        return returnCashPulse;
     }
 
     /**
-     * 设置单个商品返了豆数量
+     * 设置返了豆数量(限消费返利模式)
      *
-     * @param returnPulse 单个商品返了豆数量
+     * @param returnCashPulse 返了豆数量(限消费返利模式)
      */
-    public void setReturnPulse(Integer returnPulse) {
-        this.returnPulse = returnPulse;
+    public void setReturnCashPulse(Integer returnCashPulse) {
+        this.returnCashPulse = returnCashPulse;
     }
 
     /**
@@ -587,21 +593,39 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现比例
+     * 获取返现金额(限消费返利模式)
      *
-     * @return return cash_ratio - 返现比例
+     * @return return cash_money - 返现金额(限消费返利模式)
      */
-    public Double getReturnCashRatio() {
-        return returnCashRatio;
+    public BigDecimal getReturnCashMoney() {
+        return returnCashMoney;
     }
 
     /**
-     * 设置返现比例
+     * 设置返现金额(限消费返利模式)
      *
-     * @param returnCashRatio 返现比例
+     * @param returnCashMoney 返现金额(限消费返利模式)
      */
-    public void setReturnCashRatio(Double returnCashRatio) {
-        this.returnCashRatio = returnCashRatio;
+    public void setReturnCashMoney(BigDecimal returnCashMoney) {
+        this.returnCashMoney = returnCashMoney;
+    }
+
+    /**
+     * 获取下单返了豆(纯现金返了豆)
+     *
+     * @return place_order_return_pulse - 下单返了豆(纯现金返了豆)
+     */
+    public Integer getPlaceOrderReturnPulse() {
+        return placeOrderReturnPulse;
+    }
+
+    /**
+     * 设置下单返了豆(纯现金返了豆)
+     *
+     * @param placeOrderReturnPulse 下单返了豆(纯现金返了豆)
+     */
+    public void setPlaceOrderReturnPulse(Integer placeOrderReturnPulse) {
+        this.placeOrderReturnPulse = placeOrderReturnPulse;
     }
 
     @Override
@@ -629,12 +653,13 @@ public class SlOrderDetail implements Serializable {
         sb.append(", modificationTime=").append(modificationTime);
         sb.append(", postFee=").append(postFee);
         sb.append(", buyerMessage=").append(buyerMessage);
-        sb.append(", returnPulse=").append(returnPulse);
+        sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", shippingTime=").append(shippingTime);
         sb.append(", shipNumber=").append(shipNumber);
         sb.append(", groupPeople=").append(groupPeople);
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
-        sb.append(", returnCashRatio=").append(returnCashRatio);
+        sb.append(", returnCashMoney=").append(returnCashMoney);
+        sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

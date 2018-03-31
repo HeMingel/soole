@@ -26,6 +26,12 @@ public class SlActivityProduct implements Serializable {
     private String activityId;
 
     /**
+     * 活动仓库规格序号
+     */
+    @Column(name = "activity_product_repository_serial_number")
+    private String activityProductRepositorySerialNumber;
+
+    /**
      * 活动价格
      */
     private BigDecimal price;
@@ -83,9 +89,20 @@ public class SlActivityProduct implements Serializable {
     private Double awwardMoney;
 
     /**
-     * 是否启用(1:启用 0;禁用)
+     * 是否启用(1:启用 0;下架)
      */
     private Boolean enabled;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    private String createTime;
+
+    /**
+     * 创建人
+     */
+    private String creator;
 
     private static final long serialVersionUID = 1L;
 
@@ -141,6 +158,24 @@ public class SlActivityProduct implements Serializable {
      */
     public void setActivityId(String activityId) {
         this.activityId = activityId == null ? null : activityId.trim();
+    }
+
+    /**
+     * 获取活动仓库规格序号
+     *
+     * @return activity_product_repository_serial_number - 活动仓库规格序号
+     */
+    public String getActivityProductRepositorySerialNumber() {
+        return activityProductRepositorySerialNumber;
+    }
+
+    /**
+     * 设置活动仓库规格序号
+     *
+     * @param activityProductRepositorySerialNumber 活动仓库规格序号
+     */
+    public void setActivityProductRepositorySerialNumber(String activityProductRepositorySerialNumber) {
+        this.activityProductRepositorySerialNumber = activityProductRepositorySerialNumber == null ? null : activityProductRepositorySerialNumber.trim();
     }
 
     /**
@@ -324,21 +359,57 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取是否启用(1:启用 0;禁用)
+     * 获取是否启用(1:启用 0;下架)
      *
-     * @return enabled - 是否启用(1:启用 0;禁用)
+     * @return enabled - 是否启用(1:启用 0;下架)
      */
     public Boolean getEnabled() {
         return enabled;
     }
 
     /**
-     * 设置是否启用(1:启用 0;禁用)
+     * 设置是否启用(1:启用 0;下架)
      *
-     * @param enabled 是否启用(1:启用 0;禁用)
+     * @param enabled 是否启用(1:启用 0;下架)
      */
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
+     */
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取创建人
+     *
+     * @return creator - 创建人
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * 设置创建人
+     *
+     * @param creator 创建人
+     */
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     @Override
@@ -350,6 +421,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", activityId=").append(activityId);
+        sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
@@ -361,6 +433,8 @@ public class SlActivityProduct implements Serializable {
         sb.append(", awardPeasCounts=").append(awardPeasCounts);
         sb.append(", awwardMoney=").append(awwardMoney);
         sb.append(", enabled=").append(enabled);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", creator=").append(creator);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

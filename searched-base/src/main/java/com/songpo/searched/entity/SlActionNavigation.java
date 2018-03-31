@@ -67,6 +67,11 @@ public class SlActionNavigation implements Serializable {
      */
     private Integer position;
 
+    /**
+     * JSON格式数据
+     */
+    private String parameter;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -267,6 +272,24 @@ public class SlActionNavigation implements Serializable {
         this.position = position;
     }
 
+    /**
+     * 获取JSON格式数据
+     *
+     * @return parameter - JSON格式数据
+     */
+    public String getParameter() {
+        return parameter;
+    }
+
+    /**
+     * 设置JSON格式数据
+     *
+     * @param parameter JSON格式数据
+     */
+    public void setParameter(String parameter) {
+        this.parameter = parameter == null ? null : parameter.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -284,6 +307,7 @@ public class SlActionNavigation implements Serializable {
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", size=").append(size);
         sb.append(", position=").append(position);
+        sb.append(", parameter=").append(parameter);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
