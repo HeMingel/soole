@@ -2,6 +2,7 @@ package com.songpo.searched.cache;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @param <V> 缓存的值
  */
+@Slf4j
 @Data
 @AllArgsConstructor
 public class BaseCache<V> {
@@ -47,7 +49,13 @@ public class BaseCache<V> {
      * @return 值
      */
     public V get(String key) {
-        return redisTemplate.opsForValue().get(prefix + key);
+        String queryKey = prefix + key;
+        try {
+            return redisTemplate.opsForValue().get(queryKey);
+        } catch (Exception e) {
+            log.error("查询缓存失败，key = {}", queryKey);
+        }
+        return null;
     }
 
     /**
@@ -57,11 +65,16 @@ public class BaseCache<V> {
      * @param value 值
      */
     public void put(String key, V value) {
+        String storeKey = prefix + key;
         // 如果启用缓存周期限制，则根据设置的周期进行保持，否则不进行缓存周期设置
-        if (limitTime) {
-            redisTemplate.opsForValue().set(prefix + key, value, timeOut, timeUnit);
-        } else {
-            redisTemplate.opsForValue().set(prefix + key, value);
+        try {
+            if (limitTime) {
+                redisTemplate.opsForValue().set(storeKey, value, timeOut, timeUnit);
+            } else {
+                redisTemplate.opsForValue().set(storeKey, value);
+            }
+        } catch (Exception e) {
+            log.error("添加缓存失败，key = {}", storeKey);
         }
     }
 
@@ -71,13 +84,22 @@ public class BaseCache<V> {
      * @param key 键
      */
     public void evict(String key) {
-        redisTemplate.delete(prefix + key);
+        String deleteKey = prefix + key;
+        try {
+            redisTemplate.delete(deleteKey);
+        } catch (Exception e) {
+            log.error("删除缓存失败，key = {}", deleteKey);
+        }
     }
 
     /**
      * 清空缓存
      */
     public void clear() {
-        redisTemplate.delete(prefix);
+        try {
+            redisTemplate.delete(prefix);
+        } catch (Exception e) {
+            log.error("清空缓存失败，key = {}", prefix);
+        }
     }
 }

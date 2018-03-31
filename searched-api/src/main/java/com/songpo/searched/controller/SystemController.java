@@ -377,34 +377,34 @@ public class SystemController {
     @ApiOperation(value = "第三方登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "开放账号唯一标识", paramType = "form", required = true),
-            @ApiImplicitParam(name = "nickname", value = "微信昵称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form", required = true),
             @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true),
-            @ApiImplicitParam(name = "type", value = "登录类型1：微信  2：QQ ", paramType = "form", required = true)
+            @ApiImplicitParam(name = "type", value = "登录类型 1：微信 2：QQ", paramType = "form", required = true)
     })
     @PostMapping("third-party-login")
-    public BusinessMessage<JSONObject> weChatLogin(String openId, String nickname, String avatar,Integer type) {
-        log.debug("账号唯一标识：{}，微信昵称：{}，头像地址：{}, 登录类型", openId, nickname, avatar,type);
+    public BusinessMessage<JSONObject> weChatLogin(String openId, String nickname, String avatar, Integer type) {
+        log.debug("微信登录，开放账号唯一标识：{}，昵称：{}，头像地址：{}", openId, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
-            message.setMsg("唯一标识为空");
+            message.setMsg("开放账号唯一标识为空");
         } else if (StringUtils.isBlank(nickname)) {
-            message.setMsg("微信昵称为空");
+            message.setMsg("昵称为空");
         } else if (StringUtils.isBlank(avatar)) {
             message.setMsg("头像地址为空");
-        } else if (type == null) {
+        } else if (null == type) {
             message.setMsg("登录类型为空");
         } else {
             // 从缓存检测用户信息
             SlUser user = this.userCache.get(openId);
             // 从数据库查询用户信息
             if (null == user) {
-                    user = this.userService.selectOne(new SlUser() {{
-                        setOpenId(openId);
-                    }});
+                user = this.userService.selectOne(new SlUser() {{
+                    setOpenId(openId);
+                }});
 
-                    if (null != user) {
-                        this.userCache.put(openId, user);
-                    }
+                if (null != user) {
+                    this.userCache.put(openId, user);
+                }
             }
 
             // 从数据库查询用户信息
@@ -414,6 +414,7 @@ public class SystemController {
                 user.setAvatar(avatar);
                 user.setOpenId(openId);
                 user.setType(type);
+
                 // 定义生成字符串范围
                 char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                 // 初始化随机生成器
@@ -428,24 +429,22 @@ public class SystemController {
                 this.userCache.put(openId, user);
             }
 
-            if (null != user) {
-                JSONObject data = new JSONObject();
-                data.put("clientId", user.getClientId());
-                data.put("clientSecret", user.getClientSecret());
-                // 用户真实姓名
-                data.put("realname", user.getName());
-                // 用户昵称
-                data.put("nickname", user.getNickName());
-                // 用户头像
-                data.put("avatar", user.getAvatar());
-                // 手机号码
-                data.put("phone", user.getPhone());
-                // 电子邮箱
-                data.put("email", user.getEmail());
+            JSONObject data = new JSONObject();
+            data.put("clientId", user.getClientId());
+            data.put("clientSecret", user.getClientSecret());
+            // 用户真实姓名
+            data.put("realname", user.getName());
+            // 用户昵称
+            data.put("nickname", user.getNickName());
+            // 用户头像
+            data.put("avatar", user.getAvatar());
+            // 手机号码
+            data.put("phone", user.getPhone());
+            // 电子邮箱
+            data.put("email", user.getEmail());
 
-                message.setData(data);
-                message.setSuccess(true);
-            }
+            message.setData(data);
+            message.setSuccess(true);
         }
         return message;
     }
