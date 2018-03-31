@@ -26,6 +26,12 @@ public class SlActivityProduct implements Serializable {
     private String activityId;
 
     /**
+     * 活动仓库规格序号
+     */
+    @Column(name = "activity_product_repository_serial_number")
+    private String activityProductRepositorySerialNumber;
+
+    /**
      * 活动价格
      */
     private BigDecimal price;
@@ -83,7 +89,7 @@ public class SlActivityProduct implements Serializable {
     private Double awwardMoney;
 
     /**
-     * 是否启用(1:启用 0;禁用)
+     * 是否启用(1:启用 0;下架)
      */
     private Boolean enabled;
 
@@ -152,6 +158,24 @@ public class SlActivityProduct implements Serializable {
      */
     public void setActivityId(String activityId) {
         this.activityId = activityId == null ? null : activityId.trim();
+    }
+
+    /**
+     * 获取活动仓库规格序号
+     *
+     * @return activity_product_repository_serial_number - 活动仓库规格序号
+     */
+    public String getActivityProductRepositorySerialNumber() {
+        return activityProductRepositorySerialNumber;
+    }
+
+    /**
+     * 设置活动仓库规格序号
+     *
+     * @param activityProductRepositorySerialNumber 活动仓库规格序号
+     */
+    public void setActivityProductRepositorySerialNumber(String activityProductRepositorySerialNumber) {
+        this.activityProductRepositorySerialNumber = activityProductRepositorySerialNumber == null ? null : activityProductRepositorySerialNumber.trim();
     }
 
     /**
@@ -335,18 +359,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取是否启用(1:启用 0;禁用)
+     * 获取是否启用(1:启用 0;下架)
      *
-     * @return enabled - 是否启用(1:启用 0;禁用)
+     * @return enabled - 是否启用(1:启用 0;下架)
      */
     public Boolean getEnabled() {
         return enabled;
     }
 
     /**
-     * 设置是否启用(1:启用 0;禁用)
+     * 设置是否启用(1:启用 0;下架)
      *
-     * @param enabled 是否启用(1:启用 0;禁用)
+     * @param enabled 是否启用(1:启用 0;下架)
      */
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
@@ -397,6 +421,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", activityId=").append(activityId);
+        sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);

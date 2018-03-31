@@ -13,7 +13,7 @@
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="produce_name" jdbcType="VARCHAR" property="produceName" />
     <result column="product_image_url" jdbcType="VARCHAR" property="productImageUrl" />
-      <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="deduct_total_silver" jdbcType="INTEGER" property="deductTotalSilver" />
     <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
@@ -24,21 +24,21 @@
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
     <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
-      <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse"/>
+    <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
     <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
     <result column="ship_number" jdbcType="VARCHAR" property="shipNumber" />
     <result column="group_people" jdbcType="INTEGER" property="groupPeople" />
     <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
-      <result column="return cash_money" jdbcType="DECIMAL" property="returnCashMoney"/>
-      <result column="place_order_return_pulse" jdbcType="INTEGER" property="placeOrderReturnPulse"/>
+    <result column="return cash_money" jdbcType="DECIMAL" property="returnCashMoney" />
+    <result column="place_order_return_pulse" jdbcType="INTEGER" property="placeOrderReturnPulse" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, order_id, serial_number, shop_id, repository_id, product_id, produce_name, product_image_url, 
-    quantity, price, deduct_total_silver, deduct_total_gold, discount, creator, create_time,
-      modifier, modification_time, post_fee, buyer_message, return_cash_pulse, shipping_time,
-      ship_number, group_people, presell_shipments_days, `return cash_money`, place_order_return_pulse
+    quantity, price, deduct_total_silver, deduct_total_gold, discount, creator, create_time, 
+    modifier, modification_time, post_fee, buyer_message, return_cash_pulse, shipping_time, 
+    ship_number, group_people, presell_shipments_days, `return cash_money`, place_order_return_pulse
   </sql>
 </mapper>

@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="activity_product_repository_serial_number" jdbcType="VARCHAR" property="activityProductRepositorySerialNumber" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
@@ -19,15 +20,15 @@
     <result column="award_peas_counts" jdbcType="DOUBLE" property="awardPeasCounts" />
     <result column="awward_money" jdbcType="DOUBLE" property="awwardMoney" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
-      <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
-      <result column="creator" jdbcType="VARCHAR" property="creator"/>
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, activity_id, price, begin_time, end_time, count, people_num, orders_num,
-      surplus_product_count, peas, award_peas_counts, awward_money, enabled, create_time,
-      creator
+    id, serial_number, activity_id, activity_product_repository_serial_number, price, 
+    begin_time, end_time, count, people_num, orders_num, surplus_product_count, peas, 
+    award_peas_counts, awward_money, enabled, create_time, creator
   </sql>
 </mapper>

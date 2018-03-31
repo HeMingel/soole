@@ -1,38 +1,44 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_friend_group_member")
 public class SlFriendGroupMember implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 群id
      */
     @Column(name = "group_id")
     private String groupId;
+
     /**
      * 群成员id
      */
     @Column(name = "member_id")
     private String memberId;
+
     /**
      * 群成员身份  1.普通成员   2.群管理   3.群主
      */
     private Boolean type;
+
     /**
      * 群成员在该群的群昵称
      */
     @Column(name = "member_name")
     private String memberName;
+
     /**
      * 消息免打扰   1.不开启   2.开启
      */
     @Column(name = "no_disturb")
     private Boolean noDisturb;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

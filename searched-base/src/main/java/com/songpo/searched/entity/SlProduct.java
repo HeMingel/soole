@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -139,6 +139,17 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "restrict_count")
     private Integer restrictCount;
+
+    /**
+     * 活动商品唯一标识符
+     */
+    @Column(name = "activity_product_serial_number")
+    private String activityProductSerialNumber;
+
+    /**
+     * 是否为推荐商品，0:否 1:是
+     */
+    private Integer recommend;
 
     private static final long serialVersionUID = 1L;
 
@@ -556,6 +567,42 @@ public class SlProduct implements Serializable {
         this.restrictCount = restrictCount;
     }
 
+    /**
+     * 获取活动商品唯一标识符
+     *
+     * @return activity_product_serial_number - 活动商品唯一标识符
+     */
+    public String getActivityProductSerialNumber() {
+        return activityProductSerialNumber;
+    }
+
+    /**
+     * 设置活动商品唯一标识符
+     *
+     * @param activityProductSerialNumber 活动商品唯一标识符
+     */
+    public void setActivityProductSerialNumber(String activityProductSerialNumber) {
+        this.activityProductSerialNumber = activityProductSerialNumber == null ? null : activityProductSerialNumber.trim();
+    }
+
+    /**
+     * 获取是否为推荐商品，0:否 1:是
+     *
+     * @return recommend - 是否为推荐商品，0:否 1:是
+     */
+    public Integer getRecommend() {
+        return recommend;
+    }
+
+    /**
+     * 设置是否为推荐商品，0:否 1:是
+     *
+     * @param recommend 是否为推荐商品，0:否 1:是
+     */
+    public void setRecommend(Integer recommend) {
+        this.recommend = recommend;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -585,6 +632,8 @@ public class SlProduct implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", restrictCount=").append(restrictCount);
+        sb.append(", activityProductSerialNumber=").append(activityProductSerialNumber);
+        sb.append(", recommend=").append(recommend);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

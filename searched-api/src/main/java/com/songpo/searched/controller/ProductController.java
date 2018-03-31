@@ -164,9 +164,9 @@ public class ProductController {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
             //@ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1拼团 2预售 3豆赚 4消费返利 5一元购 6普通", paramType = "form", required = true)
     })
-    @GetMapping("/general_detail")
+    @GetMapping("/normal_detail")
     public BusinessMessage goodsDetail(String id) {
-        log.debug("根据商品Id查询商品，商品Id：{}", id);
+        log.debug("根据商品Id查询普通商品，商品Id：{}", id);
         if (id != null) {
             return this.productService.goodsDetail(id);
         } else {
@@ -176,7 +176,6 @@ public class ProductController {
             return businessMessage;
         }
     }
-
     /**
      * 商品规格详情
      */
@@ -188,7 +187,6 @@ public class ProductController {
     public BusinessMessage goodsSpecification(String id) {
         log.debug("商品规格,商品Id:{}", id);
         return this.productService.goodsSpecification(id);
-
     }
 
     @ApiOperation(value = "热品推荐")
@@ -199,7 +197,15 @@ public class ProductController {
     public BusinessMessage hotGoods(String id) {
         return this.productService.hotGoods(id);
     }
-
+    @ApiOperation(value = "店铺商品查询")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "shopId", value = "店铺ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "goodsName", value = "商品名称", paramType = "form", required = true),
+    })
+    @GetMapping("/shopGoods")
+    public BusinessMessage shopGoods(String shopId,String goodsName) {
+        return this.productService.shopGoods(shopId,goodsName);
+    }
 }
 
 

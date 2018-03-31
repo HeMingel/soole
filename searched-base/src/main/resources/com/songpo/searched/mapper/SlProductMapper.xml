@@ -25,17 +25,19 @@
     <result column="return_pulse" jdbcType="INTEGER" property="returnPulse" />
     <result column="group_people" jdbcType="INTEGER" property="groupPeople" />
     <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
-      <result column="creator" jdbcType="VARCHAR" property="creator"/>
-      <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
-      <result column="restrict_count" jdbcType="INTEGER" property="restrictCount"/>
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="restrict_count" jdbcType="INTEGER" property="restrictCount" />
+    <result column="activity_product_serial_number" jdbcType="VARCHAR" property="activityProductSerialNumber" />
+    <result column="recommend" jdbcType="INTEGER" property="recommend" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num, 
-    sales_volume, reference_price, reference_pulse, shop_id, sales_mode_id, min_price,
-      presell_shipments_days, return_money, return_pulse, group_people, reward_value, creator,
-      create_time, restrict_count
+    sales_volume, reference_price, reference_pulse, shop_id, sales_mode_id, min_price, 
+    presell_shipments_days, return_money, return_pulse, group_people, reward_value, creator, 
+    create_time, restrict_count, activity_product_serial_number, recommend
   </sql>
 </mapper>

@@ -1,46 +1,54 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_friend_group")
 public class SlFriendGroup implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 群主id
      */
     @Column(name = "owner_id")
     private String ownerId;
+
     /**
      * 群名称
      */
     private String name;
+
     /**
      * 群头像
      */
     private String avatar;
+
     /**
      * 群公告
      */
     private String notice;
+
     /**
      * 群二维码
      */
     @Column(name = "qr_code_image")
     private String qrCodeImage;
+
     /**
-     * 群状态  1.正常状态  2.群主解散群
+     * 群状态（暂未使用该字段）  1.正常状态  2.群主解散群
      */
     private Boolean status;
+
     /**
      * 群创建时间
      */
     @Column(name = "create_time")
     private Date createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
@@ -147,18 +155,18 @@ public class SlFriendGroup implements Serializable {
     }
 
     /**
-     * 获取群状态  1.正常状态  2.群主解散群
+     * 获取群状态（暂未使用该字段）  1.正常状态  2.群主解散群
      *
-     * @return status - 群状态  1.正常状态  2.群主解散群
+     * @return status - 群状态（暂未使用该字段）  1.正常状态  2.群主解散群
      */
     public Boolean getStatus() {
         return status;
     }
 
     /**
-     * 设置群状态  1.正常状态  2.群主解散群
+     * 设置群状态（暂未使用该字段）  1.正常状态  2.群主解散群
      *
-     * @param status 群状态  1.正常状态  2.群主解散群
+     * @param status 群状态（暂未使用该字段）  1.正常状态  2.群主解散群
      */
     public void setStatus(Boolean status) {
         this.status = status;

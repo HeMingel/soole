@@ -16,12 +16,13 @@
     <result column="serial_number" jdbcType="INTEGER" property="serialNumber" />
     <result column="size" jdbcType="INTEGER" property="size" />
     <result column="position" jdbcType="INTEGER" property="position" />
+    <result column="parameter" jdbcType="VARCHAR" property="parameter" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, title, description, image_url, url, page_android, page_ios, type_id, serial_number, 
-    size, position
+    size, position, parameter
   </sql>
 </mapper>
