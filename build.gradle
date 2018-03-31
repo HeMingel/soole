@@ -6,7 +6,7 @@ buildscript {
         commonsLang3Version = '3.6'
         swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
         mybatisSpringBootStarterVersion = '1.3.1'
-        mapperSpringBootStarterVersion = '1.2.3'
+        mapperSpringBootStarterVersion = '2.0.0'
         pagehelperSpringBootStarterVersion = '1.2.3'
         springCloudVersion = 'Edgware.SR2'
     }

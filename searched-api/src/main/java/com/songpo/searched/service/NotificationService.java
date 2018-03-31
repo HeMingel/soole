@@ -2,6 +2,7 @@ package com.songpo.searched.service;
 
 import com.songpo.searched.entity.SlMessage;
 import com.songpo.searched.mapper.SlMessageMapper;
+import com.songpo.searched.typehandler.MessageTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class NotificationService {
      */
     public void sendToQueue(String channelId, SlMessage message) {
         this.messagingTemplate.convertAndSend("/queue/" + channelId, message);
-        message.setType(1);
+        message.setType(MessageTypeEnum.QUEUE.getValue());
         this.messageMapper.insertSelective(message);
     }
 
@@ -38,7 +39,7 @@ public class NotificationService {
      */
     public void sendToTopic(String channelId, SlMessage message) {
         this.messagingTemplate.convertAndSend("/topic/" + channelId, message);
-        message.setType(2);
+        message.setType(MessageTypeEnum.TOPIC.getValue());
         this.messageMapper.insertSelective(message);
     }
 

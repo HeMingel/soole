@@ -8,7 +8,6 @@
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
     </resultMap>
 
-
     <!-- 根据销售模式查询商品 -->
     <select id="selectBySalesMode" resultType="map">
         SELECT

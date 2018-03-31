@@ -13,6 +13,12 @@ public interface BaseEnum {
 
     String DEFAULT_LABEL_NAME = "label";
 
+    /**
+     * @param enumClass
+     * @param value
+     * @param <T>
+     * @return
+     */
     static <T extends Enum<T>> T valueOfEnum(Class<T> enumClass, Integer value) {
         if (value == null) {
             throw new IllegalArgumentException("DisplayedEnum value should not be null");
