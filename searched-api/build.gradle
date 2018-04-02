@@ -51,13 +51,6 @@ dependencies {
 
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
-
 // 指定工程编码格式
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
