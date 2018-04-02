@@ -2,13 +2,9 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
-import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlActionNavigation;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
@@ -101,6 +97,10 @@ public class CustomerClientHomeService {
             setRecommend(1);
         }});
         data.put("products", productList);
+
+        // 获取首页视频信息
+        List<Map<String, Object>> videoList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_VIDEO");
+        data.put("videoInfo", videoList.get(0));
 
         return data;
     }
