@@ -14,7 +14,7 @@ dependencies {
 
     // Reactive Web组件
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: ${springBootVersion}
+    compile("org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}")
 
     // OAUTH2组件
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
@@ -22,7 +22,7 @@ dependencies {
 
     // RabbitMQ消息队列
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: ${springBootVersion}
+    compile("org.springframework.boot:spring-boot-starter-amqp:${springBootVersion}")
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
