@@ -1,18 +1,18 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.10.RELEASE'
+        springBootVersion = '2.0.0.RELEASE'
         druidSpringVersion = '1.1.9'
         fastjsonVersion = '1.2.46'
         commonsLang3Version = '3.6'
         swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
-        mapperSpringBootStarterVersion = '1.2.4'
+        mapperSpringBootStarterVersion = '2.0.1'
         pagehelperSpringBootStarterVersion = '1.2.3'
         springCloudVersion = 'Edgware.SR2'
         lombokVersion = '1.16.20'
     }
 
     // 指定JDK版本
-    ext['java.version'] = 1.8
+    ext['java.version'] = 9
 
     repositories {
         maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
@@ -37,6 +37,13 @@ allprojects {
     }
 
     apply plugin: 'io.spring.dependency-management'
+
+//    compile "org.springframework.boot:spring-boot-properties-migrator:${springBootVersion}"
+
+    dependencies {
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-properties-migrator
+//        compile group: 'org.springframework.boot', name: 'spring-boot-properties-migrator', version: '2.0.0.RELEASE'
+    }
 }
 
 // 指定工程编码格式

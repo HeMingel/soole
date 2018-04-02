@@ -5,12 +5,13 @@ import com.baidu.unbiz.fluentvalidator.ValidatorContext;
 import com.baidu.unbiz.fluentvalidator.ValidatorHandler;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.service.UserService;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.UUID;
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
 
 /**
  * 权限信息校验器
@@ -80,8 +81,13 @@ public class UserValidator extends ValidatorHandler<SlUser> {
                     }});
                     flag = false;
                 } else {
-                    t.setClientId(RandomStringUtils.random(16, true, true));
-                    t.setClientSecret(UUID.randomUUID().toString());
+                    // 定义生成字符串范围
+                    char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
+                    // 初始化随机生成器
+                    RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
+
+                    t.setClientId(generator.generate(16));
+                    t.setClientSecret(generator.generate(16));
                 }
             } catch (Exception e) {
                 logger.error("校验失败：{}", e);
