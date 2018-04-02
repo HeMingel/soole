@@ -7,7 +7,6 @@ buildscript {
         swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
         mapperSpringBootStarterVersion = '2.0.1'
         pagehelperSpringBootStarterVersion = '1.2.3'
-        springCloudVersion = 'Edgware.SR2'
         lombokVersion = '1.16.20'
     }
 
@@ -34,6 +33,7 @@ allprojects {
     repositories {
         maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
         mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
     }
 
     apply plugin: 'io.spring.dependency-management'

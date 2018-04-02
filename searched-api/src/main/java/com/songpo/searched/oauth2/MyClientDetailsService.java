@@ -4,6 +4,7 @@ import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -25,6 +26,9 @@ public class MyClientDetailsService implements ClientDetailsService {
     @Autowired
     private UserCache cache;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         BaseClientDetails details = null;
@@ -44,7 +48,7 @@ public class MyClientDetailsService implements ClientDetailsService {
         if (null != user) {
             details = new BaseClientDetails();
             details.setClientId(user.getClientId());
-            details.setClientSecret(user.getClientSecret());
+            details.setClientSecret(passwordEncoder.encode(user.getClientSecret()));
             // 默认保存15天
             details.setAccessTokenValiditySeconds(60 * 60 * 24 * 15);
             details.setAuthorizedGrantTypes(Arrays.asList("client_credentials", "password", "implicit", "authorization_code"));
