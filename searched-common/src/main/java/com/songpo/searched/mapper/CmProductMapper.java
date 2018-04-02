@@ -75,30 +75,11 @@ public interface CmProductMapper{
      */
     List<Map<String, Object>> goodsImageUrl(String goodsId);
     /**
-     * 查询商品规格详情
-     * @param goodsId 商品Id
-     * @return 商品规格详情
-     */
-    List<Map<String,Object>> goodsSpecificationDetail(String goodsId);
-    /**
-     * 查询商品规格
-     * @param goodsId 商品ID
-     * @return 商品规格
-     */
-    List<Map<String,Object>> goodsSpecification(String goodsId);
-    /**
      * 查询商品库存
      * @param goodsId 商品Id
      * @return 商品库存
      */
     List<Map<String,Object>> goodsRepository(String goodsId);
-    /**
-     * 查询商品库存规格规格id名称
-     * @param productDetailGroupSerialNumber 商品分组
-     * @return 商品库存规格id名称
-     */
-    List<Map<String,Object>> goodsRepositorySpecification(String productDetailGroupSerialNumber);
-
     /**
      * 查询拼团商品列表
      *

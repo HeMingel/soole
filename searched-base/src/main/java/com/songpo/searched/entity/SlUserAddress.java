@@ -59,7 +59,7 @@ public class SlUserAddress implements Serializable {
     private String latitude;
 
     /**
-     * 1. 默认地址  0.不是默认地址
+     * 1. 默认地址 2.不是默认地址
      */
     @Column(name = "is_default")
     private Boolean isDefault;
@@ -247,18 +247,18 @@ public class SlUserAddress implements Serializable {
     }
 
     /**
-     * 获取1. 默认地址  0.不是默认地址
+     * 获取1. 默认地址 2.不是默认地址
      *
-     * @return is_default - 1. 默认地址  0.不是默认地址
+     * @return is_default - 1. 默认地址 2.不是默认地址
      */
     public Boolean getIsDefault() {
         return isDefault;
     }
 
     /**
-     * 设置1. 默认地址  0.不是默认地址
+     * 设置1. 默认地址 2.不是默认地址
      *
-     * @param isDefault 1. 默认地址  0.不是默认地址
+     * @param isDefault 1. 默认地址 2.不是默认地址
      */
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;

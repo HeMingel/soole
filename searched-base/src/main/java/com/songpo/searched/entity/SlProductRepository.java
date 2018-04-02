@@ -38,22 +38,10 @@ public class SlProductRepository implements Serializable {
     private String productId;
 
     /**
-     * 商品规格属性序列号
-     */
-    @Column(name = "product_detail_group_serial_number")
-    private String productDetailGroupSerialNumber;
-
-    /**
-     * 商品规格属性组合名称
+     * 商品规格名称
      */
     @Column(name = "product_detail_group_name")
     private String productDetailGroupName;
-
-    /**
-     * 活动商品唯一标识符
-     */
-    @Column(name = "activity_product_id")
-    private String activityProductId;
 
     /**
      * 备注
@@ -84,13 +72,13 @@ public class SlProductRepository implements Serializable {
     private BigDecimal personalPrice;
 
     /**
-     * 奖励金额比例(限消费返利销售模式按商品价格)
+     * 全返金额比例(限消费返利销售模式按商品价格)
      */
     @Column(name = "`return cash_ratio`")
     private Float returnCashRatio;
 
     /**
-     * 奖励金额(消费返利模式)
+     * 全返金额(消费返利模式)
      */
     @Column(name = "`return cash_money`")
     private BigDecimal returnCashMoney;
@@ -160,18 +148,6 @@ public class SlProductRepository implements Serializable {
     private Integer placeOrderReturnPulse;
 
     /**
-     * 评论数量
-     */
-    @Column(name = "comment_num")
-    private Integer commentNum;
-
-    /**
-     * 销售数量
-     */
-    @Column(name = "sale_num")
-    private Integer saleNum;
-
-    /**
      * 奖励了豆比例(限推荐奖励活动)
      */
     @Column(name = "`return pulse_ratio`")
@@ -182,6 +158,18 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
+
+    /**
+     * 推荐奖励奖励金额(限推荐奖励)
+     */
+    @Column(name = "rewards_money")
+    private BigDecimal rewardsMoney;
+
+    /**
+     * 推荐奖励比例(限推荐奖励)
+     */
+    @Column(name = "rewards_money_ratio")
+    private Float rewardsMoneyRatio;
 
     private static final long serialVersionUID = 1L;
 
@@ -276,57 +264,21 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取商品规格属性序列号
+     * 获取商品规格名称
      *
-     * @return product_detail_group_serial_number - 商品规格属性序列号
-     */
-    public String getProductDetailGroupSerialNumber() {
-        return productDetailGroupSerialNumber;
-    }
-
-    /**
-     * 设置商品规格属性序列号
-     *
-     * @param productDetailGroupSerialNumber 商品规格属性序列号
-     */
-    public void setProductDetailGroupSerialNumber(String productDetailGroupSerialNumber) {
-        this.productDetailGroupSerialNumber = productDetailGroupSerialNumber == null ? null : productDetailGroupSerialNumber.trim();
-    }
-
-    /**
-     * 获取商品规格属性组合名称
-     *
-     * @return product_detail_group_name - 商品规格属性组合名称
+     * @return product_detail_group_name - 商品规格名称
      */
     public String getProductDetailGroupName() {
         return productDetailGroupName;
     }
 
     /**
-     * 设置商品规格属性组合名称
+     * 设置商品规格名称
      *
-     * @param productDetailGroupName 商品规格属性组合名称
+     * @param productDetailGroupName 商品规格名称
      */
     public void setProductDetailGroupName(String productDetailGroupName) {
         this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
-    }
-
-    /**
-     * 获取活动商品唯一标识符
-     *
-     * @return activity_product_id - 活动商品唯一标识符
-     */
-    public String getActivityProductId() {
-        return activityProductId;
-    }
-
-    /**
-     * 设置活动商品唯一标识符
-     *
-     * @param activityProductId 活动商品唯一标识符
-     */
-    public void setActivityProductId(String activityProductId) {
-        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
     /**
@@ -420,36 +372,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取奖励金额比例(限消费返利销售模式按商品价格)
+     * 获取全返金额比例(限消费返利销售模式按商品价格)
      *
-     * @return return cash_ratio - 奖励金额比例(限消费返利销售模式按商品价格)
+     * @return return cash_ratio - 全返金额比例(限消费返利销售模式按商品价格)
      */
     public Float getReturnCashRatio() {
         return returnCashRatio;
     }
 
     /**
-     * 设置奖励金额比例(限消费返利销售模式按商品价格)
+     * 设置全返金额比例(限消费返利销售模式按商品价格)
      *
-     * @param returnCashRatio 奖励金额比例(限消费返利销售模式按商品价格)
+     * @param returnCashRatio 全返金额比例(限消费返利销售模式按商品价格)
      */
     public void setReturnCashRatio(Float returnCashRatio) {
         this.returnCashRatio = returnCashRatio;
     }
 
     /**
-     * 获取奖励金额(消费返利模式)
+     * 获取全返金额(消费返利模式)
      *
-     * @return return cash_money - 奖励金额(消费返利模式)
+     * @return return cash_money - 全返金额(消费返利模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置奖励金额(消费返利模式)
+     * 设置全返金额(消费返利模式)
      *
-     * @param returnCashMoney 奖励金额(消费返利模式)
+     * @param returnCashMoney 全返金额(消费返利模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -672,42 +624,6 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取评论数量
-     *
-     * @return comment_num - 评论数量
-     */
-    public Integer getCommentNum() {
-        return commentNum;
-    }
-
-    /**
-     * 设置评论数量
-     *
-     * @param commentNum 评论数量
-     */
-    public void setCommentNum(Integer commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    /**
-     * 获取销售数量
-     *
-     * @return sale_num - 销售数量
-     */
-    public Integer getSaleNum() {
-        return saleNum;
-    }
-
-    /**
-     * 设置销售数量
-     *
-     * @param saleNum 销售数量
-     */
-    public void setSaleNum(Integer saleNum) {
-        this.saleNum = saleNum;
-    }
-
-    /**
      * 获取奖励了豆比例(限推荐奖励活动)
      *
      * @return return pulse_ratio - 奖励了豆比例(限推荐奖励活动)
@@ -743,6 +659,42 @@ public class SlProductRepository implements Serializable {
         this.rebatePulse = rebatePulse;
     }
 
+    /**
+     * 获取推荐奖励奖励金额(限推荐奖励)
+     *
+     * @return rewards_money - 推荐奖励奖励金额(限推荐奖励)
+     */
+    public BigDecimal getRewardsMoney() {
+        return rewardsMoney;
+    }
+
+    /**
+     * 设置推荐奖励奖励金额(限推荐奖励)
+     *
+     * @param rewardsMoney 推荐奖励奖励金额(限推荐奖励)
+     */
+    public void setRewardsMoney(BigDecimal rewardsMoney) {
+        this.rewardsMoney = rewardsMoney;
+    }
+
+    /**
+     * 获取推荐奖励比例(限推荐奖励)
+     *
+     * @return rewards_money_ratio - 推荐奖励比例(限推荐奖励)
+     */
+    public Float getRewardsMoneyRatio() {
+        return rewardsMoneyRatio;
+    }
+
+    /**
+     * 设置推荐奖励比例(限推荐奖励)
+     *
+     * @param rewardsMoneyRatio 推荐奖励比例(限推荐奖励)
+     */
+    public void setRewardsMoneyRatio(Float rewardsMoneyRatio) {
+        this.rewardsMoneyRatio = rewardsMoneyRatio;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -754,9 +706,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", productName=").append(productName);
         sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", productId=").append(productId);
-        sb.append(", productDetailGroupSerialNumber=").append(productDetailGroupSerialNumber);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
-        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", remark=").append(remark);
         sb.append(", productProfitRatio=").append(productProfitRatio);
         sb.append(", productProfitMoney=").append(productProfitMoney);
@@ -776,10 +726,10 @@ public class SlProductRepository implements Serializable {
         sb.append(", gold=").append(gold);
         sb.append(", silver=").append(silver);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
-        sb.append(", commentNum=").append(commentNum);
-        sb.append(", saleNum=").append(saleNum);
         sb.append(", returnPulseRatio=").append(returnPulseRatio);
         sb.append(", rebatePulse=").append(rebatePulse);
+        sb.append(", rewardsMoney=").append(rewardsMoney);
+        sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -147,7 +147,7 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现金额(限消费奖励模式)
+     * 返现金额(限全返模式)
      */
     @Column(name = "`return cash_money`")
     private BigDecimal returnCashMoney;
@@ -157,6 +157,18 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "place_order_return_pulse")
     private Integer placeOrderReturnPulse;
+
+    /**
+     * 推荐奖励奖励金额
+     */
+    @Column(name = "rewards_money")
+    private BigDecimal rewardsMoney;
+
+    /**
+     * 奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    @Column(name = "rebate_pulse")
+    private Integer rebatePulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -593,18 +605,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现金额(限消费奖励模式)
+     * 获取返现金额(限全返模式)
      *
-     * @return return cash_money - 返现金额(限消费奖励模式)
+     * @return return cash_money - 返现金额(限全返模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(限消费奖励模式)
+     * 设置返现金额(限全返模式)
      *
-     * @param returnCashMoney 返现金额(限消费奖励模式)
+     * @param returnCashMoney 返现金额(限全返模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -626,6 +638,42 @@ public class SlOrderDetail implements Serializable {
      */
     public void setPlaceOrderReturnPulse(Integer placeOrderReturnPulse) {
         this.placeOrderReturnPulse = placeOrderReturnPulse;
+    }
+
+    /**
+     * 获取推荐奖励奖励金额
+     *
+     * @return rewards_money - 推荐奖励奖励金额
+     */
+    public BigDecimal getRewardsMoney() {
+        return rewardsMoney;
+    }
+
+    /**
+     * 设置推荐奖励奖励金额
+     *
+     * @param rewardsMoney 推荐奖励奖励金额
+     */
+    public void setRewardsMoney(BigDecimal rewardsMoney) {
+        this.rewardsMoney = rewardsMoney;
+    }
+
+    /**
+     * 获取奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @return rebate_pulse - 奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public Integer getRebatePulse() {
+        return rebatePulse;
+    }
+
+    /**
+     * 设置奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @param rebatePulse 奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public void setRebatePulse(Integer rebatePulse) {
+        this.rebatePulse = rebatePulse;
     }
 
     @Override
@@ -660,6 +708,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
         sb.append(", returnCashMoney=").append(returnCashMoney);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
+        sb.append(", rewardsMoney=").append(rewardsMoney);
+        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

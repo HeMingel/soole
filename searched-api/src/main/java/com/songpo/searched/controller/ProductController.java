@@ -176,17 +176,14 @@ public class ProductController {
             return businessMessage;
         }
     }
-    /**
-     * 商品规格详情
-     */
-    @ApiOperation(value = "根据商品Id查询商品规格")
+    @ApiOperation(value = "根据商品Id查询普通商品普通规格")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
     })
-    @GetMapping("goods-specification")
+    @GetMapping("goods-normal-specification")
     public BusinessMessage goodsSpecification(String id) {
         log.debug("商品规格,商品Id:{}", id);
-        return this.productService.goodsSpecification(id);
+        return this.productService.goodsNormalSpecification(id);
     }
 
     @ApiOperation(value = "热品推荐")
