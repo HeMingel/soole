@@ -124,7 +124,7 @@ public class ProductController {
      * 推荐商品
      * @return 商品列表
      */
-    @ApiOperation(value = "分类页面,推荐商品")
+    @ApiOperation(value = "推荐商品")
     @ApiImplicitParams(value = {
     })
     @GetMapping("recommend-product")
@@ -146,6 +146,7 @@ public class ProductController {
     @ApiOperation(value = "查询普通类型商品 根据商品分类查询商品+筛选商品+商品名称")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "goodsTypeId", value = "分类ID", paramType = "form"),
+            @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
             @ApiImplicitParam(name = "screenType", value = "筛选条件1销量倒序2销量正序3价格倒序4价格正序", paramType = "form", required = true),
             @ApiImplicitParam(name = "saleMode", value = "销售模式", paramType = "form"),
             @ApiImplicitParam(name = "page", value = "页码", paramType = "form"),
