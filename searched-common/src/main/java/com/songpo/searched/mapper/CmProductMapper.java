@@ -49,7 +49,7 @@ public interface CmProductMapper{
     List<SlProduct> selectByAction(String actionId);
 
     /**
-     * 查询推荐商品 最新商品前6个
+     * 查询推荐商品
      * @return 商品列表
      */
     List<Map<String,Object>> findRecommendProduct();

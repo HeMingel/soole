@@ -110,7 +110,7 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getClassificationData(String goodsType, Integer screenType, Integer page, Integer size, String name) {
+    public JSONObject getClassificationData() {
         JSONObject data = new JSONObject();
 
         // 获取所有一级商品分类列表
@@ -125,14 +125,8 @@ public class CustomerClientHomeService {
             }}));
         }
         data.put("productTypes", productTypeJsonArray);
-
-        //筛选商品
-        PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-        List<Map<String, Object>> cmProducts = this.cmProductMapper.screenGoods(goodsType, screenType, SalesModeConstant.SALES_MODE_NORMAL, name);
-        data.put("products", new PageInfo<>(cmProducts));
         //banner图
         // 获取广告轮播图列表
-
         List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
             // 设置类型为 商品页
             setTypeId("1");
