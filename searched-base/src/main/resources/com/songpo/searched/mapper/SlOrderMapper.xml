@@ -27,6 +27,7 @@
     <result column="detailed" jdbcType="VARCHAR" property="detailed" />
     <result column="spell_group_status" jdbcType="INTEGER" property="spellGroupStatus" />
     <result column="group_master" jdbcType="VARCHAR" property="groupMaster" />
+    <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -34,6 +35,7 @@
     -->
     id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel, 
     remark, create_time, pay_time, shipping_state, status, deduct_total_pulse, consigneeName, 
-    consigneePhone, province, city, county, detailed, spell_group_status, group_master
+    consigneePhone, province, city, county, detailed, spell_group_status, group_master, 
+    activity_product_id
   </sql>
 </mapper>
