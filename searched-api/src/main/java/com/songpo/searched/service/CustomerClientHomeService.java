@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.entity.SlActionNavigation;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +65,9 @@ public class CustomerClientHomeService {
     @Autowired
     private SlProductMapper productMapper;
 
+    @Autowired
+    private SlHotKeywordsMapper slHotKeywordsMapper;
+
     /**
      * 获取首页所有数据
      *
@@ -101,6 +101,10 @@ public class CustomerClientHomeService {
         // 获取首页视频信息
         List<Map<String, Object>> videoList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_VIDEO");
         data.put("videoInfo", videoList.get(0));
+
+        // 获取热词
+        List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
+        data.put("hotKeywords", hotKeywordsList);
 
         return data;
     }
