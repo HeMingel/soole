@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlAfterSalesServiceMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlAfterSalesService">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAfterSalesService">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, type, reason, money, image_url, product_id, user_id, shop_id, creator, create_time, 
+    audit_status
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    remark
+  </sql>
+</mapper>

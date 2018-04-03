@@ -30,17 +30,44 @@ public class BaseCache<V> {
     /**
      * 缓存有效期
      */
-    public Long timeOut = 7L;
+    public Long timeOut = 7200L;
 
     /**
      * 缓存有效期单位
      */
-    public TimeUnit timeUnit = TimeUnit.DAYS;
+    public TimeUnit timeUnit = TimeUnit.SECONDS;
 
     /**
      * 是否为缓存设置有效期
      */
-    public Boolean limitTime = true;
+    public Boolean limitTime = false;
+
+    /**
+     * 指定秒数缓存
+     *
+     * @param prefix        前缀
+     * @param redisTemplate 模板
+     * @param timeOut       周期，单位为秒
+     */
+    public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate, Long timeOut) {
+        this.prefix = prefix;
+        this.redisTemplate = redisTemplate;
+        this.timeOut = timeOut;
+        this.timeUnit = TimeUnit.SECONDS;
+        this.limitTime = true;
+    }
+
+    /**
+     * 无限制时间缓存
+     *
+     * @param prefix        前缀
+     * @param redisTemplate 模板
+     */
+    public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate) {
+        this.prefix = prefix;
+        this.redisTemplate = redisTemplate;
+        this.limitTime = false;
+    }
 
     /**
      * 获取缓存
@@ -90,6 +117,22 @@ public class BaseCache<V> {
         } catch (Exception e) {
             log.error("删除缓存失败，key = {}", deleteKey);
         }
+    }
+
+    /**
+     * 是否存在指定键
+     *
+     * @param key 键
+     * @return 结果
+     */
+    public Boolean hasKey(String key) {
+        String deleteKey = prefix + key;
+        try {
+            return redisTemplate.hasKey(prefix + key);
+        } catch (Exception e) {
+            log.error("删除缓存失败，key = {}", deleteKey);
+        }
+        return false;
     }
 
     /**

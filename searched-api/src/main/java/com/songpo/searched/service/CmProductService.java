@@ -239,47 +239,20 @@ public class CmProductService {
      * @param id  商品ID
      * @return 商品规格
      */
-    public BusinessMessage goodsSpecification(String id) {
+    public BusinessMessage goodsNormalSpecification(String id) {
         log.debug("商品规格详情,商品id:{}", id);
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
-            //搜索商品规格Detail
-            List<Map<String, Object>> specificationDetailMap = this.mapper.goodsSpecificationDetail(id);
-            if (specificationDetailMap.size() > 0) {
-                //查询商品规格名称
-                List<Map<String, Object>> specificationMap = this.mapper.goodsSpecification(id);
-                List<Object> list = new ArrayList<>();
-                for (int i = 0; i < specificationMap.size(); i++) {
-                    Map<String,Object> map = new HashMap<>(16);
-                    map.put("specification", specificationMap.get(i));
-                    for (int j = 0; j < specificationDetailMap.size(); j++) {
-                        if (specificationDetailMap.get(j).get("specification_id").equals(specificationMap.get(i).get("specification_id"))) {
-                            map.put("specificationDetail", specificationDetailMap.get(j));
-                        }
-                    }
-                    list.add(map);
-                }
-                //step 1查询商品对应的库存
-                List<Map<String, Object>> goodsRepositoryList = this.mapper.goodsRepository(id);
-                //step 2根据商品分组查询对应的规格信息
-                if (goodsRepositoryList.size() > 0) {
-                    List<Object> lists = new ArrayList<>();
-                    for (int i = 0; i < goodsRepositoryList.size(); i++) {
-                        Map<String,Object> map = new HashMap<>(16);
-                        List<Map<String, Object>> goodsRepositorySpecification = this.mapper.goodsRepositorySpecification(goodsRepositoryList.get(i).get("product_detail_group_serial_number").toString());
-                        map.put("goodsRepositorySpecification", goodsRepositorySpecification);
-                        map.put("goodsRepository", goodsRepositoryList.get(i));
-                        lists.add(map);
-                    }
-                    list.add(lists);
-                }
-
+            // 商品规格为商品的repository
+            List<Map<String,Object>> goodsRepository = this.mapper.goodsRepository(id);
+            if (goodsRepository.size()>0){
                 businessMessage.setSuccess(true);
+                businessMessage.setData(goodsRepository);
                 businessMessage.setMsg("查询成功");
-                businessMessage.setData(list);
-            } else {
-                businessMessage.setMsg("该商品无规格");
+            }else {
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询无数据");
             }
         } catch (Exception e) {
             log.error("查询商品规格异常", e);

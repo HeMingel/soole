@@ -1,6 +1,6 @@
 //package com.songpo.searched.websocket;
 //
-//import com.songpo.searched.service.NotificationService;
+//import com.songpo.searched.rabbitmq.NotificationService;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiImplicitParam;
 //import io.swagger.annotations.ApiImplicitParams;
