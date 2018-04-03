@@ -88,16 +88,16 @@
     <if test="screenGoods == null and screenGoods ==''">
         ORDER BY (p.sales_volume + p.comment_num) DESC
     </if>
-    <if test="screenGoods != null and screenGoods !='' and screenType == 1">
+    <if test="screenGoods != null and screenGoods !='' and screenGoods == 1">
         ORDER BY p.sales_volume DESC
     </if>
-    <if test="screenGoods != null and screenGoods !='' and screenType == 2">
+    <if test="screenGoods != null and screenGoods !='' and screenGoods == 2">
         ORDER BY p.sales_volume ASC
     </if>
-    <if test="screenGoods != null and screenGoods !='' and screenType == 3">
+    <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
             ORDER BY p.reference_price DESC
         </if>
-        <if test="screenGoods != null and screenGoods !='' and screenType == 4">
+        <if test="screenGoods != null and screenGoods !='' and screenGoods == 4">
             ORDER BY p.reference_price ASC
         </if>
 
@@ -116,7 +116,7 @@
         sales_mode_id
           FROM
             sl_product
-        where id= #{goodsId}
+        where id= #{goodsId} and  sold_out = 1
     </select>
     <!--搜索商品所有图片-->
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
@@ -194,6 +194,21 @@
           sl_product p
         WHERE p.`sales_mode_id` = #{saleModeId}
           AND p.id != #{goodsId}
+    </select>
+
+    <select id="selectGroupOrder" parameterType="String" resultType="Map">
+        SELECT
+          o.*,count(o.serial_number)
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+          ON p.activity_product_serial_number = ap.serial_number
+          LEFT JOIN sl_order o
+          ON ap.id = o.activity_product_id
+          WHERE ap.`activity_id` = #{activityId}
+          AND p.id = #{goodsId}
+          AND o.payment_state =2
+          AND o.spell_group_status = 1
     </select>
 
 </mapper>

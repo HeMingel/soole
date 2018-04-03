@@ -10,6 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class ShoppingCartCache extends BaseCache<CMShoppingCart> {
 
     public ShoppingCartCache(RedisTemplate<String, CMShoppingCart> redisTemplate) {
-        super("com.songpo.seached:shoppingCart:", redisTemplate, 7200L, TimeUnit.SECONDS, true);
+        super("com.songpo.seached:shoppingCart:", redisTemplate, 7200L, TimeUnit.SECONDS, false);
     }
 }

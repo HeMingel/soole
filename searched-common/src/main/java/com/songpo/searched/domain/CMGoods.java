@@ -74,6 +74,10 @@ public class CMGoods {
      * 我的豆子总和
      */
     private Integer myBeansCounts;
+    /**
+     * 是否下架
+     */
+    private boolean soldOut;
 
 
 }
