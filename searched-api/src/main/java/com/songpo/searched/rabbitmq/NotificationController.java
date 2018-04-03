@@ -42,8 +42,8 @@ public class NotificationController {
                 this.notificationService.sendToQueue(sourceId, targetId, content);
                 message.setSuccess(true);
             } catch (Exception e) {
-                log.error("单播消息发送，", e);
-                message.setMsg("单播消息发送，请重试");
+                log.error("单播消息发送失败，", e);
+                message.setMsg("单播消息发送失败，请重试");
             }
         }
         return message;
@@ -70,8 +70,8 @@ public class NotificationController {
                 this.notificationService.sendToTopic(sourceId, targetId, content);
                 message.setSuccess(true);
             } catch (Exception e) {
-                log.error("单播消息发送，", e);
-                message.setMsg("单播消息发送，请重试");
+                log.error("广播消息发送失败，", e);
+                message.setMsg("广播消息发送失败，请重试");
             }
         }
         return message;

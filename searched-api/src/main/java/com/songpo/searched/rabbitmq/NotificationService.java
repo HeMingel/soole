@@ -53,7 +53,13 @@ public class NotificationService {
         // 如果频道不存在，则进行创建
         String channelName = "queue_" + targetId;
         if (!channelCache.hasKey(channelName)) {
-            rabbitAdmin.declareQueue(new Queue(channelName));
+            try {
+                rabbitAdmin.declareQueue(new Queue(channelName));
+            } catch (Exception e) {
+                log.debug("频道[{}]已存在", channelName);
+            }
+        } else {
+            channelCache.put(channelName, channelName);
         }
 
         // 发送单播消息
@@ -79,7 +85,13 @@ public class NotificationService {
         // 如果频道不存在，则进行创建
         String channelName = "topic_" + targetId;
         if (!channelCache.hasKey(channelName)) {
-            rabbitAdmin.declareExchange(new TopicExchange(channelName));
+            try {
+                rabbitAdmin.declareExchange(new TopicExchange(channelName));
+            } catch (Exception e) {
+                log.debug("频道[{}]已存在", channelName);
+            }
+        } else {
+            channelCache.put(channelName, channelName);
         }
 
         // 发送广播消息
