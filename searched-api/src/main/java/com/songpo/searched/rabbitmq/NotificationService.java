@@ -1,11 +1,13 @@
 package com.songpo.searched.rabbitmq;
 
+import com.alibaba.fastjson.JSON;
 import com.songpo.searched.entity.SlMessage;
 import com.songpo.searched.mapper.SlMessageMapper;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,12 @@ public class NotificationService {
     @Autowired
     private RabbitMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private RabbitMqChannelCache channelCache;
+
+    @Autowired
+    private RabbitAdmin rabbitAdmin;
+
     /**
      * 发送消息到指定单播队列
      *
@@ -33,7 +41,7 @@ public class NotificationService {
      * @param targetId 目标标识
      * @param content  消息内容
      */
-    public void sendToQueue(String sourceId, String targetId, String content) {
+    void sendToQueue(String sourceId, String targetId, String content) {
         SlMessage message = new SlMessage();
         message.setSourceId(sourceId);
         message.setTargetId(targetId);
@@ -42,8 +50,14 @@ public class NotificationService {
         message.setType(MessageTypeEnum.QUEUE.getValue());
         this.messageMapper.insertSelective(message);
 
+        // 如果频道不存在，则进行创建
+        String channelName = "queue_" + targetId;
+        if (!channelCache.hasKey(channelName)) {
+            rabbitAdmin.declareQueue(new Queue(channelName));
+        }
+
         // 发送单播消息
-        this.messagingTemplate.convertAndSend("notificationQueue", message);
+        this.messagingTemplate.convertAndSend(channelName, JSON.toJSONString(message));
     }
 
     /**
@@ -62,30 +76,14 @@ public class NotificationService {
         message.setType(MessageTypeEnum.TOPIC.getValue());
         this.messageMapper.insertSelective(message);
 
+        // 如果频道不存在，则进行创建
+        String channelName = "topic_" + targetId;
+        if (!channelCache.hasKey(channelName)) {
+            rabbitAdmin.declareExchange(new TopicExchange(channelName));
+        }
+
         // 发送广播消息
-        this.messagingTemplate.convertAndSend("notificationTopic", message);
-    }
-
-    /**
-     * 消息回调通知
-     *
-     * @param message 消息结构
-     */
-    @RabbitListener(queues = "notificationQueue")
-    @RabbitHandler
-    public void processQueue(SlMessage message) {
-        log.debug("单播消息内容：{}", message);
-    }
-
-    /**
-     * 消息回调通知
-     *
-     * @param message 消息结构
-     */
-    @RabbitListener(queues = "notificationTopic")
-    @RabbitHandler
-    public void processTopic(SlMessage message) {
-        log.debug("广播消息内容：{}", message);
+        this.messagingTemplate.convertAndSend(channelName, JSON.toJSONString(message));
     }
 
 }
