@@ -122,7 +122,7 @@ public class SlOrder implements Serializable {
     private String detailed;
 
     /**
-     * -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     * 0:拼团/助力 失败 1:拼团/助力 中 2:拼团/助力 成功
      */
     @Column(name = "spell_group_status")
     private Integer spellGroupStatus;
@@ -510,18 +510,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取-1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     * 获取0:拼团/助力 失败 1:拼团/助力 中 2:拼团/助力 成功
      *
-     * @return spell_group_status - -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     * @return spell_group_status - 0:拼团/助力 失败 1:拼团/助力 中 2:拼团/助力 成功
      */
     public Integer getSpellGroupStatus() {
         return spellGroupStatus;
     }
 
     /**
-     * 设置-1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     * 设置0:拼团/助力 失败 1:拼团/助力 中 2:拼团/助力 成功
      *
-     * @param spellGroupStatus -1:拼团/助力 失败 0:拼团/助力 中 1:拼团/助力 成功
+     * @param spellGroupStatus 0:拼团/助力 失败 1:拼团/助力 中 2:拼团/助力 成功
      */
     public void setSpellGroupStatus(Integer spellGroupStatus) {
         this.spellGroupStatus = spellGroupStatus;

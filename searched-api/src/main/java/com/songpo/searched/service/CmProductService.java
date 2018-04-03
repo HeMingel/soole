@@ -3,10 +3,13 @@ package com.songpo.searched.service;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.songpo.searched.constant.ActivityConstant;
+import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
+import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,7 +201,7 @@ public class CmProductService {
             //商品基础信息
             Map map = this.mapper.goodsBaseInfo(goodsId);
             data.put("productBase", map);
-            if (map.isEmpty()) {
+            if (map == null) {
                 businessMessage.setMsg("未查到商品相关信息");
                 businessMessage.setSuccess(true);
             } else {
@@ -221,6 +224,25 @@ public class CmProductService {
                     data.put("productComments", list);
                 } else{
                     data.put("productComments", goodsComment);
+                }
+               //   查询拼团信息
+                //step 1 : 判断该商品销售模式 是否为拼团商品
+                //step 2 : 如果是拼团商品 则查询该商品的所有普通拼团信息
+                if (Integer.parseInt(map.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP){
+                    //未拼成订单集合
+                   List<Map<String,Object>> orderList = this.mapper.selectGroupOrder(ActivityConstant.NO_ACTIVITY,goodsId);
+                   if (orderList.size()>0){
+                       //遍历订单集合 查询首发人
+                        List<Object> groupList = new ArrayList<>();
+                       for (int i=0;i<orderList.size();i++){
+                           Map<String,Object> groupMapper = new HashMap<>(16);
+                           Map<String,Object> groupMaster = this.mapper.findGroupPeople(orderList.get(i).get("group_master").toString());
+                           groupMapper.put("groupMaster",groupMaster);
+                           groupMapper.put("order",orderList.get(i));
+                           groupList.add(groupMapper);
+                       }
+                       data.put("groupList",groupList);
+                   }
                 }
             }
             businessMessage.setSuccess(true);

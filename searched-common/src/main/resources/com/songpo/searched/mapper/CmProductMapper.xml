@@ -178,12 +178,9 @@
     <select id="findGroupPeople" resultType="Map" parameterType="String">
         SELECT
          u.avatar,u.nick_name
-        FROM sl_order o
-        LEFT JOIN sl_user u
-        ON o.user_id = u.id
-        WHERE  o.serial_number = #{orderNum} and o.payment_state = 1
-        ORDER BY o.create_time ASC
-        LIMIT 0,1
+        FROM sl_user u
+        where u.id = {}
+
     </select>
 
     <!--热门推荐-->
@@ -195,10 +192,10 @@
         WHERE p.`sales_mode_id` = #{saleModeId}
           AND p.id != #{goodsId}
     </select>
-
+    <!--搜索拼团订单-->
     <select id="selectGroupOrder" parameterType="String" resultType="Map">
         SELECT
-          o.*,count(o.serial_number)
+          o.serial_number AS order_num,o.group_master,ap.people_num AS need_people,COUNT(o.serial_number) AS already_people
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
@@ -209,6 +206,7 @@
           AND p.id = #{goodsId}
           AND o.payment_state =2
           AND o.spell_group_status = 1
+           GROUP BY o.serial_number
     </select>
 
 </mapper>

@@ -59,7 +59,7 @@ public interface CmProductMapper{
      * @param screenGoods 筛选条件
      * @param saleMode 销售模式
      * @param goodsName 商品名称
-     * @return 商品列表
+     * @return 商品列表 goodsType, screenType, saleMode, name
      */
     List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName);
     /**
@@ -118,4 +118,11 @@ public interface CmProductMapper{
      * @return
      */
     List<Map<String, Object>> hotGoods(@Param("goodsId")String goodsId,@Param("saleModeId")String saleModeId);
+
+    /**
+     * 查询拼团商品订单
+     * @return 拼团商品订单
+     */
+
+    List<Map<String,Object>> selectGroupOrder(@Param("activityId")String activityId,@Param("goodsId")String goodsId);
 }

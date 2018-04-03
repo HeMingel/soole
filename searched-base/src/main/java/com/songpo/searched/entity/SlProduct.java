@@ -14,6 +14,12 @@ public class SlProduct implements Serializable {
     private String id;
 
     /**
+     * 活动商品唯一标识符
+     */
+    @Column(name = "activity_product_serial_number")
+    private String activityProductSerialNumber;
+
+    /**
      * 名称
      */
     private String name;
@@ -141,15 +147,15 @@ public class SlProduct implements Serializable {
     private Integer restrictCount;
 
     /**
-     * 活动商品唯一标识符
-     */
-    @Column(name = "activity_product_serial_number")
-    private String activityProductSerialNumber;
-
-    /**
      * 是否为推荐商品，0:否 1:是
      */
     private Integer recommend;
+
+    /**
+     * 拼团价格
+     */
+    @Column(name = "group_price")
+    private BigDecimal groupPrice;
 
     private static final long serialVersionUID = 1L;
 
@@ -169,6 +175,24 @@ public class SlProduct implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取活动商品唯一标识符
+     *
+     * @return activity_product_serial_number - 活动商品唯一标识符
+     */
+    public String getActivityProductSerialNumber() {
+        return activityProductSerialNumber;
+    }
+
+    /**
+     * 设置活动商品唯一标识符
+     *
+     * @param activityProductSerialNumber 活动商品唯一标识符
+     */
+    public void setActivityProductSerialNumber(String activityProductSerialNumber) {
+        this.activityProductSerialNumber = activityProductSerialNumber == null ? null : activityProductSerialNumber.trim();
     }
 
     /**
@@ -568,24 +592,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取活动商品唯一标识符
-     *
-     * @return activity_product_serial_number - 活动商品唯一标识符
-     */
-    public String getActivityProductSerialNumber() {
-        return activityProductSerialNumber;
-    }
-
-    /**
-     * 设置活动商品唯一标识符
-     *
-     * @param activityProductSerialNumber 活动商品唯一标识符
-     */
-    public void setActivityProductSerialNumber(String activityProductSerialNumber) {
-        this.activityProductSerialNumber = activityProductSerialNumber == null ? null : activityProductSerialNumber.trim();
-    }
-
-    /**
      * 获取是否为推荐商品，0:否 1:是
      *
      * @return recommend - 是否为推荐商品，0:否 1:是
@@ -603,6 +609,24 @@ public class SlProduct implements Serializable {
         this.recommend = recommend;
     }
 
+    /**
+     * 获取拼团价格
+     *
+     * @return group_price - 拼团价格
+     */
+    public BigDecimal getGroupPrice() {
+        return groupPrice;
+    }
+
+    /**
+     * 设置拼团价格
+     *
+     * @param groupPrice 拼团价格
+     */
+    public void setGroupPrice(BigDecimal groupPrice) {
+        this.groupPrice = groupPrice;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -610,6 +634,7 @@ public class SlProduct implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", activityProductSerialNumber=").append(activityProductSerialNumber);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
         sb.append(", imageUrl=").append(imageUrl);
@@ -632,8 +657,8 @@ public class SlProduct implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", restrictCount=").append(restrictCount);
-        sb.append(", activityProductSerialNumber=").append(activityProductSerialNumber);
         sb.append(", recommend=").append(recommend);
+        sb.append(", groupPrice=").append(groupPrice);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
