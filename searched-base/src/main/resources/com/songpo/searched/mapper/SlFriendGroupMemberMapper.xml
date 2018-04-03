@@ -11,11 +11,12 @@
     <result column="type" jdbcType="BIT" property="type" />
     <result column="member_name" jdbcType="VARCHAR" property="memberName" />
     <result column="no_disturb" jdbcType="BIT" property="noDisturb" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, group_id, member_id, type, member_name, no_disturb
+    id, group_id, member_id, type, member_name, no_disturb, add_time
   </sql>
 </mapper>

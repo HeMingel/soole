@@ -1,6 +1,7 @@
 package com.songpo.searched.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "sl_friend_group_member")
@@ -37,6 +38,12 @@ public class SlFriendGroupMember implements Serializable {
      */
     @Column(name = "no_disturb")
     private Boolean noDisturb;
+
+    /**
+     * 加入群聊时间
+     */
+    @Column(name = "add_time")
+    private Date addTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -144,6 +151,24 @@ public class SlFriendGroupMember implements Serializable {
         this.noDisturb = noDisturb;
     }
 
+    /**
+     * 获取加入群聊时间
+     *
+     * @return add_time - 加入群聊时间
+     */
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    /**
+     * 设置加入群聊时间
+     *
+     * @param addTime 加入群聊时间
+     */
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -156,6 +181,7 @@ public class SlFriendGroupMember implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", memberName=").append(memberName);
         sb.append(", noDisturb=").append(noDisturb);
+        sb.append(", addTime=").append(addTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -127,6 +127,18 @@ public class SlOrder implements Serializable {
     @Column(name = "spell_group_status")
     private Integer spellGroupStatus;
 
+    /**
+     * 拼团团主
+     */
+    @Column(name = "group_master")
+    private String groupMaster;
+
+    /**
+     * 活动商品ID
+     */
+    @Column(name = "activity_product_id")
+    private String activityProductId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -515,6 +527,42 @@ public class SlOrder implements Serializable {
         this.spellGroupStatus = spellGroupStatus;
     }
 
+    /**
+     * 获取拼团团主
+     *
+     * @return group_master - 拼团团主
+     */
+    public String getGroupMaster() {
+        return groupMaster;
+    }
+
+    /**
+     * 设置拼团团主
+     *
+     * @param groupMaster 拼团团主
+     */
+    public void setGroupMaster(String groupMaster) {
+        this.groupMaster = groupMaster == null ? null : groupMaster.trim();
+    }
+
+    /**
+     * 获取活动商品ID
+     *
+     * @return activity_product_id - 活动商品ID
+     */
+    public String getActivityProductId() {
+        return activityProductId;
+    }
+
+    /**
+     * 设置活动商品ID
+     *
+     * @param activityProductId 活动商品ID
+     */
+    public void setActivityProductId(String activityProductId) {
+        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -542,6 +590,8 @@ public class SlOrder implements Serializable {
         sb.append(", county=").append(county);
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
+        sb.append(", groupMaster=").append(groupMaster);
+        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

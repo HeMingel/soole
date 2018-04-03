@@ -99,13 +99,13 @@ public class ShoppingCartService {
                                         setProductId(sc.getGoodId());
                                     }});
                                     cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
-                                    // TODO 注释报错的位置
-//                                    cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
+                                    cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
                                     cmGoods.setPrice(repository.getPrice());// 商品价格
                                     cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                     cmGoods.setShopId(sc.getShopId());// 店铺id
                                     cmGoods.setShopName(sc.getShopName());// 店铺名称
                                     cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                                    cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
                                     cmGoods.setRebatePulse(repository.getRebatePulse());// 纯金钱商品返了豆数量
                                     cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
                                     list.add(cmGoods);
