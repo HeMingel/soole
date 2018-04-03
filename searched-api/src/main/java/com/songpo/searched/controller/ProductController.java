@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.Id;
 import java.util.Map;
 
 @Slf4j
@@ -159,12 +160,12 @@ public class ProductController {
     }
 
 
-    @ApiOperation(value = "查询普通商品详情")
+    @ApiOperation(value = "查询商品详情")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
             //@ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1拼团 2预售 3豆赚 4消费返利 5一元购 6普通", paramType = "form", required = true)
     })
-    @GetMapping("/normal_detail")
+    @GetMapping("/goods-detail")
     public BusinessMessage goodsDetail(String id) {
         log.debug("根据商品Id查询普通商品，商品Id：{}", id);
         if (id != null) {
@@ -182,7 +183,7 @@ public class ProductController {
     })
     @GetMapping("goods-normal-specification")
     public BusinessMessage goodsSpecification(String id) {
-        log.debug("商品规格,商品Id:{}", id);
+        log.debug("商品规格,商品Id:{},活动Id", id);
         return this.productService.goodsNormalSpecification(id);
     }
 

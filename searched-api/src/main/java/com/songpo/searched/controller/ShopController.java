@@ -32,7 +32,7 @@ public class ShopController {
             @ApiImplicitParam(name = "id", value = "商铺Id", paramType = "form", required = true),
             @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form", required = true)
     })
-    @GetMapping("{id}")
+    @GetMapping("/shop-detail")
     public BusinessMessage shopAndGoods(String id,String userId) {
         if(id == null){
             BusinessMessage businessMessage = new BusinessMessage();
