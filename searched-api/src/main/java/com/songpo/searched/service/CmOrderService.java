@@ -251,7 +251,6 @@ public class CmOrderService {
                         setSoldOut(false);
                     }});
                     if (null != slProduct) {
-                        // 统计该活动下所有规格商品的所有拼单购买数量就等于此活动商品的所有下单的商品购买数量
                         Integer count = this.cmOrderMapper.groupOrdersByUser(slProduct.getId(), activityId, user.getId());
                         // 这一步是为了判断此规格商品是否属于活动商品 (是:是取活动拼团开始时间跟结束时间 否:下面就不用判断当前时间是否是活动时间内了)
                         if (activityId != "19D76AB0-6A63-4E18-AAB6-2F3D2F86A90B") {
@@ -277,6 +276,13 @@ public class CmOrderService {
                                     if (StringUtils.hasLength(detail.getSerialNumber())) {
                                         serialNumber = detail.getSerialNumber();
                                         slOrder.setSerialNumber(serialNumber);// 前台传回来有本团的订单号(证明他是团员)
+                                        String finalSerialNumber1 = serialNumber;
+                                        int count1 = this.orderService.selectCount(new SlOrder() {{
+                                            setSerialNumber(finalSerialNumber1);
+                                        }});
+                                        if (count1 + 1 <= detail.getGroupPeople()) {
+                                            slOrder.setSpellGroupStatus(1);
+                                        }
                                     } else {
                                         serialNumber = OrderNumGeneration.getOrderIdByUUId();
                                         slOrder.setSerialNumber(serialNumber);// 前台传回来的是空的(证明他是团长)
