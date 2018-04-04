@@ -1,6 +1,8 @@
 package com.songpo.searched.config;
 
 import com.songpo.searched.domain.CMShoppingCart;
+import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     /**
-     * redis 构造器
+     * 购物车模板
      *
      * @param factory
      * @return
@@ -23,6 +25,36 @@ public class RedisConfig {
         RedisTemplate<String, CMShoppingCart> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(CMShoppingCart.class));
+        redisTemplate.setConnectionFactory(factory);
+        return redisTemplate;
+    }
+
+    /**
+     * 订单模板
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, SlProductRepository> productRepositoryTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, SlProductRepository> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SlProductRepository.class));
+        redisTemplate.setConnectionFactory(factory);
+        return redisTemplate;
+    }
+
+    /**
+     * 商品模板
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, SlProduct> productTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, SlProduct> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SlProduct.class));
         redisTemplate.setConnectionFactory(factory);
         return redisTemplate;
     }
