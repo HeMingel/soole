@@ -65,6 +65,7 @@ public class Oauth2Config {
                     .antMatchers("/api/common/v1/system/forgot-password").permitAll()
                     // 开放所有接口
                     .antMatchers("/api/common/**").permitAll()
+                    .antMatchers("/api/base/**").permitAll()
                     // 其他请求都需要经过授权
                     .anyRequest().authenticated();
         }

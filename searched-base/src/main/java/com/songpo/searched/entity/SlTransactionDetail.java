@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -23,7 +23,13 @@ public class SlTransactionDetail implements Serializable {
     private String targetId;
 
     /**
-     * 消费方式   1.转账 
+     * 红包id
+     */
+    @Column(name = "red_packet_id")
+    private String redPacketId;
+
+    /**
+     * 消费方式   1.转账  2.红包
      */
     private Boolean type;
 
@@ -86,18 +92,36 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取消费方式   1.转账 
+     * 获取红包id
      *
-     * @return type - 消费方式   1.转账 
+     * @return red_packet_id - 红包id
+     */
+    public String getRedPacketId() {
+        return redPacketId;
+    }
+
+    /**
+     * 设置红包id
+     *
+     * @param redPacketId 红包id
+     */
+    public void setRedPacketId(String redPacketId) {
+        this.redPacketId = redPacketId == null ? null : redPacketId.trim();
+    }
+
+    /**
+     * 获取消费方式   1.转账  2.红包
+     *
+     * @return type - 消费方式   1.转账  2.红包
      */
     public Boolean getType() {
         return type;
     }
 
     /**
-     * 设置消费方式   1.转账 
+     * 设置消费方式   1.转账  2.红包
      *
-     * @param type 消费方式   1.转账 
+     * @param type 消费方式   1.转账  2.红包
      */
     public void setType(Boolean type) {
         this.type = type;
@@ -130,6 +154,7 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", sourceId=").append(sourceId);
         sb.append(", targetId=").append(targetId);
+        sb.append(", redPacketId=").append(redPacketId);
         sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

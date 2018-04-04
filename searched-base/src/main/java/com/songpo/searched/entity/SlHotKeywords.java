@@ -1,58 +1,61 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
-@Table(name = "sl_message_type")
-public class SlMessageType implements Serializable {
+@Table(name = "sl_hot_keywords")
+public class SlHotKeywords implements Serializable {
     /**
-     * 唯一标识符
+     * 唯一标识
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     /**
-     * 名称
+     * 关键词内容
      */
-    private String name;
+    private String content;
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取唯一标识符
+     * 获取唯一标识
      *
-     * @return id - 唯一标识符
+     * @return id - 唯一标识
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 设置唯一标识符
+     * 设置唯一标识
      *
-     * @param id 唯一标识符
+     * @param id 唯一标识
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
     }
 
     /**
-     * 获取名称
+     * 获取关键词内容
      *
-     * @return name - 名称
+     * @return content - 关键词内容
      */
-    public String getName() {
-        return name;
+    public String getContent() {
+        return content;
     }
 
     /**
-     * 设置名称
+     * 设置关键词内容
      *
-     * @param name 名称
+     * @param content 关键词内容
      */
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class SlMessageType implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
+        sb.append(", content=").append(content);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

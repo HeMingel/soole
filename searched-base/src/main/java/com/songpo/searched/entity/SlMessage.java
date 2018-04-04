@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_message")
 public class SlMessage implements Serializable {
@@ -61,7 +61,14 @@ public class SlMessage implements Serializable {
     /**
      * 消息类型，1：单播 2：广播
      */
-    private Integer type;
+    @Column(name = "channel_type")
+    private Integer channelType;
+
+    /**
+     * 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     */
+    @Column(name = "message_type")
+    private Integer messageType;
 
     private static final long serialVersionUID = 1L;
 
@@ -230,19 +237,37 @@ public class SlMessage implements Serializable {
     /**
      * 获取消息类型，1：单播 2：广播
      *
-     * @return type - 消息类型，1：单播 2：广播
+     * @return channel_type - 消息类型，1：单播 2：广播
      */
-    public Integer getType() {
-        return type;
+    public Integer getChannelType() {
+        return channelType;
     }
 
     /**
      * 设置消息类型，1：单播 2：广播
      *
-     * @param type 消息类型，1：单播 2：广播
+     * @param channelType 消息类型，1：单播 2：广播
      */
-    public void setType(Integer type) {
-        this.type = type;
+    public void setChannelType(Integer channelType) {
+        this.channelType = channelType;
+    }
+
+    /**
+     * 获取消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     *
+     * @return message_type - 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     */
+    public Integer getMessageType() {
+        return messageType;
+    }
+
+    /**
+     * 设置消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     *
+     * @param messageType 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     */
+    public void setMessageType(Integer messageType) {
+        this.messageType = messageType;
     }
 
     @Override
@@ -260,7 +285,8 @@ public class SlMessage implements Serializable {
         sb.append(", read=").append(read);
         sb.append(", createTime=").append(createTime);
         sb.append(", readTime=").append(readTime);
-        sb.append(", type=").append(type);
+        sb.append(", channelType=").append(channelType);
+        sb.append(", messageType=").append(messageType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

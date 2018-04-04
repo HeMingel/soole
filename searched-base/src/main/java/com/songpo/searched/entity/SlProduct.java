@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -52,7 +52,7 @@ public class SlProduct implements Serializable {
     private String productTypeId;
 
     /**
-     * 是否下架
+     * 是否下架(0:否 1:是)
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -304,18 +304,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架
+     * 获取是否下架(0:否 1:是)
      *
-     * @return sold_out - 是否下架
+     * @return sold_out - 是否下架(0:否 1:是)
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置是否下架
+     * 设置是否下架(0:否 1:是)
      *
-     * @param soldOut 是否下架
+     * @param soldOut 是否下架(0:否 1:是)
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;

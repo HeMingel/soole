@@ -14,13 +14,14 @@
     <result column="read" jdbcType="INTEGER" property="read" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="read_time" jdbcType="VARCHAR" property="readTime" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="channel_type" jdbcType="INTEGER" property="channelType"/>
+      <result column="message_type" jdbcType="INTEGER" property="messageType"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, source_id, source_name, target_id, target_name, content, read, create_time, read_time, 
-    type
+      id, source_id, source_name, target_id, target_name, content, read, create_time, read_time,
+      channel_type, message_type
   </sql>
 </mapper>

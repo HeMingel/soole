@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -14,10 +14,10 @@ public class SlActivityProduct implements Serializable {
     private String id;
 
     /**
-     * 商品活动序号
+     * 商品id
      */
-    @Column(name = "serial_number")
-    private String serialNumber;
+    @Column(name = "product_id")
+    private String productId;
 
     /**
      * 活动唯一标识符
@@ -131,21 +131,21 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取商品活动序号
+     * 获取商品id
      *
-     * @return serial_number - 商品活动序号
+     * @return product_id - 商品id
      */
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getProductId() {
+        return productId;
     }
 
     /**
-     * 设置商品活动序号
+     * 设置商品id
      *
-     * @param serialNumber 商品活动序号
+     * @param productId 商品id
      */
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber == null ? null : serialNumber.trim();
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
     }
 
     /**
@@ -443,7 +443,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", serialNumber=").append(serialNumber);
+        sb.append(", productId=").append(productId);
         sb.append(", activityId=").append(activityId);
         sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
