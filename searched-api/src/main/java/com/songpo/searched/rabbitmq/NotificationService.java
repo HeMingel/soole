@@ -5,7 +5,6 @@ import com.songpo.searched.mapper.SlMessageMapper;
 import com.songpo.searched.typehandler.MessageChannelTypeEnum;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
@@ -54,15 +53,7 @@ public class NotificationService {
 
         // 如果频道不存在，则进行创建
         String channelName = "queue_" + targetId;
-        if (!channelCache.hasKey(channelName)) {
-            try {
-                rabbitAdmin.declareQueue(new Queue(channelName));
-            } catch (Exception e) {
-                log.debug("频道[{}]已存在", channelName);
-            }
-        } else {
-            channelCache.put(channelName, channelName);
-        }
+        checkChannelName(channelName);
 
         // 发送单播消息
         this.messagingTemplate.convertAndSend(channelName, content);
@@ -88,15 +79,7 @@ public class NotificationService {
 
         // 如果频道不存在，则进行创建
         String channelName = "topic_" + targetId;
-        if (!channelCache.hasKey(channelName)) {
-            try {
-                rabbitAdmin.declareExchange(new TopicExchange(channelName));
-            } catch (Exception e) {
-                log.debug("频道[{}]已存在", channelName);
-            }
-        } else {
-            channelCache.put(channelName, channelName);
-        }
+        checkChannelName(channelName);
 
         // 发送广播消息
         this.messagingTemplate.convertAndSend(channelName, content);
@@ -115,8 +98,30 @@ public class NotificationService {
         message.setMessageType(MessageTypeEnum.SYSTEM.getValue());
         this.messageMapper.insertSelective(message);
 
+        // 如果频道不存在，则进行创建
+        String channelName = "topic_globalMessage";
+
+        checkChannelName(channelName);
+
         // 发送广播消息
         this.messagingTemplate.convertAndSend("topic_globalMessage", content);
+    }
+
+    /**
+     * 检测频道是否存在
+     *
+     * @param channelName 频道名称
+     */
+    private void checkChannelName(String channelName) {
+        if (!channelCache.hasKey(channelName)) {
+            try {
+                rabbitAdmin.declareExchange(new TopicExchange(channelName));
+            } catch (Exception e) {
+                log.debug("频道[{}]已存在", channelName);
+            }
+        } else {
+            channelCache.put(channelName, channelName);
+        }
     }
 
 }
