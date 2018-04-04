@@ -41,14 +41,14 @@ public class SlRedPacket implements Serializable {
      */
     private Boolean type;
 
-    private static final long serialVersionUID = 1L;
-
-    @Column(name = "create_time")
-    private Date createTime;
     /**
      * 红包结果  1.有效  2.已抢完  3.过期
      */
     private Boolean result;
+
+    private static final long serialVersionUID = 1L;
+    @Column(name = "create_time")
+    private Date createTime;
 
     /**
      * @return id
