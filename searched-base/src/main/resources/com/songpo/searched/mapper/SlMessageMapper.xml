@@ -21,7 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, source_id, source_name, target_id, target_name, content, read, create_time, read_time,
+      id, source_id, source_name, target_id, target_name, content, read, create_time, read_time,
       channel_type, message_type
   </sql>
 </mapper>

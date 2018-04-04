@@ -25,28 +25,29 @@ public class SlRedPacket implements Serializable {
     @Column(name = "surplus_money")
     private BigDecimal surplusMoney;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 红包个数
      */
     private Integer count;
 
     /**
-     * 红包类型   1. 余额，  2.豆
-     */
-    private Boolean type;
-    /**
      * 剩余红包个数
      */
     @Column(name = "surplus_count")
     private Integer surplusCount;
 
-    @Column(name = "create_time")
-    private Date createTime;
+    private static final long serialVersionUID = 1L;
+
     /**
      * 红包结果  1.有效  2.已抢完  3.过期
      */
     private Boolean result;
+    /**
+     * 红包类型   1. 余额，  2.豆
+     */
+    private Boolean type;
+    @Column(name = "create_time")
+    private Date createTime;
 
     /**
      * @return id

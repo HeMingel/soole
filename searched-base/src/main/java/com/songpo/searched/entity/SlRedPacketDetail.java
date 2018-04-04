@@ -2,6 +2,8 @@ package com.songpo.searched.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Table(name = "sl_red_packet_detail")
 public class SlRedPacketDetail implements Serializable {
@@ -24,7 +26,7 @@ public class SlRedPacketDetail implements Serializable {
     /**
      * 抢到的金额或者金豆数量
      */
-    private Long money;
+    private BigDecimal money;
 
     /**
      * 红包类型  1.余额  2.金豆
@@ -35,7 +37,7 @@ public class SlRedPacketDetail implements Serializable {
      * 抢红包时间
      */
     @Column(name = "create_time")
-    private Long createTime;
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -94,7 +96,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @return money - 抢到的金额或者金豆数量
      */
-    public Long getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
@@ -103,7 +105,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @param money 抢到的金额或者金豆数量
      */
-    public void setMoney(Long money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 
@@ -130,7 +132,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @return create_time - 抢红包时间
      */
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
@@ -139,7 +141,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @param createTime 抢红包时间
      */
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

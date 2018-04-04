@@ -10,7 +10,7 @@
         <result column="user_id" jdbcType="VARCHAR" property="userId"/>
         <result column="money" jdbcType="DECIMAL" property="money"/>
         <result column="type" jdbcType="BIT" property="type"/>
-        <result column="create_time" jdbcType="DECIMAL" property="createTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
