@@ -59,7 +59,7 @@ public class SlMessage implements Serializable {
     private String readTime;
 
     /**
-     * 消息类型，1：单播 2：广播
+     * 频道类型，1：单播 2：广播
      */
     @Column(name = "channel_type")
     private Integer channelType;
@@ -235,18 +235,18 @@ public class SlMessage implements Serializable {
     }
 
     /**
-     * 获取消息类型，1：单播 2：广播
+     * 获取频道类型，1：单播 2：广播
      *
-     * @return channel_type - 消息类型，1：单播 2：广播
+     * @return channel_type - 频道类型，1：单播 2：广播
      */
     public Integer getChannelType() {
         return channelType;
     }
 
     /**
-     * 设置消息类型，1：单播 2：广播
+     * 设置频道类型，1：单播 2：广播
      *
-     * @param channelType 消息类型，1：单播 2：广播
+     * @param channelType 频道类型，1：单播 2：广播
      */
     public void setChannelType(Integer channelType) {
         this.channelType = channelType;
