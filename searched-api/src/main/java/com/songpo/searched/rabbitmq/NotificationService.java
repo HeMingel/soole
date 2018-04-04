@@ -1,6 +1,5 @@
 package com.songpo.searched.rabbitmq;
 
-import com.alibaba.fastjson.JSON;
 import com.songpo.searched.entity.SlMessage;
 import com.songpo.searched.mapper.SlMessageMapper;
 import com.songpo.searched.typehandler.MessageTypeEnum;
@@ -63,7 +62,7 @@ public class NotificationService {
         }
 
         // 发送单播消息
-        this.messagingTemplate.convertAndSend(channelName, JSON.toJSONString(message));
+        this.messagingTemplate.convertAndSend(channelName, content);
     }
 
     /**
@@ -95,7 +94,23 @@ public class NotificationService {
         }
 
         // 发送广播消息
-        this.messagingTemplate.convertAndSend(channelName, JSON.toJSONString(message));
+        this.messagingTemplate.convertAndSend(channelName, content);
+    }
+
+    /**
+     * 发送全局通知
+     *
+     * @param content 消息内容
+     */
+    public void sendGlobalMessage(String content) {
+        SlMessage message = new SlMessage();
+        message.setContent(content);
+        message.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
+        message.setType(MessageTypeEnum.TOPIC.getValue());
+        this.messageMapper.insertSelective(message);
+
+        // 发送广播消息
+        this.messagingTemplate.convertAndSend("topic_globalMessage", content);
     }
 
 }
