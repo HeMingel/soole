@@ -369,9 +369,7 @@ public class CmOrderService {
         log.debug("查询我的订单列表clientId:{}", clientId);
         BusinessMessage message = new BusinessMessage();
         try {
-            SlUser user = this.userService.selectOne(new SlUser() {{
-                setClientId(clientId);
-            }});
+            SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId());
                 List<String> userAvatarList = new ArrayList<>();
@@ -379,7 +377,8 @@ public class CmOrderService {
                 for (Map map : list) {
                     Object type = map.get("type");
                     Object serialNumber = map.get("serialNumber");
-                    if (type.equals(2)) {
+                    if (type.equals(2)) {//拼团订单
+                        // 拼团订单筛选参与会员头像
                         userAvatarList = this.cmOrderMapper.findUserAvatar(serialNumber);
                     }
                 }

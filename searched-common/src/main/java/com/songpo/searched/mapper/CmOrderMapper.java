@@ -16,10 +16,6 @@ public interface CmOrderMapper {
 
     Map<String, Object> selectMyOrderInfo(@Param("userId") String userId, @Param("orderId") String orderId);
 
-//    List<String> existUser(@Param("productId") String productId);
-
-    Map<String, Object> findGroup(@Param("productId") String productId);
-
     Map<String, Object> findActivityProduct(@Param("productId") String productId);
 
     Integer selectOrdersCount(@Param("productId") String productId, @Param("userId") String userId, @Param("activityProductId") String activityProductId);

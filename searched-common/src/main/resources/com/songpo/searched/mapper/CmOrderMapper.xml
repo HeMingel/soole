@@ -27,7 +27,7 @@
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
         LEFT JOIN sl_shop ss ON sod.shop_id = ss.id
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
-        LEFT JOIN sl_sales_mode ssm ON ssm.id = spr.sales_mode_id
+        LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
         ORDER BY so.create_time DESC
     </select>
@@ -50,48 +50,12 @@
         so.county county,
         so.detailed detailed,
         so.create_time createTime,
-        so.total_amount totalAmount
+        so.total_amount totalAmount,
         so.deduct_total_pulse totalPulse,
         so.serial_number orderNum,
         so.type AS type
         from sl_order so
         WHERE so.user_id = #{userId} and so.id = #{orderId}
-    </select>
-
-    <select id="existUser" resultType="java.lang.String">
---        select * from sl_order_detail sod
---        LEFT JOIN sl_order so ON so.id = sod.order_id
---        LEFT JOIN sl
-    </select>
-    <select id="findGroup" resultType="java.util.Map">
-       SELECT
-  sod.serial_number serialNumber,
-  (SELECT
-    COUNT(1)
-  FROM
-    sl_order_detail sod
-    LEFT JOIN sl_order so ON so.`serial_number`= sod.`serial_number` AND so.`id` = sod.`order_id`
-    LEFT JOIN sl_activity_product sap ON sap.product_id = sod.product_id
-  WHERE sod.create_time BETWEEN sap.begin_time
-    AND sap.end_time
-    AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
-    AND so.type = 2
-    AND sod.product_id = #{productId}
-     AND so.payment_state > 0) orderCounts
-FROM
-  sl_order_detail sod
-  LEFT JOIN sl_order so
-    ON so.id = sod.order_id AND so.`id` = sod.`order_id`
-  LEFT JOIN sl_activity_product AS sap
-    ON sap.product_id = sod.product_id
-WHERE sod.create_time BETWEEN sap.begin_time
-  AND sap.end_time
-  AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
-  AND so.type = 2
-  AND sod.product_id = #{productId}
-   AND so.payment_state > 0
-ORDER BY sod.create_time DESC
-LIMIT 1;
     </select>
 
     <select id="findActivityProduct" resultType="java.util.Map">
