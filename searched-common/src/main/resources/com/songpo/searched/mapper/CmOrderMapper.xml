@@ -58,47 +58,51 @@
         WHERE so.user_id = #{userId} and so.id = #{orderId}
     </select>
 
+    <select id="existUser" resultType="java.lang.String">
+--        select * from sl_order_detail sod
+--        LEFT JOIN sl_order so ON so.id = sod.order_id
+--        LEFT JOIN sl
+    </select>
     <select id="findGroup" resultType="java.util.Map">
        SELECT
-          sod.serial_number serialNumber
-         (SELECT
-            COUNT(1)
-          FROM
-            sl_order_detail sod
-            LEFT JOIN sl_order so
-              ON so.id = sod.order_id
-            LEFT JOIN sl_activity_product sap
-              ON sap.product_id = sod.product_id
-          WHERE sod.create_time BETWEEN sap.begin_time
-            AND sap.end_time
-            AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
-            AND so.type = 2
-            AND sod.product_id = #{productId}
-             AND so.payment_state = 0
-            OR so.payment_state = 1) orderCounts
-        FROM
-          sl_order_detail sod
-          LEFT JOIN sl_order so ON so.id = sod.order_id
-          LEFT JOIN sl_activity_product AS sap ON sap.product_id = sod.product_id
-        WHERE sod.create_time BETWEEN sap.begin_time
-          AND sap.end_time
-          AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
-          AND so.type = 2
-          AND sod.product_id = #{productId}
-          AND so.payment_state = 0 OR so.payment_state = 1
-        ORDER BY sod.create_time DESC
-        LIMIT 1
+  sod.serial_number serialNumber,
+  (SELECT
+    COUNT(1)
+  FROM
+    sl_order_detail sod
+    LEFT JOIN sl_order so ON so.`serial_number`= sod.`serial_number` AND so.`id` = sod.`order_id`
+    LEFT JOIN sl_activity_product sap ON sap.product_id = sod.product_id
+  WHERE sod.create_time BETWEEN sap.begin_time
+    AND sap.end_time
+    AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
+    AND so.type = 2
+    AND sod.product_id = #{productId}
+     AND so.payment_state > 0) orderCounts
+FROM
+  sl_order_detail sod
+  LEFT JOIN sl_order so
+    ON so.id = sod.order_id AND so.`id` = sod.`order_id`
+  LEFT JOIN sl_activity_product AS sap
+    ON sap.product_id = sod.product_id
+WHERE sod.create_time BETWEEN sap.begin_time
+  AND sap.end_time
+  AND sap.activity_id = '7812dbd4-9063-4991-8551-f3fedce8cf9a'
+  AND so.type = 2
+  AND sod.product_id = #{productId}
+   AND so.payment_state > 0
+ORDER BY sod.create_time DESC
+LIMIT 1;
     </select>
 
     <select id="findActivityProduct" resultType="java.util.Map">
         select
-        sap.count counts,
-        sap.people_num peopleNum,
+        ifnull(sap.count,'') counts,
+        ifnull(sap.people_num,'') peopleNum,
         sap.id activityProductId,
-        sap.begin_time beginTime,
-        sap.end_time endTime,
-        sap.orders_num ordersNum,
-        sap.surplus_product_count surplusProductCount
+        ifnull(sap.begin_time,'') beginTime,
+        ifnull(sap.end_time,'') endTime,
+        ifnull(sap.orders_num,'')ordersNum,
+        ifnull(sap.surplus_product_count,'') surplusProductCount
         from sl_activity_product sap
         LEFT JOIN sl_activity sa ON sap.activity_id = sa.id
         WHERE
@@ -108,5 +112,40 @@
         order by sap.begin_time DESC
         limit 1
     </select>
+    <select id="selectOrdersCount" resultType="java.lang.Integer">
+        select
+        ifnull(sum(sod.quantity),0) quantity
+        from sl_order so
+        LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
+        AND so.serial_number = sod.serial_number
+        WHERE so.payment_state >= 0 AND sod.product_id = #{productId} and sod.creator = #{userId}
+        and so.user_id = #{userId}
+        and so.activity_product_id = #{activityProductId}
+    </select>
+    <select id="findProductsRepositoryId" resultType="java.lang.String">
+        SELECT sapr.`product_repository_id`
+        FROM sl_activity_product_repository sapr
+        LEFT JOIN sl_activity_product sap ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
+        LEFT JOIN sl_product sp ON sap.`serial_number` = sp.`activity_product_serial_number`
+        WHERE
+        sp.`id` = #{productId}
+        AND sap.`activity_id` = #{activityId};
+    </select>
 
+    <select id="groupOrdersByUser" resultType="java.lang.Integer">
+        SELECT IFNULL(SUM(sod.`quantity`),0) FROM sl_order_detail sod
+        LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`
+        WHERE
+        so.type = '2' AND sod.`product_id` = #{productId}
+        and so.payment_state >= 0 AND so.activityId = #{activityId}
+        and sod.creator = #{userId}
+        AND so.`user_id` = #{userId}
+    </select>
+    <select id="selectActivityProductByActivityAndRepositoryId"
+            resultType="com.songpo.searched.entity.SlActivityProduct">
+        SELECT sap.id id,sap.orders_num ordersNum,sap.restrict_count restrictCount FROM sl_activity_product sap
+        LEFT JOIN sl_activity_product_repository sapr ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
+        LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
+        WHERE sap.`activity_id` = #{activityId} AND spr.`id`= #{repositoryId}
+    </select>
 </mapper>
