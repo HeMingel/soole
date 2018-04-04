@@ -5,33 +5,39 @@ import java.io.Serializable;
 
 @Table(name = "sl_red_packet_detail")
 public class SlRedPacketDetail implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 红包id
      */
     @Column(name = "red_packet_id")
     private String redPacketId;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 抢到的金额或者金豆数量
      */
     private Long money;
+
     /**
      * 红包类型  1.余额  2.金豆
      */
     private Boolean type;
+
     /**
      * 抢红包时间
      */
     @Column(name = "create_time")
     private Long createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

@@ -12,12 +12,13 @@
         <result column="count" jdbcType="INTEGER" property="count"/>
         <result column="surplus_count" jdbcType="INTEGER" property="surplusCount"/>
         <result column="type" jdbcType="BIT" property="type"/>
+        <result column="result" jdbcType="BIT" property="result"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
           WARNING - @mbg.generated
         -->
-        id, user_id, money, surplus_money, count, surplus_count, type, create_time
+        id, user_id, money, surplus_money, count, surplus_count, type, result, create_time
     </sql>
 </mapper>

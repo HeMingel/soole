@@ -14,34 +14,39 @@ public class SlRedPacket implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 红包金额/ 红豆金额
      */
     private BigDecimal money;
 
     /**
-     * 红包个数
-     */
-    private Integer count;
-    /**
      * 剩余红包金额/剩余金豆个数
      */
     @Column(name = "surplus_money")
     private BigDecimal surplusMoney;
 
+    private static final long serialVersionUID = 1L;
+    /**
+     * 红包个数
+     */
+    private Integer count;
+
     /**
      * 红包类型   1. 余额，  2.豆
      */
     private Boolean type;
-
-    @Column(name = "create_time")
-    private Date createTime;
     /**
      * 剩余红包个数
      */
     @Column(name = "surplus_count")
     private Integer surplusCount;
+
+    @Column(name = "create_time")
+    private Date createTime;
+    /**
+     * 红包结果  1.有效  2.已抢完  3.过期
+     */
+    private Boolean result;
 
     /**
      * @return id
@@ -162,6 +167,24 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
+     * 获取红包结果  1.有效  2.已抢完  3.过期
+     *
+     * @return result - 红包结果  1.有效  2.已抢完  3.过期
+     */
+    public Boolean getResult() {
+        return result;
+    }
+
+    /**
+     * 设置红包结果  1.有效  2.已抢完  3.过期
+     *
+     * @param result 红包结果  1.有效  2.已抢完  3.过期
+     */
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    /**
      * @return create_time
      */
     public Date getCreateTime() {
@@ -188,6 +211,7 @@ public class SlRedPacket implements Serializable {
         sb.append(", count=").append(count);
         sb.append(", surplusCount=").append(surplusCount);
         sb.append(", type=").append(type);
+        sb.append(", result=").append(result);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

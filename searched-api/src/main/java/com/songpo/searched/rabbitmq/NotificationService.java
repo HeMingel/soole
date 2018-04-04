@@ -2,6 +2,7 @@ package com.songpo.searched.rabbitmq;
 
 import com.songpo.searched.entity.SlMessage;
 import com.songpo.searched.mapper.SlMessageMapper;
+import com.songpo.searched.typehandler.MessageChannelTypeEnum;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;
@@ -39,14 +40,16 @@ public class NotificationService {
      * @param sourceId 来源标识
      * @param targetId 目标标识
      * @param content  消息内容
+     * @param type  消息类型
      */
-    void sendToQueue(String sourceId, String targetId, String content) {
+    void sendToQueue(String sourceId, String targetId, String content, Integer type) {
         SlMessage message = new SlMessage();
         message.setSourceId(sourceId);
         message.setTargetId(targetId);
         message.setContent(content);
         message.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
-        message.setType(MessageTypeEnum.QUEUE.getValue());
+        message.setChannelType(MessageChannelTypeEnum.QUEUE.getValue());
+        message.setMessageType(type);
         this.messageMapper.insertSelective(message);
 
         // 如果频道不存在，则进行创建
@@ -71,14 +74,16 @@ public class NotificationService {
      * @param sourceId 来源标识
      * @param targetId 目标标识
      * @param content  消息内容
+     * @param type  消息类型
      */
-    public void sendToTopic(String sourceId, String targetId, String content) {
+    public void sendToTopic(String sourceId, String targetId, String content, Integer type) {
         SlMessage message = new SlMessage();
         message.setSourceId(sourceId);
         message.setTargetId(targetId);
         message.setContent(content);
         message.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
-        message.setType(MessageTypeEnum.TOPIC.getValue());
+        message.setChannelType(MessageChannelTypeEnum.TOPIC.getValue());
+        message.setMessageType(type);
         this.messageMapper.insertSelective(message);
 
         // 如果频道不存在，则进行创建
@@ -102,11 +107,12 @@ public class NotificationService {
      *
      * @param content 消息内容
      */
-    public void sendGlobalMessage(String content) {
+    public void sendGlobalMessage(String content, Integer type) {
         SlMessage message = new SlMessage();
         message.setContent(content);
         message.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
-        message.setType(MessageTypeEnum.TOPIC.getValue());
+        message.setChannelType(MessageChannelTypeEnum.TOPIC.getValue());
+        message.setMessageType(MessageTypeEnum.SYSTEM.getValue());
         this.messageMapper.insertSelective(message);
 
         // 发送广播消息
