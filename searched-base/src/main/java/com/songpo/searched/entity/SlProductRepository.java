@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -170,6 +170,12 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "rewards_money_ratio")
     private Float rewardsMoneyRatio;
+
+    /**
+     * 首单获得了豆
+     */
+    @Column(name = "first_order_pulse")
+    private Integer firstOrderPulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -695,6 +701,24 @@ public class SlProductRepository implements Serializable {
         this.rewardsMoneyRatio = rewardsMoneyRatio;
     }
 
+    /**
+     * 获取首单获得了豆
+     *
+     * @return first_order_pulse - 首单获得了豆
+     */
+    public Integer getFirstOrderPulse() {
+        return firstOrderPulse;
+    }
+
+    /**
+     * 设置首单获得了豆
+     *
+     * @param firstOrderPulse 首单获得了豆
+     */
+    public void setFirstOrderPulse(Integer firstOrderPulse) {
+        this.firstOrderPulse = firstOrderPulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -730,6 +754,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
+        sb.append(", firstOrderPulse=").append(firstOrderPulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

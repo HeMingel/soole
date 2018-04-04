@@ -14,12 +14,6 @@ public class SlProduct implements Serializable {
     private String id;
 
     /**
-     * 活动商品唯一标识符
-     */
-    @Column(name = "activity_product_serial_number")
-    private String activityProductSerialNumber;
-
-    /**
      * 名称
      */
     private String name;
@@ -175,24 +169,6 @@ public class SlProduct implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
-    }
-
-    /**
-     * 获取活动商品唯一标识符
-     *
-     * @return activity_product_serial_number - 活动商品唯一标识符
-     */
-    public String getActivityProductSerialNumber() {
-        return activityProductSerialNumber;
-    }
-
-    /**
-     * 设置活动商品唯一标识符
-     *
-     * @param activityProductSerialNumber 活动商品唯一标识符
-     */
-    public void setActivityProductSerialNumber(String activityProductSerialNumber) {
-        this.activityProductSerialNumber = activityProductSerialNumber == null ? null : activityProductSerialNumber.trim();
     }
 
     /**
@@ -634,7 +610,6 @@ public class SlProduct implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", activityProductSerialNumber=").append(activityProductSerialNumber);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
         sb.append(", imageUrl=").append(imageUrl);

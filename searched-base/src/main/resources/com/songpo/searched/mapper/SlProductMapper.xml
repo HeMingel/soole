@@ -6,7 +6,6 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-      <result column="activity_product_serial_number" jdbcType="VARCHAR" property="activityProductSerialNumber"/>
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
@@ -36,9 +35,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, activity_product_serial_number, name, remark, image_url, introduction, detail,
-      product_type_id, sold_out, comment_num, sales_volume, reference_price, reference_pulse,
-      shop_id, sales_mode_id, min_price, presell_shipments_days, return_money, return_pulse,
-      group_people, reward_value, creator, create_time, restrict_count, recommend, group_price
+      id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num,
+      sales_volume, reference_price, reference_pulse, shop_id, sales_mode_id, min_price,
+      presell_shipments_days, return_money, return_pulse, group_people, reward_value, creator,
+      create_time, restrict_count, recommend, group_price
   </sql>
 </mapper>

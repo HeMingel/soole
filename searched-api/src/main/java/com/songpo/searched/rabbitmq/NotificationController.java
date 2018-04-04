@@ -76,4 +76,26 @@ public class NotificationController {
         }
         return message;
     }
+
+    @ApiOperation(value = "全局消息发送")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "content", value = "消息内容", paramType = "form", required = true)
+    })
+    @RequestMapping("/global")
+    public BusinessMessage<Void> sendGlobalMessage(String content) {
+        log.debug("全局消息发送，内容：{}", content);
+        BusinessMessage<Void> message = new BusinessMessage<>();
+        if (StringUtils.isBlank(content)) {
+            message.setMsg("全局消息内容为空");
+        } else {
+            try {
+                this.notificationService.sendGlobalMessage(content);
+                message.setSuccess(true);
+            } catch (Exception e) {
+                log.error("全局消息发送失败，", e);
+                message.setMsg("全局消息发送失败，请重试");
+            }
+        }
+        return message;
+    }
 }

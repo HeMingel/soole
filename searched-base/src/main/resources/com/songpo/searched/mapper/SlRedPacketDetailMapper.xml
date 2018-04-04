@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.songpo.searched.mapper.SlRedPacketMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlRedPacket">
+<mapper namespace="com.songpo.searched.mapper.SlRedPacketDetailMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlRedPacketDetail">
         <!--
           WARNING - @mbg.generated
         -->
         <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="red_packet_id" jdbcType="VARCHAR" property="redPacketId"/>
         <result column="user_id" jdbcType="VARCHAR" property="userId"/>
         <result column="money" jdbcType="DECIMAL" property="money"/>
-        <result column="surplus_money" jdbcType="DECIMAL" property="surplusMoney"/>
-        <result column="count" jdbcType="INTEGER" property="count"/>
-        <result column="surplus_count" jdbcType="INTEGER" property="surplusCount"/>
         <result column="type" jdbcType="BIT" property="type"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_time" jdbcType="DECIMAL" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
           WARNING - @mbg.generated
         -->
-        id, user_id, money, surplus_money, count, surplus_count, type, create_time
+        id, red_packet_id, user_id, money, type, create_time
     </sql>
 </mapper>

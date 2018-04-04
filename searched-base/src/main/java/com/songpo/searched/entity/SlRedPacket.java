@@ -2,34 +2,46 @@ package com.songpo.searched.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "sl_red_packet")
 public class SlRedPacket implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     @Column(name = "user_id")
     private String userId;
+
+    private static final long serialVersionUID = 1L;
     /**
-     * 红包金额 若红包类型为金豆，则此处为0
+     * 红包金额/ 红豆金额
      */
-    private Long money;
-    /**
-     * 金豆数量，若红包类型为 余额，此处为0
-     */
-    private Integer bean;
+    private BigDecimal money;
+
     /**
      * 红包个数
      */
     private Integer count;
     /**
+     * 剩余红包金额/剩余金豆个数
+     */
+    @Column(name = "surplus_money")
+    private BigDecimal surplusMoney;
+
+    /**
      * 红包类型   1. 余额，  2.豆
      */
     private Boolean type;
+
     @Column(name = "create_time")
     private Date createTime;
+    /**
+     * 剩余红包个数
+     */
+    @Column(name = "surplus_count")
+    private Integer surplusCount;
 
     /**
      * @return id
@@ -60,39 +72,39 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
-     * 获取红包金额 若红包类型为金豆，则此处为0
+     * 获取红包金额/ 红豆金额
      *
-     * @return money - 红包金额 若红包类型为金豆，则此处为0
+     * @return money - 红包金额/ 红豆金额
      */
-    public Long getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
     /**
-     * 设置红包金额 若红包类型为金豆，则此处为0
+     * 设置红包金额/ 红豆金额
      *
-     * @param money 红包金额 若红包类型为金豆，则此处为0
+     * @param money 红包金额/ 红豆金额
      */
-    public void setMoney(Long money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 
     /**
-     * 获取金豆数量，若红包类型为 余额，此处为0
+     * 获取剩余红包金额/剩余金豆个数
      *
-     * @return bean - 金豆数量，若红包类型为 余额，此处为0
+     * @return surplus_money - 剩余红包金额/剩余金豆个数
      */
-    public Integer getBean() {
-        return bean;
+    public BigDecimal getSurplusMoney() {
+        return surplusMoney;
     }
 
     /**
-     * 设置金豆数量，若红包类型为 余额，此处为0
+     * 设置剩余红包金额/剩余金豆个数
      *
-     * @param bean 金豆数量，若红包类型为 余额，此处为0
+     * @param surplusMoney 剩余红包金额/剩余金豆个数
      */
-    public void setBean(Integer bean) {
-        this.bean = bean;
+    public void setSurplusMoney(BigDecimal surplusMoney) {
+        this.surplusMoney = surplusMoney;
     }
 
     /**
@@ -111,6 +123,24 @@ public class SlRedPacket implements Serializable {
      */
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    /**
+     * 获取剩余红包个数
+     *
+     * @return surplus_count - 剩余红包个数
+     */
+    public Integer getSurplusCount() {
+        return surplusCount;
+    }
+
+    /**
+     * 设置剩余红包个数
+     *
+     * @param surplusCount 剩余红包个数
+     */
+    public void setSurplusCount(Integer surplusCount) {
+        this.surplusCount = surplusCount;
     }
 
     /**
@@ -154,8 +184,9 @@ public class SlRedPacket implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", money=").append(money);
-        sb.append(", bean=").append(bean);
+        sb.append(", surplusMoney=").append(surplusMoney);
         sb.append(", count=").append(count);
+        sb.append(", surplusCount=").append(surplusCount);
         sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

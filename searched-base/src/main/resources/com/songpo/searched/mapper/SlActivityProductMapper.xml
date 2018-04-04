@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+      <result column="product_id" jdbcType="VARCHAR" property="productId"/>
     <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
     <result column="activity_product_repository_serial_number" jdbcType="VARCHAR" property="activityProductRepositorySerialNumber" />
     <result column="price" jdbcType="DECIMAL" property="price" />
@@ -28,8 +28,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, activity_id, activity_product_repository_serial_number, price, 
-    begin_time, end_time, count, people_num, orders_num, surplus_product_count, peas, 
-    award_peas_counts, awward_money, enabled, create_time, creator, restrict_count
+      id, product_id, activity_id, activity_product_repository_serial_number, price, begin_time,
+      end_time, count, people_num, orders_num, surplus_product_count, peas, award_peas_counts,
+      awward_money, enabled, create_time, creator, restrict_count
   </sql>
 </mapper>

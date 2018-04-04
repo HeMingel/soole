@@ -8,17 +8,19 @@ import java.io.Serializable;
 
 @Table(name = "sl_hot_keywords")
 public class SlHotKeywords implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 关键词内容
      */
     private String content;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识
