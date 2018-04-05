@@ -40,7 +40,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, product_name, product_image_url, product_id, product_detail_group_name,
+      id, shop_id, product_name, product_image_url, product_id, product_detail_group_name,
       remark, product_profit_ratio, product_profit_money, price, personal_price, `return cash_ratio`,
       `return cash_money`, post_fee, discount, reference_price, state, count, score, cost_price,
       weight, ship, gold, silver, place_order_return_pulse, `return pulse_ratio`, rebate_pulse,

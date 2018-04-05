@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
+/**
+ * @author 刘松坡
+ */
 @EnableSwagger2Doc
 @MapperScan(basePackages = "com.songpo.searched.mapper")
 @SpringBootApplication

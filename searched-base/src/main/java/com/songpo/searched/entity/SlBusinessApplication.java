@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_business_application")
 public class SlBusinessApplication implements Serializable {
@@ -25,34 +25,46 @@ public class SlBusinessApplication implements Serializable {
     private String productTypeId;
 
     /**
-     * 公司地址
+     * 省份
      */
-    @Column(name = "company_address")
-    private String companyAddress;
+    private String province;
 
     /**
-     * 公司名称
+     * 城市
      */
-    @Column(name = "company_name")
-    private String companyName;
+    private String city;
 
     /**
-     * 员工数量
+     * 区县
      */
-    @Column(name = "employee_count")
-    private String employeeCount;
+    private String county;
 
     /**
-     * 企业需要清仓的原因
+     * 乡镇
      */
-    @Column(name = "reasons_for_clearance")
-    private String reasonsForClearance;
+    private String town;
 
     /**
-     * 企业需要清仓的产品
+     * 村、街道
      */
-    @Column(name = "products_for_clearance")
-    private String productsForClearance;
+    private String street;
+
+    /**
+     * 剩余地址信息
+     */
+    @Column(name = "other_address")
+    private String otherAddress;
+
+    /**
+     * 申请类型：1 个人、2 企业
+     */
+    private Integer type;
+
+    /**
+     * 营业执照
+     */
+    @Column(name = "business_image_url")
+    private String businessImageUrl;
 
     /**
      * 姓名
@@ -61,9 +73,21 @@ public class SlBusinessApplication implements Serializable {
     private String realName;
 
     /**
+     * 公司名称
+     */
+    @Column(name = "company_name")
+    private String companyName;
+
+    /**
      * 电话
      */
     private String phone;
+
+    /**
+     * 身份证号码
+     */
+    @Column(name = "id_card_number")
+    private String idCardNumber;
 
     /**
      * 身份证正面
@@ -158,93 +182,147 @@ public class SlBusinessApplication implements Serializable {
     }
 
     /**
-     * 获取公司地址
+     * 获取省份
      *
-     * @return company_address - 公司地址
+     * @return province - 省份
      */
-    public String getCompanyAddress() {
-        return companyAddress;
+    public String getProvince() {
+        return province;
     }
 
     /**
-     * 设置公司地址
+     * 设置省份
      *
-     * @param companyAddress 公司地址
+     * @param province 省份
      */
-    public void setCompanyAddress(String companyAddress) {
-        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
     }
 
     /**
-     * 获取公司名称
+     * 获取城市
      *
-     * @return company_name - 公司名称
+     * @return city - 城市
      */
-    public String getCompanyName() {
-        return companyName;
+    public String getCity() {
+        return city;
     }
 
     /**
-     * 设置公司名称
+     * 设置城市
      *
-     * @param companyName 公司名称
+     * @param city 城市
      */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
     }
 
     /**
-     * 获取员工数量
+     * 获取区县
      *
-     * @return employee_count - 员工数量
+     * @return county - 区县
      */
-    public String getEmployeeCount() {
-        return employeeCount;
+    public String getCounty() {
+        return county;
     }
 
     /**
-     * 设置员工数量
+     * 设置区县
      *
-     * @param employeeCount 员工数量
+     * @param county 区县
      */
-    public void setEmployeeCount(String employeeCount) {
-        this.employeeCount = employeeCount == null ? null : employeeCount.trim();
+    public void setCounty(String county) {
+        this.county = county == null ? null : county.trim();
     }
 
     /**
-     * 获取企业需要清仓的原因
+     * 获取乡镇
      *
-     * @return reasons_for_clearance - 企业需要清仓的原因
+     * @return town - 乡镇
      */
-    public String getReasonsForClearance() {
-        return reasonsForClearance;
+    public String getTown() {
+        return town;
     }
 
     /**
-     * 设置企业需要清仓的原因
+     * 设置乡镇
      *
-     * @param reasonsForClearance 企业需要清仓的原因
+     * @param town 乡镇
      */
-    public void setReasonsForClearance(String reasonsForClearance) {
-        this.reasonsForClearance = reasonsForClearance == null ? null : reasonsForClearance.trim();
+    public void setTown(String town) {
+        this.town = town == null ? null : town.trim();
     }
 
     /**
-     * 获取企业需要清仓的产品
+     * 获取村、街道
      *
-     * @return products_for_clearance - 企业需要清仓的产品
+     * @return street - 村、街道
      */
-    public String getProductsForClearance() {
-        return productsForClearance;
+    public String getStreet() {
+        return street;
     }
 
     /**
-     * 设置企业需要清仓的产品
+     * 设置村、街道
      *
-     * @param productsForClearance 企业需要清仓的产品
+     * @param street 村、街道
      */
-    public void setProductsForClearance(String productsForClearance) {
-        this.productsForClearance = productsForClearance == null ? null : productsForClearance.trim();
+    public void setStreet(String street) {
+        this.street = street == null ? null : street.trim();
+    }
+
+    /**
+     * 获取剩余地址信息
+     *
+     * @return other_address - 剩余地址信息
+     */
+    public String getOtherAddress() {
+        return otherAddress;
+    }
+
+    /**
+     * 设置剩余地址信息
+     *
+     * @param otherAddress 剩余地址信息
+     */
+    public void setOtherAddress(String otherAddress) {
+        this.otherAddress = otherAddress == null ? null : otherAddress.trim();
+    }
+
+    /**
+     * 获取申请类型：1 个人、2 企业
+     *
+     * @return type - 申请类型：1 个人、2 企业
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置申请类型：1 个人、2 企业
+     *
+     * @param type 申请类型：1 个人、2 企业
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    /**
+     * 获取营业执照
+     *
+     * @return business_image_url - 营业执照
+     */
+    public String getBusinessImageUrl() {
+        return businessImageUrl;
+    }
+
+    /**
+     * 设置营业执照
+     *
+     * @param businessImageUrl 营业执照
+     */
+    public void setBusinessImageUrl(String businessImageUrl) {
+        this.businessImageUrl = businessImageUrl == null ? null : businessImageUrl.trim();
     }
 
     /**
@@ -266,6 +344,24 @@ public class SlBusinessApplication implements Serializable {
     }
 
     /**
+     * 获取公司名称
+     *
+     * @return company_name - 公司名称
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * 设置公司名称
+     *
+     * @param companyName 公司名称
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    /**
      * 获取电话
      *
      * @return phone - 电话
@@ -281,6 +377,24 @@ public class SlBusinessApplication implements Serializable {
      */
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 获取身份证号码
+     *
+     * @return id_card_number - 身份证号码
+     */
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    /**
+     * 设置身份证号码
+     *
+     * @param idCardNumber 身份证号码
+     */
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber == null ? null : idCardNumber.trim();
     }
 
     /**
@@ -400,13 +514,18 @@ public class SlBusinessApplication implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", productTypeId=").append(productTypeId);
-        sb.append(", companyAddress=").append(companyAddress);
-        sb.append(", companyName=").append(companyName);
-        sb.append(", employeeCount=").append(employeeCount);
-        sb.append(", reasonsForClearance=").append(reasonsForClearance);
-        sb.append(", productsForClearance=").append(productsForClearance);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", county=").append(county);
+        sb.append(", town=").append(town);
+        sb.append(", street=").append(street);
+        sb.append(", otherAddress=").append(otherAddress);
+        sb.append(", type=").append(type);
+        sb.append(", businessImageUrl=").append(businessImageUrl);
         sb.append(", realName=").append(realName);
+        sb.append(", companyName=").append(companyName);
         sb.append(", phone=").append(phone);
+        sb.append(", idCardNumber=").append(idCardNumber);
         sb.append(", idCardFrontImageUrl=").append(idCardFrontImageUrl);
         sb.append(", idCardBackImageUrl=").append(idCardBackImageUrl);
         sb.append(", idCardHandImageUrl=").append(idCardHandImageUrl);

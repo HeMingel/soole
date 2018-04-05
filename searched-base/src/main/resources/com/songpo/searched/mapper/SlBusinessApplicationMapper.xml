@@ -8,13 +8,18 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
-    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
-    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
-    <result column="employee_count" jdbcType="VARCHAR" property="employeeCount" />
-    <result column="reasons_for_clearance" jdbcType="VARCHAR" property="reasonsForClearance" />
-    <result column="products_for_clearance" jdbcType="VARCHAR" property="productsForClearance" />
+      <result column="province" jdbcType="VARCHAR" property="province"/>
+      <result column="city" jdbcType="VARCHAR" property="city"/>
+      <result column="county" jdbcType="VARCHAR" property="county"/>
+      <result column="town" jdbcType="VARCHAR" property="town"/>
+      <result column="street" jdbcType="VARCHAR" property="street"/>
+      <result column="other_address" jdbcType="VARCHAR" property="otherAddress"/>
+      <result column="type" jdbcType="INTEGER" property="type"/>
+      <result column="business_image_url" jdbcType="VARCHAR" property="businessImageUrl"/>
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
+      <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="id_card_number" jdbcType="VARCHAR" property="idCardNumber"/>
     <result column="id_card_front_image_url" jdbcType="VARCHAR" property="idCardFrontImageUrl" />
     <result column="id_card_back_image_url" jdbcType="VARCHAR" property="idCardBackImageUrl" />
     <result column="id_card_hand_image_url" jdbcType="VARCHAR" property="idCardHandImageUrl" />
@@ -26,8 +31,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, product_type_id, company_address, company_name, employee_count, reasons_for_clearance, 
-    products_for_clearance, real_name, phone, id_card_front_image_url, id_card_back_image_url, 
-    id_card_hand_image_url, business_check_state, business_create_time, business_check_time
+      id, user_id, product_type_id, province, city, county, town, street, other_address,
+      type, business_image_url, real_name, company_name, phone, id_card_number, id_card_front_image_url,
+      id_card_back_image_url, id_card_hand_image_url, business_check_state, business_create_time,
+      business_check_time
   </sql>
 </mapper>

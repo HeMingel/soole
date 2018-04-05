@@ -28,24 +28,9 @@ public class ApplicationService {
      * 提交商户入驻申请
      *
      * @param agent       入驻信息
-     * @param idCardFront 身份证正面照片
-     * @param idCardBack  身份证反面照片
      * @param idCardHand  手持身份证照片
-     * @return 1：提交成功 0：提交失败
      */
-    public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
-        // 上传照片
-        String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
-        if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
-            agent.setIdCardBackImageUrl(idCardFrontImageUrl);
-        }
-
-        // 上传照片
-        String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
-        if (StringUtils.isNotBlank(idCardBackImageUrl)) {
-            agent.setIdCardBackImageUrl(idCardBackImageUrl);
-        }
-
+    public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("agent_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
@@ -58,23 +43,9 @@ public class ApplicationService {
      * 提交商户入驻申请
      *
      * @param business    入驻信息
-     * @param idCardFront 身份证正面照片
-     * @param idCardBack  身份证反面照片
      * @param idCardHand  手持身份证照片
      */
-    public void createBusinessApplication(SlBusinessApplication business, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
-        // 上传照片
-        String idCardFrontImageUrl = this.fileService.upload("business_application", idCardFront);
-        if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
-            business.setIdCardBackImageUrl(idCardFrontImageUrl);
-        }
-
-        // 上传照片
-        String idCardBackImageUrl = this.fileService.upload("business_application", idCardBack);
-        if (StringUtils.isNotBlank(idCardBackImageUrl)) {
-            business.setIdCardBackImageUrl(idCardBackImageUrl);
-        }
-
+    public void createBusinessApplication(SlBusinessApplication business, MultipartFile idCardHand) {
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {

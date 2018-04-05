@@ -46,9 +46,10 @@ public class SlRedPacket implements Serializable {
      */
     private Boolean result;
 
-    private static final long serialVersionUID = 1L;
     @Column(name = "create_time")
     private Date createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
