@@ -14,6 +14,12 @@ public class SlAfterSalesService implements Serializable {
     private String id;
 
     /**
+     * 订单id
+     */
+    @Column(name = "order_id")
+    private String orderId;
+
+    /**
      * 申请售后类型(1:退货退款 2:仅退款)
      */
     private Integer type;
@@ -92,6 +98,24 @@ public class SlAfterSalesService implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取订单id
+     *
+     * @return order_id - 订单id
+     */
+    public String getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * 设置订单id
+     *
+     * @param orderId 订单id
+     */
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
     }
 
     /**
@@ -299,6 +323,7 @@ public class SlAfterSalesService implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", orderId=").append(orderId);
         sb.append(", type=").append(type);
         sb.append(", reason=").append(reason);
         sb.append(", money=").append(money);
