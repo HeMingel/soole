@@ -48,12 +48,21 @@ public class CmOrderController {
             @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
-            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form",required = true),
-            @ApiImplicitParam(name = "activityId", value = "活动id", paramType = "form",required = true)
+            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "activityId", value = "活动id", paramType = "form", required = true)
     })
     @PostMapping("add")
     public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
-        return this.cmOrderService.addOrder(slOrder, cmSlOrderDetail, shippingAddressId,activityId);
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message.setData(this.cmOrderService.addOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId));
+            message.setMsg(message.getMsg());
+            message.setSuccess(true);
+        } catch (Exception e) {
+            message.setMsg("添加订单失败");
+            log.error("新增订单失败", e);
+        }
+        return message;
     }
 
     /**
