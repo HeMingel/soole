@@ -9,7 +9,7 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
-    <result column="county" jdbcType="VARCHAR" property="county" />
+      <result column="country" jdbcType="VARCHAR" property="country"/>
       <result column="town" jdbcType="VARCHAR" property="town"/>
       <result column="street" jdbcType="VARCHAR" property="street"/>
       <result column="other_address" jdbcType="VARCHAR" property="otherAddress"/>
@@ -23,13 +23,14 @@
     <result column="agent_check_state" jdbcType="TINYINT" property="agentCheckState" />
     <result column="agent_create_time" jdbcType="VARCHAR" property="agentCreateTime" />
     <result column="agent_check_time" jdbcType="VARCHAR" property="agentCheckTime" />
+      <result column="status" jdbcType="INTEGER" property="status"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, user_id, province, city, county, town, street, other_address, level, real_name,
+      id, user_id, province, city, country, town, street, other_address, level, real_name,
       phone, id_card_number, id_card_front_image_url, id_card_back_image_url, id_card_hand_image_url,
-      agent_check_state, agent_create_time, agent_check_time
+      agent_check_state, agent_create_time, agent_check_time, status
   </sql>
 </mapper>

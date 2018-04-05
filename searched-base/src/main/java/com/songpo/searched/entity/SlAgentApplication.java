@@ -31,7 +31,7 @@ public class SlAgentApplication implements Serializable {
     /**
      * 区县
      */
-    private String county;
+    private String country;
 
     /**
      * 乡镇
@@ -106,6 +106,11 @@ public class SlAgentApplication implements Serializable {
      */
     @Column(name = "agent_check_time")
     private String agentCheckTime;
+
+    /**
+     * 账号状态：0 禁用， 1 启用
+     */
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -184,19 +189,19 @@ public class SlAgentApplication implements Serializable {
     /**
      * 获取区县
      *
-     * @return county - 区县
+     * @return country - 区县
      */
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
     /**
      * 设置区县
      *
-     * @param county 区县
+     * @param country 区县
      */
-    public void setCounty(String county) {
-        this.county = county == null ? null : county.trim();
+    public void setCountry(String country) {
+        this.country = country == null ? null : country.trim();
     }
 
     /**
@@ -433,6 +438,24 @@ public class SlAgentApplication implements Serializable {
         this.agentCheckTime = agentCheckTime == null ? null : agentCheckTime.trim();
     }
 
+    /**
+     * 获取账号状态：0 禁用， 1 启用
+     *
+     * @return status - 账号状态：0 禁用， 1 启用
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置账号状态：0 禁用， 1 启用
+     *
+     * @param status 账号状态：0 禁用， 1 启用
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -443,7 +466,7 @@ public class SlAgentApplication implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
-        sb.append(", county=").append(county);
+        sb.append(", country=").append(country);
         sb.append(", town=").append(town);
         sb.append(", street=").append(street);
         sb.append(", otherAddress=").append(otherAddress);
@@ -457,6 +480,7 @@ public class SlAgentApplication implements Serializable {
         sb.append(", agentCheckState=").append(agentCheckState);
         sb.append(", agentCreateTime=").append(agentCreateTime);
         sb.append(", agentCheckTime=").append(agentCheckTime);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

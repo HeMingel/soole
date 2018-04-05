@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -78,15 +78,18 @@ public class SlUser implements Serializable {
     private String avatar;
 
     /**
-     * 个性签名描述
+     * 个性签名
      */
-    private String describtion;
+    private String signature;
 
     /**
      * 用户常用地址
      */
     private String address;
 
+    /**
+     * 行业
+     */
     private String industry;
 
     @Column(name = "group_var")
@@ -129,6 +132,11 @@ public class SlUser implements Serializable {
      * 1：微信  2：QQ  登录方式
      */
     private Integer type;
+
+    /**
+     * 账号状态：0 禁用， 1 启用
+     */
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -367,21 +375,21 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取个性签名描述
+     * 获取个性签名
      *
-     * @return describtion - 个性签名描述
+     * @return signature - 个性签名
      */
-    public String getDescribtion() {
-        return describtion;
+    public String getSignature() {
+        return signature;
     }
 
     /**
-     * 设置个性签名描述
+     * 设置个性签名
      *
-     * @param describtion 个性签名描述
+     * @param signature 个性签名
      */
-    public void setDescribtion(String describtion) {
-        this.describtion = describtion == null ? null : describtion.trim();
+    public void setSignature(String signature) {
+        this.signature = signature == null ? null : signature.trim();
     }
 
     /**
@@ -403,14 +411,18 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * @return industry
+     * 获取行业
+     *
+     * @return industry - 行业
      */
     public String getIndustry() {
         return industry;
     }
 
     /**
-     * @param industry
+     * 设置行业
+     *
+     * @param industry 行业
      */
     public void setIndustry(String industry) {
         this.industry = industry == null ? null : industry.trim();
@@ -556,6 +568,24 @@ public class SlUser implements Serializable {
         this.type = type;
     }
 
+    /**
+     * 获取账号状态：0 禁用， 1 启用
+     *
+     * @return status - 账号状态：0 禁用， 1 启用
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置账号状态：0 禁用， 1 启用
+     *
+     * @param status 账号状态：0 禁用， 1 启用
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -575,7 +605,7 @@ public class SlUser implements Serializable {
         sb.append(", phone=").append(phone);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
-        sb.append(", describtion=").append(describtion);
+        sb.append(", signature=").append(signature);
         sb.append(", address=").append(address);
         sb.append(", industry=").append(industry);
         sb.append(", groupVar=").append(groupVar);
@@ -586,6 +616,7 @@ public class SlUser implements Serializable {
         sb.append(", clientSecret=").append(clientSecret);
         sb.append(", openId=").append(openId);
         sb.append(", type=").append(type);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

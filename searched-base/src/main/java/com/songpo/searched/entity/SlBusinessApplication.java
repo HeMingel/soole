@@ -37,7 +37,7 @@ public class SlBusinessApplication implements Serializable {
     /**
      * 区县
      */
-    private String county;
+    private String country;
 
     /**
      * 乡镇
@@ -59,12 +59,6 @@ public class SlBusinessApplication implements Serializable {
      * 申请类型：1 个人、2 企业
      */
     private Integer type;
-
-    /**
-     * 营业执照
-     */
-    @Column(name = "business_image_url")
-    private String businessImageUrl;
 
     /**
      * 姓名
@@ -114,6 +108,12 @@ public class SlBusinessApplication implements Serializable {
     private Byte businessCheckState;
 
     /**
+     * 营业执照
+     */
+    @Column(name = "business_image_url")
+    private String businessImageUrl;
+
+    /**
      * 店铺申请时间
      */
     @Column(name = "business_create_time")
@@ -124,6 +124,11 @@ public class SlBusinessApplication implements Serializable {
      */
     @Column(name = "business_check_time")
     private String businessCheckTime;
+
+    /**
+     * 账号状态：0 禁用， 1 启用
+     */
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -220,19 +225,19 @@ public class SlBusinessApplication implements Serializable {
     /**
      * 获取区县
      *
-     * @return county - 区县
+     * @return country - 区县
      */
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
     /**
      * 设置区县
      *
-     * @param county 区县
+     * @param country 区县
      */
-    public void setCounty(String county) {
-        this.county = county == null ? null : county.trim();
+    public void setCountry(String country) {
+        this.country = country == null ? null : country.trim();
     }
 
     /**
@@ -305,24 +310,6 @@ public class SlBusinessApplication implements Serializable {
      */
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    /**
-     * 获取营业执照
-     *
-     * @return business_image_url - 营业执照
-     */
-    public String getBusinessImageUrl() {
-        return businessImageUrl;
-    }
-
-    /**
-     * 设置营业执照
-     *
-     * @param businessImageUrl 营业执照
-     */
-    public void setBusinessImageUrl(String businessImageUrl) {
-        this.businessImageUrl = businessImageUrl == null ? null : businessImageUrl.trim();
     }
 
     /**
@@ -470,6 +457,24 @@ public class SlBusinessApplication implements Serializable {
     }
 
     /**
+     * 获取营业执照
+     *
+     * @return business_image_url - 营业执照
+     */
+    public String getBusinessImageUrl() {
+        return businessImageUrl;
+    }
+
+    /**
+     * 设置营业执照
+     *
+     * @param businessImageUrl 营业执照
+     */
+    public void setBusinessImageUrl(String businessImageUrl) {
+        this.businessImageUrl = businessImageUrl == null ? null : businessImageUrl.trim();
+    }
+
+    /**
      * 获取店铺申请时间
      *
      * @return business_create_time - 店铺申请时间
@@ -505,6 +510,24 @@ public class SlBusinessApplication implements Serializable {
         this.businessCheckTime = businessCheckTime == null ? null : businessCheckTime.trim();
     }
 
+    /**
+     * 获取账号状态：0 禁用， 1 启用
+     *
+     * @return status - 账号状态：0 禁用， 1 启用
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置账号状态：0 禁用， 1 启用
+     *
+     * @param status 账号状态：0 禁用， 1 启用
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -516,12 +539,11 @@ public class SlBusinessApplication implements Serializable {
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
-        sb.append(", county=").append(county);
+        sb.append(", country=").append(country);
         sb.append(", town=").append(town);
         sb.append(", street=").append(street);
         sb.append(", otherAddress=").append(otherAddress);
         sb.append(", type=").append(type);
-        sb.append(", businessImageUrl=").append(businessImageUrl);
         sb.append(", realName=").append(realName);
         sb.append(", companyName=").append(companyName);
         sb.append(", phone=").append(phone);
@@ -530,8 +552,10 @@ public class SlBusinessApplication implements Serializable {
         sb.append(", idCardBackImageUrl=").append(idCardBackImageUrl);
         sb.append(", idCardHandImageUrl=").append(idCardHandImageUrl);
         sb.append(", businessCheckState=").append(businessCheckState);
+        sb.append(", businessImageUrl=").append(businessImageUrl);
         sb.append(", businessCreateTime=").append(businessCreateTime);
         sb.append(", businessCheckTime=").append(businessCheckTime);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
