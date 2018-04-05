@@ -33,8 +33,8 @@ public class ApplicationService {
     /**
      * 提交代理商入驻申请
      *
-     * @param agent       入驻信息
-     * @param idCardHand  手持身份证照片
+     * @param agent      入驻信息
+     * @param idCardHand 手持身份证照片
      */
     public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
         // 上传照片
@@ -74,14 +74,22 @@ public class ApplicationService {
     /**
      * 提交商户入驻申请
      *
-     * @param business    入驻信息
-     * @param idCardHand  手持身份证照片
+     * @param business      入驻信息
+     * @param businessImage 营业执照
+     * @param idCardHand    手持身份证照片
      */
-    public void createBusinessApplication(SlBusinessApplication business, MultipartFile idCardHand) {
+    public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
             business.setIdCardHandImageUrl(idCardHandImageUrl);
+        }
+
+        if (business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue())) {
+            String businessImageUrl = this.fileService.upload("business_application", businessImage);
+            if (StringUtils.isNotBlank(businessImageUrl)) {
+                business.setBusinessImageUrl(businessImageUrl);
+            }
         }
 
         // 检测账号是否存在，如果不存在，则创建用户
@@ -102,7 +110,7 @@ public class ApplicationService {
 
         // 如果用户已经被关联到某个代理商，则无法进行再次关联
         Example example = new Example(SlAgentApplication.class);
-        example.createCriteria().andEqualTo("user_id", user.getId());
+        example.createCriteria().andEqualTo("userId", user.getId());
         Integer count = this.businessApplicationMapper.selectCountByExample(example);
         if (count == 0) {
             // 设置为用户标志

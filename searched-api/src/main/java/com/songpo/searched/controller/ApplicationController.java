@@ -103,7 +103,7 @@ public class ApplicationController {
             @ApiImplicitParam(name = "country", value = "区县", paramType = "form", required = true),
             @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form", required = true),
             @ApiImplicitParam(name = "street", value = "街道", paramType = "form", required = true),
-            @ApiImplicitParam(name = "other", value = "剩余地址信息", paramType = "form", required = true),
+            @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form", required = true),
             @ApiImplicitParam(name = "name", value = "姓名，申请类型为个人必填", paramType = "form"),
             @ApiImplicitParam(name = "companyName", value = "企业名称，申请类型为企业时必填", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
@@ -113,7 +113,7 @@ public class ApplicationController {
             @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "body", dataType = "file", required = true)
     })
     @PostMapping("business")
-    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile idCardHand) {
+    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，申请信息：{}", business);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(business.getProvince())) {
@@ -126,9 +126,7 @@ public class ApplicationController {
             message.setMsg("乡镇为空");
         } else if (StringUtils.isBlank(business.getStreet())) {
             message.setMsg("街道为空");
-        } else if (StringUtils.isBlank(business.getOtherAddress())) {
-            message.setMsg("剩余地址信息为空");
-        } else if (null != business.getType()) {
+        } else if (null == business.getType()) {
             message.setMsg("申请级别为空");
         } else if (StringUtils.isBlank(business.getPhone())) {
             message.setMsg("电话信息为空");
@@ -142,7 +140,7 @@ public class ApplicationController {
                     if (StringUtils.isBlank(business.getRealName())) {
                         message.setMsg("姓名为空");
                     } else {
-                        this.applicationService.createBusinessApplication(business, idCardHand);
+                        this.applicationService.createBusinessApplication(business, businessImage, idCardHand);
                         message.setSuccess(true);
                     }
                 }
@@ -150,8 +148,10 @@ public class ApplicationController {
                 if (business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue())) {
                     if (StringUtils.isBlank(business.getCompanyName())) {
                         message.setMsg("公司名称为空");
+                    } else if (null == businessImage || businessImage.isEmpty()) {
+                        message.setMsg("营业执照为空");
                     } else {
-                        this.applicationService.createBusinessApplication(business, idCardHand);
+                        this.applicationService.createBusinessApplication(business, businessImage, idCardHand);
                         message.setSuccess(true);
                     }
                 }
