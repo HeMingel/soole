@@ -176,6 +176,12 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
 
+    /**
+     * 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    @Column(name = "shipping_state")
+    private Integer shippingState;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -700,6 +706,24 @@ public class SlOrderDetail implements Serializable {
         this.rebatePulse = rebatePulse;
     }
 
+    /**
+     * 获取0:待发货 1:已发货 2:已签收 3:已拒收
+     *
+     * @return shipping_state - 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    public Integer getShippingState() {
+        return shippingState;
+    }
+
+    /**
+     * 设置0:待发货 1:已发货 2:已签收 3:已拒收
+     *
+     * @param shippingState 0:待发货 1:已发货 2:已签收 3:已拒收
+     */
+    public void setShippingState(Integer shippingState) {
+        this.shippingState = shippingState;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -735,6 +759,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rebatePulse=").append(rebatePulse);
+        sb.append(", shippingState=").append(shippingState);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

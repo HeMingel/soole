@@ -18,7 +18,7 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-      <result column="signature" jdbcType="VARCHAR" property="signature"/>
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="industry" jdbcType="VARCHAR" property="industry" />
     <result column="group_var" jdbcType="TINYINT" property="groupVar" />
@@ -29,14 +29,14 @@
     <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="status" jdbcType="INTEGER" property="status"/>
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
-      birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver,
-      money, client_id, client_secret, open_id, type, status
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
+    birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
+    money, client_id, client_secret, open_id, type, status
   </sql>
 </mapper>

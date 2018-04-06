@@ -166,10 +166,10 @@ public class ProductController {
             //@ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1拼团 2预售 3豆赚 4消费返利 5一元购 6普通", paramType = "form", required = true)
     })
     @GetMapping("/goods-detail")
-    public BusinessMessage goodsDetail(String id) {
-        log.debug("根据商品Id查询普通商品，商品Id：{}", id);
+    public BusinessMessage goodsDetail(String id,String activityId) {
+        log.debug("根据商品Id查询普通商品，商品Id：{},活动Id: {}", id,activityId);
         if (id != null) {
-            return this.productService.goodsDetail(id);
+            return this.productService.goodsDetail(id,activityId);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");
@@ -179,12 +179,13 @@ public class ProductController {
     }
     @ApiOperation(value = "根据商品Id查询普通商品普通规格")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
     })
-    @GetMapping("goods-normal-specification")
-    public BusinessMessage goodsSpecification(String id) {
-        log.debug("商品规格,商品Id:{},活动Id", id);
-        return this.productService.goodsNormalSpecification(id);
+    @GetMapping("goods-specification")
+    public BusinessMessage goodsSpecification(String id,String activityId) {
+        log.debug("商品规格,商品Id:{},活动Id", id,activityId);
+        return this.productService.goodsNormalSpecification(id,activityId);
     }
 
     @ApiOperation(value = "热品推荐")

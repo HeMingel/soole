@@ -34,6 +34,7 @@
     <result column="place_order_return_pulse" jdbcType="INTEGER" property="placeOrderReturnPulse" />
     <result column="rewards_money" jdbcType="DECIMAL" property="rewardsMoney" />
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
+    <result column="shipping_state" jdbcType="INTEGER" property="shippingState" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -43,6 +44,6 @@
     product_detail_group_name, quantity, price, deduct_total_silver, deduct_total_gold, 
     discount, creator, create_time, modifier, modification_time, post_fee, buyer_message, 
     return_cash_pulse, shipping_time, ship_number, group_people, presell_shipments_days, 
-    `return cash_money`, place_order_return_pulse, rewards_money, rebate_pulse
+    `return cash_money`, place_order_return_pulse, rewards_money, rebate_pulse, shipping_state
   </sql>
 </mapper>

@@ -14,12 +14,6 @@ public class SlProduct implements Serializable {
     private String id;
 
     /**
-     * 活动商品唯一标识符
-     */
-    @Column(name = "activity_product_serial_number")
-    private String activityProductSerialNumber;
-
-    /**
      * 名称
      */
     private String name;
@@ -52,7 +46,7 @@ public class SlProduct implements Serializable {
     private String productTypeId;
 
     /**
-     * 是否下架(0:否 1:是)
+     * 是否下架(0:下架 1:上架)
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -178,24 +172,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取活动商品唯一标识符
-     *
-     * @return activity_product_serial_number - 活动商品唯一标识符
-     */
-    public String getActivityProductSerialNumber() {
-        return activityProductSerialNumber;
-    }
-
-    /**
-     * 设置活动商品唯一标识符
-     *
-     * @param activityProductSerialNumber 活动商品唯一标识符
-     */
-    public void setActivityProductSerialNumber(String activityProductSerialNumber) {
-        this.activityProductSerialNumber = activityProductSerialNumber == null ? null : activityProductSerialNumber.trim();
-    }
-
-    /**
      * 获取名称
      *
      * @return name - 名称
@@ -304,18 +280,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架(0:否 1:是)
+     * 获取是否下架(0:下架 1:上架)
      *
-     * @return sold_out - 是否下架(0:否 1:是)
+     * @return sold_out - 是否下架(0:下架 1:上架)
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置是否下架(0:否 1:是)
+     * 设置是否下架(0:下架 1:上架)
      *
-     * @param soldOut 是否下架(0:否 1:是)
+     * @param soldOut 是否下架(0:下架 1:上架)
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;
@@ -634,7 +610,6 @@ public class SlProduct implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", activityProductSerialNumber=").append(activityProductSerialNumber);
         sb.append(", name=").append(name);
         sb.append(", remark=").append(remark);
         sb.append(", imageUrl=").append(imageUrl);
