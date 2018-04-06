@@ -73,12 +73,6 @@ public class SlOrder implements Serializable {
     private String payTime;
 
     /**
-     * 0:待发货 1:已发货 2:已签收 3:已拒收
-     */
-    @Column(name = "shipping_state")
-    private Integer shippingState;
-
-    /**
      * 记录状态 1:正常 0:删除
      */
     private Integer status;
@@ -348,24 +342,6 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取0:待发货 1:已发货 2:已签收 3:已拒收
-     *
-     * @return shipping_state - 0:待发货 1:已发货 2:已签收 3:已拒收
-     */
-    public Integer getShippingState() {
-        return shippingState;
-    }
-
-    /**
-     * 设置0:待发货 1:已发货 2:已签收 3:已拒收
-     *
-     * @param shippingState 0:待发货 1:已发货 2:已签收 3:已拒收
-     */
-    public void setShippingState(Integer shippingState) {
-        this.shippingState = shippingState;
-    }
-
-    /**
      * 获取记录状态 1:正常 0:删除
      *
      * @return status - 记录状态 1:正常 0:删除
@@ -580,7 +556,6 @@ public class SlOrder implements Serializable {
         sb.append(", remark=").append(remark);
         sb.append(", createTime=").append(createTime);
         sb.append(", payTime=").append(payTime);
-        sb.append(", shippingState=").append(shippingState);
         sb.append(", status=").append(status);
         sb.append(", deductTotalPulse=").append(deductTotalPulse);
         sb.append(", consigneename=").append(consigneename);

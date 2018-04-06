@@ -2,9 +2,11 @@ package com.songpo.searched.service;
 
 
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlShopLookNum;
+import com.songpo.searched.mapper.SlActivityProductMapper;
 import com.songpo.searched.mapper.SlProductMapper;
 import com.songpo.searched.mapper.SlShopLookNumMapper;
 import com.songpo.searched.mapper.SlShopMapper;
@@ -28,6 +30,8 @@ public class CmShopService {
     private SlProductMapper slProductMapper;
     @Autowired
     private SlShopLookNumMapper slShopLookNumMapper;
+    @Autowired
+    private SlActivityProductMapper activityProductMapper;
 
     /**
      * 根据店铺Id查询店铺详情和商品
@@ -37,10 +41,9 @@ public class CmShopService {
     public BusinessMessage shopAndGoods(String id,String userId) {
         log.debug("商户Id:{},用户id:{}",id,userId);
 
-        BusinessMessage<Map<String,Object>> businessMessage = new BusinessMessage<>();
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try{
-            Map<String,Object> map = new HashMap<>();
             //查询商铺
             SlShop shop = this.slShopMapper.selectByPrimaryKey(new SlShop () {{
                 setId(id);
@@ -49,15 +52,18 @@ public class CmShopService {
                 businessMessage.setMsg("未找到该商铺");
                 return businessMessage;
             }
-            map.put("shopDetail",shop);
-            //查询店铺商品
             Example example = new Example(SlProduct.class);
-            example.createCriteria().andEqualTo("shopId",id);
-            List<SlProduct> slProductList = this.slProductMapper.selectByExample(example);
-            if(slProductList.size()>0){
-                map.put("shopGoods",slProductList);
-            }else {
-                map.put("shopGoods","查询无商品");
+            example.createCriteria().andEqualTo("soldOut",1).andEqualTo("shopId",id);
+            List<SlProduct> productList = this.slProductMapper.selectByExample(example);
+            List<Object> goodsList = new ArrayList<>();
+            for (int i=0;i<productList.size();i++){
+                Map<String,Object> activityProduct = new HashMap<>();
+                Example apExample = new Example(SlActivityProduct.class);
+                apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
+                List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
+                activityProduct.put("activityProduct",activityProductList);
+                activityProduct.put("goodsType",productList.get(i).getSalesModeId());
+                goodsList.add(activityProduct);
             }
             if(userId != null){
                 Date date = new Date();
@@ -77,7 +83,7 @@ public class CmShopService {
                 }
             }
 
-            businessMessage.setData(map);
+            businessMessage.setData(goodsList);
             businessMessage.setSuccess(true);
             businessMessage.setMsg("查询成功");
         }catch (Exception e){

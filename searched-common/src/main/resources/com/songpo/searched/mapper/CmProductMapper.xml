@@ -105,19 +105,26 @@
     </select>
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
-        SELECT
-        id as productId,
-        name,
-        introduction,
-        comment_num,
-        sales_volume,
-        reference_price,
-        reference_pulse,
-        sales_mode_id
-          FROM
-            sl_product
-        where id= #{goodsId} and  sold_out = 1
+      SELECT
+          p.`id` AS goodsId,p.`sales_mode_id`,ap.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.product_id
+             WHERE p.`id` =#{goodsId} and ap.activity_id = #{activityId}
+
     </select>
+    <!--查询品活动中间表 sl_activity_product_repository-->
+     <select id="goodsActivity" parameterType="String" resultType="Map">
+          SELECT
+            apr.*
+          FROM sl_product p
+          LEFT JOIN sl_activity_product ap
+          ON p.`id` = ap.product_id
+          LEFT JOIN sl_activity_product_repository apr
+          ON ap.`activity_product_repository_serial_number` = apr.serial_number
+          WHERE p.id = #{goodsId} AND ap.`activity_id` = #{activityId}
+     </select>
     <!--搜索商品所有图片-->
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
         SELECT
@@ -126,15 +133,24 @@
           sl_product_image
         WHERE product_id = #{goodsId}
     </select>
+    <!--商品活动库存列表-->
+    <select id="goodsActivityList" parameterType="String" resultType="Map">
+        SELECT
+          apr.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.product_id
+            LEFT JOIN sl_activity_product_repository apr
+            on ap.activity_product_repository_serial_number = apr.serial_number
+            WHERE p.id= #{goodsId} AND ap.activity_id= #{activityId}
+    </select>
     <!--查询商品库存-->
     <select id="goodsRepository" resultType="Map" parameterType="String">
         SELECT
-          p.sales_mode_id,pr.*
-        FROM
-          sl_product p
-          LEFT JOIN sl_product_repository pr
-          ON p.`id` = pr.`product_id`
-          WHERE p.`id` = #{goodsId}
+          pr.*
+        FROM sl_product_repository pr
+          WHERE pr.`id` = #{repositoryId}
     </select>
 
     <!-- 查询预售商品列表 -->
@@ -178,39 +194,60 @@
     <select id="findGroupPeople" resultType="Map" parameterType="String">
         SELECT
          u.avatar,u.nick_name
-        FROM sl_order o
-        LEFT JOIN sl_user u
-        ON o.user_id = u.id
-        WHERE  o.serial_number = #{orderNum} and o.payment_state = 1
-        ORDER BY o.create_time ASC
-        LIMIT 0,1
-    </select>
+        FROM sl_user u
+        where u.id = {userId}
 
-    <!--热门推荐-->
-    <select id="hotGoods" parameterType="String" resultType="Map">
-        SELECT
-          *
-        FROM
-          sl_product p
-        WHERE p.`sales_mode_id` = #{saleModeId}
-          AND p.id != #{goodsId}
     </select>
-
+    <!--搜索拼团订单-->
     <select id="selectGroupOrder" parameterType="String" resultType="Map">
         SELECT
-          o.*,count(o.serial_number)
+          o.serial_number AS order_num,o.group_master,ap.people_num AS need_people,COUNT(o.serial_number) AS already_people
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
-          ON p.activity_product_serial_number = ap.serial_number
+          ON p.id = ap.product_id
           LEFT JOIN sl_order o
           ON ap.id = o.activity_product_id
           WHERE ap.`activity_id` = #{activityId}
           AND p.id = #{goodsId}
           AND o.payment_state =2
           AND o.spell_group_status = 1
+           GROUP BY o.serial_number
     </select>
+    <!--后台推荐商品-->
+    <select id="backStageGoods" resultType="Map" parameterType="String">
+        SELECT
+          ap.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.product_id
+            WHERE p.id=#{goodsId}
+            and ap.activity_id=#{activityId}
+            and p.recommend = 1
+            limit 0,4
+    </select>
+    <!--查询商品分类-->
+    <select id="systemGoodsType" resultType="Map" parameterType="String">
+        SELECT
+          p.`product_type_id`
+        FROM sl_product p
+        WHERE  p.`id`= #{goodsId}
+    </select>
+    <!--系统推荐商品-->
+    <select id="systemGoods" parameterType="String" resultType="HashMap">
+        SELECT
+          ap.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.product_id
+            where p.product_type_id = #{goodsType}
+            and ap.activity_id=#{activityId}
+            ORDER BY p.sales_volume DESC
+            limit 0,4
 
+    </select>
 </mapper>
 
 

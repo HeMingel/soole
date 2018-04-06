@@ -59,27 +59,45 @@ public interface CmProductMapper{
      * @param screenGoods 筛选条件
      * @param saleMode 销售模式
      * @param goodsName 商品名称
-     * @return 商品列表
+     * @return 商品列表 goodsType, screenType, saleMode, name
      */
     List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName);
     /**
      * 查询商品基础信息
      * @param goodsId 商品ID
+     * @param activityId 活动Id
      * @return 商品product 表相关信息
      */
-    Map<String,Object> goodsBaseInfo(String goodsId);
+    Map<String,Object> goodsBaseInfo(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
+
+    /**
+     * 查询品活动中间表
+     * @param goodsId 商品ID
+     * @param activityId 活动id
+     * @return
+     */
+    List<Map<String,Object>> goodsActivity(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
     /**
      * 查询上商品所有图片
      * @param goodsId 商品ID
      * @return 商品图片
      */
     List<Map<String, Object>> goodsImageUrl(String goodsId);
+
+    /**
+     * 查询商品活动
+     * @param goodsId 商品Id
+     * @param activityId 活动Id
+     * @return 商品活动列表
+     */
+    List<Map<String, Object>> goodsActivityList(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
+
     /**
      * 查询商品库存
-     * @param goodsId 商品Id
+     * @param repositoryId 商品库存Id
      * @return 商品库存
      */
-    List<Map<String,Object>> goodsRepository(String goodsId);
+    Map<String,Object> goodsRepository(String repositoryId);
     /**
      * 查询拼团商品列表
      *
@@ -106,16 +124,37 @@ public interface CmProductMapper{
 
     /**
      * 未完成拼团
-     * @param orderNum 订单编号
+     * @param userId 用户Id 这里指拼团人的Id
      * @return 第一个发起人信息
      */
-    Map<String,Object> findGroupPeople(String orderNum);
+    Map<String,Object> findGroupPeople(String userId);
 
     /**
-     * 查询热门商品推荐
-     * @param goodsId 商品ID
-     * @param saleModeId 销售模式id
-     * @return
+     * 查询拼团商品订单
+     * @return 拼团商品订单
      */
-    List<Map<String, Object>> hotGoods(@Param("goodsId")String goodsId,@Param("saleModeId")String saleModeId);
+
+    List<Map<String,Object>> selectGroupOrder(@Param("activityId")String activityId,@Param("goodsId")String goodsId);
+
+    /**
+     * 后台推荐产品
+     * @param goodsId 商品Id
+     *                @param activityId 活动id
+     * @return 后台推荐商品列表
+     */
+    List<Map<String,Object>> backStageGoods(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
+
+    /**
+     * 系统推荐商品商品分类
+     * @param goodsId 商品Id
+     * @return 该商品分类
+     */
+    Map<String ,Object> systemGoodsType(String goodsId);
+    /**
+     * 系统推荐上品
+     * @param goodsType 商品type
+     * @param activityId 活动id
+     * @return 该商品分类
+     */
+    List<Map<String,Object>> systemGoods(@Param("goodsType")String goodsType,@Param("activityId")String activityId);
 }

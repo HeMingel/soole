@@ -46,7 +46,7 @@ public class SlProduct implements Serializable {
     private String productTypeId;
 
     /**
-     * 是否下架(0:否 1:是)
+     * 是否下架(0:下架 1:上架)
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -280,18 +280,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架(0:否 1:是)
+     * 获取是否下架(0:下架 1:上架)
      *
-     * @return sold_out - 是否下架(0:否 1:是)
+     * @return sold_out - 是否下架(0:下架 1:上架)
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置是否下架(0:否 1:是)
+     * 设置是否下架(0:下架 1:上架)
      *
-     * @param soldOut 是否下架(0:否 1:是)
+     * @param soldOut 是否下架(0:下架 1:上架)
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;

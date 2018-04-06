@@ -16,7 +16,6 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="pay_time" jdbcType="VARCHAR" property="payTime" />
-    <result column="shipping_state" jdbcType="INTEGER" property="shippingState" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
     <result column="consigneeName" jdbcType="VARCHAR" property="consigneename" />
@@ -34,8 +33,7 @@
       WARNING - @mbg.generated
     -->
     id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel, 
-    remark, create_time, pay_time, shipping_state, status, deduct_total_pulse, consigneeName, 
-    consigneePhone, province, city, county, detailed, spell_group_status, group_master, 
-    activity_product_id
+    remark, create_time, pay_time, status, deduct_total_pulse, consigneeName, consigneePhone, 
+    province, city, county, detailed, spell_group_status, group_master, activity_product_id
   </sql>
 </mapper>
