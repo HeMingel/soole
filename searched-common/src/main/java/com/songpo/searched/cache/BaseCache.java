@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 基础缓存类
  *
+ * @author 刘松坡
  * @param <V> 缓存的值
  */
 @Slf4j
@@ -58,6 +59,21 @@ public class BaseCache<V> {
     }
 
     /**
+     * 指定秒数缓存
+     *
+     * @param prefix        前缀
+     * @param redisTemplate 模板
+     * @param timeOut       周期，单位为秒
+     */
+    public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate, Long timeOut, Boolean limitTime) {
+        this.prefix = prefix;
+        this.redisTemplate = redisTemplate;
+        this.timeOut = timeOut;
+        this.timeUnit = TimeUnit.SECONDS;
+        this.limitTime = limitTime;
+    }
+
+    /**
      * 无限制时间缓存
      *
      * @param prefix        前缀
@@ -100,6 +116,22 @@ public class BaseCache<V> {
             } else {
                 redisTemplate.opsForValue().set(storeKey, value);
             }
+        } catch (Exception e) {
+            log.error("添加缓存失败，key = {}", storeKey);
+        }
+    }
+
+    /**
+     * 添加缓存
+     *
+     * @param key   键
+     * @param value 值
+     */
+    public void put(String key, V value, Long timeOut, TimeUnit timeUnit) {
+        String storeKey = prefix + key;
+        // 如果启用缓存周期限制，则根据设置的周期进行保持，否则不进行缓存周期设置
+        try {
+            redisTemplate.opsForValue().set(storeKey, value, timeOut, timeUnit);
         } catch (Exception e) {
             log.error("添加缓存失败，key = {}", storeKey);
         }
