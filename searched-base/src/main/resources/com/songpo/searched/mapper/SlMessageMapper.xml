@@ -11,17 +11,17 @@
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="target_name" jdbcType="VARCHAR" property="targetName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-      <result column="readed" jdbcType="INTEGER" property="readed"/>
+    <result column="readed" jdbcType="INTEGER" property="readed" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="read_time" jdbcType="VARCHAR" property="readTime" />
-      <result column="channel_type" jdbcType="INTEGER" property="channelType"/>
-      <result column="message_type" jdbcType="INTEGER" property="messageType"/>
+    <result column="channel_type" jdbcType="INTEGER" property="channelType" />
+    <result column="message_type" jdbcType="INTEGER" property="messageType" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, source_id, source_name, target_id, target_name, content, readed, create_time,
+    id, source_id, source_name, target_id, target_name, content, readed, create_time, 
     read_time, channel_type, message_type
   </sql>
 </mapper>

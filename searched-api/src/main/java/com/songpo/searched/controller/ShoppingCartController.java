@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(description = "购物车管理")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/common/v1/myShoppingCart")
+@RequestMapping("/api/common/v1/my-shopping-cart")
 public class ShoppingCartController {
 
     @Autowired
