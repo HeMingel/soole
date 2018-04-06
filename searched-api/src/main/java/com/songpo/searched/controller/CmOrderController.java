@@ -88,7 +88,7 @@ public class CmOrderController {
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form")
     })
-    @PostMapping("addGroupOrder")
+    @PostMapping("add-group-order")
     public BusinessMessage addGroupOrder(SlOrder slOrder, SlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
         BusinessMessage message = new BusinessMessage();
         try {
@@ -125,7 +125,7 @@ public class CmOrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
     })
-    @GetMapping("orderInfo")
+    @GetMapping("order-info")
     public BusinessMessage orderInfo(String orderId) {
         return this.cmOrderService.orderInfo(orderId);
     }
