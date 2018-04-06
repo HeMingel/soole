@@ -177,7 +177,7 @@ public class SlOrderDetail implements Serializable {
     private Integer rebatePulse;
 
     /**
-     * 0:待发货 1:已发货 2:已签收 3:已拒收
+     * 3:待发货 4:已发货 5:已签收 6:已拒收
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
@@ -707,18 +707,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取0:待发货 1:已发货 2:已签收 3:已拒收
+     * 获取3:待发货 4:已发货 5:已签收 6:已拒收
      *
-     * @return shipping_state - 0:待发货 1:已发货 2:已签收 3:已拒收
+     * @return shipping_state - 3:待发货 4:已发货 5:已签收 6:已拒收
      */
     public Integer getShippingState() {
         return shippingState;
     }
 
     /**
-     * 设置0:待发货 1:已发货 2:已签收 3:已拒收
+     * 设置3:待发货 4:已发货 5:已签收 6:已拒收
      *
-     * @param shippingState 0:待发货 1:已发货 2:已签收 3:已拒收
+     * @param shippingState 3:待发货 4:已发货 5:已签收 6:已拒收
      */
     public void setShippingState(Integer shippingState) {
         this.shippingState = shippingState;

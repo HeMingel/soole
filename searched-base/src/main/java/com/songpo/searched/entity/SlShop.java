@@ -81,6 +81,12 @@ public class SlShop implements Serializable {
      */
     private String phone;
 
+    /**
+     * 1、普通店铺2、高级店铺
+     */
+    @Column(name = "shop_type")
+    private Integer shopType;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -335,6 +341,24 @@ public class SlShop implements Serializable {
         this.phone = phone == null ? null : phone.trim();
     }
 
+    /**
+     * 获取1、普通店铺2、高级店铺
+     *
+     * @return shop_type - 1、普通店铺2、高级店铺
+     */
+    public Integer getShopType() {
+        return shopType;
+    }
+
+    /**
+     * 设置1、普通店铺2、高级店铺
+     *
+     * @param shopType 1、普通店铺2、高级店铺
+     */
+    public void setShopType(Integer shopType) {
+        this.shopType = shopType;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -355,6 +379,7 @@ public class SlShop implements Serializable {
         sb.append(", silver=").append(silver);
         sb.append(", rating=").append(rating);
         sb.append(", phone=").append(phone);
+        sb.append(", shopType=").append(shopType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

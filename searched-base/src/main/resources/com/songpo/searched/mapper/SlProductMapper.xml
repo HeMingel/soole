@@ -15,29 +15,17 @@
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
-    <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
-    <result column="reference_pulse" jdbcType="INTEGER" property="referencePulse" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
-    <result column="min_price" jdbcType="DECIMAL" property="minPrice" />
-    <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
-    <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
-    <result column="return_pulse" jdbcType="INTEGER" property="returnPulse" />
-    <result column="group_people" jdbcType="INTEGER" property="groupPeople" />
-    <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="restrict_count" jdbcType="INTEGER" property="restrictCount" />
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
-    <result column="group_price" jdbcType="DECIMAL" property="groupPrice" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num, 
-    sales_volume, reference_price, reference_pulse, shop_id, sales_mode_id, min_price, 
-    presell_shipments_days, return_money, return_pulse, group_people, reward_value, creator, 
-    create_time, restrict_count, recommend, group_price
+    sales_volume, shop_id, sales_mode_id, creator, create_time, recommend
   </sql>
 </mapper>

@@ -37,6 +37,29 @@ public class SlActivityProduct implements Serializable {
     private BigDecimal price;
 
     /**
+     * 参考价格
+     */
+    @Column(name = "reference_price")
+    private BigDecimal referencePrice;
+
+    /**
+     * 活动了豆
+     */
+    private Integer peas;
+
+    /**
+     * 参考豆子
+     */
+    @Column(name = "reference_peas")
+    private Integer referencePeas;
+
+    /**
+     * 个人价格
+     */
+    @Column(name = "personal_price")
+    private BigDecimal personalPrice;
+
+    /**
      * 活动开始时间(必须设置开始时间)
      */
     @Column(name = "begin_time")
@@ -54,7 +77,7 @@ public class SlActivityProduct implements Serializable {
     private Integer count;
 
     /**
-     * 拼团人数
+     * 拼团所需人数
      */
     @Column(name = "people_num")
     private Integer peopleNum;
@@ -70,11 +93,6 @@ public class SlActivityProduct implements Serializable {
      */
     @Column(name = "surplus_product_count")
     private Integer surplusProductCount;
-
-    /**
-     * 所需了豆
-     */
-    private Integer peas;
 
     /**
      * 奖励金豆数量
@@ -109,6 +127,30 @@ public class SlActivityProduct implements Serializable {
      */
     @Column(name = "restrict_count")
     private Integer restrictCount;
+
+    /**
+     * 预售发货天数
+     */
+    @Column(name = "presell_shipments_days")
+    private Integer presellShipmentsDays;
+
+    /**
+     * 列表展示返现money(显示规格最高的)
+     */
+    @Column(name = "return_money")
+    private BigDecimal returnMoney;
+
+    /**
+     * 列表展示返豆数量(显示规格最多的)
+     */
+    @Column(name = "return_peas")
+    private Integer returnPeas;
+
+    /**
+     * 商家奖励额度
+     */
+    @Column(name = "reward_value")
+    private Double rewardValue;
 
     private static final long serialVersionUID = 1L;
 
@@ -203,6 +245,78 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
+     * 获取参考价格
+     *
+     * @return reference_price - 参考价格
+     */
+    public BigDecimal getReferencePrice() {
+        return referencePrice;
+    }
+
+    /**
+     * 设置参考价格
+     *
+     * @param referencePrice 参考价格
+     */
+    public void setReferencePrice(BigDecimal referencePrice) {
+        this.referencePrice = referencePrice;
+    }
+
+    /**
+     * 获取活动了豆
+     *
+     * @return peas - 活动了豆
+     */
+    public Integer getPeas() {
+        return peas;
+    }
+
+    /**
+     * 设置活动了豆
+     *
+     * @param peas 活动了豆
+     */
+    public void setPeas(Integer peas) {
+        this.peas = peas;
+    }
+
+    /**
+     * 获取参考豆子
+     *
+     * @return reference_peas - 参考豆子
+     */
+    public Integer getReferencePeas() {
+        return referencePeas;
+    }
+
+    /**
+     * 设置参考豆子
+     *
+     * @param referencePeas 参考豆子
+     */
+    public void setReferencePeas(Integer referencePeas) {
+        this.referencePeas = referencePeas;
+    }
+
+    /**
+     * 获取个人价格
+     *
+     * @return personal_price - 个人价格
+     */
+    public BigDecimal getPersonalPrice() {
+        return personalPrice;
+    }
+
+    /**
+     * 设置个人价格
+     *
+     * @param personalPrice 个人价格
+     */
+    public void setPersonalPrice(BigDecimal personalPrice) {
+        this.personalPrice = personalPrice;
+    }
+
+    /**
      * 获取活动开始时间(必须设置开始时间)
      *
      * @return begin_time - 活动开始时间(必须设置开始时间)
@@ -257,18 +371,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取拼团人数
+     * 获取拼团所需人数
      *
-     * @return people_num - 拼团人数
+     * @return people_num - 拼团所需人数
      */
     public Integer getPeopleNum() {
         return peopleNum;
     }
 
     /**
-     * 设置拼团人数
+     * 设置拼团所需人数
      *
-     * @param peopleNum 拼团人数
+     * @param peopleNum 拼团所需人数
      */
     public void setPeopleNum(Integer peopleNum) {
         this.peopleNum = peopleNum;
@@ -308,24 +422,6 @@ public class SlActivityProduct implements Serializable {
      */
     public void setSurplusProductCount(Integer surplusProductCount) {
         this.surplusProductCount = surplusProductCount;
-    }
-
-    /**
-     * 获取所需了豆
-     *
-     * @return peas - 所需了豆
-     */
-    public Integer getPeas() {
-        return peas;
-    }
-
-    /**
-     * 设置所需了豆
-     *
-     * @param peas 所需了豆
-     */
-    public void setPeas(Integer peas) {
-        this.peas = peas;
     }
 
     /**
@@ -436,6 +532,78 @@ public class SlActivityProduct implements Serializable {
         this.restrictCount = restrictCount;
     }
 
+    /**
+     * 获取预售发货天数
+     *
+     * @return presell_shipments_days - 预售发货天数
+     */
+    public Integer getPresellShipmentsDays() {
+        return presellShipmentsDays;
+    }
+
+    /**
+     * 设置预售发货天数
+     *
+     * @param presellShipmentsDays 预售发货天数
+     */
+    public void setPresellShipmentsDays(Integer presellShipmentsDays) {
+        this.presellShipmentsDays = presellShipmentsDays;
+    }
+
+    /**
+     * 获取列表展示返现money(显示规格最高的)
+     *
+     * @return return_money - 列表展示返现money(显示规格最高的)
+     */
+    public BigDecimal getReturnMoney() {
+        return returnMoney;
+    }
+
+    /**
+     * 设置列表展示返现money(显示规格最高的)
+     *
+     * @param returnMoney 列表展示返现money(显示规格最高的)
+     */
+    public void setReturnMoney(BigDecimal returnMoney) {
+        this.returnMoney = returnMoney;
+    }
+
+    /**
+     * 获取列表展示返豆数量(显示规格最多的)
+     *
+     * @return return_peas - 列表展示返豆数量(显示规格最多的)
+     */
+    public Integer getReturnPeas() {
+        return returnPeas;
+    }
+
+    /**
+     * 设置列表展示返豆数量(显示规格最多的)
+     *
+     * @param returnPeas 列表展示返豆数量(显示规格最多的)
+     */
+    public void setReturnPeas(Integer returnPeas) {
+        this.returnPeas = returnPeas;
+    }
+
+    /**
+     * 获取商家奖励额度
+     *
+     * @return reward_value - 商家奖励额度
+     */
+    public Double getRewardValue() {
+        return rewardValue;
+    }
+
+    /**
+     * 设置商家奖励额度
+     *
+     * @param rewardValue 商家奖励额度
+     */
+    public void setRewardValue(Double rewardValue) {
+        this.rewardValue = rewardValue;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -447,19 +615,26 @@ public class SlActivityProduct implements Serializable {
         sb.append(", activityId=").append(activityId);
         sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
+        sb.append(", referencePrice=").append(referencePrice);
+        sb.append(", peas=").append(peas);
+        sb.append(", referencePeas=").append(referencePeas);
+        sb.append(", personalPrice=").append(personalPrice);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", count=").append(count);
         sb.append(", peopleNum=").append(peopleNum);
         sb.append(", ordersNum=").append(ordersNum);
         sb.append(", surplusProductCount=").append(surplusProductCount);
-        sb.append(", peas=").append(peas);
         sb.append(", awardPeasCounts=").append(awardPeasCounts);
         sb.append(", awwardMoney=").append(awwardMoney);
         sb.append(", enabled=").append(enabled);
         sb.append(", createTime=").append(createTime);
         sb.append(", creator=").append(creator);
         sb.append(", restrictCount=").append(restrictCount);
+        sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
+        sb.append(", returnMoney=").append(returnMoney);
+        sb.append(", returnPeas=").append(returnPeas);
+        sb.append(", rewardValue=").append(rewardValue);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

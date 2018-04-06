@@ -1,7 +1,6 @@
 package com.songpo.searched.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "sl_product")
@@ -64,18 +63,6 @@ public class SlProduct implements Serializable {
     private Integer salesVolume;
 
     /**
-     * 参考价格
-     */
-    @Column(name = "reference_price")
-    private BigDecimal referencePrice;
-
-    /**
-     * 参考豆子
-     */
-    @Column(name = "reference_pulse")
-    private Integer referencePulse;
-
-    /**
      * 店铺唯一标识符
      */
     @Column(name = "shop_id")
@@ -86,42 +73,6 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "sales_mode_id")
     private String salesModeId;
-
-    /**
-     * 列表展示最低价格
-     */
-    @Column(name = "min_price")
-    private BigDecimal minPrice;
-
-    /**
-     * 预售发货天数
-     */
-    @Column(name = "presell_shipments_days")
-    private Integer presellShipmentsDays;
-
-    /**
-     * 列表展示返现money(显示规格最高的)
-     */
-    @Column(name = "return_money")
-    private BigDecimal returnMoney;
-
-    /**
-     * 列表展示返豆数量(显示规格最多的)
-     */
-    @Column(name = "return_pulse")
-    private Integer returnPulse;
-
-    /**
-     * 所需人数
-     */
-    @Column(name = "group_people")
-    private Integer groupPeople;
-
-    /**
-     * 商家奖励额度
-     */
-    @Column(name = "reward_value")
-    private Double rewardValue;
 
     /**
      * 创建人
@@ -135,21 +86,9 @@ public class SlProduct implements Serializable {
     private String createTime;
 
     /**
-     * 限定单数
-     */
-    @Column(name = "restrict_count")
-    private Integer restrictCount;
-
-    /**
      * 是否为推荐商品，0:否 1:是
      */
     private Integer recommend;
-
-    /**
-     * 拼团价格
-     */
-    @Column(name = "group_price")
-    private BigDecimal groupPrice;
 
     private static final long serialVersionUID = 1L;
 
@@ -334,42 +273,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取参考价格
-     *
-     * @return reference_price - 参考价格
-     */
-    public BigDecimal getReferencePrice() {
-        return referencePrice;
-    }
-
-    /**
-     * 设置参考价格
-     *
-     * @param referencePrice 参考价格
-     */
-    public void setReferencePrice(BigDecimal referencePrice) {
-        this.referencePrice = referencePrice;
-    }
-
-    /**
-     * 获取参考豆子
-     *
-     * @return reference_pulse - 参考豆子
-     */
-    public Integer getReferencePulse() {
-        return referencePulse;
-    }
-
-    /**
-     * 设置参考豆子
-     *
-     * @param referencePulse 参考豆子
-     */
-    public void setReferencePulse(Integer referencePulse) {
-        this.referencePulse = referencePulse;
-    }
-
-    /**
      * 获取店铺唯一标识符
      *
      * @return shop_id - 店铺唯一标识符
@@ -403,114 +306,6 @@ public class SlProduct implements Serializable {
      */
     public void setSalesModeId(String salesModeId) {
         this.salesModeId = salesModeId == null ? null : salesModeId.trim();
-    }
-
-    /**
-     * 获取列表展示最低价格
-     *
-     * @return min_price - 列表展示最低价格
-     */
-    public BigDecimal getMinPrice() {
-        return minPrice;
-    }
-
-    /**
-     * 设置列表展示最低价格
-     *
-     * @param minPrice 列表展示最低价格
-     */
-    public void setMinPrice(BigDecimal minPrice) {
-        this.minPrice = minPrice;
-    }
-
-    /**
-     * 获取预售发货天数
-     *
-     * @return presell_shipments_days - 预售发货天数
-     */
-    public Integer getPresellShipmentsDays() {
-        return presellShipmentsDays;
-    }
-
-    /**
-     * 设置预售发货天数
-     *
-     * @param presellShipmentsDays 预售发货天数
-     */
-    public void setPresellShipmentsDays(Integer presellShipmentsDays) {
-        this.presellShipmentsDays = presellShipmentsDays;
-    }
-
-    /**
-     * 获取列表展示返现money(显示规格最高的)
-     *
-     * @return return_money - 列表展示返现money(显示规格最高的)
-     */
-    public BigDecimal getReturnMoney() {
-        return returnMoney;
-    }
-
-    /**
-     * 设置列表展示返现money(显示规格最高的)
-     *
-     * @param returnMoney 列表展示返现money(显示规格最高的)
-     */
-    public void setReturnMoney(BigDecimal returnMoney) {
-        this.returnMoney = returnMoney;
-    }
-
-    /**
-     * 获取列表展示返豆数量(显示规格最多的)
-     *
-     * @return return_pulse - 列表展示返豆数量(显示规格最多的)
-     */
-    public Integer getReturnPulse() {
-        return returnPulse;
-    }
-
-    /**
-     * 设置列表展示返豆数量(显示规格最多的)
-     *
-     * @param returnPulse 列表展示返豆数量(显示规格最多的)
-     */
-    public void setReturnPulse(Integer returnPulse) {
-        this.returnPulse = returnPulse;
-    }
-
-    /**
-     * 获取所需人数
-     *
-     * @return group_people - 所需人数
-     */
-    public Integer getGroupPeople() {
-        return groupPeople;
-    }
-
-    /**
-     * 设置所需人数
-     *
-     * @param groupPeople 所需人数
-     */
-    public void setGroupPeople(Integer groupPeople) {
-        this.groupPeople = groupPeople;
-    }
-
-    /**
-     * 获取商家奖励额度
-     *
-     * @return reward_value - 商家奖励额度
-     */
-    public Double getRewardValue() {
-        return rewardValue;
-    }
-
-    /**
-     * 设置商家奖励额度
-     *
-     * @param rewardValue 商家奖励额度
-     */
-    public void setRewardValue(Double rewardValue) {
-        this.rewardValue = rewardValue;
     }
 
     /**
@@ -550,24 +345,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取限定单数
-     *
-     * @return restrict_count - 限定单数
-     */
-    public Integer getRestrictCount() {
-        return restrictCount;
-    }
-
-    /**
-     * 设置限定单数
-     *
-     * @param restrictCount 限定单数
-     */
-    public void setRestrictCount(Integer restrictCount) {
-        this.restrictCount = restrictCount;
-    }
-
-    /**
      * 获取是否为推荐商品，0:否 1:是
      *
      * @return recommend - 是否为推荐商品，0:否 1:是
@@ -583,24 +360,6 @@ public class SlProduct implements Serializable {
      */
     public void setRecommend(Integer recommend) {
         this.recommend = recommend;
-    }
-
-    /**
-     * 获取拼团价格
-     *
-     * @return group_price - 拼团价格
-     */
-    public BigDecimal getGroupPrice() {
-        return groupPrice;
-    }
-
-    /**
-     * 设置拼团价格
-     *
-     * @param groupPrice 拼团价格
-     */
-    public void setGroupPrice(BigDecimal groupPrice) {
-        this.groupPrice = groupPrice;
     }
 
     @Override
@@ -619,21 +378,11 @@ public class SlProduct implements Serializable {
         sb.append(", soldOut=").append(soldOut);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
-        sb.append(", referencePrice=").append(referencePrice);
-        sb.append(", referencePulse=").append(referencePulse);
         sb.append(", shopId=").append(shopId);
         sb.append(", salesModeId=").append(salesModeId);
-        sb.append(", minPrice=").append(minPrice);
-        sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
-        sb.append(", returnMoney=").append(returnMoney);
-        sb.append(", returnPulse=").append(returnPulse);
-        sb.append(", groupPeople=").append(groupPeople);
-        sb.append(", rewardValue=").append(rewardValue);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
-        sb.append(", restrictCount=").append(restrictCount);
         sb.append(", recommend=").append(recommend);
-        sb.append(", groupPrice=").append(groupPrice);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
