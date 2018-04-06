@@ -136,10 +136,6 @@ public class CustomerClientHomeService {
             setTypeId("1");
         }});
         data.put("banner", bannerList);
-        //商品分类首页推荐商品
-        List<Map<String,Object>> recommendProducts = this.cmProductMapper.findRecommendProduct();
-        data.put("recommendProducts", recommendProducts);
-
         return data;
     }
 

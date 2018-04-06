@@ -128,31 +128,6 @@ public class CmProductService {
     }
 
     /**
-     * 商品分类首页推荐商品
-     * @return 推荐商品列表
-     */
-    public BusinessMessage recommendProduct() {
-        BusinessMessage<List<Map<String,Object>>> businessMessage = new BusinessMessage<>();
-        businessMessage.setSuccess(false);
-        try {
-            List<Map<String,Object>> cmProducts = this.mapper.findRecommendProduct();
-            if (cmProducts.size() > 0) {
-                businessMessage.setMsg("查询成功");
-                businessMessage.setSuccess(true);
-                businessMessage.setData(cmProducts);
-            } else {
-                businessMessage.setMsg("查询无数据");
-                businessMessage.setSuccess(true);
-            }
-        } catch (Exception e) {
-            businessMessage.setMsg("查询失败");
-            log.error("查询商品失败", e);
-        }
-
-        return businessMessage;
-    }
-
-    /**
      * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
      * @param goodsType  商品分类ID
@@ -169,7 +144,7 @@ public class CmProductService {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
 
             if (goodsType != null || screenType != null || name != null || saleMode != null) {
-                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name);
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name,ActivityConstant.NO_ACTIVITY);
                 if (list.size() > 0) {
                     businessMessage.setMsg("查询成功");
                     businessMessage.setSuccess(true);

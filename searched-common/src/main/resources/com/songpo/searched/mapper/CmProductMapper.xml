@@ -62,22 +62,23 @@
         WHERE ap.action_id = #{actionId}
     </select>
 
-    <!--查询商品前六个 推荐-->
-    <select id="findRecommendProduct" resultType="Map" >
-        select p.* from sl_product p where p.recommend =1
-    </select>
+
 
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
-        select
-        *
-        FROM sl_product p
+        SELECT
+        ap.*,p.name,p.introduction
+        FROM
+        sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON p.id = ap.product_id
         WHERE 1=1
+        and p.`sold_out`=1 AND ap.enabled = 1
         <if test="saleMode != null and saleMode != ''">
         and p.sales_mode_id = #{saleMode}
     </if>
     <if test="saleMode == null and saleMode == ''">
-        and p.sales_mode_id = 0
+        and p.sales_mode_id = 6
     </if>
     <if test="goodsName != null and goodsName != ''">
         and p.`name` like "%"#{goodsName}"%"
@@ -95,10 +96,10 @@
         ORDER BY p.sales_volume ASC
     </if>
     <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
-            ORDER BY p.reference_price DESC
+            ORDER BY ap.reference_price DESC
         </if>
         <if test="screenGoods != null and screenGoods !='' and screenGoods == 4">
-            ORDER BY p.reference_price ASC
+            ORDER BY ap.reference_price ASC
         </if>
 
 

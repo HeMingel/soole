@@ -49,11 +49,6 @@ public interface CmProductMapper{
     List<SlProduct> selectByAction(String actionId);
 
     /**
-     * 查询推荐商品
-     * @return 商品列表
-     */
-    List<Map<String,Object>> findRecommendProduct();
-    /**
      * 分类查询商品 + 商品的筛选 + 根据名称查询
      * @param goodsType 商品分类
      * @param screenGoods 筛选条件
@@ -61,7 +56,7 @@ public interface CmProductMapper{
      * @param goodsName 商品名称
      * @return 商品列表 goodsType, screenType, saleMode, name
      */
-    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName);
+    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
     /**
      * 查询商品基础信息
      * @param goodsId 商品ID

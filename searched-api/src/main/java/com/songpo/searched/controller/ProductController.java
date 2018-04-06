@@ -120,20 +120,6 @@ public class ProductController {
         return message;
     }
 
-
-    /**
-     * 推荐商品
-     * @return 商品列表
-     */
-    @ApiOperation(value = "推荐商品")
-    @ApiImplicitParams(value = {
-    })
-    @GetMapping("recommend-product")
-    public BusinessMessage recommendProduct() {
-        return this.productService.recommendProduct();
-    }
-
-
     /**
      * 商品分类只查询普通商品 和名字
      * 商品分类查询商品,商品筛选分类 + 筛选
@@ -163,7 +149,6 @@ public class ProductController {
     @ApiOperation(value = "查询商品详情")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
-            //@ApiImplicitParam(name = "saleModeType", value = "商品销售类型,1拼团 2预售 3豆赚 4消费返利 5一元购 6普通", paramType = "form", required = true)
     })
     @GetMapping("/goods-detail")
     public BusinessMessage goodsDetail(String id,String activityId) {
