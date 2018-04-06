@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_agent_application")
 public class SlAgentApplication implements Serializable {
@@ -31,13 +31,28 @@ public class SlAgentApplication implements Serializable {
     /**
      * 区县
      */
-    private String county;
+    private String country;
 
     /**
-     * 是否有公司或团队，0：没有 1：有
+     * 乡镇
      */
-    @Column(name = "own_a_company")
-    private Boolean ownACompany;
+    private String town;
+
+    /**
+     * 村、街道
+     */
+    private String street;
+
+    /**
+     * 剩余地址信息
+     */
+    @Column(name = "other_address")
+    private String otherAddress;
+
+    /**
+     * 申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商
+     */
+    private Integer level;
 
     /**
      * 姓名
@@ -49,6 +64,12 @@ public class SlAgentApplication implements Serializable {
      * 电话
      */
     private String phone;
+
+    /**
+     * 身份证号码
+     */
+    @Column(name = "id_card_number")
+    private String idCardNumber;
 
     /**
      * 身份证正面
@@ -85,6 +106,11 @@ public class SlAgentApplication implements Serializable {
      */
     @Column(name = "agent_check_time")
     private String agentCheckTime;
+
+    /**
+     * 账号状态：0 禁用， 1 启用
+     */
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -163,37 +189,91 @@ public class SlAgentApplication implements Serializable {
     /**
      * 获取区县
      *
-     * @return county - 区县
+     * @return country - 区县
      */
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
     /**
      * 设置区县
      *
-     * @param county 区县
+     * @param country 区县
      */
-    public void setCounty(String county) {
-        this.county = county == null ? null : county.trim();
+    public void setCountry(String country) {
+        this.country = country == null ? null : country.trim();
     }
 
     /**
-     * 获取是否有公司或团队，0：没有 1：有
+     * 获取乡镇
      *
-     * @return own_a_company - 是否有公司或团队，0：没有 1：有
+     * @return town - 乡镇
      */
-    public Boolean getOwnACompany() {
-        return ownACompany;
+    public String getTown() {
+        return town;
     }
 
     /**
-     * 设置是否有公司或团队，0：没有 1：有
+     * 设置乡镇
      *
-     * @param ownACompany 是否有公司或团队，0：没有 1：有
+     * @param town 乡镇
      */
-    public void setOwnACompany(Boolean ownACompany) {
-        this.ownACompany = ownACompany;
+    public void setTown(String town) {
+        this.town = town == null ? null : town.trim();
+    }
+
+    /**
+     * 获取村、街道
+     *
+     * @return street - 村、街道
+     */
+    public String getStreet() {
+        return street;
+    }
+
+    /**
+     * 设置村、街道
+     *
+     * @param street 村、街道
+     */
+    public void setStreet(String street) {
+        this.street = street == null ? null : street.trim();
+    }
+
+    /**
+     * 获取剩余地址信息
+     *
+     * @return other_address - 剩余地址信息
+     */
+    public String getOtherAddress() {
+        return otherAddress;
+    }
+
+    /**
+     * 设置剩余地址信息
+     *
+     * @param otherAddress 剩余地址信息
+     */
+    public void setOtherAddress(String otherAddress) {
+        this.otherAddress = otherAddress == null ? null : otherAddress.trim();
+    }
+
+    /**
+     * 获取申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商
+     *
+     * @return level - 申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     * 设置申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商
+     *
+     * @param level 申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     /**
@@ -230,6 +310,24 @@ public class SlAgentApplication implements Serializable {
      */
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 获取身份证号码
+     *
+     * @return id_card_number - 身份证号码
+     */
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    /**
+     * 设置身份证号码
+     *
+     * @param idCardNumber 身份证号码
+     */
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber == null ? null : idCardNumber.trim();
     }
 
     /**
@@ -340,6 +438,24 @@ public class SlAgentApplication implements Serializable {
         this.agentCheckTime = agentCheckTime == null ? null : agentCheckTime.trim();
     }
 
+    /**
+     * 获取账号状态：0 禁用， 1 启用
+     *
+     * @return status - 账号状态：0 禁用， 1 启用
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置账号状态：0 禁用， 1 启用
+     *
+     * @param status 账号状态：0 禁用， 1 启用
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -350,16 +466,21 @@ public class SlAgentApplication implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
-        sb.append(", county=").append(county);
-        sb.append(", ownACompany=").append(ownACompany);
+        sb.append(", country=").append(country);
+        sb.append(", town=").append(town);
+        sb.append(", street=").append(street);
+        sb.append(", otherAddress=").append(otherAddress);
+        sb.append(", level=").append(level);
         sb.append(", realName=").append(realName);
         sb.append(", phone=").append(phone);
+        sb.append(", idCardNumber=").append(idCardNumber);
         sb.append(", idCardFrontImageUrl=").append(idCardFrontImageUrl);
         sb.append(", idCardBackImageUrl=").append(idCardBackImageUrl);
         sb.append(", idCardHandImageUrl=").append(idCardHandImageUrl);
         sb.append(", agentCheckState=").append(agentCheckState);
         sb.append(", agentCreateTime=").append(agentCreateTime);
         sb.append(", agentCheckTime=").append(agentCheckTime);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

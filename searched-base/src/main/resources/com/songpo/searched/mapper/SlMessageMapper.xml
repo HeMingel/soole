@@ -11,7 +11,7 @@
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="target_name" jdbcType="VARCHAR" property="targetName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="read" jdbcType="INTEGER" property="read" />
+      <result column="readed" jdbcType="INTEGER" property="readed"/>
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="read_time" jdbcType="VARCHAR" property="readTime" />
       <result column="channel_type" jdbcType="INTEGER" property="channelType"/>
@@ -21,7 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, source_id, source_name, target_id, target_name, content, read, create_time, read_time,
-      channel_type, message_type
+      id, source_id, source_name, target_id, target_name, content, readed, create_time,
+    read_time, channel_type, message_type
   </sql>
 </mapper>

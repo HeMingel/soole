@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_message")
 public class SlMessage implements Serializable {
@@ -44,7 +44,7 @@ public class SlMessage implements Serializable {
     /**
      * 是否已读，1：已读，0：未读
      */
-    private Integer read;
+    private Integer readed;
 
     /**
      * 创建时间
@@ -59,13 +59,13 @@ public class SlMessage implements Serializable {
     private String readTime;
 
     /**
-     * 消息类型，1：单播 2：广播
+     * 频道类型，1：单播 2：广播
      */
     @Column(name = "channel_type")
     private Integer channelType;
 
     /**
-     * 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     * 消息类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
      */
     @Column(name = "message_type")
     private Integer messageType;
@@ -183,19 +183,19 @@ public class SlMessage implements Serializable {
     /**
      * 获取是否已读，1：已读，0：未读
      *
-     * @return read - 是否已读，1：已读，0：未读
+     * @return readed - 是否已读，1：已读，0：未读
      */
-    public Integer getRead() {
-        return read;
+    public Integer getReaded() {
+        return readed;
     }
 
     /**
      * 设置是否已读，1：已读，0：未读
      *
-     * @param read 是否已读，1：已读，0：未读
+     * @param readed 是否已读，1：已读，0：未读
      */
-    public void setRead(Integer read) {
-        this.read = read;
+    public void setReaded(Integer readed) {
+        this.readed = readed;
     }
 
     /**
@@ -235,36 +235,36 @@ public class SlMessage implements Serializable {
     }
 
     /**
-     * 获取消息类型，1：单播 2：广播
+     * 获取频道类型，1：单播 2：广播
      *
-     * @return channel_type - 消息类型，1：单播 2：广播
+     * @return channel_type - 频道类型，1：单播 2：广播
      */
     public Integer getChannelType() {
         return channelType;
     }
 
     /**
-     * 设置消息类型，1：单播 2：广播
+     * 设置频道类型，1：单播 2：广播
      *
-     * @param channelType 消息类型，1：单播 2：广播
+     * @param channelType 频道类型，1：单播 2：广播
      */
     public void setChannelType(Integer channelType) {
         this.channelType = channelType;
     }
 
     /**
-     * 获取消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     * 获取消息类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
      *
-     * @return message_type - 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     * @return message_type - 消息类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
      */
     public Integer getMessageType() {
         return messageType;
     }
 
     /**
-     * 设置消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     * 设置消息类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
      *
-     * @param messageType 消息内容类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
+     * @param messageType 消息类型：1 系统通知(通用的)，21 普通商品购买通知，22 人气拼团商品购买通知，23 预售商品购买通知，24 豆赚商品购买通知，25 消费返利商品购买通知，26 1元购商品购买通知，31 无活动商品购买通知，32 新人专享商品购买通知，33 推荐奖励购买通知，34 限时秒杀购买通知
      */
     public void setMessageType(Integer messageType) {
         this.messageType = messageType;
@@ -282,7 +282,7 @@ public class SlMessage implements Serializable {
         sb.append(", targetId=").append(targetId);
         sb.append(", targetName=").append(targetName);
         sb.append(", content=").append(content);
-        sb.append(", read=").append(read);
+        sb.append(", readed=").append(readed);
         sb.append(", createTime=").append(createTime);
         sb.append(", readTime=").append(readTime);
         sb.append(", channelType=").append(channelType);

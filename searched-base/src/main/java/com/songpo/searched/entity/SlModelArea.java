@@ -1,50 +1,59 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_model_area")
 public class SlModelArea implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * 父区域ID
      */
     @Column(name = "parent_id")
     private Integer parentId;
+
     /**
      * 区域名称
      */
     private String name;
+
     /**
      * 区域短名称
      */
     @Column(name = "short_name")
     private String shortName;
+
     /**
      * 区域等级
      */
     private Boolean level;
+
     /**
      * 城市代码
      */
     @Column(name = "city_code")
     private String cityCode;
+
     /**
      * 邮政编码
      */
     @Column(name = "zip_code")
     private String zipCode;
+
     /**
      * 经度
      */
     private String lng;
+
     /**
      * 纬度
      */
     private String lat;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

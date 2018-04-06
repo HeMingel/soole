@@ -56,6 +56,12 @@ public class SlOrderDetail implements Serializable {
     private String productImageUrl;
 
     /**
+     * 商品规格名称
+     */
+    @Column(name = "product_detail_group_name")
+    private String productDetailGroupName;
+
+    /**
      * 数量
      */
     private Integer quantity;
@@ -314,6 +320,24 @@ public class SlOrderDetail implements Serializable {
      */
     public void setProductImageUrl(String productImageUrl) {
         this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
+    }
+
+    /**
+     * 获取商品规格名称
+     *
+     * @return product_detail_group_name - 商品规格名称
+     */
+    public String getProductDetailGroupName() {
+        return productDetailGroupName;
+    }
+
+    /**
+     * 设置商品规格名称
+     *
+     * @param productDetailGroupName 商品规格名称
+     */
+    public void setProductDetailGroupName(String productDetailGroupName) {
+        this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
     }
 
     /**
@@ -690,6 +714,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", productName=").append(productName);
         sb.append(", productImageUrl=").append(productImageUrl);
+        sb.append(", productDetailGroupName=").append(productDetailGroupName);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", deductTotalSilver=").append(deductTotalSilver);

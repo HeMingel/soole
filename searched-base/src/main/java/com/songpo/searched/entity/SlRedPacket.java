@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_red_packet")
 public class SlRedPacket implements Serializable {
@@ -36,18 +36,20 @@ public class SlRedPacket implements Serializable {
     @Column(name = "surplus_count")
     private Integer surplusCount;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 红包类型   1. 余额，  2.豆
+     */
+    private Boolean type;
 
     /**
      * 红包结果  1.有效  2.已抢完  3.过期
      */
     private Boolean result;
-    /**
-     * 红包类型   1. 余额，  2.豆
-     */
-    private Boolean type;
+
     @Column(name = "create_time")
     private Date createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
