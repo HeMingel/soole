@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -77,7 +77,7 @@ public class SlActivityProduct implements Serializable {
     private Integer count;
 
     /**
-     * 拼团所需人数
+     * 拼团/助力购 所需人数
      */
     @Column(name = "people_num")
     private Integer peopleNum;
@@ -105,11 +105,6 @@ public class SlActivityProduct implements Serializable {
      */
     @Column(name = "awward_money")
     private Double awwardMoney;
-
-    /**
-     * 是否启用(1:启用 0;下架)
-     */
-    private Boolean enabled;
 
     /**
      * 创建时间
@@ -151,6 +146,11 @@ public class SlActivityProduct implements Serializable {
      */
     @Column(name = "reward_value")
     private Double rewardValue;
+
+    /**
+     * 是否启用(1:启用 0;下架)
+     */
+    private Boolean enabled;
 
     private static final long serialVersionUID = 1L;
 
@@ -371,18 +371,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取拼团所需人数
+     * 获取拼团/助力购 所需人数
      *
-     * @return people_num - 拼团所需人数
+     * @return people_num - 拼团/助力购 所需人数
      */
     public Integer getPeopleNum() {
         return peopleNum;
     }
 
     /**
-     * 设置拼团所需人数
+     * 设置拼团/助力购 所需人数
      *
-     * @param peopleNum 拼团所需人数
+     * @param peopleNum 拼团/助力购 所需人数
      */
     public void setPeopleNum(Integer peopleNum) {
         this.peopleNum = peopleNum;
@@ -458,24 +458,6 @@ public class SlActivityProduct implements Serializable {
      */
     public void setAwwardMoney(Double awwardMoney) {
         this.awwardMoney = awwardMoney;
-    }
-
-    /**
-     * 获取是否启用(1:启用 0;下架)
-     *
-     * @return enabled - 是否启用(1:启用 0;下架)
-     */
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    /**
-     * 设置是否启用(1:启用 0;下架)
-     *
-     * @param enabled 是否启用(1:启用 0;下架)
-     */
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     /**
@@ -604,6 +586,24 @@ public class SlActivityProduct implements Serializable {
         this.rewardValue = rewardValue;
     }
 
+    /**
+     * 获取是否启用(1:启用 0;下架)
+     *
+     * @return enabled - 是否启用(1:启用 0;下架)
+     */
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    /**
+     * 设置是否启用(1:启用 0;下架)
+     *
+     * @param enabled 是否启用(1:启用 0;下架)
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -627,7 +627,6 @@ public class SlActivityProduct implements Serializable {
         sb.append(", surplusProductCount=").append(surplusProductCount);
         sb.append(", awardPeasCounts=").append(awardPeasCounts);
         sb.append(", awwardMoney=").append(awwardMoney);
-        sb.append(", enabled=").append(enabled);
         sb.append(", createTime=").append(createTime);
         sb.append(", creator=").append(creator);
         sb.append(", restrictCount=").append(restrictCount);
@@ -635,6 +634,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", returnPeas=").append(returnPeas);
         sb.append(", rewardValue=").append(rewardValue);
+        sb.append(", enabled=").append(enabled);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

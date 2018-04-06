@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -45,12 +45,6 @@ public class SlProduct implements Serializable {
     private String productTypeId;
 
     /**
-     * 是否下架(0:下架 1:上架)
-     */
-    @Column(name = "sold_out")
-    private Boolean soldOut;
-
-    /**
      * 评论数量
      */
     @Column(name = "comment_num")
@@ -89,6 +83,12 @@ public class SlProduct implements Serializable {
      * 是否为推荐商品，0:否 1:是
      */
     private Integer recommend;
+
+    /**
+     * 是否下架(0:下架 1:上架)
+     */
+    @Column(name = "sold_out")
+    private Boolean soldOut;
 
     private static final long serialVersionUID = 1L;
 
@@ -219,24 +219,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架(0:下架 1:上架)
-     *
-     * @return sold_out - 是否下架(0:下架 1:上架)
-     */
-    public Boolean getSoldOut() {
-        return soldOut;
-    }
-
-    /**
-     * 设置是否下架(0:下架 1:上架)
-     *
-     * @param soldOut 是否下架(0:下架 1:上架)
-     */
-    public void setSoldOut(Boolean soldOut) {
-        this.soldOut = soldOut;
-    }
-
-    /**
      * 获取评论数量
      *
      * @return comment_num - 评论数量
@@ -362,6 +344,24 @@ public class SlProduct implements Serializable {
         this.recommend = recommend;
     }
 
+    /**
+     * 获取是否下架(0:下架 1:上架)
+     *
+     * @return sold_out - 是否下架(0:下架 1:上架)
+     */
+    public Boolean getSoldOut() {
+        return soldOut;
+    }
+
+    /**
+     * 设置是否下架(0:下架 1:上架)
+     *
+     * @param soldOut 是否下架(0:下架 1:上架)
+     */
+    public void setSoldOut(Boolean soldOut) {
+        this.soldOut = soldOut;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -375,7 +375,6 @@ public class SlProduct implements Serializable {
         sb.append(", introduction=").append(introduction);
         sb.append(", detail=").append(detail);
         sb.append(", productTypeId=").append(productTypeId);
-        sb.append(", soldOut=").append(soldOut);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
         sb.append(", shopId=").append(shopId);
@@ -383,6 +382,7 @@ public class SlProduct implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", recommend=").append(recommend);
+        sb.append(", soldOut=").append(soldOut);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

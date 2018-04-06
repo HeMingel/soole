@@ -1,6 +1,8 @@
 package com.songpo.searched.rabbitmq;
 
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.typehandler.BaseEnum;
+import com.songpo.searched.typehandler.MessageTypeEnum;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +55,7 @@ public class NotificationController {
             message.setMsg("消息类型为空");
         } else {
             try {
-                this.notificationService.sendToQueue(sourceId, targetId, content, type);
+                this.notificationService.sendToQueue(sourceId, targetId, content, BaseEnum.valueOfEnum(MessageTypeEnum.class, type));
                 message.setSuccess(true);
             } catch (Exception e) {
                 log.error("单播消息发送失败，", e);
@@ -95,7 +97,7 @@ public class NotificationController {
             message.setMsg("消息类型为空");
         } else {
             try {
-                this.notificationService.sendToTopic(sourceId, targetId, content, type);
+                this.notificationService.sendToTopic(sourceId, targetId, content, BaseEnum.valueOfEnum(MessageTypeEnum.class, type));
                 message.setSuccess(true);
             } catch (Exception e) {
                 log.error("广播消息发送失败，", e);
@@ -120,7 +122,7 @@ public class NotificationController {
             message.setMsg("消息类型为空");
         } else {
             try {
-                this.notificationService.sendGlobalMessage(content, type);
+                this.notificationService.sendGlobalMessage(content, BaseEnum.valueOfEnum(MessageTypeEnum.class, type));
                 message.setSuccess(true);
             } catch (Exception e) {
                 log.error("全局消息发送失败，", e);

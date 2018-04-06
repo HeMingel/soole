@@ -6,18 +6,20 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.CmProduct;
 import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
-import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义商品服务类
@@ -362,5 +364,13 @@ public class CmProductService {
         return businessMessage;
     }
 
+    /**
+     * 处理秒杀商品限时结束事件
+     */
+    @RabbitListener(queues = "queue_com.songpo.seached:product:time-limit")
+    public void processProductUndercarriage(String productId) {
+        log.debug("秒杀商品限时结束，标识：{}", productId);
+        // TODO 秒杀商品限时结束
+    }
 
 }

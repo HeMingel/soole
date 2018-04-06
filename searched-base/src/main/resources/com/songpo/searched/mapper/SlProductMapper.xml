@@ -12,7 +12,6 @@
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
-    <result column="sold_out" jdbcType="BIT" property="soldOut" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
@@ -20,12 +19,13 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
+      <result column="sold_out" jdbcType="BIT" property="soldOut"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, remark, image_url, introduction, detail, product_type_id, sold_out, comment_num, 
-    sales_volume, shop_id, sales_mode_id, creator, create_time, recommend
+      id, name, remark, image_url, introduction, detail, product_type_id, comment_num,
+      sales_volume, shop_id, sales_mode_id, creator, create_time, recommend, sold_out
   </sql>
 </mapper>
