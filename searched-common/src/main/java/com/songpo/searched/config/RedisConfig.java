@@ -1,6 +1,7 @@
 package com.songpo.searched.config;
 
 import com.songpo.searched.domain.CMShoppingCart;
+import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlUser;
@@ -45,7 +46,7 @@ public class RedisConfig {
     }
 
     /**
-     * 商品模板
+     * 商品显示活动模板
      *
      * @param factory
      * @return

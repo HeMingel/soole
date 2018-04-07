@@ -10,7 +10,7 @@
         spr.product_image_url goodimageUrl,
         sod.quantity counts,
         so.payment_state paymentState,
-        so.shipping_state shippingState,
+        sod.shipping_state shippingState,
         sod.price price,
         sod.deduct_total_silver pulse,
         sod.post_fee postFee,
