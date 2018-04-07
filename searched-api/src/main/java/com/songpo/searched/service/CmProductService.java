@@ -167,6 +167,38 @@ public class CmProductService {
     }
 
     /**
+     *  根据商品名称查询商品
+     * @param goodsName 商品名称
+     * @param page 页码
+     * @param size 容量
+     * @return 商品列表
+     */
+    public BusinessMessage selectByName(String goodsName,Integer page, Integer size){
+        log.debug("查询商品 商品名称,{}",goodsName);
+        BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(false);
+        try {
+            PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
+            String name = '%'+goodsName+'%';
+            List<Map<String,Object>> list = this.mapper.selectByName(name);
+            if(list.size()>0){
+                businessMessage.setMsg("查询成功");
+                businessMessage.setSuccess(true);
+                businessMessage.setData(new PageInfo<>(list));
+            }else {
+                businessMessage.setMsg("查询无数据");
+                businessMessage.setSuccess(true);
+            }
+
+        }catch (Exception e){
+            businessMessage.setMsg("查询异常");
+            log.error("查询商品异常", e);
+        }
+        return businessMessage;
+
+    }
+
+    /**
      * 根据商品Id 查询商品详情
      *
      * @param goodsId 商品Id
