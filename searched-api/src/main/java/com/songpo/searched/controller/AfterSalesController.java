@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(description = "售后服务")
 @RestController
 @CrossOrigin
-@RequestMapping("/api/common/v1/afterSales")
+@RequestMapping("/api/common/v1/after-sales")
 public class AfterSalesController {
 
     @Autowired
@@ -23,15 +23,15 @@ public class AfterSalesController {
 
     @ApiOperation(value = "新增售后服务单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "申请售后类型(1:退货退款 2:仅退款)", value = "type", paramType = "form", required = true),
-            @ApiImplicitParam(name = "申请原因", value = "reason", paramType = "form", required = true),
-            @ApiImplicitParam(name = "退款金额", value = "money", paramType = "form", required = true),
-            @ApiImplicitParam(name = "凭证图片", value = "file", paramType = "form"),
-            @ApiImplicitParam(name = "商品id", value = "productId", paramType = "form", required = true),
-            @ApiImplicitParam(name = "店铺id", value = "shopId", paramType = "form", required = true),
-            @ApiImplicitParam(name = "申请说明", value = "remark", paramType = "form")
+            @ApiImplicitParam(value = "申请售后类型(1:退货退款 2:仅退款)", name = "type", paramType = "form", required = true),
+            @ApiImplicitParam(value = "申请原因", name = "reason", paramType = "form", required = true),
+            @ApiImplicitParam(value = "退款金额", name = "money", paramType = "form", required = true),
+            @ApiImplicitParam(value = "凭证图片", name = "file", paramType = "form"),
+            @ApiImplicitParam(value = "商品id", name = "productId", paramType = "form", required = true),
+            @ApiImplicitParam(value = "店铺id", name = "shopId", paramType = "form", required = true),
+            @ApiImplicitParam(value = "申请说明", name = "remark", paramType = "form")
     })
-    @PostMapping("insertAfterSales")
+    @PostMapping()
     public BusinessMessage insertAfterSales(SlAfterSalesService afterSalesService, MultipartFile file) {
         BusinessMessage message = new BusinessMessage();
         try {
@@ -46,9 +46,9 @@ public class AfterSalesController {
 
     @ApiOperation(value = "售后服务单列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "售后id", value = "afterSalesServiceId", paramType = "form", required = true)
+            @ApiImplicitParam(value = "售后id", name = "afterSalesServiceId", paramType = "form", required = true)
     })
-    @GetMapping("selectAfterSales")
+    @GetMapping()
     public BusinessMessage selectAfterSales() {
         BusinessMessage message = new BusinessMessage();
         try {
