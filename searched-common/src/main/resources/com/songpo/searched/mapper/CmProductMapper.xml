@@ -102,8 +102,21 @@
             ORDER BY ap.reference_price ASC
         </if>
 
+    </select>
+    <!--根据商品名称查询商品-->
+    <select id="selectByName" resultType="Map" parameterType="String">
+        SELECT
+          p.name,p.image_url,p.introduction,p.product_type_id,p.comment_num,p.sales_volume,p.shop_id,p.`sales_mode_id`,ap.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+           ON p.id = ap.product_id
+           WHERE p.`sold_out`=1
+          AND ap.enabled = 1
+          and p.name LIKE #{goodsName}
 
     </select>
+
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
       SELECT
@@ -113,6 +126,8 @@
           LEFT JOIN sl_activity_product ap
             ON p.id = ap.product_id
              WHERE p.`id` =#{goodsId} and ap.activity_id = #{activityId}
+             and p.`sold_out`=1
+          AND ap.enabled = 1
 
     </select>
     <!--查询品活动中间表 sl_activity_product_repository-->
@@ -124,7 +139,11 @@
           ON p.`id` = ap.product_id
           LEFT JOIN sl_activity_product_repository apr
           ON ap.`activity_product_repository_serial_number` = apr.serial_number
-          WHERE p.id = #{goodsId} AND ap.`activity_id` = #{activityId}
+          WHERE
+           p.id = #{goodsId}
+           AND ap.`activity_id` = #{activityId}
+          and p.`sold_out`=1
+          AND ap.enabled = 1
      </select>
     <!--搜索商品所有图片-->
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
@@ -144,7 +163,7 @@
             ON p.id = ap.product_id
             LEFT JOIN sl_activity_product_repository apr
             on ap.activity_product_repository_serial_number = apr.serial_number
-            WHERE p.id= #{goodsId} AND ap.activity_id= #{activityId}
+            WHERE p.id= #{goodsId} AND ap.activity_id= #{activityId} and p.`sold_out`=1 AND ap.enabled = 1
     </select>
     <!--查询商品库存-->
     <select id="goodsRepository" resultType="Map" parameterType="String">
@@ -226,6 +245,8 @@
             WHERE p.id=#{goodsId}
             and ap.activity_id=#{activityId}
             and p.recommend = 1
+            and p.`sold_out`=1
+             AND ap.enabled = 1
             limit 0,4
     </select>
     <!--查询商品分类-->
@@ -245,6 +266,8 @@
             ON p.id = ap.product_id
             where p.product_type_id = #{goodsType}
             and ap.activity_id=#{activityId}
+            and p.`sold_out`=1
+             AND ap.enabled = 1
             ORDER BY p.sales_volume DESC
             limit 0,4
 

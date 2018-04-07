@@ -57,6 +57,14 @@ public interface CmProductMapper{
      * @return 商品列表 goodsType, screenType, saleMode, name
      */
     List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
+
+    /**
+     * 根据名称查询商品
+     * @param goodsName 商品名称
+     * @return 商品列表
+     */
+    List<Map<String,Object>> selectByName(String goodsName);
+
     /**
      * 查询商品基础信息
      * @param goodsId 商品ID
