@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +42,7 @@ public class NotificationController {
                     "33 推荐奖励购买通知，\n" +
                     "34 限时秒杀购买通知", paramType = "form", required = true)
     })
-    @RequestMapping("/queue")
+    @PutMapping("/queue")
     public BusinessMessage<Void> sendToQueue(String sourceId, String targetId, String content, Integer type) {
         log.debug("单播消息发送，来源标识：{}，目标标识：{}，消息内容：{}，消息类型：{}", sourceId, targetId, content, type);
         BusinessMessage<Void> message = new BusinessMessage<>();
@@ -83,7 +84,7 @@ public class NotificationController {
                     "33 推荐奖励购买通知，\n" +
                     "34 限时秒杀购买通知", paramType = "form", required = true)
     })
-    @RequestMapping("/topic")
+    @PutMapping("/topic")
     public BusinessMessage<Void> sendToTopic(String sourceId, String targetId, String content, Integer type) {
         log.debug("广播消息发送，来源标识：{}，目标标识：{}，内容：{}，消息类型：{}", sourceId, targetId, content, type);
         BusinessMessage<Void> message = new BusinessMessage<>();
@@ -112,7 +113,7 @@ public class NotificationController {
             @ApiImplicitParam(name = "content", value = "消息内容", paramType = "form", required = true),
             @ApiImplicitParam(name = "type", value = "消息类型", paramType = "form", required = true)
     })
-    @RequestMapping("/global")
+    @PutMapping("/global")
     public BusinessMessage<Void> sendGlobalMessage(String content, Integer type) {
         log.debug("全局消息发送，内容：{}，类型：{}", content, type);
         BusinessMessage<Void> message = new BusinessMessage<>();

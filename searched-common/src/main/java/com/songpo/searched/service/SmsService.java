@@ -15,6 +15,8 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 
 /**
@@ -84,7 +86,7 @@ public class SmsService {
                     log.debug("短信验证码发送成功，验证码：{}", code);
 
                     // 将验证码加入缓存
-                    this.cache.put(mobile, code);
+                    this.cache.put(mobile, code, 5L, TimeUnit.MINUTES);
 
                     message.setData(sendSmsResponse);
                     message.setSuccess(true);

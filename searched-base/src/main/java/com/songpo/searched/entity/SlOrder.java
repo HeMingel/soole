@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -132,6 +132,12 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "activity_product_id")
     private String activityProductId;
+
+    /**
+     * 订单发货时间。PHP组新增字段
+     */
+    @Column(name = "send_time")
+    private String sendTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -539,6 +545,24 @@ public class SlOrder implements Serializable {
         this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
+    /**
+     * 获取订单发货时间。PHP组新增字段
+     *
+     * @return send_time - 订单发货时间。PHP组新增字段
+     */
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    /**
+     * 设置订单发货时间。PHP组新增字段
+     *
+     * @param sendTime 订单发货时间。PHP组新增字段
+     */
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime == null ? null : sendTime.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -567,6 +591,7 @@ public class SlOrder implements Serializable {
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
         sb.append(", activityProductId=").append(activityProductId);
+        sb.append(", sendTime=").append(sendTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -42,9 +42,9 @@ public class ApplicationController {
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form", required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form", required = true),
             @ApiImplicitParam(name = "country", value = "区县", paramType = "form", required = true),
-            @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form", required = true),
-            @ApiImplicitParam(name = "street", value = "村、街道", paramType = "form", required = true),
-            @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form", required = true),
+            @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form"),
+            @ApiImplicitParam(name = "street", value = "村、街道", paramType = "form"),
+            @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
             @ApiImplicitParam(name = "level", value = "申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商", paramType = "form", required = true),
             @ApiImplicitParam(name = "name", value = "姓名", paramType = "form", required = true),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
@@ -61,10 +61,6 @@ public class ApplicationController {
             message.setMsg("城市为空");
         } else if (StringUtils.isBlank(agent.getCountry())) {
             message.setMsg("区县为空");
-        } else if (StringUtils.isBlank(agent.getTown())) {
-            message.setMsg("乡镇为空");
-        } else if (StringUtils.isBlank(agent.getStreet())) {
-            message.setMsg("街道为空");
         } else if (null == agent.getLevel()) {
             message.setMsg("申请级别为空");
         } else if (StringUtils.isBlank(agent.getRealName())) {
@@ -101,9 +97,9 @@ public class ApplicationController {
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form", required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form", required = true),
             @ApiImplicitParam(name = "country", value = "区县", paramType = "form", required = true),
-            @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form", required = true),
-            @ApiImplicitParam(name = "street", value = "街道", paramType = "form", required = true),
-            @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form", required = true),
+            @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form"),
+            @ApiImplicitParam(name = "street", value = "街道", paramType = "form"),
+            @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
             @ApiImplicitParam(name = "name", value = "姓名，申请类型为个人必填", paramType = "form"),
             @ApiImplicitParam(name = "companyName", value = "企业名称，申请类型为企业时必填", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
@@ -122,10 +118,6 @@ public class ApplicationController {
             message.setMsg("城市为空");
         } else if (StringUtils.isBlank(business.getCountry())) {
             message.setMsg("区县为空");
-        } else if (StringUtils.isBlank(business.getTown())) {
-            message.setMsg("乡镇为空");
-        } else if (StringUtils.isBlank(business.getStreet())) {
-            message.setMsg("街道为空");
         } else if (null == business.getType()) {
             message.setMsg("申请级别为空");
         } else if (StringUtils.isBlank(business.getPhone())) {

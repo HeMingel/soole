@@ -31,8 +31,7 @@ public class MyKeyExpirationEventMessageListener extends KeyExpirationEventMessa
         // 获取到的key
         String key = new String(message.getBody());
         String channel = key.substring(0, key.lastIndexOf(":"));
-        String payload = key.replace(channel, "");
-
+        String payload = key.substring(channel.length() + 1);
 
         // 发送消息
         notificationService.sendToQueue("", channel, payload, MessageTypeEnum.SYSTEM);

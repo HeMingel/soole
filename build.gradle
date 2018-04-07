@@ -4,7 +4,7 @@ buildscript {
         druidSpringVersion = '1.1.9'
         fastjsonVersion = '1.2.46'
         commonsLang3Version = '3.6'
-        swaggerSpringBootStarterVersion = '1.6.0.RELEASE'
+        swaggerSpringBootStarterVersion = '1.7.0.RELEASE'
         mapperSpringBootStarterVersion = '2.0.1'
         pagehelperSpringBootStarterVersion = '1.2.3'
         lombokVersion = '1.16.20'

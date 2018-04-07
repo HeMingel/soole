@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -29,7 +29,7 @@ public class SlTransactionDetail implements Serializable {
     private String redPacketId;
 
     /**
-     * 消费方式   1.转账  2.红包
+     * 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
      */
     private Boolean type;
 
@@ -110,18 +110,18 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取消费方式   1.转账  2.红包
+     * 获取消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
      *
-     * @return type - 消费方式   1.转账  2.红包
+     * @return type - 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
      */
     public Boolean getType() {
         return type;
     }
 
     /**
-     * 设置消费方式   1.转账  2.红包
+     * 设置消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
      *
-     * @param type 消费方式   1.转账  2.红包
+     * @param type 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
      */
     public void setType(Boolean type) {
         this.type = type;

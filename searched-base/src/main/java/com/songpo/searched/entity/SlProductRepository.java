@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -20,6 +20,12 @@ public class SlProductRepository implements Serializable {
     private String shopId;
 
     /**
+     * 商品唯一标识符
+     */
+    @Column(name = "product_id")
+    private String productId;
+
+    /**
      * 商品名称
      */
     @Column(name = "product_name")
@@ -30,12 +36,6 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "product_image_url")
     private String productImageUrl;
-
-    /**
-     * 商品唯一标识符
-     */
-    @Column(name = "product_id")
-    private String productId;
 
     /**
      * 商品规格名称
@@ -216,6 +216,24 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
+     * 获取商品唯一标识符
+     *
+     * @return product_id - 商品唯一标识符
+     */
+    public String getProductId() {
+        return productId;
+    }
+
+    /**
+     * 设置商品唯一标识符
+     *
+     * @param productId 商品唯一标识符
+     */
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
      * 获取商品名称
      *
      * @return product_name - 商品名称
@@ -249,24 +267,6 @@ public class SlProductRepository implements Serializable {
      */
     public void setProductImageUrl(String productImageUrl) {
         this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
-    }
-
-    /**
-     * 获取商品唯一标识符
-     *
-     * @return product_id - 商品唯一标识符
-     */
-    public String getProductId() {
-        return productId;
-    }
-
-    /**
-     * 设置商品唯一标识符
-     *
-     * @param productId 商品唯一标识符
-     */
-    public void setProductId(String productId) {
-        this.productId = productId == null ? null : productId.trim();
     }
 
     /**
@@ -727,9 +727,9 @@ public class SlProductRepository implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
+        sb.append(", productId=").append(productId);
         sb.append(", productName=").append(productName);
         sb.append(", productImageUrl=").append(productImageUrl);
-        sb.append(", productId=").append(productId);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
         sb.append(", remark=").append(remark);
         sb.append(", productProfitRatio=").append(productProfitRatio);

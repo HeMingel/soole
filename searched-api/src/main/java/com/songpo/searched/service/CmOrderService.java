@@ -1,12 +1,14 @@
 package com.songpo.searched.service;
 
-import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.ProductCache;
+import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.*;
+import com.songpo.searched.mapper.CmOrderMapper;
+import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlUserAddressMapper;
 import com.songpo.searched.util.OrderNumGeneration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -115,12 +116,12 @@ public class CmOrderService {
                                         }});
                                         int counts = this.cmOrderMapper.selectOrdersCount(repository.getProductId(), user.getId(), slActivityProduct.getId());
                                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        //想redis中加入过期时间
-                                        try {
-                                            productCache.setTimeOut(format.parse(slActivityProduct.getEndTime()).getTime() / 1000);//得到秒数，Date类型的getTime()返回毫秒数
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
+                                        // TODO 想redis中加入过期时间
+//                                        try {
+//                                            productCache.setTimeOut(format.parse(slActivityProduct.getEndTime()).getTime() / 1000);//得到秒数，Date类型的getTime()返回毫秒数
+//                                        } catch (ParseException e) {
+//                                            e.printStackTrace();
+//                                        }
                                         //                                            new Date().getTime() > format.parse(slActivityProduct.getBeginTime()).getTime()
 //                                                    && format.parse(slActivityProduct.getEndTime()).getTime() > new Date().getTime()
                                         if (productCache.getRedisTemplate().getExpire(slProduct.getId()) > 0) {

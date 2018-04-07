@@ -4,12 +4,13 @@ import com.songpo.searched.entity.SlUser;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
-
+/**
+ * @author 刘松坡
+ */
 @Component
 public class UserCache extends BaseCache<SlUser> {
 
     public UserCache(RedisTemplate<String, SlUser> redisTemplate) {
-        super("com.songpo.seached:user:", redisTemplate, 7200L, TimeUnit.SECONDS, true);
+        super("com.songpo.seached:user:", redisTemplate);
     }
 }
