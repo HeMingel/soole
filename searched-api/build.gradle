@@ -18,7 +18,7 @@ dependencies {
 
     // OAUTH2组件
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
-    compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:${springBootVersion}")
+    compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.BUILD-SNAPSHOT")
 
     // RabbitMQ消息队列
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
