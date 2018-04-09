@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_bean_log")
 public class SlBeanLog implements Serializable {
@@ -9,9 +9,15 @@ public class SlBeanLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    /**
+     * 总交易明细id
+     */
     @Column(name = "transaction_id")
     private String transactionId;
 
+    /**
+     * 豆数量
+     */
     private Integer bean;
 
     /**
@@ -36,28 +42,36 @@ public class SlBeanLog implements Serializable {
     }
 
     /**
-     * @return transaction_id
+     * 获取总交易明细id
+     *
+     * @return transaction_id - 总交易明细id
      */
     public String getTransactionId() {
         return transactionId;
     }
 
     /**
-     * @param transactionId
+     * 设置总交易明细id
+     *
+     * @param transactionId 总交易明细id
      */
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId == null ? null : transactionId.trim();
     }
 
     /**
-     * @return bean
+     * 获取豆数量
+     *
+     * @return bean - 豆数量
      */
     public Integer getBean() {
         return bean;
     }
 
     /**
-     * @param bean
+     * 设置豆数量
+     *
+     * @param bean 豆数量
      */
     public void setBean(Integer bean) {
         this.bean = bean;

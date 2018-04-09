@@ -35,7 +35,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price,
+      id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price,
       peas, reference_peas, personal_price, begin_time, end_time, count, people_num, orders_num,
       surplus_product_count, award_peas_counts, awward_money, create_time, creator, restrict_count,
       presell_shipments_days, return_money, return_peas, reward_value, enabled

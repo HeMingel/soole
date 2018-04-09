@@ -37,7 +37,7 @@ public class SlOrder implements Serializable {
     private BigDecimal fee;
 
     /**
-     * 2：待支付 1：支付成功 0：支付失败 -1为已失效
+     * 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      */
     @Column(name = "payment_state")
     private Integer paymentState;
@@ -232,18 +232,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取2：待支付 1：支付成功 0：支付失败 -1为已失效
+     * 获取2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      *
-     * @return payment_state - 2：待支付 1：支付成功 0：支付失败 -1为已失效
+     * @return payment_state - 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置2：待支付 1：支付成功 0：支付失败 -1为已失效
+     * 设置2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      *
-     * @param paymentState 2：待支付 1：支付成功 0：支付失败 -1为已失效
+     * @param paymentState 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;

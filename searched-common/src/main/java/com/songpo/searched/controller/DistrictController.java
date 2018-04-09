@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author liuso
  */
-@Api(description = "区域管理")
+@Api(description = "行政区划")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/base/v1/district")

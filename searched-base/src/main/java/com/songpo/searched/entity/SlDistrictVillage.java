@@ -5,20 +5,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "sl_village")
-public class SlVillage implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "sl_district_village")
+public class SlDistrictVillage implements Serializable {
     @Id
     private Long code;
+
     private String name;
+
     @Column(name = "street_code")
     private Long streetCode;
+
     @Column(name = "province_code")
     private Long provinceCode;
+
     @Column(name = "city_code")
     private Long cityCode;
+
     @Column(name = "area_code")
     private Long areaCode;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return code

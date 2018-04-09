@@ -4,12 +4,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "sl_province")
-public class SlProvince implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "sl_district_province")
+public class SlDistrictProvince implements Serializable {
     @Id
     private Long code;
+
     private String name;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return code

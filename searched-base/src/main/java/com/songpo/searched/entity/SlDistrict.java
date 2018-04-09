@@ -1,62 +1,70 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Table(name = "sl_district")
 public class SlDistrict implements Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * 唯一标识
-     */
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+
     /**
      * 名称
      */
     private String name;
+
     /**
      * 上级标识
      */
     @Column(name = "parent_id")
     private Short parentId;
+
     /**
      * 拼音首字母
      */
     private String initial;
+
     /**
      * 拼音首字母集合
      */
     private String initials;
+
     /**
      * 拼音
      */
     private String pinyin;
+
     /**
      * 附加说明（如：广西壮族自治区 - 壮族）
      */
     private String extra;
+
     /**
      * 行政级别（如：广西壮族自治区 - 自治区）
      */
     private String suffix;
+
     /**
      * 行政代码（基本对应身份证号码前6位）
      */
     private String code;
+
     /**
      * 区号
      */
     @Column(name = "area_code")
     private String areaCode;
+
     /**
      * 排序
      */
     @Column(name = "order_num")
     private Byte orderNum;
+    /**
+     * 唯一标识
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Short id;
 
     /**
      * 获取唯一标识

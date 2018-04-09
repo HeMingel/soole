@@ -8,29 +8,40 @@ import java.io.Serializable;
 
 @Table(name = "sl_position")
 public class SlPosition implements Serializable {
-    private static final long serialVersionUID = 1L;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "province_id")
     private Long provinceId;
+
     @Column(name = "province_name")
     private String provinceName;
+
     @Column(name = "city_id")
     private Long cityId;
+
     @Column(name = "city_name")
     private String cityName;
+
     @Column(name = "county_id")
     private Long countyId;
+
     @Column(name = "county_name")
     private String countyName;
+
     @Column(name = "town_id")
     private Long townId;
+
     @Column(name = "town_name")
     private String townName;
+
     @Column(name = "village_id")
     private Long villageId;
+
     @Column(name = "village_name")
     private String villageName;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
