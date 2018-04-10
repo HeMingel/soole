@@ -28,5 +28,15 @@ public class RabbitMqConfig {
         return new Queue("queue_com.songpo.seached:product:time-limit");
     }
 
+    /**
+     * 订单频道
+     *
+     * @return 消息队列
+     */
+    @Bean
+    public Queue orderDisabledQueue() {
+        return new Queue("queue_com.songpo.seached:order:disabled");
+    }
+
 
 }

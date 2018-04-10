@@ -89,7 +89,7 @@
         from sl_order so
         LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
         AND so.serial_number = sod.serial_number
-        WHERE so.payment_state >= 0 AND sod.product_id = #{productId} and sod.creator = #{userId}
+        WHERE so.payment_state &lt; 100 AND sod.product_id = #{productId} and sod.creator = #{userId}
         and so.user_id = #{userId}
         and so.activity_product_id = #{activityProductId}
     </select>
@@ -108,15 +108,26 @@
         LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`
         WHERE
         so.type = '2' AND sod.`product_id` = #{productId}
-        and so.payment_state >= 0 AND so.activityId = #{activityId}
+        and so.payment_state &lt; 100 AND so.activity_product_id = #{activityId}
         and sod.creator = #{userId}
         AND so.`user_id` = #{userId}
     </select>
     <select id="selectActivityProductByActivityAndRepositoryId"
             resultType="com.songpo.searched.entity.SlActivityProduct">
-        SELECT sap.id id,sap.orders_num ordersNum,sap.restrict_count restrictCount FROM sl_activity_product sap
+        SELECT
+        sap.id id,
+        sap.orders_num ordersNum,
+        sap.restrict_count restrictCount,
+        sap.end_time endTime ,
+        sap.orders_num ordersNum,
+        sap.restrict_count restrictCount,
+        sap.count AS count,
+        sap.activity_id activityId,
+        sap.people_num peopleNum
+        FROM sl_activity_product sap
         LEFT JOIN sl_activity_product_repository sapr ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
         LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
         WHERE sap.`activity_id` = #{activityId} AND spr.`id`= #{repositoryId}
+        and sap.product_id = #{productId}
     </select>
 </mapper>

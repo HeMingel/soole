@@ -1,10 +1,7 @@
 package com.songpo.searched.config;
 
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.entity.SlActivityProduct;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -31,7 +28,7 @@ public class RedisConfig {
     }
 
     /**
-     * 订单模板
+     * 商品模板
      *
      * @param factory
      * @return
@@ -56,6 +53,21 @@ public class RedisConfig {
         RedisTemplate<String, SlProduct> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SlProduct.class));
+        redisTemplate.setConnectionFactory(factory);
+        return redisTemplate;
+    }
+
+    /**
+     * 订单模板
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, SlOrder> orderTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, SlOrder> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SlOrder.class));
         redisTemplate.setConnectionFactory(factory);
         return redisTemplate;
     }

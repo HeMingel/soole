@@ -407,7 +407,7 @@ public class CmProductService {
         log.debug("秒杀商品限时结束，标识：{}", slActivityProductId);
         activityProductMapper.updateByPrimaryKeySelective(new SlActivityProduct() {{
             setId(slActivityProductId);
-            setEnabled(true);
+            setEnabled(false);
         }});
     }
 
