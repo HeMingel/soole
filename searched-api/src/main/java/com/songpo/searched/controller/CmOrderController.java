@@ -55,7 +55,8 @@ public class CmOrderController {
     public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message.setData(this.cmOrderService.addOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId));
+            message = this.cmOrderService.addOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId);
+            message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
         } catch (Exception e) {
@@ -93,6 +94,7 @@ public class CmOrderController {
         BusinessMessage message = new BusinessMessage();
         try {
             message = cmOrderService.addGroupOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId);
+            message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
         } catch (Exception e) {

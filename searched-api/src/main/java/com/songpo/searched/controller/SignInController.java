@@ -26,7 +26,9 @@ public class SignInController {
     public BusinessMessage addSignIn() {
         BusinessMessage message = new BusinessMessage();
         try {
-            this.signInService.addSignIn();
+            message = this.signInService.addSignIn();
+            message.setSuccess(message.getSuccess());
+            message.setMsg(message.getMsg());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,6 +42,9 @@ public class SignInController {
         BusinessMessage message = new BusinessMessage();
         try {
             this.signInService.selectSignIn();
+            message.setData(message.getData());
+            message.setMsg(message.getMsg());
+            message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             e.printStackTrace();
         }

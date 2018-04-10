@@ -19,6 +19,10 @@ public class MyKeyExpirationEventMessageListener extends KeyExpirationEventMessa
      * 限时秒杀KEY
      */
     public static final String PRODUCT_TIME_LIMIT = "com.songpo.seached:product:time-limit";
+    /**
+     * 订单失效KEY
+     */
+    public static final String ORDER_DISABLED = "com.songpo.seached:order:disabled";
     @Autowired
     private CmProductService cmProductService;
     @Autowired
@@ -48,6 +52,11 @@ public class MyKeyExpirationEventMessageListener extends KeyExpirationEventMessa
         if (key.startsWith(PRODUCT_TIME_LIMIT)) {
             this.cmProductService.processProductUndercarriage(key);
         }
+        // 处理订单失效
+        if (key.startsWith(ORDER_DISABLED)) {
+            this.cmOrderService.processOrderDisabled(key);
+        }
+
     }
 
     public CmProductService getCmProductService() {
