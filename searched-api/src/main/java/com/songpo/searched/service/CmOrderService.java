@@ -3,17 +3,16 @@ package com.songpo.searched.service;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.ProductCache;
-import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.util.OrderNumGeneration;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -663,16 +662,21 @@ public class CmOrderService {
     }
 
     /**
-     * 订单失效
+     * 处理订单失效
+     *
+     * @param key
      */
-    @RabbitListener(queues = "queue_com.songpo.seached:order:disabled")
-    public void processOrderDisabled(String orderId) {
-        log.debug("订单失效，标识：{}", orderId);
-        orderService.updateByPrimaryKeySelective(new SlOrder() {{
-            setId(orderId);
-            setPaymentState(101);
-        }});
+    public void processOrderDisabled(String key) {
+        log.debug("订单失效，标识：{}", key);
+        if (!StringUtils.isEmpty(key)) {
+            // 商品标识
+            String orderId = key.substring(key.lastIndexOf(":") + 1);
+            if (!StringUtils.isEmpty(orderId)) {
+                orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                    setId(orderId);
+                    setPaymentState(101);
+                }});
+            }
+        }
     }
-
-
 }
