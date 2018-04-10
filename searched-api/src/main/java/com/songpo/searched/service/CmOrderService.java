@@ -630,7 +630,7 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.loginUserService.getCurrentLoginUser();
-            Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), orderId);
+            List<Map<String, Object>> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), orderId);
             if (null != orderInfo) {
                 message.setData(orderInfo);
                 message.setSuccess(true);
@@ -648,8 +648,7 @@ public class CmOrderService {
      * @param orderId
      * @return
      */
-    public BusinessMessage cancelAnOrder(String orderId) {
-        BusinessMessage message = new BusinessMessage();
+    public void cancelAnOrder(String orderId) {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrder.class);
@@ -660,10 +659,7 @@ public class CmOrderService {
                 //取消订单
                 setPaymentState(102);
             }}, example);
-            message.setMsg("取消成功");
-            message.setSuccess(true);
         }
-        return message;
     }
 
     /**

@@ -37,6 +37,31 @@ public class CommonConfig {
     private SlSignInMapper slSignInMapper;
     @Autowired
     private LoginUserService loginUserService;
+
+    /**
+     * 定时更新签到天数
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    void updOrderState() {
+        try {
+            Example example = new Example(SlSignIn.class);
+            example.createCriteria().andEqualTo("signNum", 7);
+            // 更新连续签到天数
+            int count = this.slSignInMapper.updateByExampleSelective(new SlSignIn() {{
+                setSignNum(0);
+            }}, example);
+            if (count == 1) {
+                SlUser user = loginUserService.getCurrentLoginUser();
+                this.slSignInMapper.delete(new SlSignIn() {{
+                    setUserId(user.getId());
+                }});
+            }
+        } catch (Exception e) {
+            log.error("更新失败", e);
+        }
+    }
+
+
 //    @Autowired
 //    private OrderService orderService;
 
@@ -64,23 +89,4 @@ public class CommonConfig {
 //            log.error("更新失败",e);
 //        }
 //    }
-    @Scheduled(cron = "0 0 0 * * ?")
-    void updOrderState() {
-        try {
-            Example example = new Example(SlSignIn.class);
-            example.createCriteria().andEqualTo("signNum", 7);
-            // 更新连续签到天数
-            int count = this.slSignInMapper.updateByExampleSelective(new SlSignIn() {{
-                setSignNum(0);
-            }}, example);
-            if (count == 1) {
-                SlUser user = loginUserService.getCurrentLoginUser();
-                this.slSignInMapper.delete(new SlSignIn() {{
-                    setUserId(user.getId());
-                }});
-            }
-        } catch (Exception e) {
-            log.error("更新失败", e);
-        }
-    }
 }

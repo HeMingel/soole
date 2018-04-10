@@ -56,7 +56,6 @@
         so.type AS type,
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
-        so.create_time crerteTime,
         so.payment_channel paymentChannel
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
