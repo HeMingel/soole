@@ -11,7 +11,6 @@ import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -401,14 +400,22 @@ public class CmProductService {
 
     /**
      * 处理秒杀商品限时结束事件
+     * @param key Redis返回的key
      */
-    @RabbitListener(queues = "queue_com.songpo.seached:product:time-limit")
-    public void processProductUndercarriage(String slActivityProductId) {
-        log.debug("秒杀商品限时结束，标识：{}", slActivityProductId);
-        activityProductMapper.updateByPrimaryKeySelective(new SlActivityProduct() {{
-            setId(slActivityProductId);
-            setEnabled(false);
-        }});
+    public void processProductUndercarriage(String key) {
+        log.debug("秒杀商品限时结束，标识：{}", key);
+        if (StringUtils.isNotBlank(key)) {
+            // 商品标识
+            String productId = key.substring(key.lastIndexOf(":") + 1);
+            if (StringUtils.isNotBlank(productId)) {
+                activityProductMapper.updateByPrimaryKeySelective(new SlActivityProduct() {{
+                    setId(productId);
+                    setEnabled(false);
+                }});
+
+                // TODO 做一些其他的业务处理
+            }
+        }
     }
 
 }

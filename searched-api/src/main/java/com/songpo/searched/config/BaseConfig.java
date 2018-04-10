@@ -1,8 +1,6 @@
 package com.songpo.searched.config;
 
-import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.redis.MyKeyExpirationEventMessageListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -17,16 +15,16 @@ import java.util.Collections;
 @Configuration
 public class BaseConfig {
 
-    @Autowired
-    public NotificationService notificationService;
+    @Bean
+    MyKeyExpirationEventMessageListener messageListener(RedisMessageListenerContainer container) {
+        return new MyKeyExpirationEventMessageListener(container);
+    }
 
     @Bean
     RedisMessageListenerContainer keyExpirationListenerContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer listenerContainer = new RedisMessageListenerContainer();
         listenerContainer.setConnectionFactory(connectionFactory);
-        MyKeyExpirationEventMessageListener messageListener = new MyKeyExpirationEventMessageListener(listenerContainer);
-        messageListener.setNotificationService(notificationService);
-        listenerContainer.addMessageListener(messageListener, Collections.singleton(new PatternTopic("__keyevent@*__:expired")));
+        listenerContainer.addMessageListener(messageListener(listenerContainer), Collections.singleton(new PatternTopic("__keyevent@*__:expired")));
         return listenerContainer;
     }
 
