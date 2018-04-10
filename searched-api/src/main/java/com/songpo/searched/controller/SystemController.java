@@ -53,15 +53,17 @@ public class SystemController {
      *
      * @param phone    账号，可以是用户名、手机号码或邮箱
      * @param password 密码
+     * @param hasSetSecret 是否设置支付密码
      * @return 业务消息
      */
     @ApiOperation(value = "用户登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "hasSetSecret", value = "是否设置支付密码", paramType = "form")
     })
     @PostMapping("login")
-    public BusinessMessage<JSONObject> login(String phone, String password) {
+    public BusinessMessage<JSONObject> login(String phone, String password, Boolean hasSetSecret) {
         log.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
@@ -103,6 +105,8 @@ public class SystemController {
                     data.put("phone", user.getPhone());
                     // 电子邮箱
                     data.put("email", user.getEmail());
+                    // 是否设置支付密码
+                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                     message.setData(data);
                     message.setSuccess(true);
@@ -190,6 +194,8 @@ public class SystemController {
                         data.put("phone", user.getPhone());
                         // 电子邮箱
                         data.put("email", user.getEmail());
+                        // 是否设置支付密码
+                        data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                         message.setData(data);
                         message.setSuccess(true);
@@ -240,6 +246,8 @@ public class SystemController {
                     data.put("phone", user.getPhone());
                     // 电子邮箱
                     data.put("email", user.getEmail());
+                    // 是否设置支付密码
+                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                     message.setData(data);
                 } else {
@@ -442,6 +450,8 @@ public class SystemController {
             data.put("phone", user.getPhone());
             // 电子邮箱
             data.put("email", user.getEmail());
+            // 是否设置支付密码
+            data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
             message.setData(data);
             message.setSuccess(true);
