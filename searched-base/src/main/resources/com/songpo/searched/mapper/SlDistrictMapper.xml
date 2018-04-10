@@ -5,17 +5,17 @@
     <!--
       WARNING - @mbg.generated
     -->
-      <id column="id" jdbcType="SMALLINT" property="id"/>
-      <result column="name" jdbcType="VARCHAR" property="name"/>
-      <result column="parent_id" jdbcType="SMALLINT" property="parentId"/>
-      <result column="initial" jdbcType="CHAR" property="initial"/>
-      <result column="initials" jdbcType="VARCHAR" property="initials"/>
-      <result column="pinyin" jdbcType="VARCHAR" property="pinyin"/>
-      <result column="extra" jdbcType="VARCHAR" property="extra"/>
-      <result column="suffix" jdbcType="VARCHAR" property="suffix"/>
-      <result column="code" jdbcType="CHAR" property="code"/>
-      <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
-      <result column="order_num" jdbcType="TINYINT" property="orderNum"/>
+    <id column="id" jdbcType="SMALLINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_id" jdbcType="SMALLINT" property="parentId" />
+    <result column="initial" jdbcType="CHAR" property="initial" />
+    <result column="initials" jdbcType="VARCHAR" property="initials" />
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="extra" jdbcType="VARCHAR" property="extra" />
+    <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+    <result column="code" jdbcType="CHAR" property="code" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="order_num" jdbcType="TINYINT" property="orderNum" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--

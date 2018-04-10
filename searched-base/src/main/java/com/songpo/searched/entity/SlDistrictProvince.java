@@ -1,8 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_district_province")
 public class SlDistrictProvince implements Serializable {

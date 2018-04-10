@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_bean_log")
 public class SlBeanLog implements Serializable {

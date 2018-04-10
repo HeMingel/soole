@@ -32,8 +32,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel,
-      remark, create_time, pay_time, status, deduct_total_pulse, consigneeName, consigneePhone,
-      province, city, county, detailed, spell_group_status, group_master, activity_product_id
+    id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel, 
+    remark, create_time, pay_time, status, deduct_total_pulse, consigneeName, consigneePhone, 
+    province, city, county, detailed, spell_group_status, group_master, activity_product_id
   </sql>
 </mapper>

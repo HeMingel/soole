@@ -1,11 +1,16 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_district")
 public class SlDistrict implements Serializable {
-    private static final long serialVersionUID = 1L;
+    /**
+     * 唯一标识
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Short id;
 
     /**
      * 名称
@@ -59,12 +64,8 @@ public class SlDistrict implements Serializable {
      */
     @Column(name = "order_num")
     private Byte orderNum;
-    /**
-     * 唯一标识
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识
