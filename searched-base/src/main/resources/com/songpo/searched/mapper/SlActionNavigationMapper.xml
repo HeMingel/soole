@@ -10,19 +10,20 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="page_android" jdbcType="VARCHAR" property="pageAndroid" />
-    <result column="page_ios" jdbcType="VARCHAR" property="pageIos" />
+      <result column="cmd_android" jdbcType="VARCHAR" property="cmdAndroid"/>
+      <result column="cmd_ios" jdbcType="VARCHAR" property="cmdIos"/>
     <result column="type_id" jdbcType="VARCHAR" property="typeId" />
     <result column="serial_number" jdbcType="INTEGER" property="serialNumber" />
     <result column="size" jdbcType="INTEGER" property="size" />
     <result column="position" jdbcType="INTEGER" property="position" />
-    <result column="parameter" jdbcType="VARCHAR" property="parameter" />
+      <result column="cmd_parameter" jdbcType="VARCHAR" property="cmdParameter"/>
+      <result column="action_type" jdbcType="INTEGER" property="actionType"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, description, image_url, url, page_android, page_ios, type_id, serial_number, 
-    size, position, parameter
+      id, title, description, image_url, url, cmd_android, cmd_ios, type_id, serial_number,
+      size, position, cmd_parameter, action_type
   </sql>
 </mapper>

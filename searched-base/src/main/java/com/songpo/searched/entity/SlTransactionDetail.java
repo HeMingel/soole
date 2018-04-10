@@ -29,7 +29,7 @@ public class SlTransactionDetail implements Serializable {
     private String redPacketId;
 
     /**
-     * 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
+     * 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      */
     private Boolean type;
 
@@ -110,18 +110,18 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
+     * 获取消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      *
-     * @return type - 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
+     * @return type - 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      */
     public Boolean getType() {
         return type;
     }
 
     /**
-     * 设置消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
+     * 设置消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      *
-     * @param type 消费方式   1.转账  2. 接收转账  3.发红包  4.抢红包
+     * @param type 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      */
     public void setType(Boolean type) {
         this.type = type;

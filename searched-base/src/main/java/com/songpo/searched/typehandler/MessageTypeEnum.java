@@ -11,22 +11,33 @@ public enum MessageTypeEnum implements BaseEnum {
     SYSTEM("系统通知", 1),
 
     /**
-     * 销售模式
+     * 商品通知类型
      */
-    SALES_MODE_NORMAL("普通商品购买通知", 21),
-    SALES_MODE_TEAMWORK("人气拼团商品购买通知", 22),
-    SALES_MODE_PRESALE("预售商品购买通知", 23),
-    SALES_MODE_BEAN("豆赚商品购买通知", 24),
-    SALES_MODE_REBATE("消费返利商品购买通知", 25),
-    SALES_MODE_FREEBUY("随心购商品购买通知", 26),
+    PRODUCT_BUY("商品购买通知", 21),
+    PRODUCT_SHELF("商品上架通知", 22),
+    PRODUCT_DROPOFF("商品下架通知", 23),
 
     /**
-     * 促销活动
+     * 订单通知类型
      */
-    ACTIVITY_NORMAL("无活动商品购买通知", 31),
-    ACTIVITY_NEWMEMBER("新人专享商品购买通知", 32),
-    ACTIVITY_RECOMMENDED_REWARD("推荐奖励商品购买通知", 33),
-    ACTIVITY_LIMITED_TIME_SPIKE("限时秒杀商品购买通知", 34);
+    ORDER_PRECREATE("订单预创建通知", 31),
+    ORDER_CANCLE("订单取消通知", 32),
+
+    /**
+     * 订单通知类型
+     */
+    PAY_WAIT("支付等待通知", 41),
+    PAY_SUCCESS("支付成功通知", 42),
+    PAY_FAILD("支付失败通知", 43),
+    PAY_CANCLE("支付取消通知", 44),
+
+    /**
+     * 配送通知类型
+     */
+    SHIPPING_WAIT("配送等待通知", 51),
+    SHIPPING_SUCCESS("配送成功通知", 52),
+    SHIPPING_FAILD("配送失败通知", 53),
+    SHIPPING_CANCLE("配送取消通知", 54);
 
     private String label;
 

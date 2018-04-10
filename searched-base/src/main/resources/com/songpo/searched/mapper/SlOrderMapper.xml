@@ -27,15 +27,13 @@
     <result column="spell_group_status" jdbcType="INTEGER" property="spellGroupStatus" />
     <result column="group_master" jdbcType="VARCHAR" property="groupMaster" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
-      <result column="send_time" jdbcType="VARCHAR" property="sendTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel,
+      id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel,
       remark, create_time, pay_time, status, deduct_total_pulse, consigneeName, consigneePhone,
-      province, city, county, detailed, spell_group_status, group_master, activity_product_id,
-      send_time
+      province, city, county, detailed, spell_group_status, group_master, activity_product_id
   </sql>
 </mapper>

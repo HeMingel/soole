@@ -18,7 +18,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+    maven { url "https://nexus.xzcysoft.com/repository/maven-public/" }
     mavenCentral()
 }
 
@@ -62,9 +62,9 @@ mbg {
     generatorFile = "src/main/resources/generatorConfig.xml"
     jdbc{
         driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://rm-2ze5l09532t3f23wiio.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "liusongpo"
-        password = "Liusp1987"
+        url    = "jdbc:mysql://47.95.229.56:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "searched"
+        password = "searched"
     }
     xml{
         tableName = 'sl'

@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_action_navigation")
 public class SlActionNavigation implements Serializable {
@@ -34,16 +34,16 @@ public class SlActionNavigation implements Serializable {
     private String url;
 
     /**
-     * 动作页面_android
+     * 动作指令_android
      */
-    @Column(name = "page_android")
-    private String pageAndroid;
+    @Column(name = "cmd_android")
+    private String cmdAndroid;
 
     /**
-     * 动作页面_ios
+     * 动作指令_ios
      */
-    @Column(name = "page_ios")
-    private String pageIos;
+    @Column(name = "cmd_ios")
+    private String cmdIos;
 
     /**
      * 导航类型唯一标识符
@@ -68,9 +68,16 @@ public class SlActionNavigation implements Serializable {
     private Integer position;
 
     /**
-     * JSON格式数据
+     * 动作指令参数
      */
-    private String parameter;
+    @Column(name = "cmd_parameter")
+    private String cmdParameter;
+
+    /**
+     * 动作类型，1:APP页面 2:URL地址
+     */
+    @Column(name = "action_type")
+    private Integer actionType;
 
     private static final long serialVersionUID = 1L;
 
@@ -165,39 +172,39 @@ public class SlActionNavigation implements Serializable {
     }
 
     /**
-     * 获取动作页面_android
+     * 获取动作指令_android
      *
-     * @return page_android - 动作页面_android
+     * @return cmd_android - 动作指令_android
      */
-    public String getPageAndroid() {
-        return pageAndroid;
+    public String getCmdAndroid() {
+        return cmdAndroid;
     }
 
     /**
-     * 设置动作页面_android
+     * 设置动作指令_android
      *
-     * @param pageAndroid 动作页面_android
+     * @param cmdAndroid 动作指令_android
      */
-    public void setPageAndroid(String pageAndroid) {
-        this.pageAndroid = pageAndroid == null ? null : pageAndroid.trim();
+    public void setCmdAndroid(String cmdAndroid) {
+        this.cmdAndroid = cmdAndroid == null ? null : cmdAndroid.trim();
     }
 
     /**
-     * 获取动作页面_ios
+     * 获取动作指令_ios
      *
-     * @return page_ios - 动作页面_ios
+     * @return cmd_ios - 动作指令_ios
      */
-    public String getPageIos() {
-        return pageIos;
+    public String getCmdIos() {
+        return cmdIos;
     }
 
     /**
-     * 设置动作页面_ios
+     * 设置动作指令_ios
      *
-     * @param pageIos 动作页面_ios
+     * @param cmdIos 动作指令_ios
      */
-    public void setPageIos(String pageIos) {
-        this.pageIos = pageIos == null ? null : pageIos.trim();
+    public void setCmdIos(String cmdIos) {
+        this.cmdIos = cmdIos == null ? null : cmdIos.trim();
     }
 
     /**
@@ -273,21 +280,39 @@ public class SlActionNavigation implements Serializable {
     }
 
     /**
-     * 获取JSON格式数据
+     * 获取动作指令参数
      *
-     * @return parameter - JSON格式数据
+     * @return cmd_parameter - 动作指令参数
      */
-    public String getParameter() {
-        return parameter;
+    public String getCmdParameter() {
+        return cmdParameter;
     }
 
     /**
-     * 设置JSON格式数据
+     * 设置动作指令参数
      *
-     * @param parameter JSON格式数据
+     * @param cmdParameter 动作指令参数
      */
-    public void setParameter(String parameter) {
-        this.parameter = parameter == null ? null : parameter.trim();
+    public void setCmdParameter(String cmdParameter) {
+        this.cmdParameter = cmdParameter == null ? null : cmdParameter.trim();
+    }
+
+    /**
+     * 获取动作类型，1:APP页面 2:URL地址
+     *
+     * @return action_type - 动作类型，1:APP页面 2:URL地址
+     */
+    public Integer getActionType() {
+        return actionType;
+    }
+
+    /**
+     * 设置动作类型，1:APP页面 2:URL地址
+     *
+     * @param actionType 动作类型，1:APP页面 2:URL地址
+     */
+    public void setActionType(Integer actionType) {
+        this.actionType = actionType;
     }
 
     @Override
@@ -301,13 +326,14 @@ public class SlActionNavigation implements Serializable {
         sb.append(", description=").append(description);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", url=").append(url);
-        sb.append(", pageAndroid=").append(pageAndroid);
-        sb.append(", pageIos=").append(pageIos);
+        sb.append(", cmdAndroid=").append(cmdAndroid);
+        sb.append(", cmdIos=").append(cmdIos);
         sb.append(", typeId=").append(typeId);
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", size=").append(size);
         sb.append(", position=").append(position);
-        sb.append(", parameter=").append(parameter);
+        sb.append(", cmdParameter=").append(cmdParameter);
+        sb.append(", actionType=").append(actionType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
