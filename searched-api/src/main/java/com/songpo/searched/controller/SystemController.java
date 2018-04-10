@@ -53,17 +53,15 @@ public class SystemController {
      *
      * @param phone    账号，可以是用户名、手机号码或邮箱
      * @param password 密码
-     * @param hasSetSecret 是否设置支付密码
      * @return 业务消息
      */
     @ApiOperation(value = "用户登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true),
-            @ApiImplicitParam(name = "hasSetSecret", value = "是否设置支付密码", paramType = "form")
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
     })
     @PostMapping("login")
-    public BusinessMessage<JSONObject> login(String phone, String password, Boolean hasSetSecret) {
+    public BusinessMessage<JSONObject> login(String phone, String password) {
         log.debug("用户登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
