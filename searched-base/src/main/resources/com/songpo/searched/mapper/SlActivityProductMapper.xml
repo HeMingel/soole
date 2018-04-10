@@ -29,15 +29,15 @@
     <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
     <result column="return_peas" jdbcType="INTEGER" property="returnPeas" />
     <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
-      <result column="enabled" jdbcType="BIT" property="enabled"/>
+    <result column="enabled" jdbcType="BIT" property="enabled" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price,
-      peas, reference_peas, personal_price, begin_time, end_time, count, people_num, orders_num,
-      surplus_product_count, award_peas_counts, awward_money, create_time, creator, restrict_count,
-      presell_shipments_days, return_money, return_peas, reward_value, enabled
+    id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price, 
+    peas, reference_peas, personal_price, begin_time, end_time, count, people_num, orders_num, 
+    surplus_product_count, award_peas_counts, awward_money, create_time, creator, restrict_count, 
+    presell_shipments_days, return_money, return_peas, reward_value, enabled
   </sql>
 </mapper>

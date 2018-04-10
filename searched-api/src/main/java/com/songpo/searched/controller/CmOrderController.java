@@ -130,22 +130,26 @@ public class CmOrderController {
         return this.cmOrderService.orderInfo(orderId);
     }
 
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     * @return
+     */
     @ApiOperation(value = "取消订单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
     })
-    @PostMapping("cancel-an-order")
+    @PostMapping("cancel-order")
     public BusinessMessage cancelAnOrder(String orderId) {
         BusinessMessage message = new BusinessMessage();
         try {
             this.cmOrderService.cancelAnOrder(orderId);
-            message.setSuccess(message.getSuccess());
-            message.setMsg(message.getMsg());
+            message.setSuccess(true);
+            message.setMsg("取消成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return message;
     }
-
-
 }
