@@ -7,10 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(description = "签到管理")
 @RestController
@@ -37,11 +34,11 @@ public class SignInController {
 
 
     @ApiOperation(value = "查询签到信息")
-    @PostMapping("select-sign-in")
+    @GetMapping("select-sign-in")
     public BusinessMessage selectSignIn() {
         BusinessMessage message = new BusinessMessage();
         try {
-            this.signInService.selectSignIn();
+            message = this.signInService.selectSignIn();
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(message.getSuccess());
