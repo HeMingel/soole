@@ -103,6 +103,8 @@ public class SystemController {
                     data.put("phone", user.getPhone());
                     // 电子邮箱
                     data.put("email", user.getEmail());
+                    // 是否设置支付密码
+                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                     message.setData(data);
                     message.setSuccess(true);
@@ -190,6 +192,8 @@ public class SystemController {
                         data.put("phone", user.getPhone());
                         // 电子邮箱
                         data.put("email", user.getEmail());
+                        // 是否设置支付密码
+                        data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                         message.setData(data);
                         message.setSuccess(true);
@@ -240,6 +244,8 @@ public class SystemController {
                     data.put("phone", user.getPhone());
                     // 电子邮箱
                     data.put("email", user.getEmail());
+                    // 是否设置支付密码
+                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
                     message.setData(data);
                 } else {
@@ -442,6 +448,8 @@ public class SystemController {
             data.put("phone", user.getPhone());
             // 电子邮箱
             data.put("email", user.getEmail());
+            // 是否设置支付密码
+            data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
             message.setData(data);
             message.setSuccess(true);
