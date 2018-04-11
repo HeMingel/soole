@@ -6,6 +6,7 @@ import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
+import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmOrderMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +77,7 @@ public class ShoppingCartService {
                         } else {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(sc.getGoodId());
-                                setSoldOut(false);
+                                setSoldOut(true);
                             }});
                             if (null != slProduct) {
                                 cmGoods = new CMGoods();
@@ -92,7 +93,10 @@ public class ShoppingCartService {
                                 cmGoods.setPrice(repository.getPrice());// 商品价格
                                 cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                 cmGoods.setShopId(sc.getShopId());// 店铺id
-                                cmGoods.setShopName(sc.getShopName());// 店铺名称
+                                SlShop slShop = this.shopService.selectOne(new SlShop() {{
+                                    setId(slProduct.getShopId());
+                                }});
+                                cmGoods.setShopName(slShop.getName());// 店铺名称
                                 cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
                                 cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
                                 cmGoods.setRebatePulse(repository.getRebatePulse());// 纯金钱商品返了豆数量

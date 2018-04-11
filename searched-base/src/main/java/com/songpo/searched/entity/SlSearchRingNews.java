@@ -1,44 +1,51 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_search_ring_news")
 public class SlSearchRingNews implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 评论数
      */
     @Column(name = "comment_num")
     private Integer commentNum;
+
     /**
      * 点赞数
      */
     @Column(name = "goods_num")
     private Integer goodsNum;
+
     /**
      * 发表时间
      */
     @Column(name = "create_time")
     private Date createTime;
+
     /**
      * 编辑时间
      */
     @Column(name = "edit_time")
     private Date editTime;
+
     /**
      * 发布内容
      */
     private String content;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

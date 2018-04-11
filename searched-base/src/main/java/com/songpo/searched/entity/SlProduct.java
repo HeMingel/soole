@@ -90,6 +90,11 @@ public class SlProduct implements Serializable {
     @Column(name = "sold_out")
     private Boolean soldOut;
 
+    /**
+     * 关键词
+     */
+    private String antistop;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -362,6 +367,24 @@ public class SlProduct implements Serializable {
         this.soldOut = soldOut;
     }
 
+    /**
+     * 获取关键词
+     *
+     * @return antistop - 关键词
+     */
+    public String getAntistop() {
+        return antistop;
+    }
+
+    /**
+     * 设置关键词
+     *
+     * @param antistop 关键词
+     */
+    public void setAntistop(String antistop) {
+        this.antistop = antistop == null ? null : antistop.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -383,6 +406,7 @@ public class SlProduct implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", recommend=").append(recommend);
         sb.append(", soldOut=").append(soldOut);
+        sb.append(", antistop=").append(antistop);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

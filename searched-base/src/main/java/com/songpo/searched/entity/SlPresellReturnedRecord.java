@@ -1,40 +1,46 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_presell_returned_record")
 public class SlPresellReturnedRecord implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 店铺唯一标识符
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 回款金额
      */
     @Column(name = "returned_money")
     private BigDecimal returnedMoney;
+
     /**
      * 回款天数
      */
     @Column(name = "returned_number")
     private Integer returnedNumber;
+
     /**
      * 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      */
     @Column(name = "returned_num")
     private Integer returnedNum;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

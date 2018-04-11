@@ -20,12 +20,14 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
+    <result column="antistop" jdbcType="VARCHAR" property="antistop" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, remark, image_url, introduction, detail, product_type_id, comment_num, 
-    sales_volume, shop_id, sales_mode_id, creator, create_time, recommend, sold_out
+    sales_volume, shop_id, sales_mode_id, creator, create_time, recommend, sold_out, 
+    antistop
   </sql>
 </mapper>

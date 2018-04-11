@@ -1,30 +1,34 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_search_ring_news_image")
 public class SlSearchRingNewsImage implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 消息id
      */
     @Column(name = "news_id")
     private String newsId;
+
     /**
      * 图片url
      */
     @Column(name = "image_url")
     private String imageUrl;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private Date createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id
