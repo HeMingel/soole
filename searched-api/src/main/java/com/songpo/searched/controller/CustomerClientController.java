@@ -76,11 +76,13 @@ public class CustomerClientController {
      */
     @ApiOperation("用户端购物车")
     @GetMapping("shopping-cart")
-    public BusinessMessage<JSONObject> shoppingCart(String uid) {
-        BusinessMessage<JSONObject> message = new BusinessMessage<>();
+    public BusinessMessage shoppingCart(String uid) {
+        BusinessMessage message = new BusinessMessage<>();
         try {
-            message.setData(this.customerClientHomeService.getShoppingCartData(uid));
-            message.setSuccess(true);
+            message = this.customerClientHomeService.getShoppingCartData(uid);
+            message.setSuccess(message.getSuccess());
+            message.setData(message.getData());
+            message.setMsg(message.getMsg());
         } catch (Exception e) {
             log.error("获取用户端购物车数据失败，{}", e);
 

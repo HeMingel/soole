@@ -40,11 +40,11 @@ public class ShoppingCartController {
             @ApiImplicitParam(name = "specificationId", value = "商品规格Id", paramType = "form"),
             @ApiImplicitParam(name = "repositoryId", value = "店铺仓库的ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "specificationName", value = "规格名称", paramType = "form"),
-            @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form",required = true)
+            @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addmyShoppingCart(CMShoppingCart pojo,OAuth2Authentication oAuth2Authentication) {
-        return this.shoppingCartService.addmyShoppingCart(pojo,oAuth2Authentication.getOAuth2Request().getClientId());
+    public BusinessMessage addMyShoppingCart(CMShoppingCart pojo) {
+        return this.shoppingCartService.addMyShoppingCart(pojo);
     }
 
     /**
@@ -54,11 +54,8 @@ public class ShoppingCartController {
      */
     @GetMapping("serch")
     @ApiOperation(value = "查询购物车")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "uid", value = "用户id", paramType = "form", required = true),
-    })
-    public BusinessMessage findCart(OAuth2Authentication oAuth2Authentication) {
-        return this.shoppingCartService.findCart(oAuth2Authentication.getOAuth2Request().getClientId());
+    public BusinessMessage findCart() {
+        return this.shoppingCartService.findCart();
     }
 
 }

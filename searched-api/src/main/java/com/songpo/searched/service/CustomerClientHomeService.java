@@ -3,6 +3,7 @@ package com.songpo.searched.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.ShoppingCartCache;
+import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.*;
@@ -144,49 +145,64 @@ public class CustomerClientHomeService {
      *
      * @return
      */
-    public JSONObject getShoppingCartData(String uid) {
-        JSONObject object = new JSONObject();
+    public BusinessMessage getShoppingCartData(String uid) {
+        BusinessMessage message = new BusinessMessage<>();
         if (StringUtils.hasLength(uid)) {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setId(uid);
             }});
             if (null != user) {
-                CMShoppingCart pojo = this.cache.get(uid);
-                List<CMGoods> list = new ArrayList<>();
-                CMGoods cmGoods = null;
-                if (null != pojo) {
-                    for (CMGoods sc : pojo.getCarts()) {
-                        if (StringUtils.hasLength(sc.getGoodId())) {
-                            SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
-                                setId(sc.getGoodId());
-                                setSoldOut(false);
-                            }});
-                            if (null != slProduct) {
-                                cmGoods = new CMGoods();
-                                cmGoods.setGoodName(slProduct.getName());// 商品名称
-                                cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                    setId(sc.getRepositoryId());
-                                    setProductId(sc.getGoodId());
+                CMShoppingCart pojo = this.cache.get(user.getId());
+                if (pojo != null) {
+                    List<CMGoods> list = new ArrayList<>();
+                    CMGoods cmGoods = null;
+                    if (null != pojo) {
+                        for (CMGoods sc : pojo.getCarts()) {
+                            if (StringUtils.isEmpty(sc.getGoodId())) {
+                                message.setMsg("获取商品ID错误");
+                            } else {
+                                SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
+                                    setId(sc.getGoodId());
+                                    setSoldOut(false);
                                 }});
-//                                cmGoods.setPulse(repository.getPulse());// 了豆
-                                // TODO 注释报错的位置
-//                                cmGoods.setSaleType(slProduct.getSaleType());// 销售类型前端根据销售类型去拼接两个字段 5钱6乐豆7钱+了豆
-                                cmGoods.setPrice(repository.getPrice());// 商品价格
-                                cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
-                                cmGoods.setShopId(sc.getShopId());// 店铺id
-                                cmGoods.setShopName(sc.getShopName());// 店铺名称
-                                cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
-                                list.add(cmGoods);
+                                if (null != slProduct) {
+                                    cmGoods = new CMGoods();
+                                    cmGoods.setGoodName(slProduct.getName());// 商品名称
+                                    cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                                    cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
+                                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                        setId(sc.getRepositoryId());
+                                        setProductId(sc.getGoodId());
+                                    }});
+                                    cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
+                                    cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
+                                    cmGoods.setPrice(repository.getPrice());// 商品价格
+                                    cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
+                                    cmGoods.setShopId(sc.getShopId());// 店铺id
+                                    cmGoods.setShopName(sc.getShopName());// 店铺名称
+                                    cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                                    cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
+                                    cmGoods.setRebatePulse(repository.getRebatePulse());// 纯金钱商品返了豆数量
+                                    cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
+                                    list.add(cmGoods);
+                                } else {
+                                    message.setSuccess(true);
+                                    list.add(new CMGoods());
+                                }
                             }
                         }
                     }
+                    pojo.setCarts(list);// 把查询好的list 加入pojo中
+                    message.setMsg("查询成功");
+                    message.setData(pojo);
+                    message.setSuccess(true);
+                } else {
+                    message.setData(null);
+                    message.setSuccess(true);
+                    message.setMsg("查询状态为空");
                 }
-                pojo.setCarts(list);// 把查询好的list 加入pojo中
-                object.put("data", pojo);
             }
         }
-        return object;
+        return message;
     }
 }
