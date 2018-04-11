@@ -47,6 +47,42 @@ public class ShoppingCartController {
         return this.shoppingCartService.addMyShoppingCart(pojo);
     }
 
+    @ApiOperation(value = "删除购物车的某个商品")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "repositoryId", value = "规格id", paramType = "form", required = true)
+    })
+    @PostMapping("delete-shopping-carts")
+    public BusinessMessage deleteMyShoppingCart(String repositoryId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.shoppingCartService.deleteMyShoppingCart(repositoryId);
+            message.setMsg(message.getMsg());
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    @ApiOperation(value = "编辑商品信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "repositoryId", value = "规格id", paramType = "form"),
+            @ApiImplicitParam(name = "counts", value = "商品数量", paramType = "form"),
+            @ApiImplicitParam(name = "agoRepositoryId", value = "之前的规格id", paramType = "form")
+    })
+    @PostMapping("edit-shopping-carts")
+    public BusinessMessage editShoppingCarts(String agoRepositoryId, String repositoryId, Integer counts) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.shoppingCartService.editShoppingCarts(agoRepositoryId,repositoryId, counts);
+            message.setSuccess(message.getSuccess());
+            message.setMsg(message.getMsg());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
     /**
      * 查询购物车
      *
