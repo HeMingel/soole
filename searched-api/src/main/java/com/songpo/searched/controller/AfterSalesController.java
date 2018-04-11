@@ -52,9 +52,10 @@ public class AfterSalesController {
     public BusinessMessage selectAfterSales() {
         BusinessMessage message = new BusinessMessage();
         try {
-            this.salesService.selectAfterSales();
-            message.setMsg("查询成功");
-            message.setSuccess(true);
+            message = this.salesService.selectAfterSales();
+            message.setData(message.getData());
+            message.setMsg(message.getMsg());
+            message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             e.printStackTrace();
         }
