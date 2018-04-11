@@ -206,6 +206,7 @@ public class CmOrderService {
                                         }});
                                         // 当前库存 - 本次该商品规格下单库存
                                         int count = finalRepository.getCount() - slOrderDetail.getQuantity();
+                                        // 商品库存 - 本次加入订单的数量
                                         int activityProductCount = slActivityProduct.getCount() - slOrderDetail.getQuantity();
                                         // 如果库存为0 的话就下架了
                                         Example example = new Example(SlActivityProduct.class);

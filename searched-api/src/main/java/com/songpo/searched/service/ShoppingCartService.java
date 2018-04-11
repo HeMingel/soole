@@ -46,6 +46,9 @@ public class ShoppingCartService {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
+            //先删除该用户的购物车商品
+            cache.redisTemplate.delete("com.songpo.seached:shoppingCart:" + user.getId());
+            //再重新添加
             this.cache.put(user.getId(), pojo);
             message.setMsg("添加成功");
             message.setSuccess(true);
@@ -55,6 +58,7 @@ public class ShoppingCartService {
         }
         return message;
     }
+
 
     /**
      * 查询购物车
