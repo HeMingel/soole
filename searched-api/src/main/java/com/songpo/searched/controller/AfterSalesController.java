@@ -29,7 +29,8 @@ public class AfterSalesController {
             @ApiImplicitParam(value = "凭证图片", name = "file", paramType = "form"),
             @ApiImplicitParam(value = "商品id", name = "productId", paramType = "form", required = true),
             @ApiImplicitParam(value = "店铺id", name = "shopId", paramType = "form", required = true),
-            @ApiImplicitParam(value = "申请说明", name = "remark", paramType = "form")
+            @ApiImplicitParam(value = "申请说明", name = "remark", paramType = "form"),
+            @ApiImplicitParam(value = "订单编号", name = "orderId", paramType = "form",required = true)
     })
     @PostMapping()
     public BusinessMessage insertAfterSales(SlAfterSalesService afterSalesService, MultipartFile file) {

@@ -2,10 +2,7 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlAfterSalesService;
-import com.songpo.searched.entity.SlOrderDetail;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +28,8 @@ public class AfterSalesService {
     private LoginUserService loginUserService;
     @Autowired
     private SlOrderDetailMapper slOrderDetailMapper;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     /**
      * 新增售后服务单
@@ -44,11 +43,21 @@ public class AfterSalesService {
             String fileUrl = fileService.upload(null, file);
             slAfterSalesService.setImageUrl(fileUrl);
         }
-        slAfterSalesService.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        slAfterSalesService.setUserId(slUser.getId());
-        slAfterSalesService.setCreator(slUser.getId());
-        slAfterSalesService.setId(UUID.randomUUID().toString());
-        this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
+        SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+            setOrderId(slAfterSalesService.getOrderId());
+            setCreator(slUser.getId());
+        }});
+        if (null != detail) {
+            slAfterSalesService.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            slAfterSalesService.setUserId(slUser.getId());
+            slAfterSalesService.setCreator(slUser.getId());
+            slAfterSalesService.setId(UUID.randomUUID().toString());
+            this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
+            orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                setId(detail.getId());
+                setShippingState(6);
+            }});
+        }
     }
 
     /**
