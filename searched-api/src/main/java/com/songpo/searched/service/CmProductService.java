@@ -218,32 +218,13 @@ public class CmProductService {
                 List<Map<String, Object>> mapImageUrls = this.mapper.goodsImageUrl(goodsId);
                 data.put("productImages", mapImageUrls);
                 //商品评论
-                List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, null);
+                List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, 1);
                 if (mapComments.size() > 0) {
-                    Map goodsComment = mapComments.get(0);
-                    //如果第一条数据有图 则查询图片 没有图 直接返回第一条数据
-                    String status = "status";
-                    //商品评论1好 2中 3差 4有图
-                    int type = 4;
-                    if (goodsComment.get(status).equals(type)) {
-                        //查询评论图片
-                        mapComments.get(0).get("id").toString();
-                        List<Map<String, Object>> commentImages = this.cmProductCommentMapper.commentImages(goodsComment.get("id").toString());
-                        List<Object> list = new ArrayList<>();
-                        list.add(commentImages);
-                        list.add(goodsComment);
-                        data.put("productComments", list);
-                    } else {
-                        data.put("productComments", goodsComment);
-                    }
-                } else {
                     data.put("productComments", mapComments);
                 }
-
                 //   查询拼团信息
                 //step 1 : 判断该商品销售模式 是否为拼团商品
                 //step 2 : 如果是拼团商品 则查询该商品的 在该活动下的拼团信息
-                int df = Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString());
                 if (Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP) {
                     //未拼成订单集合
                     List<Map<String, Object>> orderList = this.mapper.selectGroupOrder(activityId, goodsId);

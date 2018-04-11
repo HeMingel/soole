@@ -456,4 +456,76 @@ public class SystemController {
         }
         return message;
     }
+
+    /**
+     * 绑定手机号码
+     *
+     * @param phone    手机号码
+     * @param code     短信验证码
+     * @param openId   第三方标识
+     * @param password 密码
+     * @return 绑定结果
+     */
+    @ApiOperation(value = "绑定手机号码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "openId", value = "第三方标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
+    })
+    @PostMapping("bind-phone")
+    public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId, String password) {
+        log.debug("微信登录，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
+        if (StringUtils.isBlank(openId)) {
+            message.setMsg("第三方标识为空");
+        } else if (StringUtils.isBlank(phone)) {
+            message.setMsg("手机号码为空");
+        } else if (StringUtils.isBlank(code)) {
+            message.setMsg("验证码为空");
+        } else if (StringUtils.isBlank(password)) {
+            message.setMsg("密码为空");
+        } else {
+            // 校验短信验证码
+            String cacheCode = this.smsVerifyCodeCache.get(phone);
+            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
+                message.setMsg("短信验证码已过期，请重试");
+            } else {
+                // 从缓存检测用户信息
+                SlUser user = this.userCache.get(openId);
+                // 从数据库查询用户信息
+                if (null == user) {
+                    user = this.userService.selectOne(new SlUser() {{
+                        setOpenId(openId);
+                    }});
+
+                    if (null != user) {
+                        this.userCache.put(openId, user);
+                    }
+                }
+
+                if (null == user) {
+                    message.setMsg("用户信息不存在，请重试");
+                } else {
+                    if (StringUtils.isNotBlank(phone)) {
+                        message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
+                    } else {
+                        // 设置手机号码
+                        user.setPhone(phone);
+                        // 设置密码
+                        user.setPassword(passwordEncoder.encode(password));
+
+                        // 更新
+                        userService.updateByPrimaryKey(user);
+
+                        // 更新缓存
+                        this.userCache.put(openId, user);
+
+                        message.setSuccess(true);
+                    }
+                }
+            }
+        }
+        return message;
+    }
 }
