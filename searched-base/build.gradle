@@ -14,9 +14,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
     maven { url "https://nexus.xzcysoft.com/repository/maven-public/" }
     mavenCentral()

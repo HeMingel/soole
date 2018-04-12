@@ -13,19 +13,19 @@ public class BusinessMessage<T> {
     /**
      * 业务执行结果
      */
-    private Boolean success = false;
+    public Boolean success = false;
     /**
      * 业务代码
      */
-    private String code = "";
+    public String code = "";
     /**
      * 业务消息
      */
-    private String msg = "";
+    public String msg = "";
     /**
      * 业务数据
      */
-    private T data;
+    public T data;
 
     public BusinessMessage(Boolean success) {
         this.success = success;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(description = "系统配置管理")
 @RestController
-@RequestMapping("/api/base/v1/system-config")
+@RequestMapping("/api/base/v1/system-com.songpo.searched.alipay.config")
 public class SystemConfigController extends BaseController<SlSystemConfig, String> {
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(SlSystemConfig.class);

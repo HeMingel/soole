@@ -1,8 +1,5 @@
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 dependencies {
 
     // 依赖基础工程
@@ -35,6 +32,16 @@ dependencies {
     // 短信依赖
     compile group: 'com.aliyun', name: 'aliyun-java-sdk-core', version: '3.2.8'
     compile group: 'com.aliyun', name: 'aliyun-java-sdk-dysmsapi', version: '1.0.0'
+
+    // 微信支付SDK
+    compile('com.github.wxpay:WXPay-SDK-Java:0.0.4')
+
+    // 支付宝SDK
+    // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
+    compile group: 'com.alipay.sdk', name: 'alipay-sdk-java', version: '3.0.0'
+
+    // 日志
+    compile "io.github.microutils:kotlin-logging:${kotlinLoggingVersion}"
 
     // 业务模型校验
     // https://mvnrepository.com/artifact/com.baidu.unbiz/fluent-validator
