@@ -118,9 +118,27 @@ public class SignInService {
         example.createCriteria().andEqualTo("userId", user.getId());
         example.setOrderByClause("sign_time DESC");
         List<SlSignIn> signInList = this.slSignInMapper.selectByExample(example);
+        JSONObject object = new JSONObject();
         if (signInList.size() > 0) {
             SlSignIn signIn = signInList.get(0);
-            JSONObject object = new JSONObject();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Boolean flag = false;
+            Date checkDate = new Date();
+            try {
+                checkDate = format.parse(signIn.getSignTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Calendar checkdateCalendar = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+            today.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE), 0, 0, 0);
+            checkdateCalendar.setTime(checkDate);
+            flag = checkdateCalendar.after(today);
+            if (flag) {
+                object.put("todaySign", 1);
+            } else {
+                object.put("todaySign", 0);
+            }
             if (null != user) {
                 //当前用户的银豆数量
                 object.put("silver", user.getSilver());
@@ -137,6 +155,8 @@ public class SignInService {
         } else {
             message.setSuccess(true);
             message.setMsg("当前签到信息为空");
+            object.put("todaySign", 0);
+            message.setData(object);
         }
         return message;
     }

@@ -60,6 +60,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId, String activityId) {
+        log.debug("slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "], activityId = [" + activityId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
         int pulse = 0;
@@ -244,27 +245,33 @@ public class CmOrderService {
                                         message.setMsg("订单生成成功");
                                         message.setSuccess(true);
                                     } else {
+                                        log.error("当前库存不足");
                                         message.setMsg("当前库存不足");
                                         break;
                                     }
                                 } else {
+                                    log.error("已超过最大购买数量");
                                     message.setMsg("已超过最大购买数量");
                                     break;
                                 }
                             } else {
+                                log.error("活动商品时间错误");
                                 message.setMsg("活动商品时间错误");
                                 break;
                             }
                         } else {
+                            log.error("商品已下架");
                             message.setMsg("商品已下架");
                             break;
                         }
                     }
                 }
             } else {
+                log.error("收货地址不存在");
                 message.setMsg("收货地址不存在");
             }
         } else {
+            log.error("用户不存在");
             message.setMsg("用户不存在");
         }
         return message;
@@ -279,6 +286,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage addGroupOrder(SlOrder slOrder, SlOrderDetail detail, String shippingAddressId, String activityId) {
+        log.debug("slOrder = [" + slOrder + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "], activityId = [" + activityId + "]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         // 推荐奖励拼团奖励了豆数量
@@ -381,7 +389,7 @@ public class CmOrderService {
                                                 slOrder.setConsigneephone(slUserAddress.getPhone());// 收货人的联系方式
                                                 orderService.insertSelective(slOrder);// 插入订单表
                                                 //订单加入redis
-                                                orderCache.put(slOrder.getId(), slOrder,300L,TimeUnit.SECONDS);
+                                                orderCache.put(slOrder.getId(), slOrder, 300L, TimeUnit.SECONDS);
                                             }
                                             String finalSerialNumber = serialNumber;
                                             // TODO ----------- 待商确分享奖励 -------------------
@@ -457,9 +465,11 @@ public class CmOrderService {
                                             message.setMsg("订单生成成功");
                                             message.setSuccess(true);
                                         } else {
+                                            log.error("您已拼过该团");
                                             message.setMsg("您已拼过该团");
                                         }
                                     } else {
+                                        log.error("订单编号不存在");
                                         message.setMsg("订单编号不存在");
                                     }
                                 } else {
@@ -487,7 +497,7 @@ public class CmOrderService {
                                         slOrder.setConsigneephone(slUserAddress.getPhone());// 收货人的联系方式
                                         orderService.insertSelective(slOrder);// 插入订单表
                                         //订单加入redis
-                                        orderCache.put(slOrder.getId(), slOrder,300L,TimeUnit.SECONDS);
+                                        orderCache.put(slOrder.getId(), slOrder, 300L, TimeUnit.SECONDS);
                                     }
                                     String finalSerialNumber = serialNumber;
                                     BigDecimal finalRewardsMoney = rewardsMoney;
@@ -563,21 +573,27 @@ public class CmOrderService {
                                     message.setSuccess(true);
                                 }
                             } else {
+                                log.error("当前库存不足");
                                 message.setMsg("当前库存不足");
                             }
                         } else {
+                            log.error("超出单个用户购买量");
                             message.setMsg("超出单个用户购买量");
                         }
                     } else {
+                        log.error("活动商品时间错误");
                         message.setMsg("活动商品时间错误");
                     }
                 } else {
+                    log.error("找不到商品");
                     message.setMsg("找不到商品");
                 }
             } else {
+                log.error("系统错误");
                 message.setMsg("系统错误");
             }
         } else {
+            log.error("当前用户不存在");
             message.setMsg("当前用户不存在");
         }
         return message;
@@ -627,6 +643,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage orderInfo(String orderId) {
+        log.debug("orderId = [" + orderId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.loginUserService.getCurrentLoginUser();
@@ -649,6 +666,7 @@ public class CmOrderService {
      * @return
      */
     public void cancelAnOrder(String orderId) {
+        log.debug("orderId = [" + orderId + "]");
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrder.class);
