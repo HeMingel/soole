@@ -144,6 +144,7 @@ public class CmOrderController {
     })
     @PostMapping("cancel-order")
     public BusinessMessage cancelAnOrder(String orderId) {
+        log.debug("orderId = [" + orderId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
             this.cmOrderService.cancelAnOrder(orderId);
@@ -151,6 +152,7 @@ public class CmOrderController {
             message.setMsg("取消成功");
         } catch (Exception e) {
             e.printStackTrace();
+            log.debug("取消失败", e);
         }
         return message;
     }

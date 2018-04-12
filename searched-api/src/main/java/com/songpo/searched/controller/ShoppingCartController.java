@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/my-shopping-cart")
+@Slf4j
 public class ShoppingCartController {
 
     @Autowired
@@ -53,6 +55,7 @@ public class ShoppingCartController {
     })
     @PostMapping("delete-shopping-carts")
     public BusinessMessage deleteMyShoppingCart(String repositoryId) {
+        log.debug("repositoryId = [" + repositoryId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
             message = this.shoppingCartService.deleteMyShoppingCart(repositoryId);
@@ -60,6 +63,7 @@ public class ShoppingCartController {
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("删除失败", e);
         }
         return message;
     }
@@ -72,13 +76,15 @@ public class ShoppingCartController {
     })
     @PostMapping("edit-shopping-carts")
     public BusinessMessage editShoppingCarts(String agoRepositoryId, String repositoryId, Integer counts) {
+        log.debug("agoRepositoryId = [" + agoRepositoryId + "], repositoryId = [" + repositoryId + "], counts = [" + counts + "]");
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.shoppingCartService.editShoppingCarts(agoRepositoryId,repositoryId, counts);
+            message = this.shoppingCartService.editShoppingCarts(agoRepositoryId, repositoryId, counts);
             message.setSuccess(message.getSuccess());
             message.setMsg(message.getMsg());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("修改失败", e);
         }
         return message;
     }
@@ -91,7 +97,17 @@ public class ShoppingCartController {
     @GetMapping("serch")
     @ApiOperation(value = "查询购物车")
     public BusinessMessage findCart() {
-        return this.shoppingCartService.findCart();
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.shoppingCartService.findCart();
+            message.setSuccess(message.getSuccess());
+            message.setMsg(message.getMsg());
+            message.setData(message.getData());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("查询失败", e);
+        }
+        return message;
     }
 
 }
