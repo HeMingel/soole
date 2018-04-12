@@ -381,7 +381,7 @@ public class CmOrderService {
                                                 slOrder.setConsigneephone(slUserAddress.getPhone());// 收货人的联系方式
                                                 orderService.insertSelective(slOrder);// 插入订单表
                                                 //订单加入redis
-                                                orderCache.put(slOrder.getId(), slOrder);
+                                                orderCache.put(slOrder.getId(), slOrder,300L,TimeUnit.SECONDS);
                                             }
                                             String finalSerialNumber = serialNumber;
                                             // TODO ----------- 待商确分享奖励 -------------------
@@ -487,7 +487,7 @@ public class CmOrderService {
                                         slOrder.setConsigneephone(slUserAddress.getPhone());// 收货人的联系方式
                                         orderService.insertSelective(slOrder);// 插入订单表
                                         //订单加入redis
-                                        orderCache.put(slOrder.getId(), slOrder);
+                                        orderCache.put(slOrder.getId(), slOrder,300L,TimeUnit.SECONDS);
                                     }
                                     String finalSerialNumber = serialNumber;
                                     BigDecimal finalRewardsMoney = rewardsMoney;

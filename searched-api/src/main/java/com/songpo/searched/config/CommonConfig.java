@@ -10,26 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-//package com.songpo.searched.config;
-//import com.songpo.searched.entity.SlOrder;
-//import com.songpo.searched.service.OrderService;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Component;
-//import tk.mybatis.mapper.entity.Example;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-//import java.util.List;
-//
-//
-///**
-// * 定时任务定时更新订单支付超时订单 每30分钟检测一次
-// */
 @Component
 @Slf4j
 public class CommonConfig {
@@ -42,7 +22,7 @@ public class CommonConfig {
      * 定时更新签到天数
      */
     @Scheduled(cron = "0 0 0 * * ?")
-    void updOrderState() {
+    void updSignState() {
         try {
             Example example = new Example(SlSignIn.class);
             example.createCriteria().andEqualTo("signNum", 7);
