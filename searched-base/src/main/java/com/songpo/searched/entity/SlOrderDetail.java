@@ -135,6 +135,12 @@ public class SlOrderDetail implements Serializable {
     private String shippingTime;
 
     /**
+     * 快递唯一标识符
+     */
+    @Column(name = "ems_id")
+    private String emsId;
+
+    /**
      * 物流单号
      */
     @Column(name = "ship_number")
@@ -155,7 +161,7 @@ public class SlOrderDetail implements Serializable {
     /**
      * 返现金额(限全返模式)
      */
-    @Column(name = "`return cash_money`")
+    @Column(name = "return_cash_money")
     private BigDecimal returnCashMoney;
 
     /**
@@ -581,6 +587,24 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
+     * 获取快递唯一标识符
+     *
+     * @return ems_id - 快递唯一标识符
+     */
+    public String getEmsId() {
+        return emsId;
+    }
+
+    /**
+     * 设置快递唯一标识符
+     *
+     * @param emsId 快递唯一标识符
+     */
+    public void setEmsId(String emsId) {
+        this.emsId = emsId == null ? null : emsId.trim();
+    }
+
+    /**
      * 获取物流单号
      *
      * @return ship_number - 物流单号
@@ -637,7 +661,7 @@ public class SlOrderDetail implements Serializable {
     /**
      * 获取返现金额(限全返模式)
      *
-     * @return return cash_money - 返现金额(限全返模式)
+     * @return return_cash_money - 返现金额(限全返模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
@@ -752,6 +776,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", buyerMessage=").append(buyerMessage);
         sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", shippingTime=").append(shippingTime);
+        sb.append(", emsId=").append(emsId);
         sb.append(", shipNumber=").append(shipNumber);
         sb.append(", groupPeople=").append(groupPeople);
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
