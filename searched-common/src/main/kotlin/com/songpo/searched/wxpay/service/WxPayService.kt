@@ -1,9 +1,14 @@
 package com.songpo.searched.wxpay.service
 
 import com.github.wxpay.sdk.WXPay
+import com.github.wxpay.sdk.WXPayConfig
 import com.songpo.searched.wxpay.config.WxPayConfigProperties
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 
 /**
@@ -13,10 +18,6 @@ import java.util.*
 class WxPayService(val config: WxPayConfigProperties) {
 
     lateinit var wxpay: WXPay
-
-    init {
-        initClient()
-    }
 
     /**
      * 加载支付配置
@@ -38,7 +39,6 @@ class WxPayService(val config: WxPayConfigProperties) {
         config.secret = secret
         config.notifyUrl = notifyUrl
         config.certData = certFile.bytes
-
         initClient()
     }
 
@@ -46,7 +46,37 @@ class WxPayService(val config: WxPayConfigProperties) {
      * 初始化客户端
      */
     private final fun initClient() {
-        wxpay = WXPay(config)
+        var wxConfig = object : WXPayConfig {
+            override fun getAppID(): String? {
+                return config.appId
+            }
+
+            override fun getMchID(): String? {
+                return config.mchId
+            }
+
+            override fun getKey(): String? {
+                return config.secret
+            }
+
+            override fun getCertStream(): InputStream? {
+                return if (null != config.certData) {
+                    ByteArrayInputStream(config.certData)
+                } else {
+                    val bytes = Files.readAllBytes(Paths.get(config.certPath))
+                    ByteArrayInputStream(bytes)
+                }
+            }
+
+            override fun getHttpConnectTimeoutMs(): Int {
+                return 10000
+            }
+
+            override fun getHttpReadTimeoutMs(): Int {
+                return 10000
+            }
+        }
+        wxpay = WXPay(wxConfig)
     }
 
     /**

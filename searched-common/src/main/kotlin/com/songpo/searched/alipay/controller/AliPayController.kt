@@ -42,7 +42,7 @@ class AlipayController(val alipayService: AliPayService) {
         ApiImplicitParam(name = "notifyUrl", value = "支付通知地址", paramType = "form", required = true),
         ApiImplicitParam(name = "returnUrl", value = "支付完成后返回的地址", paramType = "form", required = true)
     ])
-    @PostMapping("/load-com.songpo.searched.alipay.configProperties")
+    @PostMapping("/load-config")
     fun loadConfig(
             appId: String,
             merchantPrivateKey: String,
