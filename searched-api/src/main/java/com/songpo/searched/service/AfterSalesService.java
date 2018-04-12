@@ -39,12 +39,12 @@ public class AfterSalesService {
      */
     public void insertAfterSales(SlAfterSalesService slAfterSalesService, MultipartFile file) {
         SlUser slUser = loginUserService.getCurrentLoginUser();
-        if (file.getSize() > 0) {
+        if (file.getSize() > 0 && file.getSize() <= 3) {
             String fileUrl = fileService.upload(null, file);
             slAfterSalesService.setImageUrl(fileUrl);
         }
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-            setOrderId(slAfterSalesService.getOrderId());
+            setId(slAfterSalesService.getOrderDetailId());
             setCreator(slUser.getId());
         }});
         if (null != detail) {
@@ -76,7 +76,7 @@ public class AfterSalesService {
         if (list.size() > 0) {
             for (SlAfterSalesService service : list) {
                 SlOrderDetail slOrderDetail = this.slOrderDetailMapper.selectOne(new SlOrderDetail() {{
-                    setOrderId(service.getOrderId());
+                    setId(service.getOrderDetailId());
                 }});
                 //订单编号
                 object.put("serial_number", slOrderDetail.getSerialNumber());

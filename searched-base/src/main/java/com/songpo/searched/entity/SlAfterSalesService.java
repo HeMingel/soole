@@ -14,10 +14,10 @@ public class SlAfterSalesService implements Serializable {
     private String id;
 
     /**
-     * 订单id
+     * 订单明细id
      */
-    @Column(name = "order_id")
-    private String orderId;
+    @Column(name = "order_detail_id")
+    private String orderDetailId;
 
     /**
      * 申请售后类型(1:退货退款 2:仅退款)
@@ -101,21 +101,21 @@ public class SlAfterSalesService implements Serializable {
     }
 
     /**
-     * 获取订单id
+     * 获取订单明细id
      *
-     * @return order_id - 订单id
+     * @return order_detail_id - 订单明细id
      */
-    public String getOrderId() {
-        return orderId;
+    public String getOrderDetailId() {
+        return orderDetailId;
     }
 
     /**
-     * 设置订单id
+     * 设置订单明细id
      *
-     * @param orderId 订单id
+     * @param orderDetailId 订单明细id
      */
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
+    public void setOrderDetailId(String orderDetailId) {
+        this.orderDetailId = orderDetailId == null ? null : orderDetailId.trim();
     }
 
     /**
@@ -323,7 +323,7 @@ public class SlAfterSalesService implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", orderId=").append(orderId);
+        sb.append(", orderDetailId=").append(orderDetailId);
         sb.append(", type=").append(type);
         sb.append(", reason=").append(reason);
         sb.append(", money=").append(money);

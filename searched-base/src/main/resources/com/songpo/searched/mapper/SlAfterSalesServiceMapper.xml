@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="money" jdbcType="DECIMAL" property="money" />
@@ -28,8 +28,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, order_id, type, reason, money, image_url, product_id, user_id, shop_id, creator, 
-    create_time, audit_status
+    id, order_detail_id, type, reason, money, image_url, product_id, user_id, shop_id, 
+    creator, create_time, audit_status
   </sql>
   <sql id="Blob_Column_List">
     <!--

@@ -46,8 +46,23 @@ public class SlRedPacket implements Serializable {
      */
     private Boolean result;
 
+    /**
+     * 红包发送时间
+     */
     @Column(name = "create_time")
     private Date createTime;
+
+    /**
+     * 红包抢完时间
+     */
+    @Column(name = "end_time")
+    private Date endTime;
+
+    /**
+     * 红包过期时间
+     */
+    @Column(name = "timed_time")
+    private Date timedTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -188,17 +203,57 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
-     * @return create_time
+     * 获取红包发送时间
+     *
+     * @return create_time - 红包发送时间
      */
     public Date getCreateTime() {
         return createTime;
     }
 
     /**
-     * @param createTime
+     * 设置红包发送时间
+     *
+     * @param createTime 红包发送时间
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取红包抢完时间
+     *
+     * @return end_time - 红包抢完时间
+     */
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 设置红包抢完时间
+     *
+     * @param endTime 红包抢完时间
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    /**
+     * 获取红包过期时间
+     *
+     * @return timed_time - 红包过期时间
+     */
+    public Date getTimedTime() {
+        return timedTime;
+    }
+
+    /**
+     * 设置红包过期时间
+     *
+     * @param timedTime 红包过期时间
+     */
+    public void setTimedTime(Date timedTime) {
+        this.timedTime = timedTime;
     }
 
     @Override
@@ -216,6 +271,8 @@ public class SlRedPacket implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", result=").append(result);
         sb.append(", createTime=").append(createTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", timedTime=").append(timedTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
