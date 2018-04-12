@@ -1,7 +1,7 @@
 package com.songpo.searched.wxpay.controller
 
-import com.songpo.searched.alipay.service.WxPayService
 import com.songpo.searched.domain.BusinessMessage
+import com.songpo.searched.wxpay.service.WxPayService
 import com.songpo.searched.wxpay.util.ClientIPUtil
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam

@@ -1,4 +1,4 @@
-package com.songpo.searched.alipay.service
+package com.songpo.searched.wxpay.service
 
 import com.github.wxpay.sdk.WXPay
 import com.songpo.searched.wxpay.config.WxPayConfigProperties
