@@ -120,7 +120,7 @@
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
       SELECT
-          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction
+          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
