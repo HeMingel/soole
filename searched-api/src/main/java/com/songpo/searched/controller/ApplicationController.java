@@ -49,7 +49,7 @@ public class ApplicationController {
             @ApiImplicitParam(name = "name", value = "姓名", paramType = "form", required = true),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
-            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "body", dataType = "file", required = true)
+            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
     })
     @PostMapping("agent")
     public BusinessMessage<JSONObject> agentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
@@ -91,7 +91,7 @@ public class ApplicationController {
      * @param idCardHand  手持身份证照片
      * @return 业务消息
      */
-    @ApiOperation(value = "提交商户入驻申请", notes = "用于提交商户入驻申请")
+    @ApiOperation(value = "提交商户入驻申请", notes = "用于提交商户入驻申请", consumes = "multipart/form-data")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "productTypeId", value = "店铺类别", paramType = "form", required = true),
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form", required = true),
@@ -104,11 +104,11 @@ public class ApplicationController {
             @ApiImplicitParam(name = "companyName", value = "企业名称，申请类型为企业时必填", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
             @ApiImplicitParam(name = "type", value = "申请类型：1 个人、2 企业", paramType = "form", required = true),
-            @ApiImplicitParam(name = "businessImage", value = "营业执照照片", paramType = "body", dataType = "file"),
+            @ApiImplicitParam(name = "businessImage", value = "营业执照照片", paramType = "form", dataType = "file"),
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
-            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "body", dataType = "file", required = true)
+            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
     })
-    @PostMapping("business")
+    @PostMapping(value = "business")
     public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，申请信息：{}", business);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();

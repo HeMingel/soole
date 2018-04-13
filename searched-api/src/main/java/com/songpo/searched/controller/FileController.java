@@ -40,7 +40,7 @@ public class FileController {
     @ApiOperation(value = "文件上传")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "类型", paramType = "form"),
-            @ApiImplicitParam(name = "file", value = "文件", paramType = "body", dataType = "file")
+            @ApiImplicitParam(name = "file", value = "文件", paramType = "form", dataType = "file")
     })
     @PostMapping
     public BusinessMessage<Map<String, String>> upload(String type, MultipartFile file) {
