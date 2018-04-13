@@ -11,8 +11,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * @author 刘松坡
@@ -41,16 +42,19 @@ public class SwaggerConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("com.songpo.searched"))
                 .paths(PathSelectors.ant("/api/common/**"))
                 .build()
-                .securitySchemes(List.of(oauth2()))
-                .protocols(Set.of("http", "https"));
+                .securitySchemes(Collections.singletonList(oauth2()))
+                .protocols(new HashSet<>(2) {{
+                    add("http");
+                    add("https");
+                }});
     }
 
     public SecurityScheme oauth2() {
         return new OAuthBuilder()
                 .name("oauth2")
 //                .grantTypes(List.of(new ClientCredentialsGrant("http://api1.xn--ykq093c.com/sl/oauth/token")))
-                .grantTypes(List.of(new ClientCredentialsGrant("http://localhost:8080/sl/oauth/token")))
-                .scopes(List.of(
+                .grantTypes(Collections.singletonList(new ClientCredentialsGrant("http://localhost:8080/sl/oauth/token")))
+                .scopes(Arrays.asList(
                         new AuthorizationScope("read", ""),
                         new AuthorizationScope("write", "")
                 ))
