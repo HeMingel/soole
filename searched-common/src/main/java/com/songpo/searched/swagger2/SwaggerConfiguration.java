@@ -52,8 +52,8 @@ public class SwaggerConfiguration {
     public SecurityScheme oauth2() {
         return new OAuthBuilder()
                 .name("oauth2")
-//                .grantTypes(List.of(new ClientCredentialsGrant("http://api1.xn--ykq093c.com/sl/oauth/token")))
-                .grantTypes(Collections.singletonList(new ClientCredentialsGrant("http://localhost:8080/sl/oauth/token")))
+                .grantTypes(Collections.singletonList(new ClientCredentialsGrant("http://api1.xn--ykq093c.com/sl/oauth/token")))
+//                .grantTypes(Collections.singletonList(new ClientCredentialsGrant("http://localhost:8080/sl/oauth/token")))
                 .scopes(Arrays.asList(
                         new AuthorizationScope("read", ""),
                         new AuthorizationScope("write", "")
