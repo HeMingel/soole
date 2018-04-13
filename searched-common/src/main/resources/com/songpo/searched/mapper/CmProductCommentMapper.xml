@@ -9,8 +9,10 @@
         pc.content,
         pc.create_time ,
         u.`nick_name`,
+        u.avatar,
         s.`name` AS shopName,
-        pc.status
+        pc.status,
+        pc.create_time
         FROM
         sl_product_comment pc
         LEFT JOIN sl_user u

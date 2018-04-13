@@ -19,7 +19,7 @@
             LEFT JOIN sl_product_sale_mode_order_count psmoc ON psmoc.product_id = p.id
         </if>
         <where>
-            <if test="name != ''">
+            <if test="name != '' and name != null ">
                 <bind name="pName" value="'%' + name + '%'"/>
                 AND p.name LIKE #{pName}
             </if>
@@ -67,7 +67,7 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         SELECT
-        ap.*,p.name,p.introduction
+        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
@@ -120,7 +120,7 @@
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
       SELECT
-          p.`id` AS goodsId,p.`sales_mode_id`,ap.*
+          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
