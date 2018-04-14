@@ -12,10 +12,18 @@ dependencies {
     compile("com.alibaba:fastjson:$fastjsonVersion")
 
     // swagger文档管理
-    compile("com.spring4all:swagger-spring-boot-starter:$swaggerSpringBootStarterVersion")
+//    compile("com.spring4all:swagger-spring-boot-starter:$swaggerSpringBootStarterVersion")
+
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
 
     // Web组件
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+
+    // 系统端点
+    compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 
     // Redis组件
     compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
