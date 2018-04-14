@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="level_number" jdbcType="INTEGER" property="levelNumber" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="maximum" jdbcType="INTEGER" property="maximum" />
@@ -15,6 +16,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, image_url, maximum, descriptional
+    id, level_number, name, image_url, maximum, descriptional
   </sql>
 </mapper>

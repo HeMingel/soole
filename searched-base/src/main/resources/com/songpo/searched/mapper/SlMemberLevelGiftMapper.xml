@@ -8,13 +8,14 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="level_id" jdbcType="VARCHAR" property="levelId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="image_no_url" jdbcType="VARCHAR" property="imageNoUrl" />
+    <result column="image_ok_url" jdbcType="VARCHAR" property="imageOkUrl" />
     <result column="descriptional" jdbcType="VARCHAR" property="descriptional" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, level_id, name, image_url, descriptional
+    id, level_id, name, image_no_url, image_ok_url, descriptional
   </sql>
 </mapper>

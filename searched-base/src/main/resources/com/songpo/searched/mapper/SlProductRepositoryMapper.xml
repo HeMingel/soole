@@ -35,6 +35,7 @@
     <result column="rewards_money" jdbcType="DECIMAL" property="rewardsMoney" />
     <result column="rewards_money_ratio" jdbcType="REAL" property="rewardsMoneyRatio" />
     <result column="first_order_pulse" jdbcType="INTEGER" property="firstOrderPulse" />
+    <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -44,6 +45,6 @@
     remark, product_profit_ratio, product_profit_money, price, personal_price, `return cash_ratio`, 
     `return cash_money`, post_fee, discount, reference_price, state, count, score, cost_price, 
     weight, ship, gold, silver, place_order_return_pulse, `return pulse_ratio`, rebate_pulse, 
-    rewards_money, rewards_money_ratio, first_order_pulse
+    rewards_money, rewards_money_ratio, first_order_pulse, people_num
   </sql>
 </mapper>

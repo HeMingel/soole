@@ -177,6 +177,12 @@ public class SlProductRepository implements Serializable {
     @Column(name = "first_order_pulse")
     private Integer firstOrderPulse;
 
+    /**
+     * 助力购的所需人数
+     */
+    @Column(name = "people_num")
+    private Integer peopleNum;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -719,6 +725,24 @@ public class SlProductRepository implements Serializable {
         this.firstOrderPulse = firstOrderPulse;
     }
 
+    /**
+     * 获取助力购的所需人数
+     *
+     * @return people_num - 助力购的所需人数
+     */
+    public Integer getPeopleNum() {
+        return peopleNum;
+    }
+
+    /**
+     * 设置助力购的所需人数
+     *
+     * @param peopleNum 助力购的所需人数
+     */
+    public void setPeopleNum(Integer peopleNum) {
+        this.peopleNum = peopleNum;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -755,6 +779,7 @@ public class SlProductRepository implements Serializable {
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
         sb.append(", firstOrderPulse=").append(firstOrderPulse);
+        sb.append(", peopleNum=").append(peopleNum);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

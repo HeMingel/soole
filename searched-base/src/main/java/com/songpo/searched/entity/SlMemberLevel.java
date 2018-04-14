@@ -13,12 +13,18 @@ public class SlMemberLevel implements Serializable {
     private String id;
 
     /**
+     * 等级对应的数字
+     */
+    @Column(name = "level_number")
+    private Integer levelNumber;
+
+    /**
      * 等级名称
      */
     private String name;
 
     /**
-     * image的路径
+     * 特权的 logo 的路径
      */
     @Column(name = "image_url")
     private String imageUrl;
@@ -54,6 +60,24 @@ public class SlMemberLevel implements Serializable {
     }
 
     /**
+     * 获取等级对应的数字
+     *
+     * @return level_number - 等级对应的数字
+     */
+    public Integer getLevelNumber() {
+        return levelNumber;
+    }
+
+    /**
+     * 设置等级对应的数字
+     *
+     * @param levelNumber 等级对应的数字
+     */
+    public void setLevelNumber(Integer levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    /**
      * 获取等级名称
      *
      * @return name - 等级名称
@@ -72,18 +96,18 @@ public class SlMemberLevel implements Serializable {
     }
 
     /**
-     * 获取image的路径
+     * 获取特权的 logo 的路径
      *
-     * @return image_url - image的路径
+     * @return image_url - 特权的 logo 的路径
      */
     public String getImageUrl() {
         return imageUrl;
     }
 
     /**
-     * 设置image的路径
+     * 设置特权的 logo 的路径
      *
-     * @param imageUrl image的路径
+     * @param imageUrl 特权的 logo 的路径
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl == null ? null : imageUrl.trim();
@@ -132,6 +156,7 @@ public class SlMemberLevel implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", levelNumber=").append(levelNumber);
         sb.append(", name=").append(name);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", maximum=").append(maximum);

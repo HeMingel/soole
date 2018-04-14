@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="to_user_id" jdbcType="VARCHAR" property="toUserId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlSearchRingNewsComment">
@@ -20,7 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, news_id, user_id, create_time
+    id, news_id, user_id, to_user_id, create_time
   </sql>
   <sql id="Blob_Column_List">
     <!--

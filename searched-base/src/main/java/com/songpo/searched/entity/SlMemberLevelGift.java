@@ -21,10 +21,16 @@ public class SlMemberLevelGift implements Serializable {
     private String name;
 
     /**
-     * 礼包图标
+     * 等级未达到的礼包的 灰色图标
      */
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_no_url")
+    private String imageNoUrl;
+
+    /**
+     * 等级未达到的礼包的 亮色图标
+     */
+    @Column(name = "image_ok_url")
+    private String imageOkUrl;
 
     /**
      * 礼包描述
@@ -84,21 +90,39 @@ public class SlMemberLevelGift implements Serializable {
     }
 
     /**
-     * 获取礼包图标
+     * 获取等级未达到的礼包的 灰色图标
      *
-     * @return image_url - 礼包图标
+     * @return image_no_url - 等级未达到的礼包的 灰色图标
      */
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageNoUrl() {
+        return imageNoUrl;
     }
 
     /**
-     * 设置礼包图标
+     * 设置等级未达到的礼包的 灰色图标
      *
-     * @param imageUrl 礼包图标
+     * @param imageNoUrl 等级未达到的礼包的 灰色图标
      */
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
+    public void setImageNoUrl(String imageNoUrl) {
+        this.imageNoUrl = imageNoUrl == null ? null : imageNoUrl.trim();
+    }
+
+    /**
+     * 获取等级未达到的礼包的 亮色图标
+     *
+     * @return image_ok_url - 等级未达到的礼包的 亮色图标
+     */
+    public String getImageOkUrl() {
+        return imageOkUrl;
+    }
+
+    /**
+     * 设置等级未达到的礼包的 亮色图标
+     *
+     * @param imageOkUrl 等级未达到的礼包的 亮色图标
+     */
+    public void setImageOkUrl(String imageOkUrl) {
+        this.imageOkUrl = imageOkUrl == null ? null : imageOkUrl.trim();
     }
 
     /**
@@ -128,7 +152,8 @@ public class SlMemberLevelGift implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", levelId=").append(levelId);
         sb.append(", name=").append(name);
-        sb.append(", imageUrl=").append(imageUrl);
+        sb.append(", imageNoUrl=").append(imageNoUrl);
+        sb.append(", imageOkUrl=").append(imageOkUrl);
         sb.append(", descriptional=").append(descriptional);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

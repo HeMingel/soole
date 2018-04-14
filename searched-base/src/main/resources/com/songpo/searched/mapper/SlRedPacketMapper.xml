@@ -12,6 +12,7 @@
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="surplus_count" jdbcType="INTEGER" property="surplusCount" />
     <result column="type" jdbcType="BIT" property="type" />
+    <result column="red_packet_type" jdbcType="BIT" property="redPacketType" />
     <result column="result" jdbcType="BIT" property="result" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
@@ -21,7 +22,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, money, surplus_money, count, surplus_count, type, result, create_time, 
-    end_time, timed_time
+    id, user_id, money, surplus_money, count, surplus_count, type, red_packet_type, result, 
+    create_time, end_time, timed_time
   </sql>
 </mapper>

@@ -183,7 +183,7 @@ public class CmOrderService {
                                             // 一元购助力所需人数
                                             if (finalSlProduct.getSalesModeId().equals("5")) {
                                                 // 拼团/助力购 所需人数
-                                                setGroupPeople(slActivityProduct.getPeopleNum());
+                                                setGroupPeople(finalRepository.getPeopleNum());
                                             }
                                             // TODO ----------------分享返利这块产品待商确--------------------
 //                                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
