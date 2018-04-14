@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ConfigurationProperties(prefix = "sp.pay.wxpay")
-data class WxPayConfigProperties(
+open class WxPayConfigProperties(
         var appId: String = "",
         var mchId: String = "",
         var secret: String = "",
