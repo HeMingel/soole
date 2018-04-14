@@ -220,6 +220,8 @@ public class CmProductService {
                 //商品评论
                 List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, 1);
                 if (mapComments.size() > 0) {
+                    List<Map<String,Object>> commentsNum = this.cmProductCommentMapper.goodsCommentsNum(goodsId);
+                    data.put("productCommentsNum",commentsNum);
                     data.put("productComments", mapComments);
                 }
                 //   查询拼团信息
