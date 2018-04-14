@@ -85,29 +85,69 @@ public class SystemController {
                     }
                 }
 
+                // 请求中军创接口，检测用户是否存在
                 if (null == user) {
-                    message.setMsg("用户信息不匹配");
-                } else if (!passwordEncoder.matches(password, user.getPassword())) {
-                    message.setMsg("用户信息不匹配");
-                } else {
-                    JSONObject data = new JSONObject();
-                    data.put("clientId", user.getClientId());
-                    data.put("clientSecret", user.getClientSecret());
-                    // 用户真实姓名
-                    data.put("realname", user.getName());
-                    // 用户昵称
-                    data.put("nickname", user.getNickName());
-                    // 用户头像
-                    data.put("avatar", user.getAvatar());
-                    // 手机号码
-                    data.put("phone", user.getPhone());
-                    // 电子邮箱
-                    data.put("email", user.getEmail());
-                    // 是否设置支付密码
-                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+                    Boolean exist = this.loginUserService.checkUserExistByZjcyy(phone, password);
+                    if (null != exist && exist) {
+                        user = new SlUser();
+                        user.setPhone(phone);
+                        user.setPassword(passwordEncoder.encode(password));
 
-                    message.setData(data);
-                    message.setSuccess(true);
+                        // 定义生成字符串范围
+                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
+                        // 初始化随机生成器
+                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
+
+                        user.setClientId(generator.generate(16));
+                        user.setClientSecret(generator.generate(64));
+
+                        // 添加
+                        userService.insertSelective(user);
+
+                        JSONObject data = new JSONObject();
+                        data.put("clientId", user.getClientId());
+                        data.put("clientSecret", user.getClientSecret());
+                        // 用户真实姓名
+                        data.put("realname", user.getName());
+                        // 用户昵称
+                        data.put("nickname", user.getNickName());
+                        // 用户头像
+                        data.put("avatar", user.getAvatar());
+                        // 手机号码
+                        data.put("phone", user.getPhone());
+                        // 电子邮箱
+                        data.put("email", user.getEmail());
+                        // 是否设置支付密码
+                        data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+
+                        message.setData(data);
+                        message.setSuccess(true);
+                    } else {
+                        message.setMsg("用户信息不匹配");
+                    }
+                } else {
+                    if (!passwordEncoder.matches(password, user.getPassword())) {
+                        message.setMsg("用户信息不匹配");
+                    } else {
+                        JSONObject data = new JSONObject();
+                        data.put("clientId", user.getClientId());
+                        data.put("clientSecret", user.getClientSecret());
+                        // 用户真实姓名
+                        data.put("realname", user.getName());
+                        // 用户昵称
+                        data.put("nickname", user.getNickName());
+                        // 用户头像
+                        data.put("avatar", user.getAvatar());
+                        // 手机号码
+                        data.put("phone", user.getPhone());
+                        // 电子邮箱
+                        data.put("email", user.getEmail());
+                        // 是否设置支付密码
+                        data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+
+                        message.setData(data);
+                        message.setSuccess(true);
+                    }
                 }
             } catch (Exception e) {
                 log.error("登录失败：{}", e);
