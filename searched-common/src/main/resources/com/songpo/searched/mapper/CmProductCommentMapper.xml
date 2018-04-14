@@ -33,5 +33,14 @@
             FROM sl_product_comment_image
             WHERE product_comment_id = #{commentId}
     </select>
+    <select id="goodsCommentsNum" resultType="Map">
+        SELECT
+        pc.status,
+        COUNT(*)
+      FROM
+        sl_product_comment pc
+      WHERE pc.`product_id` = #{goodsId}
+      GROUP BY pc.status
+    </select>
 
 </mapper>
