@@ -23,6 +23,12 @@ public class SlSearchRingNewsComment implements Serializable {
     private String userId;
 
     /**
+     * 被回复人id
+     */
+    @Column(name = "to_user_id")
+    private String toUserId;
+
+    /**
      * 发表评论时间
      */
     @Column(name = "create_time")
@@ -86,6 +92,24 @@ public class SlSearchRingNewsComment implements Serializable {
     }
 
     /**
+     * 获取被回复人id
+     *
+     * @return to_user_id - 被回复人id
+     */
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    /**
+     * 设置被回复人id
+     *
+     * @param toUserId 被回复人id
+     */
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId == null ? null : toUserId.trim();
+    }
+
+    /**
      * 获取发表评论时间
      *
      * @return create_time - 发表评论时间
@@ -130,6 +154,7 @@ public class SlSearchRingNewsComment implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", newsId=").append(newsId);
         sb.append(", userId=").append(userId);
+        sb.append(", toUserId=").append(toUserId);
         sb.append(", createTime=").append(createTime);
         sb.append(", content=").append(content);
         sb.append(", serialVersionUID=").append(serialVersionUID);

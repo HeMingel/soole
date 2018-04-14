@@ -37,8 +37,8 @@ public class SlPresellReturnedRecord implements Serializable {
     /**
      * 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      */
-    @Column(name = "returned_num")
-    private Integer returnedNum;
+    @Column(name = "returned_status")
+    private Integer returnedStatus;
 
     private static final long serialVersionUID = 1L;
 
@@ -131,19 +131,19 @@ public class SlPresellReturnedRecord implements Serializable {
     /**
      * 获取回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      *
-     * @return returned_num - 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * @return returned_status - 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      */
-    public Integer getReturnedNum() {
-        return returnedNum;
+    public Integer getReturnedStatus() {
+        return returnedStatus;
     }
 
     /**
      * 设置回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      *
-     * @param returnedNum 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * @param returnedStatus 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
      */
-    public void setReturnedNum(Integer returnedNum) {
-        this.returnedNum = returnedNum;
+    public void setReturnedStatus(Integer returnedStatus) {
+        this.returnedStatus = returnedStatus;
     }
 
     @Override
@@ -157,7 +157,7 @@ public class SlPresellReturnedRecord implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", returnedMoney=").append(returnedMoney);
         sb.append(", returnedNumber=").append(returnedNumber);
-        sb.append(", returnedNum=").append(returnedNum);
+        sb.append(", returnedStatus=").append(returnedStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

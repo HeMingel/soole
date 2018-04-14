@@ -42,6 +42,12 @@ public class SlRedPacket implements Serializable {
     private Boolean type;
 
     /**
+     * 红包类型  1.单聊红包   2.群红包
+     */
+    @Column(name = "red_packet_type")
+    private Boolean redPacketType;
+
+    /**
      * 红包结果  1.有效  2.已抢完  3.过期
      */
     private Boolean result;
@@ -185,6 +191,24 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
+     * 获取红包类型  1.单聊红包   2.群红包
+     *
+     * @return red_packet_type - 红包类型  1.单聊红包   2.群红包
+     */
+    public Boolean getRedPacketType() {
+        return redPacketType;
+    }
+
+    /**
+     * 设置红包类型  1.单聊红包   2.群红包
+     *
+     * @param redPacketType 红包类型  1.单聊红包   2.群红包
+     */
+    public void setRedPacketType(Boolean redPacketType) {
+        this.redPacketType = redPacketType;
+    }
+
+    /**
      * 获取红包结果  1.有效  2.已抢完  3.过期
      *
      * @return result - 红包结果  1.有效  2.已抢完  3.过期
@@ -269,6 +293,7 @@ public class SlRedPacket implements Serializable {
         sb.append(", count=").append(count);
         sb.append(", surplusCount=").append(surplusCount);
         sb.append(", type=").append(type);
+        sb.append(", redPacketType=").append(redPacketType);
         sb.append(", result=").append(result);
         sb.append(", createTime=").append(createTime);
         sb.append(", endTime=").append(endTime);

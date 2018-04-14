@@ -10,12 +10,12 @@
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="returned_money" jdbcType="DECIMAL" property="returnedMoney" />
     <result column="returned_number" jdbcType="INTEGER" property="returnedNumber" />
-    <result column="returned_num" jdbcType="INTEGER" property="returnedNum" />
+    <result column="returned_status" jdbcType="INTEGER" property="returnedStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, shop_id, returned_money, returned_number, returned_num
+    id, product_id, shop_id, returned_money, returned_number, returned_status
   </sql>
 </mapper>
