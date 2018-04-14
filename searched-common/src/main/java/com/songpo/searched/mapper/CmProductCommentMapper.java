@@ -14,4 +14,6 @@ public interface CmProductCommentMapper {
      List<Map<String,Object>> goodsComments(@Param("goodsId")String goodsId, @Param("status")Integer status);
      //获取商品评论图片
      List<Map<String,Object>> commentImages(String commentId);
+     //获取商品评论数量
+     List<Map<String,Object>> goodsCommentsNum(String goodsId);
 }
