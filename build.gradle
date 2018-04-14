@@ -6,6 +6,7 @@ buildscript {
         springVersion = '5.0.4.RELEASE'
         druidSpringVersion = '1.1.9'
         fastjsonVersion = '1.2.46'
+        jacksonVersion = '2.9.5'
         commonsLang3Version = '3.6'
         swaggerSpringBootStarterVersion = '1.7.0.RELEASE'
         mapperSpringBootStarterVersion = '2.0.1'
@@ -64,18 +65,35 @@ allprojects {
         compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 
         // Spring Boot 配置属性生成
-//        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor：${springBootVersion}"
+        compileOnly "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 
-        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-properties-migrator
-//        compile group: 'org.springframework.boot', name: 'spring-boot-properties-migrator', version: '2.0.0.RELEASE'
+        // Spring Boot 2.0 迁移助手
+        compile "org.springframework.boot:spring-boot-properties-migrator:${springBootVersion}"
+
+        // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+        compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+        // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+        compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0'
+        compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.0'
+        // https://mvnrepository.com/artifact/javax.activation/activation
+        compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+
+        // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
+        compile("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}")
     }
 
-//    compileKotlin {
-//        kotlinOptions.jvmTarget = "9"
-//    }
-//    compileTestKotlin {
-//        kotlinOptions.jvmTarget = "9"
-//    }
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
 }
 
 // 指定工程编码格式

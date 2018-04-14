@@ -6,12 +6,7 @@ import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.service.CmOrderService;
-import com.songpo.searched.service.LoginUserService;
-import com.songpo.searched.service.MemberService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -34,7 +29,12 @@ public class CmOrderController {
      * @param cmSlOrderDetail
      * @return
      */
-    @ApiOperation(value = "非拼团模式下单")
+    @ApiOperation(value = "非拼团模式下单", authorizations = {
+            @Authorization(value = "application", scopes = {
+                    @AuthorizationScope(scope = "read", description = "allows reading resources"),
+                    @AuthorizationScope(scope = "write", description = "allows modifying resources")
+            })
+    }, tags = {"cm-order-controller",})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true),
             @ApiImplicitParam(name = "shippingAddressId", value = "地址Id", paramType = "form", required = true),
