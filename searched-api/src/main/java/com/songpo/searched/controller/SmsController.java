@@ -35,4 +35,13 @@ public class SmsController {
     public BusinessMessage<SendSmsResponse> sendSms(String mobile) {
         return smsService.sendSms(mobile);
     }
+
+    @ApiOperation(value = "发送短信登录密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "form")
+    })
+    @PostMapping("pwd")
+    public BusinessMessage<SendSmsResponse> sendPassword(String mobile) {
+        return smsService.sendPassword(mobile);
+    }
 }
