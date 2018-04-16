@@ -27,6 +27,29 @@ public class SlMemberBankcard implements Serializable {
     @Column(name = "card_number")
     private Integer cardNumber;
 
+    /**
+     * 持卡人姓名
+     */
+    private String cardholder;
+
+    /**
+     * 持卡人电话
+     */
+    @Column(name = "cardholder_phone")
+    private String cardholderPhone;
+
+    /**
+     * 开户行地址
+     */
+    @Column(name = "opening_bank")
+    private String openingBank;
+
+    /**
+     * 所属银行
+     */
+    @Column(name = "affiliated_bank")
+    private String affiliatedBank;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -97,6 +120,78 @@ public class SlMemberBankcard implements Serializable {
         this.cardNumber = cardNumber;
     }
 
+    /**
+     * 获取持卡人姓名
+     *
+     * @return cardholder - 持卡人姓名
+     */
+    public String getCardholder() {
+        return cardholder;
+    }
+
+    /**
+     * 设置持卡人姓名
+     *
+     * @param cardholder 持卡人姓名
+     */
+    public void setCardholder(String cardholder) {
+        this.cardholder = cardholder == null ? null : cardholder.trim();
+    }
+
+    /**
+     * 获取持卡人电话
+     *
+     * @return cardholder_phone - 持卡人电话
+     */
+    public String getCardholderPhone() {
+        return cardholderPhone;
+    }
+
+    /**
+     * 设置持卡人电话
+     *
+     * @param cardholderPhone 持卡人电话
+     */
+    public void setCardholderPhone(String cardholderPhone) {
+        this.cardholderPhone = cardholderPhone == null ? null : cardholderPhone.trim();
+    }
+
+    /**
+     * 获取开户行地址
+     *
+     * @return opening_bank - 开户行地址
+     */
+    public String getOpeningBank() {
+        return openingBank;
+    }
+
+    /**
+     * 设置开户行地址
+     *
+     * @param openingBank 开户行地址
+     */
+    public void setOpeningBank(String openingBank) {
+        this.openingBank = openingBank == null ? null : openingBank.trim();
+    }
+
+    /**
+     * 获取所属银行
+     *
+     * @return affiliated_bank - 所属银行
+     */
+    public String getAffiliatedBank() {
+        return affiliatedBank;
+    }
+
+    /**
+     * 设置所属银行
+     *
+     * @param affiliatedBank 所属银行
+     */
+    public void setAffiliatedBank(String affiliatedBank) {
+        this.affiliatedBank = affiliatedBank == null ? null : affiliatedBank.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -107,6 +202,10 @@ public class SlMemberBankcard implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", bankName=").append(bankName);
         sb.append(", cardNumber=").append(cardNumber);
+        sb.append(", cardholder=").append(cardholder);
+        sb.append(", cardholderPhone=").append(cardholderPhone);
+        sb.append(", openingBank=").append(openingBank);
+        sb.append(", affiliatedBank=").append(affiliatedBank);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

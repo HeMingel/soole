@@ -34,6 +34,12 @@ public class SlTransactionDetail implements Serializable {
     private Boolean type;
 
     /**
+     * 交易货币类型  1.余额  2.了豆
+     */
+    @Column(name = "deal_type")
+    private Boolean dealType;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -128,6 +134,24 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
+     * 获取交易货币类型  1.余额  2.了豆
+     *
+     * @return deal_type - 交易货币类型  1.余额  2.了豆
+     */
+    public Boolean getDealType() {
+        return dealType;
+    }
+
+    /**
+     * 设置交易货币类型  1.余额  2.了豆
+     *
+     * @param dealType 交易货币类型  1.余额  2.了豆
+     */
+    public void setDealType(Boolean dealType) {
+        this.dealType = dealType;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -156,6 +180,7 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", targetId=").append(targetId);
         sb.append(", redPacketId=").append(redPacketId);
         sb.append(", type=").append(type);
+        sb.append(", dealType=").append(dealType);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

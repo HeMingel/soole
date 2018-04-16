@@ -9,11 +9,16 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
     <result column="card_number" jdbcType="INTEGER" property="cardNumber" />
+    <result column="cardholder" jdbcType="VARCHAR" property="cardholder" />
+    <result column="cardholder_phone" jdbcType="VARCHAR" property="cardholderPhone" />
+    <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
+    <result column="affiliated_bank" jdbcType="VARCHAR" property="affiliatedBank" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, bank_name, card_number
+    id, user_id, bank_name, card_number, cardholder, cardholder_phone, opening_bank, 
+    affiliated_bank
   </sql>
 </mapper>

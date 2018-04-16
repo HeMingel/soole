@@ -109,7 +109,7 @@ public class CmOrderService {
                             SlProductRepository finalRepository = repository;
                             slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(finalRepository.getProductId());
-                                setSoldOut(false);
+                                setSoldOut(true);
                             }});
                         }
                         if (null != slProduct) {
@@ -311,7 +311,7 @@ public class CmOrderService {
                     SlProductRepository finalRepository = repository;
                     product = this.productService.selectOne(new SlProduct() {{
                         setId(finalRepository.getProductId());
-                        setSoldOut(false);
+                        setSoldOut(true);
                     }});
                 }
                 if (null != product) {
@@ -407,7 +407,7 @@ public class CmOrderService {
                                                 setProductDetailGroupName(finalRepository1.getProductDetailGroupName());// 商品规格名称
                                                 setGroupPeople(slActivityProduct.getPeopleNum());// 无活动所需人数
                                                 //分享奖励人id
-                                                if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+                                                if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
                                                     setShareOfPeopleId(detail.getShareOfPeopleId());
                                                 }
                                                 // 查询当前用户的支付订单
@@ -514,7 +514,7 @@ public class CmOrderService {
                                         setSerialNumber(finalSerialNumber); // 订单编号
                                         setProductDetailGroupName(finalRepository1.getProductDetailGroupName());// 商品规格名称
                                         setGroupPeople(slActivityProduct.getPeopleNum());// 无活动所需人数
-                                        if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+                                        if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
                                             setShareOfPeopleId(detail.getShareOfPeopleId());
                                         }
                                         // 查询当前用户的支付订单
@@ -597,28 +597,23 @@ public class CmOrderService {
     /**
      * 查询我的订单列表
      *
-     * @param clientId
      * @return
      */
-    public BusinessMessage findList(String clientId) {
-        log.debug("查询我的订单列表clientId:{}", clientId);
+    public BusinessMessage findList() {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId());
                 List<String> userAvatarList = new ArrayList<>();
-                Map<String, Object> userAvatar = new HashMap<>();
                 for (Map map : list) {
                     Object type = map.get("type");
                     Object serialNumber = map.get("serialNumber");
                     if (type.equals(2)) {//拼团订单
                         // 拼团订单筛选参与会员头像
-                        userAvatarList = this.cmOrderMapper.findUserAvatar(serialNumber);
+                        map.put("userAvatarList", this.cmOrderMapper.findUserAvatar(serialNumber));
                     }
                 }
-                userAvatar.put("userAvatarList", userAvatarList);
-                list.add(userAvatar);
                 message.setMsg("查询成功");
                 message.setSuccess(true);
                 message.setData(list);

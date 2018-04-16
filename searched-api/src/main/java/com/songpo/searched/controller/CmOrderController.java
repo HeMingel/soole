@@ -114,8 +114,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true)
     })
     @GetMapping("list")
-    public BusinessMessage list(OAuth2Authentication oAuth2Authentication) {
-        return this.cmOrderService.findList(oAuth2Authentication.getOAuth2Request().getClientId());
+    public BusinessMessage list() {
+        return this.cmOrderService.findList();
     }
 
     /**
