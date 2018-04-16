@@ -137,9 +137,6 @@ public class ShoppingCartService {
                                             cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
                                             list1 = cart1.getCarts();
                                             list1.add(cmGoods);
-                                            cart1.setCarts(list1);
-                                            list.remove(i);
-                                            list.add(cart1);
                                             break;
                                         } else {
                                             List<CMGoods> list2 = new ArrayList<>();
@@ -189,6 +186,8 @@ public class ShoppingCartService {
                                     cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
                                     cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
                                     cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
+                                    cmGoods.setShopId(sc.getShopId());// 店铺id
+                                    cmGoods.setShopName(slShop.getName());// 店铺名称
                                     goodsList.add(cmGoods);
                                     cart.setShopId(slShop.getId());
                                     cart.setShopName(slShop.getName());
