@@ -21,10 +21,6 @@ import java.util.List;
 @Slf4j
 public class ShoppingCartService {
     @Autowired
-    private CmOrderMapper specificationNameMapper;
-    @Autowired
-    private UserService userService;
-    @Autowired
     private ShoppingCartCache cache;
     @Autowired
     private ProductService productService;
