@@ -188,6 +188,12 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "shipping_state")
     private Integer shippingState;
 
+    /**
+     * 分享人的唯一标识符
+     */
+    @Column(name = "share_of_people_id")
+    private String shareOfPeopleId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -748,6 +754,24 @@ public class SlOrderDetail implements Serializable {
         this.shippingState = shippingState;
     }
 
+    /**
+     * 获取分享人的唯一标识符
+     *
+     * @return share_of_people_id - 分享人的唯一标识符
+     */
+    public String getShareOfPeopleId() {
+        return shareOfPeopleId;
+    }
+
+    /**
+     * 设置分享人的唯一标识符
+     *
+     * @param shareOfPeopleId 分享人的唯一标识符
+     */
+    public void setShareOfPeopleId(String shareOfPeopleId) {
+        this.shareOfPeopleId = shareOfPeopleId == null ? null : shareOfPeopleId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -785,6 +809,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", shippingState=").append(shippingState);
+        sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

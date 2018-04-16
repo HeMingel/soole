@@ -7,15 +7,20 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="product_repository_id" jdbcType="VARCHAR" property="productRepositoryId" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="returned_money" jdbcType="DECIMAL" property="returnedMoney" />
     <result column="returned_number" jdbcType="INTEGER" property="returnedNumber" />
-    <result column="returned_status" jdbcType="INTEGER" property="returnedStatus" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="award_year" jdbcType="CHAR" property="awardYear" />
+    <result column="everyday_money" jdbcType="DECIMAL" property="everydayMoney" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, shop_id, returned_money, returned_number, returned_status
+    id, product_id, product_repository_id, shop_id, returned_money, returned_number, 
+    create_time, type, award_year, everyday_money
   </sql>
 </mapper>

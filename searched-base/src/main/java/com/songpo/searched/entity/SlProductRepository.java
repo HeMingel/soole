@@ -74,13 +74,13 @@ public class SlProductRepository implements Serializable {
     /**
      * 全返金额比例(限消费返利销售模式按商品价格)
      */
-    @Column(name = "`return cash_ratio`")
+    @Column(name = "return_cash_ratio")
     private Float returnCashRatio;
 
     /**
      * 全返金额(消费返利模式)
      */
-    @Column(name = "`return cash_money`")
+    @Column(name = "return_cash_money")
     private BigDecimal returnCashMoney;
 
     /**
@@ -148,25 +148,13 @@ public class SlProductRepository implements Serializable {
     private Integer placeOrderReturnPulse;
 
     /**
-     * 奖励了豆比例(限推荐奖励活动)
-     */
-    @Column(name = "`return pulse_ratio`")
-    private Float returnPulseRatio;
-
-    /**
-     * 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    @Column(name = "rebate_pulse")
-    private Integer rebatePulse;
-
-    /**
-     * 推荐奖励奖励金额(限推荐奖励)
+     * 推荐奖励奖励金额(限分享奖励)
      */
     @Column(name = "rewards_money")
     private BigDecimal rewardsMoney;
 
     /**
-     * 推荐奖励比例(限推荐奖励)
+     * 推荐奖励比例(限分享奖励)
      */
     @Column(name = "rewards_money_ratio")
     private Float rewardsMoneyRatio;
@@ -386,7 +374,7 @@ public class SlProductRepository implements Serializable {
     /**
      * 获取全返金额比例(限消费返利销售模式按商品价格)
      *
-     * @return return cash_ratio - 全返金额比例(限消费返利销售模式按商品价格)
+     * @return return_cash_ratio - 全返金额比例(限消费返利销售模式按商品价格)
      */
     public Float getReturnCashRatio() {
         return returnCashRatio;
@@ -404,7 +392,7 @@ public class SlProductRepository implements Serializable {
     /**
      * 获取全返金额(消费返利模式)
      *
-     * @return return cash_money - 全返金额(消费返利模式)
+     * @return return_cash_money - 全返金额(消费返利模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
@@ -636,72 +624,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取奖励了豆比例(限推荐奖励活动)
+     * 获取推荐奖励奖励金额(限分享奖励)
      *
-     * @return return pulse_ratio - 奖励了豆比例(限推荐奖励活动)
-     */
-    public Float getReturnPulseRatio() {
-        return returnPulseRatio;
-    }
-
-    /**
-     * 设置奖励了豆比例(限推荐奖励活动)
-     *
-     * @param returnPulseRatio 奖励了豆比例(限推荐奖励活动)
-     */
-    public void setReturnPulseRatio(Float returnPulseRatio) {
-        this.returnPulseRatio = returnPulseRatio;
-    }
-
-    /**
-     * 获取奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @return rebate_pulse - 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public Integer getRebatePulse() {
-        return rebatePulse;
-    }
-
-    /**
-     * 设置奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @param rebatePulse 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public void setRebatePulse(Integer rebatePulse) {
-        this.rebatePulse = rebatePulse;
-    }
-
-    /**
-     * 获取推荐奖励奖励金额(限推荐奖励)
-     *
-     * @return rewards_money - 推荐奖励奖励金额(限推荐奖励)
+     * @return rewards_money - 推荐奖励奖励金额(限分享奖励)
      */
     public BigDecimal getRewardsMoney() {
         return rewardsMoney;
     }
 
     /**
-     * 设置推荐奖励奖励金额(限推荐奖励)
+     * 设置推荐奖励奖励金额(限分享奖励)
      *
-     * @param rewardsMoney 推荐奖励奖励金额(限推荐奖励)
+     * @param rewardsMoney 推荐奖励奖励金额(限分享奖励)
      */
     public void setRewardsMoney(BigDecimal rewardsMoney) {
         this.rewardsMoney = rewardsMoney;
     }
 
     /**
-     * 获取推荐奖励比例(限推荐奖励)
+     * 获取推荐奖励比例(限分享奖励)
      *
-     * @return rewards_money_ratio - 推荐奖励比例(限推荐奖励)
+     * @return rewards_money_ratio - 推荐奖励比例(限分享奖励)
      */
     public Float getRewardsMoneyRatio() {
         return rewardsMoneyRatio;
     }
 
     /**
-     * 设置推荐奖励比例(限推荐奖励)
+     * 设置推荐奖励比例(限分享奖励)
      *
-     * @param rewardsMoneyRatio 推荐奖励比例(限推荐奖励)
+     * @param rewardsMoneyRatio 推荐奖励比例(限分享奖励)
      */
     public void setRewardsMoneyRatio(Float rewardsMoneyRatio) {
         this.rewardsMoneyRatio = rewardsMoneyRatio;
@@ -774,8 +726,6 @@ public class SlProductRepository implements Serializable {
         sb.append(", gold=").append(gold);
         sb.append(", silver=").append(silver);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
-        sb.append(", returnPulseRatio=").append(returnPulseRatio);
-        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
         sb.append(", firstOrderPulse=").append(firstOrderPulse);

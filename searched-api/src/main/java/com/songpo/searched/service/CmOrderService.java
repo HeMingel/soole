@@ -3,6 +3,7 @@ package com.songpo.searched.service;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.ProductCache;
+import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
@@ -23,6 +24,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static com.songpo.searched.constant.ActivityConstant.RECOMMEND_AWARDS_ACTIVITY;
 
 @Slf4j
 @Transactional
@@ -185,11 +188,10 @@ public class CmOrderService {
                                                 // 拼团/助力购 所需人数
                                                 setGroupPeople(finalRepository.getPeopleNum());
                                             }
-                                            // TODO ----------------分享返利这块产品待商确--------------------
-//                                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
-//                                                            setRewardsMoney(finalRepository.getRewardsMoney());// 推荐返利的金额
-//                                                            setRebatePulse(finalRepository.getRebatePulse());// 推荐返利的了豆数量
-//                                                        }
+                                            if (slActivityProduct.getActivityId().equals(RECOMMEND_AWARDS_ACTIVITY)) {
+                                                // 这里只是记录分享人的id
+                                                setShareOfPeopleId(slOrderDetail.getShareOfPeopleId());
+                                            }
                                             // 查询当前用户的支付订单
                                             int c = orderService.selectCount(new SlOrder() {{
                                                 setUserId(user.getId());
@@ -328,11 +330,6 @@ public class CmOrderService {
                         // 此商品已拼单人数 + 1
                         setOrdersNum(slActivityProduct.getOrdersNum() + 1);
                     }});
-                    // TODO ----------分享返利这块产品待商确--------------------
-//                        if (activityId.equals("4E39B37C-21D1-4BC2-F1CE-FED600214E64")) {
-//                            rewardsMoney = repository.getRewardsMoney();// 推荐奖励返利润的金额数量
-//                            rewardsPulse = repository.getRebatePulse();// 推荐奖励的返利润的了豆数量
-//                        }
                     if (productCache.getRedisTemplate().getExpire("com.songpo.seached:product:time-limit:" + slActivityProduct.getId()) > 0) {
                         //此活动拼团商品当前用户的拼单下单数量
                         Integer count = this.cmOrderMapper.groupOrdersByUser(product.getId(), activityId, user.getId());
@@ -392,9 +389,6 @@ public class CmOrderService {
                                                 orderCache.put(slOrder.getId(), slOrder, 300L, TimeUnit.SECONDS);
                                             }
                                             String finalSerialNumber = serialNumber;
-                                            // TODO ----------- 待商确分享奖励 -------------------
-//                                            BigDecimal finalRewardsMoney = rewardsMoney;
-                                            int finalRewardsPulse = rewardsPulse;
                                             SlProductRepository finalRepository1 = repository;
                                             orderDetailService.insertSelective(new SlOrderDetail() {{
                                                 setId(UUID.randomUUID().toString());
@@ -406,15 +400,16 @@ public class CmOrderService {
                                                 setProductId(finalRepository1.getProductId());// 商品ID
                                                 setShopId(finalRepository1.getShopId());// 店铺唯一标识
                                                 setRepositoryId(finalRepository1.getId()); // 店铺仓库ID
-                                                setPlaceOrderReturnPulse(finalRepository1.getRebatePulse());// 返了豆数量只限纯金钱模式
+                                                setPlaceOrderReturnPulse(finalRepository1.getPlaceOrderReturnPulse());// 返了豆数量只限纯金钱模式
                                                 setProductName(finalRepository1.getProductName());// 下单时的商品名称
                                                 setProductImageUrl(finalRepository1.getProductImageUrl());// 下单时的商品图片
                                                 setSerialNumber(finalSerialNumber); // 订单编号
                                                 setProductDetailGroupName(finalRepository1.getProductDetailGroupName());// 商品规格名称
                                                 setGroupPeople(slActivityProduct.getPeopleNum());// 无活动所需人数
-                                                // TODO ----------- 待商确分享奖励 -------------------
-//                                                setRewardsMoney(finalRewardsMoney);// 推荐奖励的返的金额
-//                                                setRebatePulse(finalRewardsPulse);// 推荐奖励的返的了豆
+                                                //分享奖励人id
+                                                if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+                                                    setShareOfPeopleId(detail.getShareOfPeopleId());
+                                                }
                                                 // 查询当前用户的支付订单
                                                 int c = orderService.selectCount(new SlOrder() {{
                                                     setUserId(user.getId());
@@ -513,15 +508,15 @@ public class CmOrderService {
                                         setProductId(finalRepository1.getProductId());// 商品ID
                                         setShopId(finalRepository1.getShopId());// 店铺唯一标识
                                         setRepositoryId(finalRepository1.getId()); // 店铺仓库ID
-                                        setPlaceOrderReturnPulse(finalRepository1.getRebatePulse());// 返了豆数量只限纯金钱模式
+                                        setPlaceOrderReturnPulse(finalRepository1.getPlaceOrderReturnPulse());// 返了豆数量只限纯金钱模式
                                         setProductName(finalRepository1.getProductName());// 下单时的商品名称
                                         setProductImageUrl(finalRepository1.getProductImageUrl());// 下单时的商品图片
                                         setSerialNumber(finalSerialNumber); // 订单编号
                                         setProductDetailGroupName(finalRepository1.getProductDetailGroupName());// 商品规格名称
                                         setGroupPeople(slActivityProduct.getPeopleNum());// 无活动所需人数
-                                        // TODO ----------- 待商确分享奖励 -------------------
-//                                                setRewardsMoney(finalRewardsMoney);// 推荐奖励的返的金额
-//                                                setRebatePulse(finalRewardsPulse);// 推荐奖励的返的了豆
+                                        if (activityId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+                                            setShareOfPeopleId(detail.getShareOfPeopleId());
+                                        }
                                         // 查询当前用户的支付订单
                                         int c = orderService.selectCount(new SlOrder() {{
                                             setUserId(user.getId());

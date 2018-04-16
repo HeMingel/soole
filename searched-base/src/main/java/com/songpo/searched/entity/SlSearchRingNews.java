@@ -29,6 +29,12 @@ public class SlSearchRingNews implements Serializable {
     private Integer goodsNum;
 
     /**
+     * 分享次数
+     */
+    @Column(name = "share_num")
+    private Integer shareNum;
+
+    /**
      * 发表时间
      */
     @Column(name = "create_time")
@@ -116,6 +122,24 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
+     * 获取分享次数
+     *
+     * @return share_num - 分享次数
+     */
+    public Integer getShareNum() {
+        return shareNum;
+    }
+
+    /**
+     * 设置分享次数
+     *
+     * @param shareNum 分享次数
+     */
+    public void setShareNum(Integer shareNum) {
+        this.shareNum = shareNum;
+    }
+
+    /**
      * 获取发表时间
      *
      * @return create_time - 发表时间
@@ -179,6 +203,7 @@ public class SlSearchRingNews implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", goodsNum=").append(goodsNum);
+        sb.append(", shareNum=").append(shareNum);
         sb.append(", createTime=").append(createTime);
         sb.append(", editTime=").append(editTime);
         sb.append(", content=").append(content);

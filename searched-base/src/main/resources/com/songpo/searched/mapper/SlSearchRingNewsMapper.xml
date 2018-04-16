@@ -9,6 +9,7 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="share_num" jdbcType="INTEGER" property="shareNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
   </resultMap>
@@ -22,7 +23,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, comment_num, goods_num, create_time, edit_time
+    id, user_id, comment_num, goods_num, share_num, create_time, edit_time
   </sql>
   <sql id="Blob_Column_List">
     <!--

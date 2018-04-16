@@ -10,10 +10,10 @@ public class SlMemberLevelGift implements Serializable {
     private String id;
 
     /**
-     * 礼包对应等级id
+     * 礼包对应等级的数字
      */
-    @Column(name = "level_id")
-    private String levelId;
+    @Column(name = "level_number")
+    private String levelNumber;
 
     /**
      * 礼包姓名
@@ -54,21 +54,21 @@ public class SlMemberLevelGift implements Serializable {
     }
 
     /**
-     * 获取礼包对应等级id
+     * 获取礼包对应等级的数字
      *
-     * @return level_id - 礼包对应等级id
+     * @return level_number - 礼包对应等级的数字
      */
-    public String getLevelId() {
-        return levelId;
+    public String getLevelNumber() {
+        return levelNumber;
     }
 
     /**
-     * 设置礼包对应等级id
+     * 设置礼包对应等级的数字
      *
-     * @param levelId 礼包对应等级id
+     * @param levelNumber 礼包对应等级的数字
      */
-    public void setLevelId(String levelId) {
-        this.levelId = levelId == null ? null : levelId.trim();
+    public void setLevelNumber(String levelNumber) {
+        this.levelNumber = levelNumber == null ? null : levelNumber.trim();
     }
 
     /**
@@ -150,7 +150,7 @@ public class SlMemberLevelGift implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", levelId=").append(levelId);
+        sb.append(", levelNumber=").append(levelNumber);
         sb.append(", name=").append(name);
         sb.append(", imageNoUrl=").append(imageNoUrl);
         sb.append(", imageOkUrl=").append(imageOkUrl);

@@ -77,7 +77,7 @@ public class SlActivityProduct implements Serializable {
     private Integer count;
 
     /**
-     * 拼团/助力购 所需人数
+     * 拼团 所需人数
      */
     @Column(name = "people_num")
     private Integer peopleNum;
@@ -371,18 +371,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取拼团/助力购 所需人数
+     * 获取拼团 所需人数
      *
-     * @return people_num - 拼团/助力购 所需人数
+     * @return people_num - 拼团 所需人数
      */
     public Integer getPeopleNum() {
         return peopleNum;
     }
 
     /**
-     * 设置拼团/助力购 所需人数
+     * 设置拼团 所需人数
      *
-     * @param peopleNum 拼团/助力购 所需人数
+     * @param peopleNum 拼团 所需人数
      */
     public void setPeopleNum(Integer peopleNum) {
         this.peopleNum = peopleNum;

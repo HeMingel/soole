@@ -6,6 +6,9 @@ import javax.persistence.*;
 
 @Table(name = "sl_presell_returned_record")
 public class SlPresellReturnedRecord implements Serializable {
+    /**
+     * 返利唯一标识符
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
@@ -15,6 +18,12 @@ public class SlPresellReturnedRecord implements Serializable {
      */
     @Column(name = "product_id")
     private String productId;
+
+    /**
+     * 产品仓库id
+     */
+    @Column(name = "product_repository_id")
+    private String productRepositoryId;
 
     /**
      * 店铺唯一标识符
@@ -35,22 +44,43 @@ public class SlPresellReturnedRecord implements Serializable {
     private Integer returnedNumber;
 
     /**
-     * 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * 创建时间
      */
-    @Column(name = "returned_status")
-    private Integer returnedStatus;
+    @Column(name = "create_time")
+    private String createTime;
+
+    /**
+     * 1.预售模式2.消费返利模式
+     */
+    private String type;
+
+    /**
+     * 奖励年限(仅用于消费j奖励)
+     */
+    @Column(name = "award_year")
+    private String awardYear;
+
+    /**
+     * 每日奖励金额(仅用于消费奖励)
+     */
+    @Column(name = "everyday_money")
+    private BigDecimal everydayMoney;
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * @return id
+     * 获取返利唯一标识符
+     *
+     * @return id - 返利唯一标识符
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id
+     * 设置返利唯一标识符
+     *
+     * @param id 返利唯一标识符
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
@@ -72,6 +102,24 @@ public class SlPresellReturnedRecord implements Serializable {
      */
     public void setProductId(String productId) {
         this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
+     * 获取产品仓库id
+     *
+     * @return product_repository_id - 产品仓库id
+     */
+    public String getProductRepositoryId() {
+        return productRepositoryId;
+    }
+
+    /**
+     * 设置产品仓库id
+     *
+     * @param productRepositoryId 产品仓库id
+     */
+    public void setProductRepositoryId(String productRepositoryId) {
+        this.productRepositoryId = productRepositoryId == null ? null : productRepositoryId.trim();
     }
 
     /**
@@ -129,21 +177,75 @@ public class SlPresellReturnedRecord implements Serializable {
     }
 
     /**
-     * 获取回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * 获取创建时间
      *
-     * @return returned_status - 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * @return create_time - 创建时间
      */
-    public Integer getReturnedStatus() {
-        return returnedStatus;
+    public String getCreateTime() {
+        return createTime;
     }
 
     /**
-     * 设置回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * 设置创建时间
      *
-     * @param returnedStatus 回款状态1.已发货 2.未发货 3.可发货 4.已逾期
+     * @param createTime 创建时间
      */
-    public void setReturnedStatus(Integer returnedStatus) {
-        this.returnedStatus = returnedStatus;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取1.预售模式2.消费返利模式
+     *
+     * @return type - 1.预售模式2.消费返利模式
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置1.预售模式2.消费返利模式
+     *
+     * @param type 1.预售模式2.消费返利模式
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    /**
+     * 获取奖励年限(仅用于消费j奖励)
+     *
+     * @return award_year - 奖励年限(仅用于消费j奖励)
+     */
+    public String getAwardYear() {
+        return awardYear;
+    }
+
+    /**
+     * 设置奖励年限(仅用于消费j奖励)
+     *
+     * @param awardYear 奖励年限(仅用于消费j奖励)
+     */
+    public void setAwardYear(String awardYear) {
+        this.awardYear = awardYear == null ? null : awardYear.trim();
+    }
+
+    /**
+     * 获取每日奖励金额(仅用于消费奖励)
+     *
+     * @return everyday_money - 每日奖励金额(仅用于消费奖励)
+     */
+    public BigDecimal getEverydayMoney() {
+        return everydayMoney;
+    }
+
+    /**
+     * 设置每日奖励金额(仅用于消费奖励)
+     *
+     * @param everydayMoney 每日奖励金额(仅用于消费奖励)
+     */
+    public void setEverydayMoney(BigDecimal everydayMoney) {
+        this.everydayMoney = everydayMoney;
     }
 
     @Override
@@ -154,10 +256,14 @@ public class SlPresellReturnedRecord implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
+        sb.append(", productRepositoryId=").append(productRepositoryId);
         sb.append(", shopId=").append(shopId);
         sb.append(", returnedMoney=").append(returnedMoney);
         sb.append(", returnedNumber=").append(returnedNumber);
-        sb.append(", returnedStatus=").append(returnedStatus);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", type=").append(type);
+        sb.append(", awardYear=").append(awardYear);
+        sb.append(", everydayMoney=").append(everydayMoney);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
