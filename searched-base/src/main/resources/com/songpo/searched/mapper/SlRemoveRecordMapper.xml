@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlRemoveRecordMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlRemoveRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="voucher" jdbcType="VARCHAR" property="voucher"/>
+        <result column="record_time" jdbcType="VARCHAR" property="recordTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, user_id, mobile, voucher, record_time
+    </sql>
+</mapper>

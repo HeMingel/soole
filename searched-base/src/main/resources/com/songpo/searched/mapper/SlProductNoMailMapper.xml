@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlProductNoMailMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductNoMail">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="product_id" jdbcType="VARCHAR" property="productId"/>
+        <result column="no_ship_area" jdbcType="VARCHAR" property="noShipArea"/>
+        <result column="express" jdbcType="VARCHAR" property="express"/>
+        <result column="areaMoney" jdbcType="DECIMAL" property="areamoney"/>
+        <result column="add_express_money" jdbcType="DECIMAL" property="addExpressMoney"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, product_id, no_ship_area, express, areaMoney, add_express_money
+    </sql>
+</mapper>

@@ -304,7 +304,7 @@ public class CmProductService {
             //查询后台推送推荐商品
             List<Map<String, Object>> backStageGoods = this.mapper.backStageGoods(id, ActivityConstant.NO_ACTIVITY);
             int goodsSize = 4;
-            if (backStageGoods != null && backStageGoods.size() < goodsSize) {
+            if (backStageGoods.size() < goodsSize) {
                 //查询该商品商品类别
                 Map<String, Object> systemGoodsType = this.mapper.systemGoodsType(id);
                 // 根据商品类别查销量最好的四个普通商品
@@ -364,7 +364,7 @@ public class CmProductService {
                     apExample.createCriteria().andEqualTo("productId", slProductList.get(i).getId()).andEqualTo("enabled", 1);
                     List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                     activityProduct.put("activityProduct", activityProductList);
-                    activityProduct.put("goodsType", slProductList.get(i).getSalesModeId());
+                    activityProduct.put("goodsType", slProductList);
                     goodsList.add(activityProduct);
                 }
                 businessMessage.setSuccess(true);
