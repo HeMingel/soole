@@ -89,9 +89,15 @@ public class SystemController {
                     }
                 }
 
-                // 请求中军创接口，检测用户是否存在
                 if (null == user) {
-                    Boolean exist = this.loginUserService.checkUserExistByZjcyy(phone, password);
+                    // 请求中军创接口，检测用户是否存在
+                    Boolean exist = null;
+                    try {
+                        exist = this.loginUserService.checkUserExistByZjcyy(phone, password);
+                    } catch (Exception e) {
+                        log.error("检测用户在中军创云易平台是否存在错误", e);
+                    }
+
                     if (null != exist && exist) {
                         user = new SlUser();
                         user.setPhone(phone);
@@ -606,7 +612,7 @@ public class SystemController {
     })
     @PostMapping("bind-phone")
     public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId, String password) {
-        log.debug("微信登录，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
+        log.debug("绑定手机号码，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("第三方标识为空");
@@ -638,7 +644,7 @@ public class SystemController {
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
                 } else {
-                    if (StringUtils.isNotBlank(phone)) {
+                    if (StringUtils.isNotBlank(user.getPhone())) {
                         message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
                     } else {
                         // 设置手机号码
@@ -647,10 +653,13 @@ public class SystemController {
                         user.setPassword(passwordEncoder.encode(password));
 
                         // 更新
-                        userService.updateByPrimaryKey(user);
+                        userService.updateByPrimaryKeySelective(user);
 
                         // 更新缓存
                         this.userCache.put(openId, user);
+
+                        // 清除验证码
+                        this.smsVerifyCodeCache.evict(phone);
 
                         message.setSuccess(true);
                     }
