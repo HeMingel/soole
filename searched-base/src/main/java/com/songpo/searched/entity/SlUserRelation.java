@@ -8,32 +8,35 @@ import java.io.Serializable;
 
 @Table(name = "sl_user_relation")
 public class SlUserRelation implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户唯一标识
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 被推荐人电话
      */
     @Column(name = "recommended_phone")
     private String recommendedPhone;
+
+    private static final long serialVersionUID = 1L;
     /**
      * 商品Id
      */
-    @Column(name = "goodsId")
-    private String goodsid;
+    @Column(name = "goods_id")
+    private String goodsId;
     /**
      * 创建时间
      */
-    @Column(name = "creat_time")
-    private String creatTime;
+    @Column(name = "create_time")
+    private String createTime;
 
     /**
      * 获取主键
@@ -92,37 +95,37 @@ public class SlUserRelation implements Serializable {
     /**
      * 获取商品Id
      *
-     * @return goodsId - 商品Id
+     * @return goods_id - 商品Id
      */
-    public String getGoodsid() {
-        return goodsid;
+    public String getGoodsId() {
+        return goodsId;
     }
 
     /**
      * 设置商品Id
      *
-     * @param goodsid 商品Id
+     * @param goodsId 商品Id
      */
-    public void setGoodsid(String goodsid) {
-        this.goodsid = goodsid == null ? null : goodsid.trim();
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId == null ? null : goodsId.trim();
     }
 
     /**
      * 获取创建时间
      *
-     * @return creat_time - 创建时间
+     * @return create_time - 创建时间
      */
-    public String getCreatTime() {
-        return creatTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
     /**
      * 设置创建时间
      *
-     * @param creatTime 创建时间
+     * @param createTime 创建时间
      */
-    public void setCreatTime(String creatTime) {
-        this.creatTime = creatTime == null ? null : creatTime.trim();
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
     }
 
     @Override
@@ -134,8 +137,8 @@ public class SlUserRelation implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", recommendedPhone=").append(recommendedPhone);
-        sb.append(", goodsid=").append(goodsid);
-        sb.append(", creatTime=").append(creatTime);
+        sb.append(", goodsId=").append(goodsId);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

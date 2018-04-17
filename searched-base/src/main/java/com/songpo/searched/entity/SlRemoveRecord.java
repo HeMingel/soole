@@ -5,31 +5,36 @@ import java.io.Serializable;
 
 @Table(name = "sl_remove_record")
 public class SlRemoveRecord implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 用户ID
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 兑换手机账号
      */
     private String mobile;
+
     /**
      * 兑换数量
      */
     private String voucher;
+
     /**
      * 兑换时间
      */
     @Column(name = "record_time")
     private String recordTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键ID
