@@ -37,6 +37,7 @@
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
     <result column="shipping_state" jdbcType="INTEGER" property="shippingState" />
     <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
+    <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -47,6 +48,6 @@
     discount, creator, create_time, modifier, modification_time, post_fee, buyer_message, 
     return_cash_pulse, shipping_time, ems_id, ship_number, group_people, presell_shipments_days, 
     return_cash_money, place_order_return_pulse, rewards_money, rebate_pulse, shipping_state, 
-    share_of_people_id
+    share_of_people_id, activity_product_id
   </sql>
 </mapper>

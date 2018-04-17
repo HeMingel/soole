@@ -11,16 +11,12 @@
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="read_count" jdbcType="DECIMAL" property="readCount" />
     <result column="praise_count" jdbcType="DECIMAL" property="praiseCount" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
+    <result column="reference_url" jdbcType="VARCHAR" property="referenceUrl" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, content, image_url, read_count, praise_count, creator, create_time, modifier, 
-    modification_time
+    id, title, content, image_url, read_count, praise_count, reference_url
   </sql>
 </mapper>

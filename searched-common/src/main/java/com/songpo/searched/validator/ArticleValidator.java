@@ -58,7 +58,7 @@ public class ArticleValidator extends ValidatorHandler<SlArticle> {
         if (flag) {
             try {
                 // 设置创建时间
-                t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//                t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } catch (Exception e) {
                 logger.error("校验失败：{}", e);
 

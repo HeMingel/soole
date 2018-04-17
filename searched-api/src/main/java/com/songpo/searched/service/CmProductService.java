@@ -395,8 +395,6 @@ public class CmProductService {
                     setId(productId);
                     setEnabled(false);
                 }});
-
-                // TODO 做一些其他的业务处理
             }
         }
     }

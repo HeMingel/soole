@@ -43,7 +43,7 @@ public class SlOrder implements Serializable {
     private Integer paymentState;
 
     /**
-     * 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
+     * 1：普通订单 2：拼团订单3:预售订单 4:助力购 5:消费奖励 6:豆赚
      */
     private Integer type;
 
@@ -126,12 +126,6 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "group_master")
     private String groupMaster;
-
-    /**
-     * 活动商品ID
-     */
-    @Column(name = "activity_product_id")
-    private String activityProductId;
 
     private static final long serialVersionUID = 1L;
 
@@ -244,18 +238,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
+     * 获取1：普通订单 2：拼团订单3:预售订单 4:助力购 5:消费奖励 6:豆赚
      *
-     * @return type - 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
+     * @return type - 1：普通订单 2：拼团订单3:预售订单 4:助力购 5:消费奖励 6:豆赚
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
+     * 设置1：普通订单 2：拼团订单3:预售订单 4:助力购 5:消费奖励 6:豆赚
      *
-     * @param type 1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚
+     * @param type 1：普通订单 2：拼团订单3:预售订单 4:助力购 5:消费奖励 6:豆赚
      */
     public void setType(Integer type) {
         this.type = type;
@@ -521,24 +515,6 @@ public class SlOrder implements Serializable {
         this.groupMaster = groupMaster == null ? null : groupMaster.trim();
     }
 
-    /**
-     * 获取活动商品ID
-     *
-     * @return activity_product_id - 活动商品ID
-     */
-    public String getActivityProductId() {
-        return activityProductId;
-    }
-
-    /**
-     * 设置活动商品ID
-     *
-     * @param activityProductId 活动商品ID
-     */
-    public void setActivityProductId(String activityProductId) {
-        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -566,7 +542,6 @@ public class SlOrder implements Serializable {
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
-        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

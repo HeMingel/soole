@@ -13,7 +13,7 @@ public class SlActivityProductRepository implements Serializable {
     private String id;
 
     /**
-     * 活动仓库规格序号
+     * 活动商品ID  activity_product
      */
     @Column(name = "serial_number")
     private String serialNumber;
@@ -45,18 +45,18 @@ public class SlActivityProductRepository implements Serializable {
     }
 
     /**
-     * 获取活动仓库规格序号
+     * 获取活动商品ID  activity_product
      *
-     * @return serial_number - 活动仓库规格序号
+     * @return serial_number - 活动商品ID  activity_product
      */
     public String getSerialNumber() {
         return serialNumber;
     }
 
     /**
-     * 设置活动仓库规格序号
+     * 设置活动商品ID  activity_product
      *
-     * @param serialNumber 活动仓库规格序号
+     * @param serialNumber 活动商品ID  activity_product
      */
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber == null ? null : serialNumber.trim();

@@ -124,7 +124,7 @@ public class SlProductRepository implements Serializable {
     /**
      * 重量
      */
-    private BigDecimal weight;
+    private String weight;
 
     /**
      * 是否包邮(1:包邮 0:不包邮)
@@ -538,7 +538,7 @@ public class SlProductRepository implements Serializable {
      *
      * @return weight - 重量
      */
-    public BigDecimal getWeight() {
+    public String getWeight() {
         return weight;
     }
 
@@ -547,8 +547,8 @@ public class SlProductRepository implements Serializable {
      *
      * @param weight 重量
      */
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setWeight(String weight) {
+        this.weight = weight == null ? null : weight.trim();
     }
 
     /**

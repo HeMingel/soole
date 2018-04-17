@@ -26,6 +26,12 @@ public class SlActivityProduct implements Serializable {
     private String activityId;
 
     /**
+     * （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    @Column(name = "sharing_rewards_id")
+    private String sharingRewardsId;
+
+    /**
      * 活动仓库规格序号
      */
     @Column(name = "activity_product_repository_serial_number")
@@ -206,6 +212,24 @@ public class SlActivityProduct implements Serializable {
      */
     public void setActivityId(String activityId) {
         this.activityId = activityId == null ? null : activityId.trim();
+    }
+
+    /**
+     * 获取（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     *
+     * @return sharing_rewards_id - （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    public String getSharingRewardsId() {
+        return sharingRewardsId;
+    }
+
+    /**
+     * 设置（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     *
+     * @param sharingRewardsId （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    public void setSharingRewardsId(String sharingRewardsId) {
+        this.sharingRewardsId = sharingRewardsId == null ? null : sharingRewardsId.trim();
     }
 
     /**
@@ -613,6 +637,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
         sb.append(", activityId=").append(activityId);
+        sb.append(", sharingRewardsId=").append(sharingRewardsId);
         sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
         sb.append(", referencePrice=").append(referencePrice);
