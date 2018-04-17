@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
@@ -86,6 +86,12 @@ public class SlShop implements Serializable {
      */
     @Column(name = "shop_type")
     private Integer shopType;
+
+    /**
+     * 店铺经营类型id
+     */
+    @Column(name = "product_type_id")
+    private String productTypeId;
 
     private static final long serialVersionUID = 1L;
 
@@ -359,6 +365,24 @@ public class SlShop implements Serializable {
         this.shopType = shopType;
     }
 
+    /**
+     * 获取店铺经营类型id
+     *
+     * @return product_type_id - 店铺经营类型id
+     */
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    /**
+     * 设置店铺经营类型id
+     *
+     * @param productTypeId 店铺经营类型id
+     */
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId == null ? null : productTypeId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -380,6 +404,7 @@ public class SlShop implements Serializable {
         sb.append(", rating=").append(rating);
         sb.append(", phone=").append(phone);
         sb.append(", shopType=").append(shopType);
+        sb.append(", productTypeId=").append(productTypeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

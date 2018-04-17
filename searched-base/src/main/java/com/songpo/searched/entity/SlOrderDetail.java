@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -183,7 +183,7 @@ public class SlOrderDetail implements Serializable {
     private Integer rebatePulse;
 
     /**
-     * 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
@@ -737,18 +737,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      *
-     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     public Integer getShippingState() {
         return shippingState;
     }
 
     /**
-     * 设置3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      *
-     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     public void setShippingState(Integer shippingState) {
         this.shippingState = shippingState;

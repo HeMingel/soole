@@ -40,6 +40,12 @@ public class SlArticle implements Serializable {
     @Column(name = "praise_count")
     private Integer praiseCount;
 
+    /**
+     * 引用地址，用来存放消息引用地址
+     */
+    @Column(name = "reference_url")
+    private String referenceUrl;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -150,6 +156,24 @@ public class SlArticle implements Serializable {
         this.praiseCount = praiseCount;
     }
 
+    /**
+     * 获取引用地址，用来存放消息引用地址
+     *
+     * @return reference_url - 引用地址，用来存放消息引用地址
+     */
+    public String getReferenceUrl() {
+        return referenceUrl;
+    }
+
+    /**
+     * 设置引用地址，用来存放消息引用地址
+     *
+     * @param referenceUrl 引用地址，用来存放消息引用地址
+     */
+    public void setReferenceUrl(String referenceUrl) {
+        this.referenceUrl = referenceUrl == null ? null : referenceUrl.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -162,6 +186,7 @@ public class SlArticle implements Serializable {
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", readCount=").append(readCount);
         sb.append(", praiseCount=").append(praiseCount);
+        sb.append(", referenceUrl=").append(referenceUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
