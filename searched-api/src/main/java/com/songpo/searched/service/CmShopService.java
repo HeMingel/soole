@@ -62,7 +62,7 @@ public class CmShopService {
                 apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
                 List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                 activityProduct.put("activityProduct",activityProductList);
-                activityProduct.put("goodsType",productList.get(i).getSalesModeId());
+                activityProduct.put("goodsBaseInfo",productList);
                 goodsList.add(activityProduct);
             }
             if(userId != null){
