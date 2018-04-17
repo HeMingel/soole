@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface CmOrderMapper {
 
-    List<Map<String, Object>> findList(@Param("userId") String userId);
+    List<Map<String, Object>> findList(@Param("userId") String userId, @Param("status") Integer status);
 
     List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
 

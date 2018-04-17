@@ -9,6 +9,8 @@ import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.util.OrderNumGeneration;
+import com.songpo.searched.wxpay.controller.WxPayController;
+import com.songpo.searched.wxpay.service.WxPayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,16 +57,20 @@ public class CmOrderService {
     private ProductCache productCache;
     @Autowired
     private OrderCache orderCache;
+    @Autowired
+    private WxPayController wxPayController;
 
     /**
      * 新增预下单订单
      *
+     * @param request
+     * @param response
      * @param slOrder
      * @param orderDetail
      * @param shippingAddressId
      * @return
      */
-    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId, String activityId) {
+    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId, String activityId) {
         log.debug("slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "], activityId = [" + activityId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
@@ -249,21 +257,25 @@ public class CmOrderService {
                                     } else {
                                         log.error("当前库存不足");
                                         message.setMsg("当前库存不足");
+                                        message.setSuccess(false);
                                         break;
                                     }
                                 } else {
                                     log.error("已超过最大购买数量");
                                     message.setMsg("已超过最大购买数量");
+                                    message.setSuccess(false);
                                     break;
                                 }
                             } else {
                                 log.error("活动商品时间错误");
                                 message.setMsg("活动商品时间错误");
+                                message.setSuccess(false);
                                 break;
                             }
                         } else {
                             log.error("商品已下架");
                             message.setMsg("商品已下架");
+                            message.setSuccess(false);
                             break;
                         }
                     }
@@ -275,6 +287,37 @@ public class CmOrderService {
         } else {
             log.error("用户不存在");
             message.setMsg("用户不存在");
+        }
+        //下完订单直接调取微信预下单
+        if (message.getSuccess().equals(true)) {
+            SimpleDateFormat fm = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                message.setData(wxPayController.unifiedOrderByApp(
+                        request,
+                        null,
+                        //描述
+                        "搜了平台-订单编号:" + slOrder.getSerialNumber(),
+                        null,
+                        null,
+                        //订单号
+                        slOrder.getSerialNumber(),
+                        null,
+                        //订单金额 单位分
+                        String.valueOf(slOrder.getTotalAmount().intValue() / 100),
+                        //订单开始时间
+                        fm.format(fm.format(slOrder.getCreateTime())),
+                        //订单结束时间24小时后
+                        fm.format(fm.format(fmt.parse(slOrder.getCreateTime()).getTime() + 86400)),
+                        null,
+                        null,
+                        null,
+                        null
+                ));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                log.error("微信创建订单错误", e);
+            }
         }
         return message;
     }
@@ -597,14 +640,15 @@ public class CmOrderService {
     /**
      * 查询我的订单列表
      *
+     * @param status
      * @return
      */
-    public BusinessMessage findList() {
+    public BusinessMessage findList(Integer status) {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
-                List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId());
+                List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId(), status);
                 List<String> userAvatarList = new ArrayList<>();
                 for (Map map : list) {
                     Object type = map.get("type");

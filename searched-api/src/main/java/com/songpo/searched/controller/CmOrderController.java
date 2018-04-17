@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Api(description = "订单管理")
 @RestController
 @CrossOrigin
@@ -52,10 +55,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "activityId", value = "活动id", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
+    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId);
+            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId, activityId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -106,16 +109,17 @@ public class CmOrderController {
     /**
      * 我的订单列表
      *
-     * @param oAuth2Authentication
+     * @param
      * @return
      */
     @ApiOperation(value = "我的订单列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true)
+            @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true),
+            @ApiImplicitParam(name = "订单状态", value = "status", paramType = "form", required = true)
     })
     @GetMapping("list")
-    public BusinessMessage list() {
-        return this.cmOrderService.findList();
+    public BusinessMessage list(Integer status) {
+        return this.cmOrderService.findList(status);
     }
 
     /**

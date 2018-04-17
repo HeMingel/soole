@@ -29,6 +29,14 @@
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
+        <if test="status != ''">
+            <if test="status == 2">
+                and so.payment_state = 2
+            </if>
+            <if test="status != 2">
+                and sod.shipping_state = #{status}
+            </if>
+        </if>
         ORDER BY so.create_time DESC
     </select>
 
