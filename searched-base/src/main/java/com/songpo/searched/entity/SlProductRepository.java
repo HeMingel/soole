@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -108,7 +108,7 @@ public class SlProductRepository implements Serializable {
     /**
      * 库存数量
      */
-    private String count;
+    private Integer count;
 
     /**
      * 评分
@@ -484,7 +484,7 @@ public class SlProductRepository implements Serializable {
      *
      * @return count - 库存数量
      */
-    public String getCount() {
+    public Integer getCount() {
         return count;
     }
 
@@ -493,8 +493,8 @@ public class SlProductRepository implements Serializable {
      *
      * @param count 库存数量
      */
-    public void setCount(String count) {
-        this.count = count == null ? null : count.trim();
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     /**

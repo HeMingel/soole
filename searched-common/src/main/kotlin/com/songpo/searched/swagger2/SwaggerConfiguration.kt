@@ -17,10 +17,10 @@ import java.util.*
  */
 @Configuration
 @EnableSwagger2
-class SwaggerConfiguration {
+open class SwaggerConfiguration {
 
     @Bean
-    fun baseApi(): Docket {
+    open fun baseApi(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("Base_API")
@@ -31,7 +31,7 @@ class SwaggerConfiguration {
     }
 
     @Bean
-    fun commonApi(): Docket {
+    open fun commonApi(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("Common_API")

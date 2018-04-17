@@ -8,7 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
-      <result column="sharing_rewards_id" jdbcType="VARCHAR" property="sharingRewardsId"/>
+    <result column="sharing_rewards_id" jdbcType="VARCHAR" property="sharingRewardsId" />
     <result column="activity_product_repository_serial_number" jdbcType="VARCHAR" property="activityProductRepositorySerialNumber" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
@@ -36,10 +36,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, product_id, activity_id, sharing_rewards_id, activity_product_repository_serial_number,
-      price, reference_price, peas, reference_peas, personal_price, begin_time, end_time,
-      count, people_num, orders_num, surplus_product_count, award_peas_counts, awward_money,
-      create_time, creator, restrict_count, presell_shipments_days, return_money, return_peas,
-      reward_value, enabled
+    id, product_id, activity_id, sharing_rewards_id, activity_product_repository_serial_number, 
+    price, reference_price, peas, reference_peas, personal_price, begin_time, end_time, 
+    count, people_num, orders_num, surplus_product_count, award_peas_counts, awward_money, 
+    create_time, creator, restrict_count, presell_shipments_days, return_money, return_peas, 
+    reward_value, enabled
   </sql>
 </mapper>

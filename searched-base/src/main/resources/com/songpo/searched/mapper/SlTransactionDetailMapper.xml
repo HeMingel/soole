@@ -10,7 +10,7 @@
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="red_packet_id" jdbcType="VARCHAR" property="redPacketId" />
     <result column="type" jdbcType="BIT" property="type" />
-      <result column="money" jdbcType="DECIMAL" property="money"/>
+    <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="deal_type" jdbcType="BIT" property="dealType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>

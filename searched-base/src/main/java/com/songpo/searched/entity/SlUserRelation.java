@@ -1,10 +1,7 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_user_relation")
 public class SlUserRelation implements Serializable {
@@ -26,17 +23,19 @@ public class SlUserRelation implements Serializable {
     @Column(name = "recommended_phone")
     private String recommendedPhone;
 
-    private static final long serialVersionUID = 1L;
     /**
      * 商品Id
      */
     @Column(name = "goods_id")
     private String goodsId;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键
