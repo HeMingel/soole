@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -85,7 +85,7 @@ public class SlProduct implements Serializable {
     private Integer recommend;
 
     /**
-     * 是否下架(0:下架 1:上架)
+     * 0:下架 1:上架
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -350,18 +350,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架(0:下架 1:上架)
+     * 获取0:下架 1:上架
      *
-     * @return sold_out - 是否下架(0:下架 1:上架)
+     * @return sold_out - 0:下架 1:上架
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置是否下架(0:下架 1:上架)
+     * 设置0:下架 1:上架
      *
-     * @param soldOut 是否下架(0:下架 1:上架)
+     * @param soldOut 0:下架 1:上架
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;

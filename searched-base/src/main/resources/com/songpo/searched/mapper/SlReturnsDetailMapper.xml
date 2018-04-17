@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlReturnsDetailMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlReturnsDetail">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="presell_returned_record_id" jdbcType="VARCHAR" property="presellReturnedRecordId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="returned_status" jdbcType="INTEGER" property="returnedStatus"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="return_time" jdbcType="VARCHAR" property="returnTime"/>
+        <result column="return_money" jdbcType="DECIMAL" property="returnMoney"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, presell_returned_record_id, user_id, returned_status, create_time, return_time,
+        return_money, order_id
+    </sql>
+</mapper>

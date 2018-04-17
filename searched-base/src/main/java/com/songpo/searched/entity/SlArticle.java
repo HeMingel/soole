@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_article")
 public class SlArticle implements Serializable {
@@ -39,28 +39,6 @@ public class SlArticle implements Serializable {
      */
     @Column(name = "praise_count")
     private Integer praiseCount;
-
-    /**
-     * 创建人
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -172,78 +150,6 @@ public class SlArticle implements Serializable {
         this.praiseCount = praiseCount;
     }
 
-    /**
-     * 获取创建人
-     *
-     * @return creator - 创建人
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 设置创建人
-     *
-     * @param creator 创建人
-     */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -256,10 +162,6 @@ public class SlArticle implements Serializable {
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", readCount=").append(readCount);
         sb.append(", praiseCount=").append(praiseCount);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
