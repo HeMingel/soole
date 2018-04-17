@@ -259,6 +259,14 @@
     <!--系统推荐商品-->
     <select id="systemGoods" parameterType="String" resultType="HashMap">
         SELECT
+        p.id as productId,
+        p.`sales_mode_id`,
+        p.name,
+        p.comment_num,
+        p.sales_volume,
+        p.introduction,
+        p.remark,
+        p.image_url,
           ap.*
         FROM
           sl_product p
