@@ -162,7 +162,7 @@ public class ProductController {
             return businessMessage;
         }
     }
-    @ApiOperation(value = "根据商品Id查询普通商品普通规格")
+    @ApiOperation(value = "根据商品Id,活动Id查询普通商品普通规格")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)

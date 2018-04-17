@@ -38,6 +38,7 @@ public class CmShopService {
      * @param id
      * @return
      */
+
     public BusinessMessage shopAndGoods(String id,String userId) {
         log.debug("商户Id:{},用户id:{}",id,userId);
 
@@ -62,7 +63,7 @@ public class CmShopService {
                 apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
                 List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                 activityProduct.put("activityProduct",activityProductList);
-                activityProduct.put("goodsType",productList.get(i).getSalesModeId());
+                activityProduct.put("goodsBaseInfo",productList);
                 goodsList.add(activityProduct);
             }
             if(userId != null){
