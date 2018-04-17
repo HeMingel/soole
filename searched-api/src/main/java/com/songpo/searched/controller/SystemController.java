@@ -322,7 +322,7 @@ public class SystemController {
     })
     @PostMapping("reset-password")
     public BusinessMessage<Void> resetPassword(String oldPassword, String newPassword) {
-        log.debug("用户修改密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
+        log.debug("重置密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
         BusinessMessage<Void> message = new BusinessMessage<>();
         if (StringUtils.isBlank(oldPassword)) {
             message.setMsg("原始密码为空");
@@ -453,7 +453,7 @@ public class SystemController {
     })
     @PostMapping("third-party-login")
     public BusinessMessage<JSONObject> thirdPartyLogin(String openId, String nickname, String avatar, Integer type) {
-        log.debug("微信登录，开放账号唯一标识：{}，昵称：{}，头像地址：{}", openId, nickname, avatar);
+        log.debug("第三方登录，开放账号唯一标识：{}，昵称：{}，头像地址：{}", openId, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("开放账号唯一标识为空");
@@ -535,7 +535,7 @@ public class SystemController {
     })
     @PostMapping("sms-login")
     public BusinessMessage<JSONObject> smsLogin(String phone, String password) {
-        log.debug("用户登录，账号：{}，密码：{}", phone, password);
+        log.debug("短信登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
             message.setMsg("账号为空");

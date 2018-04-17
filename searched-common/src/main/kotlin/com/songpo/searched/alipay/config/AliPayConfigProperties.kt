@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @ConfigurationProperties(prefix = "sp.pay.alipay")
-open class AliPayConfigProperties(
+class AliPayConfigProperties(
         /**
          * 商户号
          */
