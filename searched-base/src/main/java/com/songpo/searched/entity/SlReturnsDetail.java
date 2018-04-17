@@ -6,48 +6,56 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_returns_detail")
 public class SlReturnsDetail implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 用户返还金额明细
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 预售、消费返利 返现记录表id
      */
     @Column(name = "presell_returned_record_id")
     private String presellReturnedRecordId;
+
     /**
      * 用户id
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 回款状态1.未返 2.已返 3.已逾期 4.可返
      */
     @Column(name = "returned_status")
     private Integer returnedStatus;
+
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
     /**
      * 返款时间
      */
     @Column(name = "return_time")
     private String returnTime;
+
     /**
      * 返款金额
      */
     @Column(name = "return_money")
     private BigDecimal returnMoney;
+
     /**
      * 订单编号
      */
     @Column(name = "order_id")
     private String orderId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取用户返还金额明细

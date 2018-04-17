@@ -6,37 +6,43 @@ import java.math.BigDecimal;
 
 @Table(name = "sl_product_no_mail")
 public class SlProductNoMail implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 商品唯一标识符
      */
     @Column(name = "product_id")
     private String productId;
+
     /**
      * 不包邮地区名称
      */
     @Column(name = "no_ship_area")
     private String noShipArea;
+
     /**
      * 快递方式
      */
     private String express;
+
     /**
      * 不包邮地区运费
      */
     @Column(name = "areaMoney")
     private BigDecimal areamoney;
+
     /**
      * 不包邮地区每次超出运费需要加的钱
      */
     @Column(name = "add_express_money")
     private BigDecimal addExpressMoney;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识符
