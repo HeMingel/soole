@@ -304,7 +304,7 @@ public class CmProductService {
             //查询后台推送推荐商品
             List<Map<String, Object>> backStageGoods = this.mapper.backStageGoods(id, ActivityConstant.NO_ACTIVITY);
             int goodsSize = 4;
-            if (backStageGoods != null && backStageGoods.size() < goodsSize) {
+            if (backStageGoods.size() < goodsSize) {
                 //查询该商品商品类别
                 Map<String, Object> systemGoodsType = this.mapper.systemGoodsType(id);
                 // 根据商品类别查销量最好的四个普通商品
