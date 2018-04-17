@@ -38,6 +38,7 @@ public class CmShopService {
      * @param id
      * @return
      */
+
     public BusinessMessage shopAndGoods(String id,String userId) {
         log.debug("商户Id:{},用户id:{}",id,userId);
 
