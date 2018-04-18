@@ -33,10 +33,10 @@ public class AfterSalesController {
             @ApiImplicitParam(value = "订单编号", name = "orderId", paramType = "form",required = true)
     })
     @PostMapping()
-    public BusinessMessage insertAfterSales(SlAfterSalesService afterSalesService, MultipartFile file) {
+    public BusinessMessage insertAfterSales(SlAfterSalesService afterSalesService, MultipartFile[] files) {
         BusinessMessage message = new BusinessMessage();
         try {
-            salesService.insertAfterSales(afterSalesService, file);
+            salesService.insertAfterSales(afterSalesService, files);
             message.setMsg("申请成功");
             message.setSuccess(true);
         } catch (Exception e) {

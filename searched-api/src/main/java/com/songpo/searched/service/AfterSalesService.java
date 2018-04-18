@@ -2,7 +2,9 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.*;
+import com.songpo.searched.entity.SlAfterSalesService;
+import com.songpo.searched.entity.SlOrderDetail;
+import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -35,14 +37,19 @@ public class AfterSalesService {
      * 新增售后服务单
      *
      * @param slAfterSalesService
-     * @param file
+     * @param files
      */
-    public void insertAfterSales(SlAfterSalesService slAfterSalesService, MultipartFile file) {
+    public void insertAfterSales(SlAfterSalesService slAfterSalesService, MultipartFile[] files) {
         SlUser slUser = loginUserService.getCurrentLoginUser();
-        if (file.getSize() > 0 && file.getSize() <= 3) {
-            String fileUrl = fileService.upload(null, file);
-            slAfterSalesService.setImageUrl(fileUrl);
+        for (MultipartFile image : files) {
+            if (null != image && !image.isEmpty()) {
+                String fileUrl = fileService.upload(null, image);
+                slAfterSalesService.setImageUrl(fileUrl);
+
+                // TODO 请在这里处理售后服务所对应的照片
+            }
         }
+
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
             setId(slAfterSalesService.getOrderDetailId());
             setCreator(slUser.getId());
