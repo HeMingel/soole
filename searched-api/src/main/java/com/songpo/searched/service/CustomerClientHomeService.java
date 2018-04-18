@@ -8,7 +8,6 @@ import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,7 +19,6 @@ import java.util.Map;
 /**
  * @author 刘松坡
  */
-@Slf4j
 @Service
 public class CustomerClientHomeService {
 

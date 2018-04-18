@@ -4,7 +4,6 @@ import com.songpo.searched.entity.SlActivity;
 import com.songpo.searched.service.ActivityService;
 import com.songpo.searched.validator.ActivityValidator;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author 刘松坡
  */
-@Slf4j
 @Api(description = "商品活动管理")
 @RestController
 @RequestMapping("/api/base/v1/activity")

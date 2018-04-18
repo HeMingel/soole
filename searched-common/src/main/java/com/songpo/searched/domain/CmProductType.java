@@ -1,8 +1,5 @@
 package com.songpo.searched.domain;
 
-import lombok.Data;
-
-@Data
 public class CmProductType {
 
     private String id;

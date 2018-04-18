@@ -1,11 +1,7 @@
 package com.songpo.searched.domain;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
-import java.util.List;
 
-@Data
 public class CMGoods {
     /**
      * 商品实体
@@ -79,5 +75,131 @@ public class CMGoods {
      */
     private boolean soldOut;
 
+    public String getGoodId() {
+        return goodId;
+    }
 
+    public void setGoodId(String goodId) {
+        this.goodId = goodId;
+    }
+
+    public String getGoodName() {
+        return goodName;
+    }
+
+    public void setGoodName(String goodName) {
+        this.goodName = goodName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public int getCounts() {
+        return counts;
+    }
+
+    public void setCounts(int counts) {
+        this.counts = counts;
+    }
+
+    public int getSaleType() {
+        return saleType;
+    }
+
+    public void setSaleType(int saleType) {
+        this.saleType = saleType;
+    }
+
+    public int getSilver() {
+        return silver;
+    }
+
+    public void setSilver(int silver) {
+        this.silver = silver;
+    }
+
+    public String getSpecificationId() {
+        return specificationId;
+    }
+
+    public void setSpecificationId(String specificationId) {
+        this.specificationId = specificationId;
+    }
+
+    public String getSpecificationName() {
+        return specificationName;
+    }
+
+    public void setSpecificationName(String specificationName) {
+        this.specificationName = specificationName;
+    }
+
+    public String getRepositoryId() {
+        return repositoryId;
+    }
+
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId;
+    }
+
+    public Integer getRemainingqty() {
+        return remainingqty;
+    }
+
+    public void setRemainingqty(Integer remainingqty) {
+        this.remainingqty = remainingqty;
+    }
+
+    public Integer getRebatePulse() {
+        return rebatePulse;
+    }
+
+    public void setRebatePulse(Integer rebatePulse) {
+        this.rebatePulse = rebatePulse;
+    }
+
+    public Integer getMyBeansCounts() {
+        return myBeansCounts;
+    }
+
+    public void setMyBeansCounts(Integer myBeansCounts) {
+        this.myBeansCounts = myBeansCounts;
+    }
+
+    public boolean isSoldOut() {
+        return soldOut;
+    }
+
+    public void setSoldOut(boolean soldOut) {
+        this.soldOut = soldOut;
+    }
 }

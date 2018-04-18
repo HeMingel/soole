@@ -5,9 +5,6 @@ dependencies {
     // 依赖基础工程
     compile project(':searched-base')
 
-    // 实体编译组件
-    compile('org.projectlombok:lombok')
-
     // JSON序列化
     compile("com.alibaba:fastjson:$fastjsonVersion")
 

@@ -1,24 +1,23 @@
 package com.songpo.searched.service;
 
 import com.songpo.searched.cache.OrderCache;
-import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.ProductCache;
+import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.CMGoods;
-import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.*;
+import com.songpo.searched.mapper.CmOrderMapper;
+import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlUserAddressMapper;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
-import com.songpo.searched.wxpay.service.WxPayService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -32,12 +31,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.songpo.searched.constant.ActivityConstant.RECOMMEND_AWARDS_ACTIVITY;
-
-@Slf4j
-@Transactional
 @Service
 public class CmOrderService {
+
+    public static final Logger log = LoggerFactory.getLogger(CmOrderService.class);
+
     @Autowired
     private ProductRepositoryService productRepositoryService;
     @Autowired

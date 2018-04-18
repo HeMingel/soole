@@ -7,7 +7,6 @@ import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class AfterSalesService {
 

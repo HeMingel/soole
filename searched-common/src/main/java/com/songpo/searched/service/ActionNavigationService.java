@@ -3,15 +3,17 @@ package com.songpo.searched.service;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActionNavigation;
 import com.songpo.searched.mapper.SlActionNavigationMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
-@Slf4j
 @Service
 public class ActionNavigationService extends BaseService<SlActionNavigation, String> {
+
+    public static final Logger log = LoggerFactory.getLogger(ActionNavigationService.class);
 
     public ActionNavigationService(SlActionNavigationMapper mapper) {
         super(mapper);

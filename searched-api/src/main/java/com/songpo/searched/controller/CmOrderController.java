@@ -4,12 +4,11 @@ package com.songpo.searched.controller;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.service.CmOrderService;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/order")
-@Slf4j
 public class CmOrderController {
+
+    public static final Logger log = LoggerFactory.getLogger(CmOrderController.class);
 
     @Autowired
     private CmOrderService cmOrderService;

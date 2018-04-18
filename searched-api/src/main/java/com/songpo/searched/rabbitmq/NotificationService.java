@@ -4,7 +4,8 @@ import com.songpo.searched.entity.SlMessage;
 import com.songpo.searched.mapper.SlMessageMapper;
 import com.songpo.searched.typehandler.MessageChannelTypeEnum;
 import com.songpo.searched.typehandler.MessageTypeEnum;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
@@ -17,9 +18,10 @@ import java.time.format.DateTimeFormatter;
 /**
  * @author 刘松坡
  */
-@Slf4j
 @Service
 public class NotificationService {
+
+    public static final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired
     private SlMessageMapper messageMapper;

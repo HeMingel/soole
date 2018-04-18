@@ -8,8 +8,6 @@ import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.CmOrderMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 public class ShoppingCartService {
     @Autowired
     private ShoppingCartCache cache;
