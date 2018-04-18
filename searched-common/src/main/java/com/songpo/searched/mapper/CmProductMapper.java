@@ -27,10 +27,12 @@ public interface CmProductMapper{
      * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
      * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
+     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @return 商品集合
      */
     List<Map<String, Object>> selectBySalesMode(@Param("name") String name,
                                                 @Param("salesModeId") String salesModeId,
+                                                @Param("activityId") String activityId,
                                                 @Param("longitudeMin") Double longitudeMin,
                                                 @Param("longitudeMax") Double longitudeMax,
                                                 @Param("latitudeMin") Double latitudeMin,
@@ -38,7 +40,8 @@ public interface CmProductMapper{
                                                 @Param("sortByPrice") String sortByPrice,
                                                 @Param("sortByRating") String sortByRating,
                                                 @Param("priceMin") Integer priceMin,
-                                                @Param("priceMax") Integer priceMax);
+                                                @Param("priceMax") Integer priceMax,
+                                                @Param("sortBySale") String sortBySale);
 
     /**
      * 根据活动唯一标识符查询商品列表
