@@ -24,5 +24,5 @@ public interface CmOrderMapper {
 
     Integer groupOrdersByUser(@Param("productId") String productId, @Param("activityId") String activityId, @Param("userId") String userId);
 
-    SlActivityProduct selectActivityProductByActivityAndRepositoryId(@Param("repositoryId") String repositoryId, @Param("activityId") String activityId, @Param("productId") String productId);
+    SlActivityProduct selectActivityProductByRepositoryId(@Param("repositoryId") String repositoryId);
 }

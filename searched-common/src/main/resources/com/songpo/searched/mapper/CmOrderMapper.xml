@@ -29,6 +29,7 @@
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
+        and so.type in (1,4,5,6)
         <if test="status != null">
             <if test="status == 2">
                 and so.payment_state = 2
@@ -119,7 +120,7 @@
         and sod.creator = #{userId}
         AND so.`user_id` = #{userId}
     </select>
-    <select id="selectActivityProductByActivityAndRepositoryId"
+    <select id="selectActivityProductByRepositoryId"
             resultType="com.songpo.searched.entity.SlActivityProduct">
         SELECT
         sap.id id,
@@ -134,7 +135,6 @@
         FROM sl_activity_product sap
         LEFT JOIN sl_activity_product_repository sapr ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
         LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
-        WHERE sap.`activity_id` = #{activityId} AND spr.`id`= #{repositoryId}
-        and sap.product_id = #{productId}
+        WHERE sap.enabled = TRUE AND spr.`id`= #{repositoryId}
     </select>
 </mapper>

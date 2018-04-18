@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -126,12 +126,6 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "group_master")
     private String groupMaster;
-
-    /**
-     * 活动商品ID
-     */
-    @Column(name = "activity_product_id")
-    private String activityProductId;
 
     private static final long serialVersionUID = 1L;
 
@@ -521,24 +515,6 @@ public class SlOrder implements Serializable {
         this.groupMaster = groupMaster == null ? null : groupMaster.trim();
     }
 
-    /**
-     * 获取活动商品ID
-     *
-     * @return activity_product_id - 活动商品ID
-     */
-    public String getActivityProductId() {
-        return activityProductId;
-    }
-
-    /**
-     * 设置活动商品ID
-     *
-     * @param activityProductId 活动商品ID
-     */
-    public void setActivityProductId(String activityProductId) {
-        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -566,7 +542,6 @@ public class SlOrder implements Serializable {
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
-        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
