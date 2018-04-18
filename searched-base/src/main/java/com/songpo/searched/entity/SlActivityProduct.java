@@ -95,19 +95,19 @@ public class SlActivityProduct implements Serializable {
     private Integer ordersNum;
 
     /**
-     * 剩余商品数量
+     * 剩余总商品数量
      */
     @Column(name = "surplus_product_count")
     private Integer surplusProductCount;
 
     /**
-     * 奖励金豆数量
+     * 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
      */
     @Column(name = "award_peas_counts")
     private Double awardPeasCounts;
 
     /**
-     * 奖励金额
+     * 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
      */
     @Column(name = "awward_money")
     private Double awwardMoney;
@@ -124,13 +124,13 @@ public class SlActivityProduct implements Serializable {
     private String creator;
 
     /**
-     * 活动限制单数
+     * 该活动商品限制单数
      */
     @Column(name = "restrict_count")
     private Integer restrictCount;
 
     /**
-     * 预售发货天数
+     * 预售首次 发货/打款 天数
      */
     @Column(name = "presell_shipments_days")
     private Integer presellShipmentsDays;
@@ -431,54 +431,54 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取剩余商品数量
+     * 获取剩余总商品数量
      *
-     * @return surplus_product_count - 剩余商品数量
+     * @return surplus_product_count - 剩余总商品数量
      */
     public Integer getSurplusProductCount() {
         return surplusProductCount;
     }
 
     /**
-     * 设置剩余商品数量
+     * 设置剩余总商品数量
      *
-     * @param surplusProductCount 剩余商品数量
+     * @param surplusProductCount 剩余总商品数量
      */
     public void setSurplusProductCount(Integer surplusProductCount) {
         this.surplusProductCount = surplusProductCount;
     }
 
     /**
-     * 获取奖励金豆数量
+     * 获取奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @return award_peas_counts - 奖励金豆数量
+     * @return award_peas_counts - 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
      */
     public Double getAwardPeasCounts() {
         return awardPeasCounts;
     }
 
     /**
-     * 设置奖励金豆数量
+     * 设置奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @param awardPeasCounts 奖励金豆数量
+     * @param awardPeasCounts 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
      */
     public void setAwardPeasCounts(Double awardPeasCounts) {
         this.awardPeasCounts = awardPeasCounts;
     }
 
     /**
-     * 获取奖励金额
+     * 获取奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @return awward_money - 奖励金额
+     * @return awward_money - 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
      */
     public Double getAwwardMoney() {
         return awwardMoney;
     }
 
     /**
-     * 设置奖励金额
+     * 设置奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @param awwardMoney 奖励金额
+     * @param awwardMoney 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
      */
     public void setAwwardMoney(Double awwardMoney) {
         this.awwardMoney = awwardMoney;
@@ -521,36 +521,36 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取活动限制单数
+     * 获取该活动商品限制单数
      *
-     * @return restrict_count - 活动限制单数
+     * @return restrict_count - 该活动商品限制单数
      */
     public Integer getRestrictCount() {
         return restrictCount;
     }
 
     /**
-     * 设置活动限制单数
+     * 设置该活动商品限制单数
      *
-     * @param restrictCount 活动限制单数
+     * @param restrictCount 该活动商品限制单数
      */
     public void setRestrictCount(Integer restrictCount) {
         this.restrictCount = restrictCount;
     }
 
     /**
-     * 获取预售发货天数
+     * 获取预售首次 发货/打款 天数
      *
-     * @return presell_shipments_days - 预售发货天数
+     * @return presell_shipments_days - 预售首次 发货/打款 天数
      */
     public Integer getPresellShipmentsDays() {
         return presellShipmentsDays;
     }
 
     /**
-     * 设置预售发货天数
+     * 设置预售首次 发货/打款 天数
      *
-     * @param presellShipmentsDays 预售发货天数
+     * @param presellShipmentsDays 预售首次 发货/打款 天数
      */
     public void setPresellShipmentsDays(Integer presellShipmentsDays) {
         this.presellShipmentsDays = presellShipmentsDays;

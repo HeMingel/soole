@@ -20,6 +20,18 @@ public class SlShop implements Serializable {
     private String ownerId;
 
     /**
+     * 店铺经营类型id
+     */
+    @Column(name = "product_type_id")
+    private String productTypeId;
+
+    /**
+     * 高级店铺预售额度ID
+     */
+    @Column(name = "quota_id")
+    private String quotaId;
+
+    /**
      * 名称
      */
     private String name;
@@ -34,6 +46,12 @@ public class SlShop implements Serializable {
      */
     @Column(name = "image_url")
     private String imageUrl;
+
+    /**
+     * 店铺logo
+     */
+    @Column(name = "logo_url")
+    private String logoUrl;
 
     /**
      * 地址
@@ -87,12 +105,6 @@ public class SlShop implements Serializable {
     @Column(name = "shop_type")
     private Integer shopType;
 
-    /**
-     * 店铺经营类型id
-     */
-    @Column(name = "product_type_id")
-    private String productTypeId;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -129,6 +141,42 @@ public class SlShop implements Serializable {
      */
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId == null ? null : ownerId.trim();
+    }
+
+    /**
+     * 获取店铺经营类型id
+     *
+     * @return product_type_id - 店铺经营类型id
+     */
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    /**
+     * 设置店铺经营类型id
+     *
+     * @param productTypeId 店铺经营类型id
+     */
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId == null ? null : productTypeId.trim();
+    }
+
+    /**
+     * 获取高级店铺预售额度ID
+     *
+     * @return quota_id - 高级店铺预售额度ID
+     */
+    public String getQuotaId() {
+        return quotaId;
+    }
+
+    /**
+     * 设置高级店铺预售额度ID
+     *
+     * @param quotaId 高级店铺预售额度ID
+     */
+    public void setQuotaId(String quotaId) {
+        this.quotaId = quotaId == null ? null : quotaId.trim();
     }
 
     /**
@@ -183,6 +231,24 @@ public class SlShop implements Serializable {
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl == null ? null : imageUrl.trim();
+    }
+
+    /**
+     * 获取店铺logo
+     *
+     * @return logo_url - 店铺logo
+     */
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    /**
+     * 设置店铺logo
+     *
+     * @param logoUrl 店铺logo
+     */
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
     }
 
     /**
@@ -365,24 +431,6 @@ public class SlShop implements Serializable {
         this.shopType = shopType;
     }
 
-    /**
-     * 获取店铺经营类型id
-     *
-     * @return product_type_id - 店铺经营类型id
-     */
-    public String getProductTypeId() {
-        return productTypeId;
-    }
-
-    /**
-     * 设置店铺经营类型id
-     *
-     * @param productTypeId 店铺经营类型id
-     */
-    public void setProductTypeId(String productTypeId) {
-        this.productTypeId = productTypeId == null ? null : productTypeId.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -391,9 +439,12 @@ public class SlShop implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", ownerId=").append(ownerId);
+        sb.append(", productTypeId=").append(productTypeId);
+        sb.append(", quotaId=").append(quotaId);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
         sb.append(", imageUrl=").append(imageUrl);
+        sb.append(", logoUrl=").append(logoUrl);
         sb.append(", address=").append(address);
         sb.append(", longitude=").append(longitude);
         sb.append(", latitude=").append(latitude);
@@ -404,7 +455,6 @@ public class SlShop implements Serializable {
         sb.append(", rating=").append(rating);
         sb.append(", phone=").append(phone);
         sb.append(", shopType=").append(shopType);
-        sb.append(", productTypeId=").append(productTypeId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

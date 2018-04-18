@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlQuotaMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlQuota">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="quota_number" jdbcType="INTEGER" property="quotaNumber" />
+    <result column="quota_time" jdbcType="VARCHAR" property="quotaTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, quota_number, quota_time
+  </sql>
+</mapper>
