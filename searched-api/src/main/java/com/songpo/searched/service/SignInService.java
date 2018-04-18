@@ -155,8 +155,7 @@ public class SignInService {
         } else {
             message.setSuccess(true);
             message.setMsg("当前签到信息为空");
-            object.put("todaySign", 0);
-            message.setData(object);
+            message.setData(object.put("todaySign", 0));
         }
         return message;
     }
