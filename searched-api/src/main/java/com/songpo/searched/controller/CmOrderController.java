@@ -51,14 +51,13 @@ public class CmOrderController {
             @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
-            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "activityId", value = "活动id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
+    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId, activityId);
+            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -71,13 +70,13 @@ public class CmOrderController {
 
 
     /**
-     * 立即购买订单
+     * 单商品下单
      *
      * @param repositoryId
      * @param quantity
      * @return
      */
-    @ApiOperation(value = "立即购买", authorizations = {
+    @ApiOperation(value = "单商品下单", authorizations = {
             @Authorization(value = "application", scopes = {
                     @AuthorizationScope(scope = "read", description = "allows reading resources"),
                     @AuthorizationScope(scope = "write", description = "allows modifying resources")

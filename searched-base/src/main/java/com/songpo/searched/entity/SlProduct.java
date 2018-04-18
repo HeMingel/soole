@@ -85,7 +85,7 @@ public class SlProduct implements Serializable {
     private Integer recommend;
 
     /**
-     * 1:下架 2:上架
+     * 1.上架 0.下架 booble型(1:true 0:false)
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -350,18 +350,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取1:下架 2:上架
+     * 获取1.上架 0.下架 booble型(1:true 0:false)
      *
-     * @return sold_out - 1:下架 2:上架
+     * @return sold_out - 1.上架 0.下架 booble型(1:true 0:false)
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置1:下架 2:上架
+     * 设置1.上架 0.下架 booble型(1:true 0:false)
      *
-     * @param soldOut 1:下架 2:上架
+     * @param soldOut 1.上架 0.下架 booble型(1:true 0:false)
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;

@@ -22,7 +22,7 @@ public class SalesModeConstant {
      */
     public static final int SALES_MODE_REBATE = 4;
     /**
-     *一元购
+     * 助力购
      */
     public static final int SALES_MODE_ONE = 5;
     /**
