@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(description = "售后服务")
 @RestController
 @CrossOrigin
+@Slf4j
 @RequestMapping("/api/common/v1/after-sales")
 public class AfterSalesController {
 
@@ -30,7 +32,7 @@ public class AfterSalesController {
             @ApiImplicitParam(value = "商品id", name = "productId", paramType = "form", required = true),
             @ApiImplicitParam(value = "店铺id", name = "shopId", paramType = "form", required = true),
             @ApiImplicitParam(value = "申请说明", name = "remark", paramType = "form"),
-            @ApiImplicitParam(value = "订单编号", name = "orderId", paramType = "form",required = true)
+            @ApiImplicitParam(value = "订单编号", name = "orderId", paramType = "form", required = true)
     })
     @PostMapping()
     public BusinessMessage insertAfterSales(SlAfterSalesService afterSalesService, MultipartFile[] files) {
@@ -41,6 +43,7 @@ public class AfterSalesController {
             message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("申请失败,请重试", e);
         }
         return message;
     }
@@ -59,6 +62,7 @@ public class AfterSalesController {
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("查询失败", e);
         }
         return message;
     }
