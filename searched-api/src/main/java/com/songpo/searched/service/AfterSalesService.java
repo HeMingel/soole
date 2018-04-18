@@ -9,6 +9,8 @@ import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlAfterSaleServiceVoucherrImageMapper;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,8 @@ import java.util.UUID;
 
 @Service
 public class AfterSalesService {
+
+    public static final Logger log = LoggerFactory.getLogger(AfterSalesService.class);
 
     @Autowired
     private SlAfterSalesServiceMapper slAfterSalesServiceMapper;
