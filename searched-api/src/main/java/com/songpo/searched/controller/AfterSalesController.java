@@ -49,9 +49,6 @@ public class AfterSalesController {
     }
 
     @ApiOperation(value = "售后服务单列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "售后id", name = "afterSalesServiceId", paramType = "form", required = true)
-    })
     @GetMapping()
     public BusinessMessage selectAfterSales() {
         BusinessMessage message = new BusinessMessage();
