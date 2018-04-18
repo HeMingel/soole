@@ -1,6 +1,5 @@
 package com.songpo.searched.controller;
 
-
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlAfterSalesService;
 import com.songpo.searched.service.AfterSalesService;
@@ -8,7 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(description = "售后服务")
 @RestController
 @CrossOrigin
-@Slf4j
 @RequestMapping("/api/common/v1/after-sales")
 public class AfterSalesController {
+
+    public static final Logger log = LoggerFactory.getLogger(AfterSalesController.class);
 
     @Autowired
     private AfterSalesService salesService;
