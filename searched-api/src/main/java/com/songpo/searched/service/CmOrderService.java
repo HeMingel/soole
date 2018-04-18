@@ -381,12 +381,13 @@ public class CmOrderService {
     }
 
     /**
-     * 取消订单操作
+     * 取消订单/确定收货
      *
+     * @param id
      * @param orderId
      * @return
      */
-    public void cancelAnOrder(String orderId) {
+    public void cancelAnOrder(String orderId, String state) {
         log.debug("orderId = [" + orderId + "]");
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -394,10 +395,19 @@ public class CmOrderService {
             example.createCriteria()
                     .andEqualTo("id", orderId)
                     .andEqualTo("userId", user.getId());
-            orderService.updateByExampleSelective(new SlOrder() {{
-                //取消订单
-                setPaymentState(102);
-            }}, example);
+            switch (Integer.parseInt(state)) {
+                case 102:
+                    orderService.updateByExampleSelective(new SlOrder() {{
+                        //取消订单
+                        setPaymentState(102);
+                    }}, example);
+                    break;
+                case 5:
+                    orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                        //确认订单未评价
+                        setShippingState(5);
+                    }}, example);
+            }
         }
     }
 
