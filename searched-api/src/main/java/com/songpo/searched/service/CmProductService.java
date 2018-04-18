@@ -49,6 +49,7 @@ public class CmProductService {
      *
      * @param name         商品名称
      * @param salesModeId  销售模式唯一标识符
+     * @param activityId  活动Id
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
@@ -59,10 +60,12 @@ public class CmProductService {
      * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
      * @param pageNum      页码
      * @param pageSize     容量
+     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @return 商品分页列表
      */
     public PageInfo<Map<String, Object>> selectBySalesMode(String name,
                                                            String salesModeId,
+                                                           String activityId,
                                                            Double longitudeMin,
                                                            Double longitudeMax,
                                                            Double latitudeMin,
@@ -72,7 +75,8 @@ public class CmProductService {
                                                            Integer priceMin,
                                                            Integer priceMax,
                                                            Integer pageNum,
-                                                           Integer pageSize) {
+                                                           Integer pageSize,
+                                                           String sortBySale) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -93,12 +97,16 @@ public class CmProductService {
         if (!StringUtils.containsAny(sortByRating, orderStrArray)) {
             sortByRating = StringUtils.trimToEmpty(sortByRating);
         }
+        //过滤销售数量排序中的非法字符
+        if(!StringUtils.containsAny(sortBySale, orderStrArray)){
+            sortBySale = StringUtils.trimToEmpty(sortBySale);
+        }
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale);
 
         return new PageInfo<>(list);
     }
@@ -123,11 +131,17 @@ public class CmProductService {
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
+        if(!actionId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+            // 执行查询
+            List<SlProduct> list = this.mapper.selectByAction(actionId);
+            return new PageInfo<>(list);
+        }else {
+            List<SlProduct> list = this.mapper.selectByAction(actionId);
+            return new PageInfo<>(list);
+        }
 
-        // 执行查询
-        List<SlProduct> list = this.mapper.selectByAction(actionId);
 
-        return new PageInfo<>(list);
+        //return new PageInfo<>(list);
     }
 
     /**
