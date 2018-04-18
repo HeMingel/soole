@@ -7,9 +7,6 @@ dependencies {
     // 依赖通用工程
     compile project(':searched-common')
 
-    // 实体编译组件
-    compileOnly("org.projectlombok:lombok:${lombokVersion}")
-
     // Reactive Web组件
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
     compile("org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}")

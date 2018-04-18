@@ -10,9 +10,10 @@ import com.aliyuncs.profile.IClientProfile;
 import com.songpo.searched.cache.SmsPasswordCache;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.domain.BusinessMessage;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,10 @@ import static org.apache.commons.text.CharacterPredicates.DIGITS;
 /**
  * 短信服务类
  */
-@Slf4j
 @Service
 public class SmsService {
+
+    public static final Logger log = LoggerFactory.getLogger(SmsService.class);
 
     @Autowired
     private SmsVerifyCodeCache smsVerifyCodeCache;
@@ -85,7 +87,7 @@ public class SmsService {
 //            request.setOutId("yourOutId");
                 //请求失败这里会抛ClientException异常
                 SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-                if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
+                if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
                     //请求成功
                     log.debug("短信验证码发送成功，验证码：{}", code);
 
@@ -156,7 +158,7 @@ public class SmsService {
 //            request.setOutId("yourOutId");
                 //请求失败这里会抛ClientException异常
                 SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-                if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
+                if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
                     //请求成功
                     log.debug("短信登录密码发送成功，登录密码：{}", code);
 

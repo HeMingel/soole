@@ -77,7 +77,7 @@ public class Oauth2Config {
         private RedisTokenStore tokenStore;
 
         @Autowired
-        private MyClientDetailsService clientDetailsService;
+        private MyClientDetailsServiceImpl clientDetailsService;
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) {

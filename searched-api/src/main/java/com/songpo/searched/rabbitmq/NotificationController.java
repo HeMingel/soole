@@ -6,8 +6,9 @@ import com.songpo.searched.typehandler.MessageTypeEnum;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author 刘松坡
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/common/v1/notification")
 public class NotificationController {
+
+    public static final Logger log = LoggerFactory.getLogger(NotificationController.class);
 
     @Autowired
     private NotificationService notificationService;

@@ -9,8 +9,9 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -25,9 +26,10 @@ import java.util.Map;
  * <p>
  * 主要提供处理跟商品相关的服务
  */
-@Slf4j
 @Service
 public class CmProductService {
+
+    public static final Logger log = LoggerFactory.getLogger(CmProductService.class);
 
     @Autowired
     private CmProductMapper mapper;

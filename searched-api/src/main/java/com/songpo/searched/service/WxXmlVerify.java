@@ -1,9 +1,9 @@
 package com.songpo.searched.service;
 
 import com.github.wxpay.sdk.WXPayUtil;
-import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.wxpay.util.MD5Util;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,9 @@ import java.io.PrintWriter;
 import java.util.*;
 
 @Service
-@Slf4j
 public class WxXmlVerify {
+
+    public static final Logger log = LoggerFactory.getLogger(WxXmlVerify.class);
 
     @Value("sp.pay.wxpay.apiKey")
     private String secret;
@@ -78,7 +79,7 @@ public class WxXmlVerify {
         String characterEncoding = "utf-8";
         String charset = "utf-8";
         String signFromAPIResponse = map.get("sign");
-        if (signFromAPIResponse == null || signFromAPIResponse.equals("")) {
+        if (signFromAPIResponse == null || "".equals(signFromAPIResponse)) {
             System.out.println("API返回的数据签名数据不存在，有可能被第三方篡改!!!");
             return false;
         }
@@ -124,7 +125,7 @@ public class WxXmlVerify {
             }
         }
 
-        String tenpaySign = ((String) packageParams.get("sign")).toUpperCase();
+        String tenpaySign = packageParams.get("sign").toUpperCase();
         return tenpaySign.equals(resultSign);
     }
 
