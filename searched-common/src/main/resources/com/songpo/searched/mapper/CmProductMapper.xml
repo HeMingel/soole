@@ -87,7 +87,7 @@
         LEFT JOIN sl_activity_product ap
         ON p.id = ap.product_id
         WHERE 1=1
-        and p.`sold_out`=1 AND ap.enabled = 1
+        and p.`sold_out`=1 AND ap.enabled = 1 and ap.activity_id = #{activityId}
         <if test="saleMode != null and saleMode != ''">
         and p.sales_mode_id = #{saleMode}
     </if>
