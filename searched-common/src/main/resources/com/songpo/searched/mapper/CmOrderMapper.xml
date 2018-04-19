@@ -7,7 +7,7 @@
         ss.name shopName,
         spr.product_name productName,
         spr.product_detail_group_name groupName,
-        spr.product_image_url goodimageUrl,
+        sp.image_url goodImageUrl,
         sod.quantity counts,
         so.payment_state paymentState,
         sod.shipping_state shippingState,
