@@ -59,6 +59,7 @@
         so.consigneePhone consigneePhone,
         so.province province,
         sod.activity_product_id activityProductId,
+        sod.group_people groupPeople,
         so.city city,
         so.county county,
         so.detailed detailed,

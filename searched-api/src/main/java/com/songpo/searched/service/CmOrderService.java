@@ -390,13 +390,6 @@ public class CmOrderService {
                 } else {
                     orderInfo.put("join", true);
                 }
-                if (orderInfo.get("type").equals(SalesModeConstant.SALES_MODE_GROUP)) {
-                    int count = this.orderService.selectCount(new SlOrder() {{
-                        setSerialNumber(orderInfo.get("orderNum").toString());
-                        setPaymentState(1);
-                    }});
-                    orderInfo.put("groupCount", count);
-                }
                 message.setData(orderInfo);
                 message.setSuccess(true);
                 message.setMsg("查询成功");
