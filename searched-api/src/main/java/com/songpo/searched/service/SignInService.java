@@ -5,17 +5,18 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlSignIn;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlSignInMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-@Slf4j
 public class SignInService {
 
     @Autowired
@@ -155,8 +156,7 @@ public class SignInService {
         } else {
             message.setSuccess(true);
             message.setMsg("当前签到信息为空");
-            object.put("todaySign", 0);
-            message.setData(object);
+            message.setData(object.put("todaySign", 0));
         }
         return message;
     }

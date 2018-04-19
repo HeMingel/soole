@@ -2,12 +2,15 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlAfterSaleServiceVoucherrImage;
 import com.songpo.searched.entity.SlAfterSalesService;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.SlAfterSaleServiceVoucherrImageMapper;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class AfterSalesService {
+
+    public static final Logger log = LoggerFactory.getLogger(AfterSalesService.class);
 
     @Autowired
     private SlAfterSalesServiceMapper slAfterSalesServiceMapper;
@@ -32,6 +36,8 @@ public class AfterSalesService {
     private SlOrderDetailMapper slOrderDetailMapper;
     @Autowired
     private OrderDetailService orderDetailService;
+    @Autowired
+    private SlAfterSaleServiceVoucherrImageMapper slAfterSaleServiceVoucherrImageMapper;
 
     /**
      * 新增售后服务单
@@ -40,16 +46,8 @@ public class AfterSalesService {
      * @param files
      */
     public void insertAfterSales(SlAfterSalesService slAfterSalesService, MultipartFile[] files) {
+        log.debug("slAfterSalesService = [" + slAfterSalesService + "], files = [" + files + "]");
         SlUser slUser = loginUserService.getCurrentLoginUser();
-        for (MultipartFile image : files) {
-            if (null != image && !image.isEmpty()) {
-                String fileUrl = fileService.upload(null, image);
-                slAfterSalesService.setImageUrl(fileUrl);
-
-                // TODO 请在这里处理售后服务所对应的照片
-            }
-        }
-
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
             setId(slAfterSalesService.getOrderDetailId());
             setCreator(slUser.getId());
@@ -57,13 +55,28 @@ public class AfterSalesService {
         if (null != detail) {
             slAfterSalesService.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             slAfterSalesService.setUserId(slUser.getId());
+            slAfterSalesService.setMoney(detail.getPrice());
+            slAfterSalesService.setProductId(detail.getProductId());
             slAfterSalesService.setCreator(slUser.getId());
             slAfterSalesService.setId(UUID.randomUUID().toString());
+            slAfterSalesService.setShopId(detail.getShopId());
             this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
             orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
                 setId(detail.getId());
                 setShippingState(6);
             }});
+        }
+        if (files.length <= 3 && files.length > 0) {
+            for (MultipartFile image : files) {
+                if (null != image && !image.isEmpty()) {
+                    String fileUrl = fileService.upload(null, image);
+                    slAfterSaleServiceVoucherrImageMapper.insertSelective(new SlAfterSaleServiceVoucherrImage() {{
+                        setAfterSalesServiceId(slAfterSalesService.getId());
+                        setId(UUID.randomUUID().toString());
+                        setImageUrl(fileUrl);
+                    }});
+                }
+            }
         }
     }
 

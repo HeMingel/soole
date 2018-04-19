@@ -10,7 +10,6 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="money" jdbcType="DECIMAL" property="money" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
@@ -28,8 +27,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, order_detail_id, type, reason, money, image_url, product_id, user_id, shop_id, 
-    creator, create_time, audit_status
+    id, order_detail_id, type, reason, money, product_id, user_id, shop_id, creator, 
+    create_time, audit_status
   </sql>
   <sql id="Blob_Column_List">
     <!--

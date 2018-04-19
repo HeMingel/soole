@@ -12,9 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,11 +29,12 @@ import static org.apache.commons.text.CharacterPredicates.LETTERS;
  * @author liuso
  */
 @Api(description = "系统接口")
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/system")
 public class SystemController {
+
+    public static final Logger log = LoggerFactory.getLogger(SystemController.class);
 
     @Autowired
     private UserService userService;
@@ -400,20 +402,10 @@ public class SystemController {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
-                    // 从缓存检测用户信息
-                    SlUser user = this.userCache.get(phone);
-
-                    // 如果用户不存在，则从数据库查询
-                    if (null == user) {
-                        user = userService.selectOne(new SlUser() {{
-                            setPhone(phone);
-                        }});
-
-                        // 缓存用户信息
-                        if (null != user) {
-                            this.userCache.put(phone, user);
-                        }
-                    }
+                    // 查询用户信息
+                    SlUser user = userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
 
                     if (null == user) {
                         message.setMsg("账号信息不存在");

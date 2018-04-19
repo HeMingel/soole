@@ -3,8 +3,9 @@ package com.songpo.searched.oauth2;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlUserMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -18,9 +19,10 @@ import java.util.Arrays;
 /**
  * @author SongpoLiu
  */
-@Slf4j
 @Service
-public class MyClientDetailsService implements ClientDetailsService {
+public class MyClientDetailsServiceImpl implements ClientDetailsService {
+
+    public static final Logger log = LoggerFactory.getLogger(MyClientDetailsServiceImpl.class);
 
     @Autowired
     private SlUserMapper mapper;

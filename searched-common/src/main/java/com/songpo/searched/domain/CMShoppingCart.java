@@ -1,10 +1,7 @@
 package com.songpo.searched.domain;
 
-import lombok.Data;
-
 import java.util.List;
 
-@Data
 public class CMShoppingCart {
     /**
      * 店铺id
@@ -19,5 +16,28 @@ public class CMShoppingCart {
      */
     private List<CMGoods> carts;
 
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public List<CMGoods> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<CMGoods> carts) {
+        this.carts = carts;
+    }
 }
 

@@ -4,12 +4,11 @@ package com.songpo.searched.controller;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.service.CmOrderService;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/order")
-@Slf4j
 public class CmOrderController {
+
+    public static final Logger log = LoggerFactory.getLogger(CmOrderController.class);
 
     @Autowired
     private CmOrderService cmOrderService;
@@ -51,14 +51,13 @@ public class CmOrderController {
             @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
-            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "activityId", value = "活动id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
+    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId, activityId);
+            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -71,13 +70,13 @@ public class CmOrderController {
 
 
     /**
-     * 立即购买订单
+     * 单商品下单
      *
      * @param repositoryId
      * @param quantity
      * @return
      */
-    @ApiOperation(value = "立即购买", authorizations = {
+    @ApiOperation(value = "单商品下单", authorizations = {
             @Authorization(value = "application", scopes = {
                     @AuthorizationScope(scope = "read", description = "allows reading resources"),
                     @AuthorizationScope(scope = "write", description = "allows modifying resources")
@@ -96,7 +95,7 @@ public class CmOrderController {
     public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId,buyerMessage);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -107,45 +106,6 @@ public class CmOrderController {
         return message;
     }
 
-
-
-
-//    /**
-//     * 拼团订单下单
-//     *
-//     * @param slOrder
-//     * @param cmSlOrderDetail
-//     * @param shippingAddressId
-//     * @return
-//     */
-//    @ApiOperation(value = "拼团订单下单")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true),
-//            @ApiImplicitParam(name = "shippingAddressId", value = "地址Id", paramType = "form", required = true),
-//            @ApiImplicitParam(name = "repositoryId", value = "店铺仓库唯一标识", paramType = "form", required = true),
-//            @ApiImplicitParam(name = "quantity", value = "订单商品数量", paramType = "form", required = true),
-//            @ApiImplicitParam(name = "paymentState", value = "支付状态(0：待支付1：支付成功 2：支付失败)", paramType = "form"),
-//            @ApiImplicitParam(name = "type", value = "订单类型(1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚)", paramType = "form", required = true),
-//            @ApiImplicitParam(name = "paymentChannel", value = "支付类型(1：微信支付 2：支付宝支付 3：厦门银行支付)", paramType = "form"),
-//            @ApiImplicitParam(name = "payTime", value = "支付时间", paramType = "form"),
-//            @ApiImplicitParam(name = "buyerMessage", value = "买家留言", paramType = "form"),
-//            @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
-//            @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
-//            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form")
-//    })
-//    @PostMapping("add-group-order")
-//    public BusinessMessage addGroupOrder(SlOrder slOrder, SlOrderDetail cmSlOrderDetail, String shippingAddressId, String activityId) {
-//        BusinessMessage message = new BusinessMessage();
-//        try {
-////            message = cmOrderService.addGroupOrder(slOrder, cmSlOrderDetail, shippingAddressId, activityId);
-//            message.setData(message.getData());
-//            message.setMsg(message.getMsg());
-//            message.setSuccess(true);
-//        } catch (Exception e) {
-//            log.error("新增失败", e);
-//        }
-//        return message;
-//    }
 
     /**
      * 我的订单列表
@@ -178,21 +138,22 @@ public class CmOrderController {
     }
 
     /**
-     * 取消订单
+     * 取消订单/确定收货
      *
      * @param orderId
      * @return
      */
     @ApiOperation(value = "取消订单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "state", value = "操作状态", paramType = "form", required = true)
     })
-    @PostMapping("cancel-order")
-    public BusinessMessage cancelAnOrder(String orderId) {
+    @PostMapping("order-status")
+    public BusinessMessage cancelAnOrder(String orderId, String state) {
         log.debug("orderId = [" + orderId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
-            this.cmOrderService.cancelAnOrder(orderId);
+            this.cmOrderService.cancelAnOrder(orderId,state);
             message.setSuccess(true);
             message.setMsg("取消成功");
         } catch (Exception e) {
