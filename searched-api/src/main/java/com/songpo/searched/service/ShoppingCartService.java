@@ -40,10 +40,16 @@ public class ShoppingCartService {
         if (null != user) {
             CMShoppingCart shoppingCart = this.cache.get(user.getId());
             if (!StringUtils.isEmpty(shoppingCart) && shoppingCart.getCarts().size() > 0) {
-                for (CMGoods goods : pojo.getCarts()) {
-                    shoppingCart.getCarts().add(goods);
+                String repositoryId = pojo.getCarts().get(0).getRepositoryId();
+                int count = pojo.getCarts().get(0).getCounts();
+                for (CMGoods goods : shoppingCart.getCarts()) {
+                    if (goods.getRepositoryId().equals(repositoryId)) {
+                        pojo.getCarts().get(0).setCounts(count + goods.getCounts());
+                    } else {
+                        pojo.getCarts().add(goods);
+                    }
                 }
-                this.cache.put(user.getId(), shoppingCart);
+                this.cache.put(user.getId(), pojo);
             } else {
                 this.cache.put(user.getId(), pojo);
             }
