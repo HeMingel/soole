@@ -46,7 +46,7 @@ public class LoginUserService {
         SlUser user = null;
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (null != auth) {
+            if (auth instanceof OAuth2Authentication) {
                 String clientId = ((OAuth2Authentication) auth).getOAuth2Request().getClientId();
                 if (StringUtils.isNotEmpty(clientId)) {
                     // 从缓存检测用户信息
@@ -63,6 +63,8 @@ public class LoginUserService {
                         }
                     }
                 }
+            } else {
+                log.error("识别登录用户信息失败");
             }
         } catch (Exception e) {
             log.error("获取登录用户信息失败，{}", e);
