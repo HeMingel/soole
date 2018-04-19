@@ -8,26 +8,26 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @ConfigurationProperties(prefix = "sp.pay.alipay")
-open class AliPayConfigProperties(
+class AliPayConfigProperties(
         /**
          * 商户号
          */
-        var appId: String? = "",
+        var appId: String = "",
 
         /**
          * 商户私钥
          */
-        var merchantPrivateKey: String? = "",
+        var merchantPrivateKey: String = "",
 
         /**
          * 支付宝公钥
          */
-        var alipayPublicKey: String? = "",
+        var aliPayPublicKey: String = "",
 
         /**
          * 支付通知地址
          */
-        var notifyUrl: String? = "",
+        var notifyUrl: String = "",
 
         /**
          * 支付完成后返回的地址
