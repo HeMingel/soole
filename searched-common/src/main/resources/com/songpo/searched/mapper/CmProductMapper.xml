@@ -19,6 +19,7 @@
             ON p.`shop_id` = s.`id`
             <where>
                 p.sold_out = 1
+                and ap.enabled = 1
                 <if test="name != '' and name != null ">
                     <bind name="pName" value="'%' + name + '%'"/>
                     AND p.name LIKE #{pName}
@@ -26,9 +27,11 @@
                 <if test="salesModeId != '' and salesModeId != null">
                     AND p.sales_mode_id = #{salesModeId}
                 </if>
-                <if test="activityId != '' and activityId != null">
+                <if test="activityId != '' and activityId != null and activityId != '65C872C3-9B52-6150-60E5-679A9242AC79' ">
                     and ap.activity_id = #{activityId}
-                    and ap.enabled = 1
+                </if>
+                <if test="activityId =='65C872C3-9B52-6150-60E5-679A9242AC79' ">
+                    and ap.sharing_rewards_id != ''
                 </if>
                 <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
                 <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
