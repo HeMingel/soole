@@ -54,13 +54,13 @@
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="sortByPrice != ''">
-                ap.price ${sortByPrice}
+                ap.price ${sortByPrice},
             </if>
             <if test="sortByRating != ''">
-                s.rating ${sortByRating}
+                s.rating ${sortByRating},
             </if>
             <if test="sortBySale != ''">
-                p.sales_volume ${sortBySale}
+                p.sales_volume ${sortBySale},
             </if>
         </trim>
     </select>
