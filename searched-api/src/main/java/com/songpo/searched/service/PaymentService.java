@@ -3,7 +3,6 @@ package com.songpo.searched.service;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
-import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,15 +33,12 @@ public class PaymentService {
 
     private final WxPayService payService;
 
-    private final AliPayService aliPayService;
-
-    @Value("${sp.pay.alipay.alipayPublicKey}")
+    @Value("${sp.pay.alipay.aliPayPublicKey}")
     private String aliPayPublicKey;
 
     @Autowired
-    public PaymentService(WxPayService payService, AliPayService aliPayService) {
+    public PaymentService(WxPayService payService) {
         this.payService = payService;
-        this.aliPayService = aliPayService;
     }
 
     /**
