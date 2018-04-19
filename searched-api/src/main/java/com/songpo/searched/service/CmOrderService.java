@@ -383,8 +383,13 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.loginUserService.getCurrentLoginUser();
-            List<Map<String, Object>> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
+            Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
+                if (orderInfo.get("activityProductId").equals(ActivityConstant.NO_ACTIVITY)) {
+                    orderInfo.put("join", false);
+                } else {
+                    orderInfo.put("join", true);
+                }
                 message.setData(orderInfo);
                 message.setSuccess(true);
                 message.setMsg("查询成功");

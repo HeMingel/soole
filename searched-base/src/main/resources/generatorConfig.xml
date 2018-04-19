@@ -65,11 +65,11 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table tableName="sl_product" domainObjectName="SlProduct"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+            <!--<property name="selectAllOrderByClause" value="true"/>-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
         <!--<table tableName="sl_order" domainObjectName="SlOrder"-->
         <!--enableCountByExample="false" enableUpdateByExample="false"-->
