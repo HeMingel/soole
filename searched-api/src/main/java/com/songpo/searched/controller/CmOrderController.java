@@ -130,11 +130,11 @@ public class CmOrderController {
      */
     @ApiOperation(value = "我的订单详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "订单Id", paramType = "form", required = true)
     })
     @GetMapping("order-info")
-    public BusinessMessage orderInfo(String orderId) {
-        return this.cmOrderService.orderInfo(orderId);
+    public BusinessMessage orderInfo(String id) {
+        return this.cmOrderService.orderInfo(id);
     }
 
     /**

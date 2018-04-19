@@ -375,15 +375,15 @@ public class CmOrderService {
     /**
      * 我的订单详情(这里只是查的订单的一些详情,关联的商品信息前端从上一页面带过来)
      *
-     * @param orderId
+     * @param id
      * @return
      */
-    public BusinessMessage orderInfo(String orderId) {
-        log.debug("orderId = [" + orderId + "]");
+    public BusinessMessage orderInfo(String id) {
+        log.debug("orderId = [" + id + "]");
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.loginUserService.getCurrentLoginUser();
-            List<Map<String, Object>> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), orderId);
+            List<Map<String, Object>> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
                 message.setData(orderInfo);
                 message.setSuccess(true);

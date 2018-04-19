@@ -14,7 +14,7 @@ public interface CmOrderMapper {
 
     List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
 
-    List<Map<String, Object>> selectMyOrderInfo(@Param("userId") String userId, @Param("orderId") String orderId);
+    List<Map<String, Object>> selectMyOrderInfo(@Param("userId") String userId, @Param("id") String id);
 
     Map<String, Object> findActivityProduct(@Param("productId") String productId);
 
