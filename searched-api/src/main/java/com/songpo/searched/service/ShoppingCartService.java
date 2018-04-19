@@ -37,9 +37,22 @@ public class ShoppingCartService {
     public BusinessMessage addMyShoppingCart(CMShoppingCart pojo) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        List<Object> list = new ArrayList<>();
         if (null != user) {
-            this.cache.put(user.getId(), pojo);
+            CMShoppingCart shoppingCart = this.cache.get(user.getId());
+            if (!StringUtils.isEmpty(shoppingCart) && shoppingCart.getCarts().size() > 0) {
+                String repositoryId = pojo.getCarts().get(0).getRepositoryId();
+                int count = pojo.getCarts().get(0).getCounts();
+                for (CMGoods goods : shoppingCart.getCarts()) {
+                    if (goods.getRepositoryId().equals(repositoryId)) {
+                        pojo.getCarts().get(0).setCounts(count + goods.getCounts());
+                    } else {
+                        pojo.getCarts().add(goods);
+                    }
+                }
+                this.cache.put(user.getId(), pojo);
+            } else {
+                this.cache.put(user.getId(), pojo);
+            }
             message.setMsg("添加成功");
             message.setSuccess(true);
             message.setData(1);
