@@ -7,7 +7,7 @@
         SELECT
           p.id,
           p.name,
-          p.image_url AS imageUrl,
+          p.image_url,
           p.`sales_mode_id`,
           p.`introduction`,
           ap.*
