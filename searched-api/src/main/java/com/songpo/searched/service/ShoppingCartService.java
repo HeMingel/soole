@@ -43,6 +43,7 @@ public class ShoppingCartService {
                 for (CMGoods goods : pojo.getCarts()) {
                     shoppingCart.getCarts().add(goods);
                 }
+                this.cache.put(user.getId(), shoppingCart);
             } else {
                 this.cache.put(user.getId(), pojo);
             }
