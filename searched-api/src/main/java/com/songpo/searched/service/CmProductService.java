@@ -164,10 +164,30 @@ public class CmProductService {
 
             if (goodsType != null || screenType != null || name != null || saleMode != null) {
                 List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name, ActivityConstant.NO_ACTIVITY);
+
                 if (list.size() > 0) {
-                    businessMessage.setMsg("查询成功");
-                    businessMessage.setSuccess(true);
-                    businessMessage.setData(new PageInfo<>(list));
+                    //如果是拼团商品
+                    if(saleMode == SalesModeConstant.SALES_MODE_GROUP){
+                        List<Object> goodsList = new ArrayList<>();
+                        for(Map<String,Object> map:list ){
+
+                            //关联order_detail 表的 product_id
+                            Map<String,Object> avatarMap = new HashMap<>();
+
+                            List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
+                            avatarMap.put("avatarList",avatarList);
+                            avatarMap.put("goods",map);
+                            goodsList.add(avatarMap);
+                        }
+                        businessMessage.setMsg("查询成功");
+                        businessMessage.setSuccess(true);
+                        businessMessage.setData(new PageInfo<>(goodsList));
+                    }else{
+                        businessMessage.setMsg("查询成功");
+                        businessMessage.setSuccess(true);
+                        businessMessage.setData(new PageInfo<>(list));
+                    }
+
                 } else {
                     businessMessage.setMsg("查询无数据!");
                     businessMessage.setSuccess(true);

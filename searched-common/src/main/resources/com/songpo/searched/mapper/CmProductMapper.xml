@@ -117,6 +117,25 @@
         </if>
 
     </select>
+
+
+    <!--查询拼团商品发起人的头像-->
+    <select id="selectGroupAvatar" resultType="Map" parameterType="String">
+        SELECT
+          *
+        FROM
+          sl_order_detail od
+          LEFT JOIN sl_order o
+            ON od.order_id = o.id
+          LEFT JOIN sl_user u
+            ON u.id = o.user_id
+        WHERE o.payment_state = '1'
+          AND od.product_id = #{goodsId}
+        GROUP BY od.product_id
+        ORDER BY o.pay_time DESC
+        LIMIT 3
+    </select>
+
     <!--根据商品名称查询商品-->
     <select id="selectByName" resultType="Map" parameterType="String">
         SELECT
