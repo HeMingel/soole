@@ -243,7 +243,13 @@ public class ShoppingCartService {
                 for (CMGoods goods : pojo.getCarts()) {
                     if (agoRepositoryId.equals(goods.getRepositoryId())) {
                         goods.setCounts(counts);
-                        goods.setRepositoryId(repositoryId);
+                        if (!StringUtils.isEmpty(repositoryId)) {
+                            goods.setRepositoryId(repositoryId);
+                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                setId(repositoryId);
+                            }});
+                            goods.setGoodId(repository.getProductId());
+                        }
                     }
                     goodsList.add(goods);
                 }
