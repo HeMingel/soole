@@ -383,8 +383,20 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = this.loginUserService.getCurrentLoginUser();
-            List<Map<String, Object>> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
+            Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
+                if (orderInfo.get("activityProductId").equals(ActivityConstant.NO_ACTIVITY)) {
+                    orderInfo.put("join", false);
+                } else {
+                    orderInfo.put("join", true);
+                }
+                if (orderInfo.get("type").equals(SalesModeConstant.SALES_MODE_GROUP)) {
+                    int count = this.orderService.selectCount(new SlOrder() {{
+                        setSerialNumber(orderInfo.get("orderNum").toString());
+                        setPaymentState(1);
+                    }});
+                    orderInfo.put("groupCount", count);
+                }
                 message.setData(orderInfo);
                 message.setSuccess(true);
                 message.setMsg("查询成功");
