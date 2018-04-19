@@ -219,30 +219,45 @@ public class CmOrderService {
                                             int count = finalRepository.getCount() - slOrderDetail.getQuantity();
                                             // 商品库存 - 本次加入订单的数量
                                             int activityProductCount = slActivityProduct.getCount() - slOrderDetail.getQuantity();
-                                            // 如果库存为0 的话就下架了
-                                            Example example = new Example(SlActivityProduct.class);
-                                            example.createCriteria()
-                                                    .andGreaterThan("count", 0)
-                                                    .andEqualTo("id", slActivityProduct.getId());
-                                            this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
-                                                if (activityProductCount == 0) {
-                                                    setEnabled(false);
-                                                }
-                                                //活动总商品上架数量 - 本次购买的数量
-                                                setCount(activityProductCount);
-                                            }}, example);
+                                            // 如果是新人专享活动的话
+                                            if (slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
+                                                Example example1 = new Example(SlActivityProduct.class);
+                                                example1.createCriteria()
+                                                        .andEqualTo("productId", slProduct.getId())
+                                                        .andGreaterThan("count", 0);
+                                                this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
+                                                    if (activityProductCount == 0) {
+                                                        setEnabled(false);
+                                                    }
+                                                    //活动总商品上架数量 - 本次购买的数量
+                                                    setCount(activityProductCount);
+                                                }}, example1);
+                                            } else {
+                                                // 如果库存为0 的话就下架了
+                                                Example example = new Example(SlActivityProduct.class);
+                                                example.createCriteria()
+                                                        .andGreaterThan("count", 0)
+                                                        .andEqualTo("id", slActivityProduct.getId());
+                                                this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
+                                                    if (activityProductCount == 0) {
+                                                        setEnabled(false);
+                                                    }
+                                                    //活动总商品上架数量 - 本次购买的数量
+                                                    setCount(activityProductCount);
+                                                }}, example);
+                                            }
                                             finalRepository.setCount(count);
                                             // 更新redis中该商品规格的库存
                                             repositoryCache.put(repository.getId(), finalRepository);
-                                            Example example1 = new Example(SlProductRepository.class);
-                                            example.createCriteria()
+                                            Example example2 = new Example(SlProductRepository.class);
+                                            example2.createCriteria()
                                                     // 比0大的库存
                                                     .andGreaterThan("count", 0)
                                                     .andEqualTo("id", finalRepository.getId());
                                             //更新数据库该商品规格的库存
                                             this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
                                                 setCount(repositoryCache.get(finalRepository.getId()).getCount());
-                                            }}, example1);
+                                            }}, example2);
                                             message.setMsg("订单生成成功");
                                             message.setSuccess(true);
                                         } else {
@@ -383,30 +398,35 @@ public class CmOrderService {
     /**
      * 取消订单/确定收货
      *
+     * @param state
      * @param id
-     * @param orderId
      * @return
      */
-    public void cancelAnOrder(String orderId, String state) {
-        log.debug("orderId = [" + orderId + "]");
+    public void cancelAnOrder(String id, String state) {
+        log.debug("orderId = [" + id + "]");
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
-            Example example = new Example(SlOrder.class);
-            example.createCriteria()
-                    .andEqualTo("id", orderId)
-                    .andEqualTo("userId", user.getId());
+
             switch (Integer.parseInt(state)) {
                 case 102:
+                    Example example = new Example(SlOrder.class);
+                    example.createCriteria()
+                            .andEqualTo("id", id)
+                            .andEqualTo("userId", user.getId());
                     orderService.updateByExampleSelective(new SlOrder() {{
                         //取消订单
                         setPaymentState(102);
                     }}, example);
                     break;
                 case 5:
+                    Example example1 = new Example(SlOrderDetail.class);
+                    example1.createCriteria()
+                            .andEqualTo("id", id)
+                            .andEqualTo("creator", user.getId());
                     orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                         //确认订单未评价
                         setShippingState(5);
-                    }}, example);
+                    }}, example1);
             }
         }
     }
