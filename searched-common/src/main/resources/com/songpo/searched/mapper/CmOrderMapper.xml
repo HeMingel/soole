@@ -58,6 +58,7 @@
         so.consigneeName consigneeName,
         so.consigneePhone consigneePhone,
         so.province province,
+        sod.activity_product_id activityProductId,
         so.city city,
         so.county county,
         so.detailed detailed,
@@ -68,7 +69,7 @@
         so.type AS type,
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
-        so.payment_channel paymentChannel
+        ifnull(so.payment_channel,0) paymentChannel
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
