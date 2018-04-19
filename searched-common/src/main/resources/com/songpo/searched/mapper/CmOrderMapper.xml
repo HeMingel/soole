@@ -20,6 +20,8 @@
         spr.ship ship,
         so.type type,
         so.serial_number serialNumber,
+        so.total_amount totalAmount,
+        so.deduct_total_pulse deductTotalPulse,
         sod.buyer_message buyerMessage,
         ss.phone shopPhone
         from sl_order_detail sod
