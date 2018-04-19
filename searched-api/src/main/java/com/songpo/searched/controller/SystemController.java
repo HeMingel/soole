@@ -17,9 +17,7 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
@@ -273,36 +271,25 @@ public class SystemController {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         JSONObject data = new JSONObject();
         try {
-            OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-            String clientId = authentication.getOAuth2Request().getClientId();
-            if (StringUtils.isNotBlank(clientId)) {
-                // 从缓存中取出用户信息，如果不存在，则进行数据库查询
-                SlUser user = this.userCache.get(clientId);
-                if (null == user) {
-                    user = this.userService.selectOne(new SlUser() {{
-                        setClientId(clientId);
-                    }});
-                }
+            SlUser user = this.loginUserService.getCurrentLoginUser();
+            if (null != user) {
+                message.setSuccess(true);
+                // 用户真实姓名
+                data.put("realname", user.getName());
+                // 用户昵称
+                data.put("nickname", user.getNickName());
+                // 用户头像
+                data.put("avatar", user.getAvatar());
+                // 手机号码
+                data.put("phone", user.getPhone());
+                // 电子邮箱
+                data.put("email", user.getEmail());
+                // 是否设置支付密码
+                data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
-                if (null != user) {
-                    message.setSuccess(true);
-                    // 用户真实姓名
-                    data.put("realname", user.getName());
-                    // 用户昵称
-                    data.put("nickname", user.getNickName());
-                    // 用户头像
-                    data.put("avatar", user.getAvatar());
-                    // 手机号码
-                    data.put("phone", user.getPhone());
-                    // 电子邮箱
-                    data.put("email", user.getEmail());
-                    // 是否设置支付密码
-                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
-
-                    message.setData(data);
-                } else {
-                    message.setMsg("用户信息不存在");
-                }
+                message.setData(data);
+            } else {
+                message.setMsg("用户信息不存在");
             }
         } catch (Exception e) {
             log.error("获取用户信息失败，{}", e);
