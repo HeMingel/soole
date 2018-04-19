@@ -173,7 +173,7 @@ public class ProductController {
 
     @ApiOperation(value = "查询预售商品周期")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "goodsId", value = "商品ID", paramType = "form", required = true)
     })
     @GetMapping("/goods-cycle")
     public BusinessMessage goodsCycle(String goodsId) {
