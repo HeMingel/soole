@@ -3,6 +3,7 @@ package com.songpo.searched.controller;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
 import com.songpo.searched.service.CmProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -154,7 +155,8 @@ public class ProductController {
 
     @ApiOperation(value = "查询商品详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
     })
     @GetMapping("/goods-detail")
     public BusinessMessage goodsDetail(String id,String activityId) {
@@ -168,7 +170,25 @@ public class ProductController {
             return businessMessage;
         }
     }
-    @ApiOperation(value = "根据商品Id,活动Id查询商品普通规格")
+
+    @ApiOperation(value = "查询预售商品周期")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "goodsId", value = "商品ID", paramType = "form", required = true)
+    })
+    @GetMapping("/goods-cycle")
+    public BusinessMessage goodsCycle(String goodsId) {
+        log.debug("根据商品Id查询普通商品，商品Id：{}", goodsId);
+        if (goodsId != null) {
+            return this.productService.selectGoodsCycle(goodsId);
+        } else {
+            BusinessMessage businessMessage = new BusinessMessage();
+            businessMessage.setMsg("商品ID为空");
+            businessMessage.setSuccess(false);
+            return businessMessage;
+        }
+    }
+
+    @ApiOperation(value = "根据商品Id,活动Id查询普通商品普通规格")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
