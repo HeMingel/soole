@@ -7,6 +7,7 @@ import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlPresellReturnedRecord;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,6 @@ public class CmProductService {
 
     @Autowired
     private CmProductMapper mapper;
-
     @Autowired
     private CmProductCommentMapper cmProductCommentMapper;
     @Autowired
@@ -42,6 +42,8 @@ public class CmProductService {
     private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
+    @Autowired
+    private SlPresellReturnedRecordMapper slPresellReturnedRecordMapper;
 
 
     /**
@@ -272,6 +274,44 @@ public class CmProductService {
         return businessMessage;
     }
 
+    /**
+     * 查询预售商品周期
+     * @param goodsId 商品ID
+     * @return 预售商品周期表
+     */
+    public BusinessMessage selectGoodsCycle(String goodsId){
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(true);
+        try {
+            // 1.预售模式2.消费返利模式
+            String type = "1";
+
+            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.select(new SlPresellReturnedRecord(){{
+                setProductId(goodsId);
+                setType(type);
+            }});
+            if(slPresellReturnedRecordList.size() >0){
+                double totalMoney = 0;
+                int totalDays  = 0;
+                for (SlPresellReturnedRecord sl: slPresellReturnedRecordList) {
+                    totalMoney += sl.getReturnedMoney().doubleValue();
+                    totalDays +=  sl.getReturnedNumber();
+                }
+                Map<String,Object> map = new HashMap<>();
+                map.put("presellReturnedRecordList",slPresellReturnedRecordList);
+                map.put("totalMoney",totalMoney);
+                map.put("totalDays",totalDays);
+                businessMessage.setSuccess(true);
+                businessMessage.setData(map);
+                businessMessage.setMsg("查询成功");
+            }
+
+        }catch (Exception e){
+            log.error("查询异常",e);
+            businessMessage.setMsg("查询异常");
+        }
+        return businessMessage;
+    }
     /**
      * 根据商品Id 查询商品规格
      *
