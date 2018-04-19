@@ -17,6 +17,7 @@
         ss.image_url shopImageUrl,
         sp.sales_mode_id salesModeId,
         so.id orderId,
+        sod.id orderDetailId,
         spr.ship ship,
         so.type type,
         so.serial_number serialNumber,
