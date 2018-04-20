@@ -3,6 +3,7 @@
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
     <!-- 根据销售模式查询商品 -->
+
     <select id="selectBySalesMode" resultType="map">
         SELECT
           p.id as product_id,
@@ -56,6 +57,10 @@
                 <if test="null != priceMin and null != priceMax">
                     AND ap.price BETWEEN #{priceMin} AND #{priceMax}
                 </if>
+                <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
+                    <bind name="shopAddress" value="'%' + addressNow + '%'"/>
+                    AND s.address like #{shopAddress}
+                </if>
             </where>
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
         <trim prefix="ORDER BY" suffixOverrides=",">
@@ -68,9 +73,14 @@
             <if test="sortBySale != ''">
                 p.sales_volume ${sortBySale},
             </if>
+            <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
+                s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC
+            </if>
         </trim>
     </select>
-
+    <!--addressNow")
+    longitudeNow"
+    latitudeNow")-->
 
     <!-- 根据活动唯一标识符查询商品 -->
     <select id="selectByAction" resultType="com.songpo.searched.entity.SlProduct">
