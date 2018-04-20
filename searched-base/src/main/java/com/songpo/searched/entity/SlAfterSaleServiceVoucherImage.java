@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "sl_after_sale_service_voucherr_image")
-public class SlAfterSaleServiceVoucherrImage implements Serializable {
+public class SlAfterSaleServiceVoucherImage implements Serializable {
     /**
      * 售后服务凭证图片唯一标识符
      */

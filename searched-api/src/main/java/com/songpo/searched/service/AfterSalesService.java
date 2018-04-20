@@ -2,11 +2,8 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlAfterSaleServiceVoucherrImage;
-import com.songpo.searched.entity.SlAfterSalesService;
-import com.songpo.searched.entity.SlOrderDetail;
-import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.SlAfterSaleServiceVoucherrImageMapper;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.SlAfterSaleServiceVoucherImageMapper;
 import com.songpo.searched.mapper.SlAfterSalesServiceMapper;
 import com.songpo.searched.mapper.SlOrderDetailMapper;
 import org.slf4j.Logger;
@@ -37,7 +34,10 @@ public class AfterSalesService {
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
-    private SlAfterSaleServiceVoucherrImageMapper slAfterSaleServiceVoucherrImageMapper;
+    private SlAfterSaleServiceVoucherImageMapper slAfterSaleServiceVoucherImageMapper;
+    @Autowired
+    private ShopService shopService;
+
 
     /**
      * 新增售后服务单
@@ -70,7 +70,7 @@ public class AfterSalesService {
             for (MultipartFile image : files) {
                 if (null != image && !image.isEmpty()) {
                     String fileUrl = fileService.upload(null, image);
-                    slAfterSaleServiceVoucherrImageMapper.insertSelective(new SlAfterSaleServiceVoucherrImage() {{
+                    slAfterSaleServiceVoucherImageMapper.insertSelective(new SlAfterSaleServiceVoucherImage() {{
                         setAfterSalesServiceId(slAfterSalesService.getId());
                         setId(UUID.randomUUID().toString());
                         setImageUrl(fileUrl);
@@ -114,6 +114,21 @@ public class AfterSalesService {
                 object.put("status", service.getAuditStatus());
                 //邮费
                 object.put("post_fee", slOrderDetail.getPostFee());
+                //店铺id
+                object.put("shop_id", slOrderDetail.getShopId());
+                //店铺图片
+                SlShop slShop = this.shopService.selectOne(new SlShop() {{
+                    setId(slOrderDetail.getShopId());
+                }});
+                if (null != slShop) {
+                    object.put("shop_image_url", slShop.getImageUrl());
+                }
+                SlAfterSalesService salesService = this.slAfterSalesServiceMapper.selectOne(new SlAfterSalesService() {{
+                    setOrderDetailId(slOrderDetail.getId());
+                }});
+                if (null != salesService) {
+                    object.put("status", salesService.getAuditStatus());
+                }
                 dataList.add(object);
             }
             message.setMsg("查询成功");
