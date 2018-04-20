@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlCheckTopStoreMapper">
+    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlCheckTopStore">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="shop_id" jdbcType="VARCHAR" property="shopId"/>
+        <result column="quota_id" jdbcType="VARCHAR" property="quotaId"/>
+        <result column="apply_time" jdbcType="INTEGER" property="applyTime"/>
+        <result column="check_time" jdbcType="INTEGER" property="checkTime"/>
+        <result column="check_status" jdbcType="BIT" property="checkStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, shop_id, quota_id, apply_time, check_time, check_status
+    </sql>
+</mapper>

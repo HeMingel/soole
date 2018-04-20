@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -130,7 +130,7 @@ public class SlActivityProduct implements Serializable {
     private Integer restrictCount;
 
     /**
-     * 预售首次 发货/打款 天数
+     * 预售总发货天数
      */
     @Column(name = "presell_shipments_days")
     private Integer presellShipmentsDays;
@@ -539,18 +539,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取预售首次 发货/打款 天数
+     * 获取预售总发货天数
      *
-     * @return presell_shipments_days - 预售首次 发货/打款 天数
+     * @return presell_shipments_days - 预售总发货天数
      */
     public Integer getPresellShipmentsDays() {
         return presellShipmentsDays;
     }
 
     /**
-     * 设置预售首次 发货/打款 天数
+     * 设置预售总发货天数
      *
-     * @param presellShipmentsDays 预售首次 发货/打款 天数
+     * @param presellShipmentsDays 预售总发货天数
      */
     public void setPresellShipmentsDays(Integer presellShipmentsDays) {
         this.presellShipmentsDays = presellShipmentsDays;

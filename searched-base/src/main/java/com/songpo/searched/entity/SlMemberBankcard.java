@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_member_bankcard")
 public class SlMemberBankcard implements Serializable {
@@ -25,7 +25,7 @@ public class SlMemberBankcard implements Serializable {
      * 银行卡号
      */
     @Column(name = "card_number")
-    private Integer cardNumber;
+    private Long cardNumber;
 
     /**
      * 持卡人姓名
@@ -107,7 +107,7 @@ public class SlMemberBankcard implements Serializable {
      *
      * @return card_number - 银行卡号
      */
-    public Integer getCardNumber() {
+    public Long getCardNumber() {
         return cardNumber;
     }
 
@@ -116,7 +116,7 @@ public class SlMemberBankcard implements Serializable {
      *
      * @param cardNumber 银行卡号
      */
-    public void setCardNumber(Integer cardNumber) {
+    public void setCardNumber(Long cardNumber) {
         this.cardNumber = cardNumber;
     }
 
