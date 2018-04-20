@@ -27,10 +27,13 @@ public interface CmProductMapper{
      * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
      * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
+     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @return 商品集合
      */
     List<Map<String, Object>> selectBySalesMode(@Param("name") String name,
                                                 @Param("salesModeId") String salesModeId,
+                                                @Param("activityId") String activityId,
+                                                @Param("goodsTypeId") String goodsTypeId,
                                                 @Param("longitudeMin") Double longitudeMin,
                                                 @Param("longitudeMax") Double longitudeMax,
                                                 @Param("latitudeMin") Double latitudeMin,
@@ -38,7 +41,11 @@ public interface CmProductMapper{
                                                 @Param("sortByPrice") String sortByPrice,
                                                 @Param("sortByRating") String sortByRating,
                                                 @Param("priceMin") Integer priceMin,
-                                                @Param("priceMax") Integer priceMax);
+                                                @Param("priceMax") Integer priceMax,
+                                                @Param("sortBySale") String sortBySale,
+                                                @Param("addressNow") String addressNow,
+                                                @Param("longitudeNow")Double longitudeNow,
+                                                @Param("latitudeNow")Double latitudeNow);
 
     /**
      * 根据活动唯一标识符查询商品列表
@@ -56,8 +63,14 @@ public interface CmProductMapper{
      * @param goodsName 商品名称
      * @return 商品列表 goodsType, screenType, saleMode, name
      */
-    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
+    List<Map<String, Object>> screenGoods(@Param("goodsTypeId") String goodsTypeId, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
 
+    /**
+     * 查询拼团商品的头像
+     * @param goodsId 商品id
+     * @return 头像列表
+     */
+    List<Map<String, Object>> selectGroupAvatar(String goodsId);
     /**
      * 根据名称查询商品
      * @param goodsName 商品名称

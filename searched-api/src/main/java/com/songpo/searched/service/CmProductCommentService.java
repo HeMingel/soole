@@ -4,22 +4,20 @@ package com.songpo.searched.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlProductComment;
 import com.songpo.searched.mapper.CmProductCommentMapper;
-import com.songpo.searched.mapper.CmProductMapper;
-import com.songpo.searched.mapper.SlProductCommentMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Slf4j
 public class CmProductCommentService {
+
+    public static final Logger log = LoggerFactory.getLogger(CmProductCommentService.class);
 
     @Autowired
     private CmProductCommentMapper mapper;

@@ -12,13 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
@@ -28,11 +27,12 @@ import static org.apache.commons.text.CharacterPredicates.LETTERS;
  * @author liuso
  */
 @Api(description = "系统接口")
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/system")
 public class SystemController {
+
+    public static final Logger log = LoggerFactory.getLogger(SystemController.class);
 
     @Autowired
     private UserService userService;
@@ -89,9 +89,15 @@ public class SystemController {
                     }
                 }
 
-                // 请求中军创接口，检测用户是否存在
                 if (null == user) {
-                    Boolean exist = this.loginUserService.checkUserExistByZjcyy(phone, password);
+                    // 请求中军创接口，检测用户是否存在
+                    Boolean exist = null;
+                    try {
+                        exist = this.loginUserService.checkUserExistByZjcyy(phone, password);
+                    } catch (Exception e) {
+                        log.error("检测用户在中军创云易平台是否存在错误", e);
+                    }
+
                     if (null != exist && exist) {
                         user = new SlUser();
                         user.setPhone(phone);
@@ -265,36 +271,25 @@ public class SystemController {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         JSONObject data = new JSONObject();
         try {
-            OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-            String clientId = authentication.getOAuth2Request().getClientId();
-            if (StringUtils.isNotBlank(clientId)) {
-                // 从缓存中取出用户信息，如果不存在，则进行数据库查询
-                SlUser user = this.userCache.get(clientId);
-                if (null == user) {
-                    user = this.userService.selectOne(new SlUser() {{
-                        setClientId(clientId);
-                    }});
-                }
+            SlUser user = this.loginUserService.getCurrentLoginUser();
+            if (null != user) {
+                message.setSuccess(true);
+                // 用户真实姓名
+                data.put("realname", user.getName());
+                // 用户昵称
+                data.put("nickname", user.getNickName());
+                // 用户头像
+                data.put("avatar", user.getAvatar());
+                // 手机号码
+                data.put("phone", user.getPhone());
+                // 电子邮箱
+                data.put("email", user.getEmail());
+                // 是否设置支付密码
+                data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
 
-                if (null != user) {
-                    message.setSuccess(true);
-                    // 用户真实姓名
-                    data.put("realname", user.getName());
-                    // 用户昵称
-                    data.put("nickname", user.getNickName());
-                    // 用户头像
-                    data.put("avatar", user.getAvatar());
-                    // 手机号码
-                    data.put("phone", user.getPhone());
-                    // 电子邮箱
-                    data.put("email", user.getEmail());
-                    // 是否设置支付密码
-                    data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
-
-                    message.setData(data);
-                } else {
-                    message.setMsg("用户信息不存在");
-                }
+                message.setData(data);
+            } else {
+                message.setMsg("用户信息不存在");
             }
         } catch (Exception e) {
             log.error("获取用户信息失败，{}", e);
@@ -316,7 +311,7 @@ public class SystemController {
     })
     @PostMapping("reset-password")
     public BusinessMessage<Void> resetPassword(String oldPassword, String newPassword) {
-        log.debug("用户修改密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
+        log.debug("重置密码，原始密码：{}，新密码：{}", oldPassword, newPassword);
         BusinessMessage<Void> message = new BusinessMessage<>();
         if (StringUtils.isBlank(oldPassword)) {
             message.setMsg("原始密码为空");
@@ -394,20 +389,10 @@ public class SystemController {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
-                    // 从缓存检测用户信息
-                    SlUser user = this.userCache.get(phone);
-
-                    // 如果用户不存在，则从数据库查询
-                    if (null == user) {
-                        user = userService.selectOne(new SlUser() {{
-                            setPhone(phone);
-                        }});
-
-                        // 缓存用户信息
-                        if (null != user) {
-                            this.userCache.put(phone, user);
-                        }
-                    }
+                    // 查询用户信息
+                    SlUser user = userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
 
                     if (null == user) {
                         message.setMsg("账号信息不存在");
@@ -447,7 +432,7 @@ public class SystemController {
     })
     @PostMapping("third-party-login")
     public BusinessMessage<JSONObject> thirdPartyLogin(String openId, String nickname, String avatar, Integer type) {
-        log.debug("微信登录，开放账号唯一标识：{}，昵称：{}，头像地址：{}", openId, nickname, avatar);
+        log.debug("第三方登录，开放账号唯一标识：{}，昵称：{}，头像地址：{}", openId, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("开放账号唯一标识为空");
@@ -529,7 +514,7 @@ public class SystemController {
     })
     @PostMapping("sms-login")
     public BusinessMessage<JSONObject> smsLogin(String phone, String password) {
-        log.debug("用户登录，账号：{}，密码：{}", phone, password);
+        log.debug("短信登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
             message.setMsg("账号为空");
@@ -606,7 +591,7 @@ public class SystemController {
     })
     @PostMapping("bind-phone")
     public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId, String password) {
-        log.debug("微信登录，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
+        log.debug("绑定手机号码，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("第三方标识为空");
@@ -638,7 +623,7 @@ public class SystemController {
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
                 } else {
-                    if (StringUtils.isNotBlank(phone)) {
+                    if (StringUtils.isNotBlank(user.getPhone())) {
                         message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
                     } else {
                         // 设置手机号码
@@ -647,10 +632,13 @@ public class SystemController {
                         user.setPassword(passwordEncoder.encode(password));
 
                         // 更新
-                        userService.updateByPrimaryKey(user);
+                        userService.updateByPrimaryKeySelective(user);
 
                         // 更新缓存
                         this.userCache.put(openId, user);
+
+                        // 清除验证码
+                        this.smsVerifyCodeCache.evict(phone);
 
                         message.setSuccess(true);
                     }

@@ -1,6 +1,7 @@
 package com.songpo.searched.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -32,6 +33,11 @@ public class SlTransactionDetail implements Serializable {
      * 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
      */
     private Boolean type;
+
+    /**
+     * 交易金额
+     */
+    private BigDecimal money;
 
     /**
      * 交易货币类型  1.余额  2.了豆
@@ -134,6 +140,24 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
+     * 获取交易金额
+     *
+     * @return money - 交易金额
+     */
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    /**
+     * 设置交易金额
+     *
+     * @param money 交易金额
+     */
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    /**
      * 获取交易货币类型  1.余额  2.了豆
      *
      * @return deal_type - 交易货币类型  1.余额  2.了豆
@@ -180,6 +204,7 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", targetId=").append(targetId);
         sb.append(", redPacketId=").append(redPacketId);
         sb.append(", type=").append(type);
+        sb.append(", money=").append(money);
         sb.append(", dealType=").append(dealType);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

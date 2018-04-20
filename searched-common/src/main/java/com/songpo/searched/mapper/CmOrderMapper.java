@@ -10,11 +10,11 @@ import java.util.Map;
 @Mapper
 public interface CmOrderMapper {
 
-    List<Map<String, Object>> findList(@Param("userId") String userId);
+    List<Map<String, Object>> findList(@Param("userId") String userId, @Param("status") Integer status);
 
     List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
 
-    List<Map<String, Object>> selectMyOrderInfo(@Param("userId") String userId, @Param("orderId") String orderId);
+    Map<String, Object> selectMyOrderInfo(@Param("userId") String userId, @Param("id") String id);
 
     Map<String, Object> findActivityProduct(@Param("productId") String productId);
 
@@ -24,5 +24,5 @@ public interface CmOrderMapper {
 
     Integer groupOrdersByUser(@Param("productId") String productId, @Param("activityId") String activityId, @Param("userId") String userId);
 
-    SlActivityProduct selectActivityProductByActivityAndRepositoryId(@Param("repositoryId") String repositoryId, @Param("activityId") String activityId, @Param("productId") String productId);
+    SlActivityProduct selectActivityProductByRepositoryId(@Param("repositoryId") String repositoryId);
 }

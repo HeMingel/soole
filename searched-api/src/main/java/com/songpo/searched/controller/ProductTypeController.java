@@ -7,7 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,13 @@ import java.util.Map;
 /**
  * @author Y.H
  */
-@Slf4j
 @Api(description = "商品类型管理")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/common/v1/product-type")
 public class ProductTypeController {
+
+    public static final Logger log = LoggerFactory.getLogger(ProductTypeController.class);
 
     @Autowired
     private CmProductTypeService productTypeService;

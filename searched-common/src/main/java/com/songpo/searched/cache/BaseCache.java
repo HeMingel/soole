@@ -1,8 +1,7 @@
 package com.songpo.searched.cache;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.TimeUnit;
@@ -10,13 +9,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * 基础缓存类
  *
- * @author 刘松坡
  * @param <V> 缓存的值
+ * @author 刘松坡
  */
-@Slf4j
-@Data
-@AllArgsConstructor
 public class BaseCache<V> {
+
+    public static final Logger log = LoggerFactory.getLogger(BaseCache.class);
 
     /**
      * 缓存前缀
@@ -38,10 +36,6 @@ public class BaseCache<V> {
      */
     public TimeUnit timeUnit = TimeUnit.SECONDS;
 
-    /**
-     * 是否为缓存设置有效期
-     */
-    public Boolean limitTime = false;
 
     /**
      * 指定秒数缓存
@@ -55,7 +49,6 @@ public class BaseCache<V> {
         this.redisTemplate = redisTemplate;
         this.timeOut = timeOut;
         this.timeUnit = TimeUnit.SECONDS;
-        this.limitTime = true;
     }
 
     /**
@@ -65,12 +58,11 @@ public class BaseCache<V> {
      * @param redisTemplate 模板
      * @param timeOut       周期，单位为秒
      */
-    public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate, Long timeOut, Boolean limitTime) {
+    public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate, Long timeOut, TimeUnit timeUnit) {
         this.prefix = prefix;
         this.redisTemplate = redisTemplate;
         this.timeOut = timeOut;
-        this.timeUnit = TimeUnit.SECONDS;
-        this.limitTime = limitTime;
+        this.timeUnit = timeUnit;
     }
 
     /**
@@ -82,7 +74,6 @@ public class BaseCache<V> {
     public BaseCache(String prefix, RedisTemplate<String, V> redisTemplate) {
         this.prefix = prefix;
         this.redisTemplate = redisTemplate;
-        this.limitTime = false;
     }
 
     /**
@@ -109,13 +100,8 @@ public class BaseCache<V> {
      */
     public void put(String key, V value) {
         String storeKey = prefix + key;
-        // 如果启用缓存周期限制，则根据设置的周期进行保持，否则不进行缓存周期设置
         try {
-            if (limitTime) {
-                redisTemplate.opsForValue().set(storeKey, value, timeOut, timeUnit);
-            } else {
-                redisTemplate.opsForValue().set(storeKey, value);
-            }
+            redisTemplate.opsForValue().set(storeKey, value);
         } catch (Exception e) {
             log.error("添加缓存失败，key = {}", storeKey);
         }
@@ -124,12 +110,29 @@ public class BaseCache<V> {
     /**
      * 添加缓存
      *
-     * @param key   键
-     * @param value 值
+     * @param key     键
+     * @param value   值
+     * @param timeOut 过期时间
+     */
+    public void put(String key, V value, Long timeOut) {
+        String storeKey = prefix + key;
+        try {
+            redisTemplate.opsForValue().set(storeKey, value, timeOut, timeUnit);
+        } catch (Exception e) {
+            log.error("添加缓存失败，key = {}", storeKey);
+        }
+    }
+
+    /**
+     * 添加缓存
+     *
+     * @param key      键
+     * @param value    值
+     * @param timeOut  过期时间
+     * @param timeUnit 过期时间单位
      */
     public void put(String key, V value, Long timeOut, TimeUnit timeUnit) {
         String storeKey = prefix + key;
-        // 如果启用缓存周期限制，则根据设置的周期进行保持，否则不进行缓存周期设置
         try {
             redisTemplate.opsForValue().set(storeKey, value, timeOut, timeUnit);
         } catch (Exception e) {
@@ -176,5 +179,37 @@ public class BaseCache<V> {
         } catch (Exception e) {
             log.error("清空缓存失败，key = {}", prefix);
         }
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public RedisTemplate<String, V> getRedisTemplate() {
+        return redisTemplate;
+    }
+
+    public void setRedisTemplate(RedisTemplate<String, V> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    public Long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(Long timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    public void setTimeUnit(TimeUnit timeUnit) {
+        this.timeUnit = timeUnit;
     }
 }

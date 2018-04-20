@@ -6,10 +6,14 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="business_application_id" jdbcType="VARCHAR" property="businessApplicationId"/>
     <result column="owner_id" jdbcType="VARCHAR" property="ownerId" />
+    <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
+    <result column="quota_id" jdbcType="VARCHAR" property="quotaId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="longitude" jdbcType="DECIMAL" property="longitude" />
     <result column="latitude" jdbcType="DECIMAL" property="latitude" />
@@ -25,7 +29,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, owner_id, name, description, image_url, address, longitude, latitude, total_sales, 
-    money, coin, silver, rating, phone, shop_type
+      id, business_application_id, owner_id, product_type_id, quota_id, name, description,
+      image_url, logo_url, address, longitude, latitude, total_sales, money, coin, silver,
+      rating, phone, shop_type
   </sql>
 </mapper>

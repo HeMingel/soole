@@ -35,12 +35,6 @@ public class SlAfterSalesService implements Serializable {
     private BigDecimal money;
 
     /**
-     * 凭证图片地址
-     */
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    /**
      * 商品id
      */
     @Column(name = "product_id")
@@ -170,24 +164,6 @@ public class SlAfterSalesService implements Serializable {
      */
     public void setMoney(BigDecimal money) {
         this.money = money;
-    }
-
-    /**
-     * 获取凭证图片地址
-     *
-     * @return image_url - 凭证图片地址
-     */
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    /**
-     * 设置凭证图片地址
-     *
-     * @param imageUrl 凭证图片地址
-     */
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
     }
 
     /**
@@ -327,7 +303,6 @@ public class SlAfterSalesService implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", reason=").append(reason);
         sb.append(", money=").append(money);
-        sb.append(", imageUrl=").append(imageUrl);
         sb.append(", productId=").append(productId);
         sb.append(", userId=").append(userId);
         sb.append(", shopId=").append(shopId);

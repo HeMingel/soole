@@ -3,62 +3,92 @@
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
     <!-- 根据销售模式查询商品 -->
+
     <select id="selectBySalesMode" resultType="map">
         SELECT
-        p.id,
-        p.name,
-        p.reference_price AS price,
-        p.image_url AS imageUrl
-        <if test="salesModeId != ''">
-            , psmoc.count
-        </if>
-        FROM sl_product p
-        LEFT JOIN sl_product_repository pr ON pr.product_id = p.id
-        LEFT JOIN sl_shop s ON s.id = p.shop_id
-        <if test="salesModeId != ''">
-            LEFT JOIN sl_product_sale_mode_order_count psmoc ON psmoc.product_id = p.id
-        </if>
-        <where>
-            <if test="name != '' and name != null ">
-                <bind name="pName" value="'%' + name + '%'"/>
-                AND p.name LIKE #{pName}
-            </if>
-            <if test="salesModeId != ''">
-                AND psmoc.sales_mode_id = #{salesModeId}
-            </if>
-            <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
-            <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
-                AND s.longitude BETWEEN #{longitudeMin} - 10 AND #{longitudeMax}
-                AND s.latitude BETWEEN #{latitudeMin} - 10 AND #{latitudeMax}
-            </if>
-            <!-- 如果价格区间最小值不为空，最大值为空，则选择商品价格大于或等于价格区间最小值 -->
-            <if test="null != priceMin and null == priceMax">
-                AND p.reference_price &gt;= #{priceMin}
-            </if>
-            <!-- 如果价格区间最大值不为空，最小值为空，则选择商品价格小于或等于价格区间最大值 -->
-            <if test="null == priceMin and null != priceMax">
-                AND p.reference_price &lt;= #{priceMax}
-            </if>
-            <!-- 如果价格区间最小值不为空，最大值不为空，则选择商品价格大于价格区间最小值和小于价格区间最大值 -->
-            <if test="null != priceMin and null != priceMax">
-                AND p.reference_price BETWEEN #{priceMin} AND #{priceMax}
-            </if>
-        </where>
+          p.id as product_id,
+          p.name,
+          p.image_url,
+          p.`sales_mode_id`,
+          p.`introduction`,
+          pt.name product_type_name,
+          ap.*
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.`product_id`
+          LEFT JOIN sl_shop s
+            ON p.`shop_id` = s.`id`
+          LEFT JOIN sl_product_type pt
+            ON p.product_type_id = pt.id
+            <where>
+                p.sold_out = 1
+                and ap.enabled = 1
+                <if test="name != '' and name != null ">
+                    <bind name="pName" value="'%' + name + '%'"/>
+                    AND p.name LIKE #{pName}
+                </if>
+                <if test="salesModeId != '' and salesModeId != null">
+                    AND p.sales_mode_id = #{salesModeId}
+                </if>
+                <if test="activityId != '' and activityId != null and activityId != '65C872C3-9B52-6150-60E5-679A9242AC79' ">
+                    and ap.activity_id = #{activityId}
+                </if>
+                <if test="goodsTypeId !='' and goodsTypeId != null ">
+                    and p.product_type_id = #{goodsTypeId}
+                </if>
+                <if test="activityId =='65C872C3-9B52-6150-60E5-679A9242AC79' ">
+                    and ap.sharing_rewards_id != ''
+                </if>
+                <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
+                <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
+                    AND s.longitude BETWEEN #{longitudeMin} - 10 AND #{longitudeMax}
+                    AND s.latitude BETWEEN #{latitudeMin} - 10 AND #{latitudeMax}
+                </if>
+                <!-- 如果价格区间最小值不为空，最大值为空，则选择商品价格大于或等于价格区间最小值 -->
+                <if test="null != priceMin and null == priceMax">
+                    AND ap.price &gt;= #{priceMin}
+                </if>
+                <!-- 如果价格区间最大值不为空，最小值为空，则选择商品价格小于或等于价格区间最大值 -->
+                <if test="null == priceMin and null != priceMax">
+                    AND ap.price &lt;= #{priceMax}
+                </if>
+                <!-- 如果价格区间最小值不为空，最大值不为空，则选择商品价格大于价格区间最小值和小于价格区间最大值 -->
+                <if test="null != priceMin and null != priceMax">
+                    AND ap.price BETWEEN #{priceMin} AND #{priceMax}
+                </if>
+                <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
+                    <bind name="shopAddress" value="'%' + addressNow + '%'"/>
+                    AND s.address like #{shopAddress}
+                </if>
+            </where>
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="sortByPrice != ''">
-                p.reference_price ${sortByPrice},
+                ap.price ${sortByPrice},
             </if>
             <if test="sortByRating != ''">
                 s.rating ${sortByRating},
             </if>
+            <if test="sortBySale != ''">
+                p.sales_volume ${sortBySale},
+            </if>
+            <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
+                s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC
+            </if>
         </trim>
     </select>
+    <!--addressNow")
+    longitudeNow"
+    latitudeNow")-->
 
     <!-- 根据活动唯一标识符查询商品 -->
     <select id="selectByAction" resultType="com.songpo.searched.entity.SlProduct">
-        SELECT *
-        FROM sl_product p LEFT JOIN sl_activity_product ap ON ap.product_id = p.id
+        SELECT
+        *
+        FROM sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON ap.product_id = p.id
         WHERE ap.action_id = #{actionId}
     </select>
 
@@ -67,13 +97,13 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         SELECT
-        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume
+        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
         ON p.id = ap.product_id
         WHERE 1=1
-        and p.`sold_out`=1 AND ap.enabled = 1
+        and p.`sold_out`=1 AND ap.enabled = 1 and ap.activity_id = #{activityId}
         <if test="saleMode != null and saleMode != ''">
         and p.sales_mode_id = #{saleMode}
     </if>
@@ -83,8 +113,8 @@
     <if test="goodsName != null and goodsName != ''">
         and p.`name` like "%"#{goodsName}"%"
     </if>
-    <if test="goodsType != null and goodsType !=''">
-        AND p.product_type_id = #{goodsType}
+    <if test="goodsTypeId != null and goodsTypeId !=''">
+        AND p.product_type_id = #{goodsTypeId}
     </if>
     <if test="screenGoods == null and screenGoods ==''">
         ORDER BY (p.sales_volume + p.comment_num) DESC
@@ -103,6 +133,25 @@
         </if>
 
     </select>
+
+
+    <!--查询拼团商品发起人的头像-->
+    <select id="selectGroupAvatar" resultType="Map" parameterType="String">
+        SELECT
+          *
+        FROM
+          sl_order_detail od
+          LEFT JOIN sl_order o
+            ON od.order_id = o.id
+          LEFT JOIN sl_user u
+            ON u.id = o.user_id
+        WHERE o.payment_state = '1'
+          AND od.product_id = #{goodsId}
+        GROUP BY od.product_id
+        ORDER BY o.pay_time DESC
+        LIMIT 3
+    </select>
+
     <!--根据商品名称查询商品-->
     <select id="selectByName" resultType="Map" parameterType="String">
         SELECT
@@ -120,7 +169,7 @@
     <!--搜索商品表基础信息-->
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
       SELECT
-          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark,p.image_url
+          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark,p.image_url,p.shop_id
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
@@ -259,6 +308,14 @@
     <!--系统推荐商品-->
     <select id="systemGoods" parameterType="String" resultType="HashMap">
         SELECT
+        p.id as productId,
+        p.`sales_mode_id`,
+        p.name,
+        p.comment_num,
+        p.sales_volume,
+        p.introduction,
+        p.remark,
+        p.image_url,
           ap.*
         FROM
           sl_product p

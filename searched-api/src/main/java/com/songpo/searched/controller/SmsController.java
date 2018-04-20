@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author 刘松坡
  */
 @Api(description = "短信接口")
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/sms")

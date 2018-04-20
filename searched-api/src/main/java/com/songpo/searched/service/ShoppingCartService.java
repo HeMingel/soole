@@ -8,8 +8,6 @@ import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlProductRepository;
 import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.CmOrderMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 public class ShoppingCartService {
     @Autowired
     private ShoppingCartCache cache;
@@ -40,9 +37,22 @@ public class ShoppingCartService {
     public BusinessMessage addMyShoppingCart(CMShoppingCart pojo) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        List<Object> list = new ArrayList<>();
         if (null != user) {
-            this.cache.put(user.getId(), pojo);
+            CMShoppingCart shoppingCart = this.cache.get(user.getId());
+            if (!StringUtils.isEmpty(shoppingCart) && shoppingCart.getCarts().size() > 0) {
+                String repositoryId = pojo.getCarts().get(0).getRepositoryId();
+                int count = pojo.getCarts().get(0).getCounts();
+                for (CMGoods goods : shoppingCart.getCarts()) {
+                    if (goods.getRepositoryId().equals(repositoryId)) {
+                        pojo.getCarts().get(0).setCounts(count + goods.getCounts());
+                    } else {
+                        pojo.getCarts().add(goods);
+                    }
+                }
+                this.cache.put(user.getId(), pojo);
+            } else {
+                this.cache.put(user.getId(), pojo);
+            }
             message.setMsg("添加成功");
             message.setSuccess(true);
             message.setData(1);
@@ -232,8 +242,16 @@ public class ShoppingCartService {
                 List<CMGoods> goodsList = new ArrayList<>();
                 for (CMGoods goods : pojo.getCarts()) {
                     if (agoRepositoryId.equals(goods.getRepositoryId())) {
-                        goods.setCounts(counts);
-                        goods.setRepositoryId(repositoryId);
+                        if (counts != null && counts > 0) {
+                            goods.setCounts(counts);
+                        }
+                        if (!StringUtils.isEmpty(repositoryId)) {
+                            goods.setRepositoryId(repositoryId);
+                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                setId(repositoryId);
+                            }});
+                            goods.setGoodId(repository.getProductId());
+                        }
                     }
                     goodsList.add(goods);
                 }

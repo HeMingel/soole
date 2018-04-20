@@ -7,7 +7,7 @@
         ss.name shopName,
         spr.product_name productName,
         spr.product_detail_group_name groupName,
-        spr.product_image_url goodimageUrl,
+        sp.image_url goodImageUrl,
         sod.quantity counts,
         so.payment_state paymentState,
         sod.shipping_state shippingState,
@@ -17,9 +17,12 @@
         ss.image_url shopImageUrl,
         sp.sales_mode_id salesModeId,
         so.id orderId,
+        sod.id orderDetailId,
         spr.ship ship,
         so.type type,
         so.serial_number serialNumber,
+        so.total_amount totalAmount,
+        so.deduct_total_pulse deductTotalPulse,
         sod.buyer_message buyerMessage,
         ss.phone shopPhone
         from sl_order_detail sod
@@ -29,6 +32,15 @@
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
+        and so.type in (1,4,5,6)
+        <if test="status != null">
+            <if test="status == 2">
+                and so.payment_state = 2
+            </if>
+            <if test="status != 2">
+                and sod.shipping_state = #{status}
+            </if>
+        </if>
         ORDER BY so.create_time DESC
     </select>
 
@@ -46,6 +58,8 @@
         so.consigneeName consigneeName,
         so.consigneePhone consigneePhone,
         so.province province,
+        sod.activity_product_id activityProductId,
+        sod.group_people groupPeople,
         so.city city,
         so.county county,
         so.detailed detailed,
@@ -56,12 +70,12 @@
         so.type AS type,
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
-        so.payment_channel paymentChannel
+        ifnull(so.payment_channel,0) paymentChannel
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
-        LEFT JOIN sl_activity_product sap ON sap.id = so.activity_product_id
+        LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
-        WHERE so.user_id = #{userId} and so.id = #{orderId}
+        WHERE so.user_id = #{userId} and sod.id = #{id}
     </select>
 
     <select id="findActivityProduct" resultType="java.util.Map">
@@ -90,7 +104,7 @@
         AND so.serial_number = sod.serial_number
         WHERE so.payment_state &lt; 100 AND sod.product_id = #{productId} and sod.creator = #{userId}
         and so.user_id = #{userId}
-        and so.activity_product_id = #{activityProductId}
+        and sod.activity_product_id = #{activityProductId}
     </select>
     <select id="findProductsRepositoryId" resultType="java.lang.String">
         SELECT sapr.`product_repository_id`
@@ -107,11 +121,11 @@
         LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`
         WHERE
         so.type = '2' AND sod.`product_id` = #{productId}
-        and so.payment_state &lt; 100 AND so.activity_product_id = #{activityId}
+        and so.payment_state &lt; 100 AND sod.activity_product_id = #{activityId}
         and sod.creator = #{userId}
         AND so.`user_id` = #{userId}
     </select>
-    <select id="selectActivityProductByActivityAndRepositoryId"
+    <select id="selectActivityProductByRepositoryId"
             resultType="com.songpo.searched.entity.SlActivityProduct">
         SELECT
         sap.id id,
@@ -126,7 +140,6 @@
         FROM sl_activity_product sap
         LEFT JOIN sl_activity_product_repository sapr ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
         LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
-        WHERE sap.`activity_id` = #{activityId} AND spr.`id`= #{repositoryId}
-        and sap.product_id = #{productId}
+        WHERE sap.enabled = TRUE AND spr.`id`= #{repositoryId}
     </select>
 </mapper>

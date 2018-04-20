@@ -183,7 +183,7 @@ public class SlOrderDetail implements Serializable {
     private Integer rebatePulse;
 
     /**
-     * 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
@@ -193,6 +193,12 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "share_of_people_id")
     private String shareOfPeopleId;
+
+    /**
+     * 商品活动id
+     */
+    @Column(name = "activity_product_id")
+    private String activityProductId;
 
     private static final long serialVersionUID = 1L;
 
@@ -737,18 +743,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      *
-     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     public Integer getShippingState() {
         return shippingState;
     }
 
     /**
-     * 设置3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      *
-     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成 6:申请售后
+     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
      */
     public void setShippingState(Integer shippingState) {
         this.shippingState = shippingState;
@@ -770,6 +776,24 @@ public class SlOrderDetail implements Serializable {
      */
     public void setShareOfPeopleId(String shareOfPeopleId) {
         this.shareOfPeopleId = shareOfPeopleId == null ? null : shareOfPeopleId.trim();
+    }
+
+    /**
+     * 获取商品活动id
+     *
+     * @return activity_product_id - 商品活动id
+     */
+    public String getActivityProductId() {
+        return activityProductId;
+    }
+
+    /**
+     * 设置商品活动id
+     *
+     * @param activityProductId 商品活动id
+     */
+    public void setActivityProductId(String activityProductId) {
+        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
     @Override
@@ -810,6 +834,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", shippingState=").append(shippingState);
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
+        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

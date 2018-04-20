@@ -7,10 +7,12 @@ import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlPresellReturnedRecord;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -25,13 +27,13 @@ import java.util.Map;
  * <p>
  * 主要提供处理跟商品相关的服务
  */
-@Slf4j
 @Service
 public class CmProductService {
 
+    public static final Logger log = LoggerFactory.getLogger(CmProductService.class);
+
     @Autowired
     private CmProductMapper mapper;
-
     @Autowired
     private CmProductCommentMapper cmProductCommentMapper;
     @Autowired
@@ -40,6 +42,8 @@ public class CmProductService {
     private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
+    @Autowired
+    private SlPresellReturnedRecordMapper slPresellReturnedRecordMapper;
 
 
     /**
@@ -47,6 +51,7 @@ public class CmProductService {
      *
      * @param name         商品名称
      * @param salesModeId  销售模式唯一标识符
+     * @param activityId  活动Id
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
@@ -57,10 +62,13 @@ public class CmProductService {
      * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
      * @param pageNum      页码
      * @param pageSize     容量
+     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @return 商品分页列表
      */
-    public PageInfo<Map<String, Object>> selectBySalesMode(String name,
+    public PageInfo selectBySalesMode(String name,
                                                            String salesModeId,
+                                                           String activityId,
+                                                           String goodsTypeId,
                                                            Double longitudeMin,
                                                            Double longitudeMax,
                                                            Double latitudeMin,
@@ -70,7 +78,11 @@ public class CmProductService {
                                                            Integer priceMin,
                                                            Integer priceMax,
                                                            Integer pageNum,
-                                                           Integer pageSize) {
+                                                           Integer pageSize,
+                                                           String sortBySale,
+                                                           String addressNow,
+                                                           Double longitudeNow,
+                                                           Double latitudeNow) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -91,14 +103,32 @@ public class CmProductService {
         if (!StringUtils.containsAny(sortByRating, orderStrArray)) {
             sortByRating = StringUtils.trimToEmpty(sortByRating);
         }
+        //过滤销售数量排序中的非法字符
+        if(!StringUtils.containsAny(sortBySale, orderStrArray)){
+            sortBySale = StringUtils.trimToEmpty(sortBySale);
+        }
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow);
 
-        return new PageInfo<>(list);
+        if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
+            List<Object> goodsList = new ArrayList<>();
+            for(Map<String,Object> map:list ){
+                //关联order_detail 表的 product_id
+                Map<String,Object> avatarMap = new HashMap<>();
+                List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("product_id").toString());
+                avatarMap.put("avatarList",avatarList);
+                avatarMap.put("goods",map);
+                goodsList.add(avatarMap);
+            }
+            return new PageInfo<>(goodsList);
+        }else {
+            return new PageInfo<>(list);
+        }
+
     }
 
     /**
@@ -121,35 +151,61 @@ public class CmProductService {
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
+        if(!actionId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+            // 执行查询
+            List<SlProduct> list = this.mapper.selectByAction(actionId);
+            return new PageInfo<>(list);
+        }else {
+            List<SlProduct> list = this.mapper.selectByAction(actionId);
+            return new PageInfo<>(list);
+        }
 
-        // 执行查询
-        List<SlProduct> list = this.mapper.selectByAction(actionId);
 
-        return new PageInfo<>(list);
+        //return new PageInfo<>(list);
     }
 
     /**
      * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
-     * @param goodsType  商品分类ID
+     * @param goodsTypeId  商品分类ID
      * @param screenType 筛选类型
      * @param page       商品当前页
      * @param size       每页容量
      * @return 商品列表
      */
-    public BusinessMessage screenGoods(String goodsType, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
-        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
+    public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
+        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsTypeId, screenType, page, size, name);
         BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
 
-            if (goodsType != null || screenType != null || name != null || saleMode != null) {
-                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name, ActivityConstant.NO_ACTIVITY);
+            if (goodsTypeId != null || screenType != null || name != null || saleMode != null) {
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsTypeId, screenType, saleMode, name, ActivityConstant.NO_ACTIVITY);
+
                 if (list.size() > 0) {
-                    businessMessage.setMsg("查询成功");
-                    businessMessage.setSuccess(true);
-                    businessMessage.setData(new PageInfo<>(list));
+                    //如果是拼团商品
+                    if(saleMode!= null && saleMode == SalesModeConstant.SALES_MODE_GROUP){
+                        List<Object> goodsList = new ArrayList<>();
+                        for(Map<String,Object> map:list ){
+
+                            //关联order_detail 表的 product_id
+                            Map<String,Object> avatarMap = new HashMap<>();
+
+                            List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
+                            avatarMap.put("avatarList",avatarList);
+                            avatarMap.put("goods",map);
+                            goodsList.add(avatarMap);
+                        }
+                        businessMessage.setMsg("查询成功");
+                        businessMessage.setSuccess(true);
+                        businessMessage.setData(new PageInfo<>(goodsList));
+                    }else{
+                        businessMessage.setMsg("查询成功");
+                        businessMessage.setSuccess(true);
+                        businessMessage.setData(new PageInfo<>(list));
+                    }
+
                 } else {
                     businessMessage.setMsg("查询无数据!");
                     businessMessage.setSuccess(true);
@@ -257,6 +313,44 @@ public class CmProductService {
     }
 
     /**
+     * 查询预售商品周期
+     * @param goodsId 商品ID
+     * @return 预售商品周期表
+     */
+    public BusinessMessage selectGoodsCycle(String goodsId){
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(true);
+        try {
+            // 1.预售模式2.消费返利模式
+            String type = "1";
+
+            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.select(new SlPresellReturnedRecord(){{
+                setProductId(goodsId);
+                setType(type);
+            }});
+            if(slPresellReturnedRecordList.size() >0){
+                double totalMoney = 0;
+                int totalDays  = 0;
+                for (SlPresellReturnedRecord sl: slPresellReturnedRecordList) {
+                    totalMoney += sl.getReturnedMoney().doubleValue();
+                    totalDays +=  sl.getReturnedNumber();
+                }
+                Map<String,Object> map = new HashMap<>();
+                map.put("presellReturnedRecordList",slPresellReturnedRecordList);
+                map.put("totalMoney",totalMoney);
+                map.put("totalDays",totalDays);
+                businessMessage.setSuccess(true);
+                businessMessage.setData(map);
+                businessMessage.setMsg("查询成功");
+            }
+
+        }catch (Exception e){
+            log.error("查询异常",e);
+            businessMessage.setMsg("查询异常");
+        }
+        return businessMessage;
+    }
+    /**
      * 根据商品Id 查询商品规格
      *
      * @param id 商品ID
@@ -304,7 +398,7 @@ public class CmProductService {
             //查询后台推送推荐商品
             List<Map<String, Object>> backStageGoods = this.mapper.backStageGoods(id, ActivityConstant.NO_ACTIVITY);
             int goodsSize = 4;
-            if (backStageGoods != null && backStageGoods.size() < goodsSize) {
+            if (backStageGoods.size() < goodsSize) {
                 //查询该商品商品类别
                 Map<String, Object> systemGoodsType = this.mapper.systemGoodsType(id);
                 // 根据商品类别查销量最好的四个普通商品
@@ -364,7 +458,7 @@ public class CmProductService {
                     apExample.createCriteria().andEqualTo("productId", slProductList.get(i).getId()).andEqualTo("enabled", 1);
                     List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                     activityProduct.put("activityProduct", activityProductList);
-                    activityProduct.put("goodsType", slProductList.get(i).getSalesModeId());
+                    activityProduct.put("goodsType", slProductList);
                     goodsList.add(activityProduct);
                 }
                 businessMessage.setSuccess(true);
@@ -395,8 +489,6 @@ public class CmProductService {
                     setId(productId);
                     setEnabled(false);
                 }});
-
-                // TODO 做一些其他的业务处理
             }
         }
     }

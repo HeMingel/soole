@@ -11,7 +11,6 @@ buildscript {
         swaggerSpringBootStarterVersion = '1.7.0.RELEASE'
         mapperSpringBootStarterVersion = '2.0.1'
         pagehelperSpringBootStarterVersion = '1.2.3'
-        lombokVersion = '1.16.20'
     }
 
     // 指定JDK版本

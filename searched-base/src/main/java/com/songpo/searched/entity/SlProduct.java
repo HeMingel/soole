@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -85,7 +85,7 @@ public class SlProduct implements Serializable {
     private Integer recommend;
 
     /**
-     * 是否下架(0:下架 1:上架)
+     * 1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      */
     @Column(name = "sold_out")
     private Boolean soldOut;
@@ -94,6 +94,11 @@ public class SlProduct implements Serializable {
      * 关键词
      */
     private String antistop;
+
+    /**
+     * 商品审核未通过原因
+     */
+    private String reason;
 
     private static final long serialVersionUID = 1L;
 
@@ -350,18 +355,18 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取是否下架(0:下架 1:上架)
+     * 获取1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      *
-     * @return sold_out - 是否下架(0:下架 1:上架)
+     * @return sold_out - 1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      */
     public Boolean getSoldOut() {
         return soldOut;
     }
 
     /**
-     * 设置是否下架(0:下架 1:上架)
+     * 设置1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      *
-     * @param soldOut 是否下架(0:下架 1:上架)
+     * @param soldOut 1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;
@@ -383,6 +388,24 @@ public class SlProduct implements Serializable {
      */
     public void setAntistop(String antistop) {
         this.antistop = antistop == null ? null : antistop.trim();
+    }
+
+    /**
+     * 获取商品审核未通过原因
+     *
+     * @return reason - 商品审核未通过原因
+     */
+    public String getReason() {
+        return reason;
+    }
+
+    /**
+     * 设置商品审核未通过原因
+     *
+     * @param reason 商品审核未通过原因
+     */
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 
     @Override
@@ -407,6 +430,7 @@ public class SlProduct implements Serializable {
         sb.append(", recommend=").append(recommend);
         sb.append(", soldOut=").append(soldOut);
         sb.append(", antistop=").append(antistop);
+        sb.append(", reason=").append(reason);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

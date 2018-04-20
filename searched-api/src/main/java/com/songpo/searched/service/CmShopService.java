@@ -10,19 +10,19 @@ import com.songpo.searched.mapper.SlActivityProductMapper;
 import com.songpo.searched.mapper.SlProductMapper;
 import com.songpo.searched.mapper.SlShopLookNumMapper;
 import com.songpo.searched.mapper.SlShopMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-@Slf4j
 public class CmShopService {
+
+    public static final Logger log = LoggerFactory.getLogger(CmShopService.class);
 
     @Autowired
     private SlShopMapper slShopMapper;
@@ -38,6 +38,7 @@ public class CmShopService {
      * @param id
      * @return
      */
+
     public BusinessMessage shopAndGoods(String id,String userId) {
         log.debug("商户Id:{},用户id:{}",id,userId);
 
@@ -62,7 +63,7 @@ public class CmShopService {
                 apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
                 List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                 activityProduct.put("activityProduct",activityProductList);
-                activityProduct.put("goodsType",productList.get(i).getSalesModeId());
+                activityProduct.put("goodsBaseInfo",productList);
                 goodsList.add(activityProduct);
             }
             if(userId != null){

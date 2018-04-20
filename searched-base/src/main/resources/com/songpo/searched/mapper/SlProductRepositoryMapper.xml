@@ -22,10 +22,10 @@
     <result column="discount" jdbcType="DECIMAL" property="discount" />
     <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
     <result column="state" jdbcType="DECIMAL" property="state" />
-    <result column="count" jdbcType="DECIMAL" property="count" />
+    <result column="count" jdbcType="INTEGER" property="count" />
     <result column="score" jdbcType="DECIMAL" property="score" />
     <result column="cost_price" jdbcType="DECIMAL" property="costPrice" />
-    <result column="weight" jdbcType="DECIMAL" property="weight" />
+    <result column="weight" jdbcType="VARCHAR" property="weight" />
     <result column="ship" jdbcType="BIT" property="ship" />
     <result column="gold" jdbcType="INTEGER" property="gold" />
     <result column="silver" jdbcType="INTEGER" property="silver" />

@@ -2,7 +2,6 @@ package com.songpo.searched.service;
 
 import com.songpo.searched.mapper.CmProductTypeMapper;
 import com.songpo.searched.mapper.SlProductTypeMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import java.util.Map;
  * @author 刘松坡
  */
 @Service
-@Slf4j
 public class CmProductTypeService {
 
     @Autowired

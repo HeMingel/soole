@@ -21,9 +21,6 @@ repositories {
 
 dependencies {
 
-    // 实体编译组件
-    compile('org.projectlombok:lombok:1.16.20')
-
     // Druid数据源组件
     compile("com.alibaba:druid-spring-boot-starter:${druidSpringVersion}")
 

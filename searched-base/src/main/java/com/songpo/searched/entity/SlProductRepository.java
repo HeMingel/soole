@@ -61,12 +61,12 @@ public class SlProductRepository implements Serializable {
     private BigDecimal productProfitMoney;
 
     /**
-     * 模式价格
+     * 实际规格价格
      */
     private BigDecimal price;
 
     /**
-     * 个人购买价格
+     * 实际个人购买价格
      */
     @Column(name = "personal_price")
     private BigDecimal personalPrice;
@@ -124,7 +124,7 @@ public class SlProductRepository implements Serializable {
     /**
      * 重量
      */
-    private BigDecimal weight;
+    private String weight;
 
     /**
      * 是否包邮(1:包邮 0:不包邮)
@@ -336,36 +336,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取模式价格
+     * 获取实际规格价格
      *
-     * @return price - 模式价格
+     * @return price - 实际规格价格
      */
     public BigDecimal getPrice() {
         return price;
     }
 
     /**
-     * 设置模式价格
+     * 设置实际规格价格
      *
-     * @param price 模式价格
+     * @param price 实际规格价格
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     /**
-     * 获取个人购买价格
+     * 获取实际个人购买价格
      *
-     * @return personal_price - 个人购买价格
+     * @return personal_price - 实际个人购买价格
      */
     public BigDecimal getPersonalPrice() {
         return personalPrice;
     }
 
     /**
-     * 设置个人购买价格
+     * 设置实际个人购买价格
      *
-     * @param personalPrice 个人购买价格
+     * @param personalPrice 实际个人购买价格
      */
     public void setPersonalPrice(BigDecimal personalPrice) {
         this.personalPrice = personalPrice;
@@ -538,7 +538,7 @@ public class SlProductRepository implements Serializable {
      *
      * @return weight - 重量
      */
-    public BigDecimal getWeight() {
+    public String getWeight() {
         return weight;
     }
 
@@ -547,8 +547,8 @@ public class SlProductRepository implements Serializable {
      *
      * @param weight 重量
      */
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setWeight(String weight) {
+        this.weight = weight == null ? null : weight.trim();
     }
 
     /**

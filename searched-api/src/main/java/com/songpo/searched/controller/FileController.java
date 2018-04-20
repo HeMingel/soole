@@ -6,7 +6,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -20,12 +21,13 @@ import java.util.Map;
 /**
  * @author 刘松坡
  */
-@Slf4j
 @Api(description = "文件管理")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/common/v1/files")
 public class FileController {
+
+    public static final Logger log = LoggerFactory.getLogger(FileController.class);
 
     @Autowired
     private FileService fileService;
@@ -40,7 +42,7 @@ public class FileController {
     @ApiOperation(value = "文件上传")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "类型", paramType = "form"),
-            @ApiImplicitParam(name = "file", value = "文件", paramType = "form", dataType = "file")
+            @ApiImplicitParam(name = "file", value = "文件", paramType = "form", dataType = "java.io.File")
     })
     @PostMapping
     public BusinessMessage<Map<String, String>> upload(String type, MultipartFile file) {

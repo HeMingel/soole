@@ -39,6 +39,16 @@
                         password="${jdbc.password}">
         </jdbcConnection>
 
+        <!-- 只有一个属于forceBigDecimals，默认false。
+            如果字段精确超过0，生成BigDecimal
+            如果字段精确是0，总长度10-18生成Long;
+            如果字段精确是0，总长5-9生成Integer;
+            如果字段精确是0，总长小于5生成Short;
+            如果forceBigDecimals为true,统一生成BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
         <!-- javaModelGenerator是模型的生成信息，这里将指定这些Java model类的生成路径 -->
         <javaModelGenerator targetPackage="${xml.modelPackage}"
                             targetProject="src/main/java">
@@ -64,49 +74,7 @@
             <property name="selectAllOrderByClause" value="true"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="sl_product" domainObjectName="SlProduct"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="sl_order" domainObjectName="SlOrder"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="sl_order_detail" domainObjectName="SlOrderDetail"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="sl_activity_product" domainObjectName="SlActivityProduct"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="sl_activity_product_repository" domainObjectName="SlActivityProductRepository"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="sl_product_repository" domainObjectName="SlProductRepository"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--enableDeleteByExample="false" enableSelectByExample="false">-->
-        <!--<property name="useActualColumnNames" value="false"/>-->
-        <!--<property name="selectAllOrderByClause" value="true"/>-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
     </context>
+
+
 </generatorConfiguration>

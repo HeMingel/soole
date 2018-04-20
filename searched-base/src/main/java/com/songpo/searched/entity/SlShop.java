@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
@@ -14,10 +14,28 @@ public class SlShop implements Serializable {
     private String id;
 
     /**
+     * 申请店铺表ID
+     */
+    @Column(name = "business_application_id")
+    private String businessApplicationId;
+
+    /**
      * 店主唯一标识符
      */
     @Column(name = "owner_id")
     private String ownerId;
+
+    /**
+     * 店铺经营类型id
+     */
+    @Column(name = "product_type_id")
+    private String productTypeId;
+
+    /**
+     * 高级店铺预售额度ID
+     */
+    @Column(name = "quota_id")
+    private String quotaId;
 
     /**
      * 名称
@@ -34,6 +52,12 @@ public class SlShop implements Serializable {
      */
     @Column(name = "image_url")
     private String imageUrl;
+
+    /**
+     * 店铺logo
+     */
+    @Column(name = "logo_url")
+    private String logoUrl;
 
     /**
      * 地址
@@ -108,6 +132,24 @@ public class SlShop implements Serializable {
     }
 
     /**
+     * 获取申请店铺表ID
+     *
+     * @return business_application_id - 申请店铺表ID
+     */
+    public String getBusinessApplicationId() {
+        return businessApplicationId;
+    }
+
+    /**
+     * 设置申请店铺表ID
+     *
+     * @param businessApplicationId 申请店铺表ID
+     */
+    public void setBusinessApplicationId(String businessApplicationId) {
+        this.businessApplicationId = businessApplicationId == null ? null : businessApplicationId.trim();
+    }
+
+    /**
      * 获取店主唯一标识符
      *
      * @return owner_id - 店主唯一标识符
@@ -123,6 +165,42 @@ public class SlShop implements Serializable {
      */
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId == null ? null : ownerId.trim();
+    }
+
+    /**
+     * 获取店铺经营类型id
+     *
+     * @return product_type_id - 店铺经营类型id
+     */
+    public String getProductTypeId() {
+        return productTypeId;
+    }
+
+    /**
+     * 设置店铺经营类型id
+     *
+     * @param productTypeId 店铺经营类型id
+     */
+    public void setProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId == null ? null : productTypeId.trim();
+    }
+
+    /**
+     * 获取高级店铺预售额度ID
+     *
+     * @return quota_id - 高级店铺预售额度ID
+     */
+    public String getQuotaId() {
+        return quotaId;
+    }
+
+    /**
+     * 设置高级店铺预售额度ID
+     *
+     * @param quotaId 高级店铺预售额度ID
+     */
+    public void setQuotaId(String quotaId) {
+        this.quotaId = quotaId == null ? null : quotaId.trim();
     }
 
     /**
@@ -177,6 +255,24 @@ public class SlShop implements Serializable {
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl == null ? null : imageUrl.trim();
+    }
+
+    /**
+     * 获取店铺logo
+     *
+     * @return logo_url - 店铺logo
+     */
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    /**
+     * 设置店铺logo
+     *
+     * @param logoUrl 店铺logo
+     */
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
     }
 
     /**
@@ -366,10 +462,14 @@ public class SlShop implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", businessApplicationId=").append(businessApplicationId);
         sb.append(", ownerId=").append(ownerId);
+        sb.append(", productTypeId=").append(productTypeId);
+        sb.append(", quotaId=").append(quotaId);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
         sb.append(", imageUrl=").append(imageUrl);
+        sb.append(", logoUrl=").append(logoUrl);
         sb.append(", address=").append(address);
         sb.append(", longitude=").append(longitude);
         sb.append(", latitude=").append(latitude);

@@ -41,26 +41,10 @@ public class SlArticle implements Serializable {
     private Integer praiseCount;
 
     /**
-     * 创建人
+     * 引用地址，用来存放消息引用地址
      */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
+    @Column(name = "reference_url")
+    private String referenceUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -173,75 +157,21 @@ public class SlArticle implements Serializable {
     }
 
     /**
-     * 获取创建人
+     * 获取引用地址，用来存放消息引用地址
      *
-     * @return creator - 创建人
+     * @return reference_url - 引用地址，用来存放消息引用地址
      */
-    public String getCreator() {
-        return creator;
+    public String getReferenceUrl() {
+        return referenceUrl;
     }
 
     /**
-     * 设置创建人
+     * 设置引用地址，用来存放消息引用地址
      *
-     * @param creator 创建人
+     * @param referenceUrl 引用地址，用来存放消息引用地址
      */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
+    public void setReferenceUrl(String referenceUrl) {
+        this.referenceUrl = referenceUrl == null ? null : referenceUrl.trim();
     }
 
     @Override
@@ -256,10 +186,7 @@ public class SlArticle implements Serializable {
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", readCount=").append(readCount);
         sb.append(", praiseCount=").append(praiseCount);
-        sb.append(", creator=").append(creator);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
+        sb.append(", referenceUrl=").append(referenceUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
