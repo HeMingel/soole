@@ -7,6 +7,8 @@ import com.songpo.searched.mapper.SlAgentApplicationMapper;
 import com.songpo.searched.mapper.SlBusinessApplicationMapper;
 import com.songpo.searched.typehandler.BusinessApplicationTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,17 +20,23 @@ import tk.mybatis.mapper.entity.Example;
 @Service
 public class ApplicationService {
 
-    @Autowired
-    private SlAgentApplicationMapper agentApplicationMapper;
+    public static final Logger log = LoggerFactory.getLogger(ApplicationService.class);
+
+    private final SlAgentApplicationMapper agentApplicationMapper;
+
+    private final FileService fileService;
+
+    private final SlBusinessApplicationMapper businessApplicationMapper;
+
+    private final CmUserService cmUserService;
 
     @Autowired
-    private FileService fileService;
-
-    @Autowired
-    private SlBusinessApplicationMapper businessApplicationMapper;
-
-    @Autowired
-    private CmUserService cmUserService;
+    public ApplicationService(SlAgentApplicationMapper agentApplicationMapper, FileService fileService, SlBusinessApplicationMapper businessApplicationMapper, CmUserService cmUserService) {
+        this.agentApplicationMapper = agentApplicationMapper;
+        this.fileService = fileService;
+        this.businessApplicationMapper = businessApplicationMapper;
+        this.cmUserService = cmUserService;
+    }
 
     /**
      * 提交代理商入驻申请
@@ -37,6 +45,7 @@ public class ApplicationService {
      * @param idCardHand 手持身份证照片
      */
     public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
+        log.debug("提交代理商入驻申请， 代理商信息：{}", agent);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("agent_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
@@ -79,6 +88,7 @@ public class ApplicationService {
      * @param idCardHand    手持身份证照片
      */
     public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
+        log.debug("提交商户入驻申请， 商户信息：{}", business);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {

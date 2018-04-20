@@ -8,7 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
-    <result column="card_number" jdbcType="INTEGER" property="cardNumber" />
+      <result column="card_number" jdbcType="BIGINT" property="cardNumber"/>
     <result column="cardholder" jdbcType="VARCHAR" property="cardholder" />
     <result column="cardholder_phone" jdbcType="VARCHAR" property="cardholderPhone" />
     <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />

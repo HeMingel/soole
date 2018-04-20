@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_shop")
 public class SlShop implements Serializable {
@@ -12,6 +12,12 @@ public class SlShop implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 申请店铺表ID
+     */
+    @Column(name = "business_application_id")
+    private String businessApplicationId;
 
     /**
      * 店主唯一标识符
@@ -123,6 +129,24 @@ public class SlShop implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取申请店铺表ID
+     *
+     * @return business_application_id - 申请店铺表ID
+     */
+    public String getBusinessApplicationId() {
+        return businessApplicationId;
+    }
+
+    /**
+     * 设置申请店铺表ID
+     *
+     * @param businessApplicationId 申请店铺表ID
+     */
+    public void setBusinessApplicationId(String businessApplicationId) {
+        this.businessApplicationId = businessApplicationId == null ? null : businessApplicationId.trim();
     }
 
     /**
@@ -438,6 +462,7 @@ public class SlShop implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", businessApplicationId=").append(businessApplicationId);
         sb.append(", ownerId=").append(ownerId);
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", quotaId=").append(quotaId);
