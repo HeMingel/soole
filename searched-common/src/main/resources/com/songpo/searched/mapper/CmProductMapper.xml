@@ -7,7 +7,7 @@
         SELECT
           p.id,
           p.name,
-          p.image_url AS imageUrl,
+          p.image_url,
           p.`sales_mode_id`,
           p.`introduction`,
           ap.*
@@ -54,13 +54,13 @@
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="sortByPrice != ''">
-                ap.price ${sortByPrice}
+                ap.price ${sortByPrice},
             </if>
             <if test="sortByRating != ''">
-                s.rating ${sortByRating}
+                s.rating ${sortByRating},
             </if>
             <if test="sortBySale != ''">
-                p.sales_volume ${sortBySale}
+                p.sales_volume ${sortBySale},
             </if>
         </trim>
     </select>
@@ -81,7 +81,7 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         SELECT
-        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url
+        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
@@ -117,6 +117,25 @@
         </if>
 
     </select>
+
+
+    <!--查询拼团商品发起人的头像-->
+    <select id="selectGroupAvatar" resultType="Map" parameterType="String">
+        SELECT
+          *
+        FROM
+          sl_order_detail od
+          LEFT JOIN sl_order o
+            ON od.order_id = o.id
+          LEFT JOIN sl_user u
+            ON u.id = o.user_id
+        WHERE o.payment_state = '1'
+          AND od.product_id = #{goodsId}
+        GROUP BY od.product_id
+        ORDER BY o.pay_time DESC
+        LIMIT 3
+    </select>
+
     <!--根据商品名称查询商品-->
     <select id="selectByName" resultType="Map" parameterType="String">
         SELECT

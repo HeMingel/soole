@@ -24,15 +24,15 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
      *
      * @param appId    String	支付配置唯一标识
      * @param merchantPrivateKey    String	支付配置唯一标识
-     * @param alipayPublicKey    String	支付配置唯一标识
+     * @param aliPayPublicKey    String	支付配置唯一标识
      * @param notifyUrl    String	支付配置唯一标识
      * @param returnUrl    String	支付配置唯一标识
      * @return 响应信息
      */
-    fun loadConfig(appId: String, merchantPrivateKey: String, alipayPublicKey: String, notifyUrl: String, returnUrl: String?) {
+    fun loadConfig(appId: String, merchantPrivateKey: String, aliPayPublicKey: String, notifyUrl: String, returnUrl: String?) {
         configProperties.appId = appId
         configProperties.merchantPrivateKey = merchantPrivateKey
-        configProperties.alipayPublicKey = alipayPublicKey
+        configProperties.aliPayPublicKey = aliPayPublicKey
         configProperties.notifyUrl = notifyUrl
         configProperties.returnUrl = returnUrl
 
@@ -49,7 +49,7 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
                 configProperties.merchantPrivateKey,
                 "json",
                 "UTF-8",
-                configProperties.alipayPublicKey,
+                configProperties.aliPayPublicKey,
                 "RSA2")
     }
 

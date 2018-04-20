@@ -25,7 +25,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
     // 正式打包时，请移除该注释
-//	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
     // 测试组件
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
