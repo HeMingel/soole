@@ -5,11 +5,12 @@
     <!-- 根据销售模式查询商品 -->
     <select id="selectBySalesMode" resultType="map">
         SELECT
-          p.id,
+          p.id as product_id,
           p.name,
           p.image_url,
           p.`sales_mode_id`,
           p.`introduction`,
+          pt.name product_type_name,
           ap.*
         FROM
           sl_product p
@@ -17,6 +18,8 @@
             ON p.id = ap.`product_id`
           LEFT JOIN sl_shop s
             ON p.`shop_id` = s.`id`
+          LEFT JOIN sl_product_type pt
+            ON p.product_type_id = pt.id
             <where>
                 p.sold_out = 1
                 and ap.enabled = 1
@@ -29,6 +32,9 @@
                 </if>
                 <if test="activityId != '' and activityId != null and activityId != '65C872C3-9B52-6150-60E5-679A9242AC79' ">
                     and ap.activity_id = #{activityId}
+                </if>
+                <if test="goodsTypeId !='' and goodsTypeId != null ">
+                    and p.product_type_id = #{goodsTypeId}
                 </if>
                 <if test="activityId =='65C872C3-9B52-6150-60E5-679A9242AC79' ">
                     and ap.sharing_rewards_id != ''
@@ -97,8 +103,8 @@
     <if test="goodsName != null and goodsName != ''">
         and p.`name` like "%"#{goodsName}"%"
     </if>
-    <if test="goodsType != null and goodsType !=''">
-        AND p.product_type_id = #{goodsType}
+    <if test="goodsTypeId != null and goodsTypeId !=''">
+        AND p.product_type_id = #{goodsTypeId}
     </if>
     <if test="screenGoods == null and screenGoods ==''">
         ORDER BY (p.sales_volume + p.comment_num) DESC

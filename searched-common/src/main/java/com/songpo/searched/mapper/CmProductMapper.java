@@ -33,6 +33,7 @@ public interface CmProductMapper{
     List<Map<String, Object>> selectBySalesMode(@Param("name") String name,
                                                 @Param("salesModeId") String salesModeId,
                                                 @Param("activityId") String activityId,
+                                                @Param("goodsTypeId") String goodsTypeId,
                                                 @Param("longitudeMin") Double longitudeMin,
                                                 @Param("longitudeMax") Double longitudeMax,
                                                 @Param("latitudeMin") Double latitudeMin,
@@ -59,7 +60,7 @@ public interface CmProductMapper{
      * @param goodsName 商品名称
      * @return 商品列表 goodsType, screenType, saleMode, name
      */
-    List<Map<String, Object>> screenGoods(@Param("goodsType") String goodsType, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
+    List<Map<String, Object>> screenGoods(@Param("goodsTypeId") String goodsTypeId, @Param("screenGoods") Integer screenGoods, @Param("saleMode") Integer saleMode, @Param("goodsName") String goodsName,@Param("activityId")String activityId);
 
     /**
      * 查询拼团商品的头像

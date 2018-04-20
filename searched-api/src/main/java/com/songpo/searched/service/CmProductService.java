@@ -68,6 +68,7 @@ public class CmProductService {
     public PageInfo<Map<String, Object>> selectBySalesMode(String name,
                                                            String salesModeId,
                                                            String activityId,
+                                                           String goodsTypeId,
                                                            Double longitudeMin,
                                                            Double longitudeMax,
                                                            Double latitudeMin,
@@ -108,9 +109,12 @@ public class CmProductService {
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale);
 
-        return new PageInfo<>(list);
+            return new PageInfo<>(list);
+
+
+
     }
 
     /**
@@ -149,25 +153,25 @@ public class CmProductService {
     /**
      * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
-     * @param goodsType  商品分类ID
+     * @param goodsTypeId  商品分类ID
      * @param screenType 筛选类型
      * @param page       商品当前页
      * @param size       每页容量
      * @return 商品列表
      */
-    public BusinessMessage screenGoods(String goodsType, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
-        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsType, screenType, page, size, name);
+    public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
+        log.debug("查询 商品分类Id:{},筛选条件:{},页数:{},条数:{},商品名称:{}", goodsTypeId, screenType, page, size, name);
         BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
 
-            if (goodsType != null || screenType != null || name != null || saleMode != null) {
-                List<Map<String, Object>> list = this.mapper.screenGoods(goodsType, screenType, saleMode, name, ActivityConstant.NO_ACTIVITY);
+            if (goodsTypeId != null || screenType != null || name != null || saleMode != null) {
+                List<Map<String, Object>> list = this.mapper.screenGoods(goodsTypeId, screenType, saleMode, name, ActivityConstant.NO_ACTIVITY);
 
                 if (list.size() > 0) {
                     //如果是拼团商品
-                    if(saleMode == SalesModeConstant.SALES_MODE_GROUP){
+                    if(saleMode!= null && saleMode == SalesModeConstant.SALES_MODE_GROUP){
                         List<Object> goodsList = new ArrayList<>();
                         for(Map<String,Object> map:list ){
 

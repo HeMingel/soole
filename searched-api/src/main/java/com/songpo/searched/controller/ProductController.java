@@ -54,6 +54,7 @@ public class ProductController {
             @ApiImplicitParam(name = "name", value = "商品名称", paramType = "form"),
             @ApiImplicitParam(name = "salesModeId", value = "销售模式唯一标识符", paramType = "form"),
             @ApiImplicitParam(name = "activityId", value = "活动唯一标识符", paramType = "form"),
+            @ApiImplicitParam(name = "goodsTypeId", value = "商品分类", paramType = "form"),
             @ApiImplicitParam(name = "longitudeMin", value = "最小经度，经维度一起使用，缺一不可", paramType = "form"),
             @ApiImplicitParam(name = "longitudeMax", value = "最大经度，经维度一起使用，缺一不可", paramType = "form"),
             @ApiImplicitParam(name = "latitudeMin", value = "最小维度，经维度一起使用，缺一不可", paramType = "form"),
@@ -70,6 +71,7 @@ public class ProductController {
     public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name,
                                                                             String salesModeId,
                                                                             String activityId,
+                                                                            String goodsTypeId,
                                                                             Double longitudeMin,
                                                                             Double longitudeMax,
                                                                             Double latitudeMin,
@@ -84,7 +86,7 @@ public class ProductController {
         log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，最小经度：{}，最大经度：{}，最小维度：{}，最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，容量：{},销售数量排序:{}", name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         try {
-            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId,activityId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale);
+            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId,activityId,goodsTypeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale);
 
             message.setData(data);
             message.setSuccess(true);
