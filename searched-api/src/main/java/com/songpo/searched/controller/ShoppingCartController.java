@@ -1,6 +1,7 @@
 package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.service.ShoppingCartService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(description = "购物车管理")
 @RestController
@@ -46,7 +50,14 @@ public class ShoppingCartController {
             @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addMyShoppingCart(CMShoppingCart pojo) {
+    public BusinessMessage addMyShoppingCart(String repositoryId, int counts) {
+        CMShoppingCart pojo = new CMShoppingCart();
+        List<CMGoods> list = new ArrayList<>();
+        CMGoods goods = new CMGoods();
+        goods.setRepositoryId(repositoryId);
+        goods.setCounts(counts);
+        list.add(goods);
+        pojo.setCarts(list);
         return this.shoppingCartService.addMyShoppingCart(pojo);
     }
 

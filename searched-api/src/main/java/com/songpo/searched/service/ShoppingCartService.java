@@ -104,111 +104,46 @@ public class ShoppingCartService {
             CMShoppingCart pojo = this.cache.get(user.getId());
             if (pojo != null) {
                 List<CMShoppingCart> list = new ArrayList<>();
-                List<CMGoods> goodsList = new ArrayList<>();
-                CMShoppingCart cart = new CMShoppingCart();
                 CMGoods cmGoods = null;
                 if (null != pojo) {
                     for (CMGoods sc : pojo.getCarts()) {
-                        if (StringUtils.isEmpty(sc.getGoodId())) {
-                            message.setMsg("获取商品ID错误");
-                        } else {
-                            SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
-                                setId(sc.getGoodId());
-                                setSoldOut(true);
+                        List<CMGoods> goodsList = new ArrayList<>();
+                        CMShoppingCart cart = new CMShoppingCart();
+                        SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                            setId(sc.getRepositoryId());
+                            setProductId(sc.getGoodId());
+                        }});
+                        SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
+                            setId(repository.getProductId());
+                            setSoldOut(true);
+                        }});
+                        if (null != slProduct) {
+                            cmGoods = new CMGoods();
+                            SlShop slShop = this.shopService.selectOne(new SlShop() {{
+                                setId(slProduct.getShopId());
                             }});
-                            if (null != slProduct) {
-                                cmGoods = new CMGoods();
-                                SlShop slShop = this.shopService.selectOne(new SlShop() {{
-                                    setId(slProduct.getShopId());
-                                }});
-                                if (list.size() > 0) {
-                                    for (int i = 0; i < list.size(); i++) {
-                                        List<CMGoods> list1 = new ArrayList<>();
-                                        CMShoppingCart cart1 = list.get(i);
-                                        if (cart1.getShopId().equals(slShop.getId())) {
-                                            cmGoods.setGoodName(slProduct.getName());// 商品名称
-                                            cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                                setId(sc.getRepositoryId());
-                                                setProductId(sc.getGoodId());
-                                            }});
-                                            cmGoods.setGoodId(slProduct.getId());//商品id
-                                            cmGoods.setRepositoryId(repository.getId());//规格id
-                                            cmGoods.setImageUrl(repository.getProductImageUrl()); // 商品图片
-                                            cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
-                                            cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
-                                            cmGoods.setPrice(repository.getPrice());// 商品价格
-                                            cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
-                                            cmGoods.setShopId(sc.getShopId());// 店铺id
-                                            cmGoods.setShopName(slShop.getName());// 店铺名称
-                                            cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
-                                            cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
-                                            cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
-                                            cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
-                                            list1 = cart1.getCarts();
-                                            list1.add(cmGoods);
-                                            break;
-                                        } else {
-                                            List<CMGoods> list2 = new ArrayList<>();
-                                            CMShoppingCart cart2 = new CMShoppingCart();
-                                            cmGoods.setGoodName(slProduct.getName());// 商品名称
-                                            cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                                setId(sc.getRepositoryId());
-                                                setProductId(sc.getGoodId());
-                                            }});
-                                            cmGoods.setGoodId(slProduct.getId());//商品id
-                                            cmGoods.setRepositoryId(repository.getId());//规格id
-                                            cmGoods.setImageUrl(repository.getProductImageUrl()); // 商品图片
-                                            cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
-                                            cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
-                                            cmGoods.setPrice(repository.getPrice());// 商品价格
-                                            cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
-                                            cmGoods.setShopId(sc.getShopId());// 店铺id
-                                            cmGoods.setShopName(slShop.getName());// 店铺名称
-                                            cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
-                                            cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
-                                            cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
-                                            cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
-                                            list2.add(cmGoods);
-                                            cart2.setCarts(list2);
-                                            cart2.setShopId(slShop.getId());
-                                            cart2.setShopName(slShop.getName());
-                                            list.add(cart2);
-                                            break;
-                                        }
-                                    }
-                                } else {
-                                    cmGoods.setGoodName(slProduct.getName());// 商品名称
-                                    cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                        setId(sc.getRepositoryId());
-                                        setProductId(sc.getGoodId());
-                                    }});
-                                    cmGoods.setGoodId(slProduct.getId());//商品id
-                                    cmGoods.setRepositoryId(repository.getId());//规格id
-                                    cmGoods.setImageUrl(repository.getProductImageUrl()); // 商品图片
-                                    cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
-                                    cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
-                                    cmGoods.setPrice(repository.getPrice());// 商品价格
-                                    cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
-                                    cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
-                                    cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
-                                    cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
-                                    cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
-                                    cmGoods.setShopId(sc.getShopId());// 店铺id
-                                    cmGoods.setShopName(slShop.getName());// 店铺名称
-                                    goodsList.add(cmGoods);
-                                    cart.setShopId(slShop.getId());
-                                    cart.setShopName(slShop.getName());
-                                    cart.setCarts(goodsList);
-                                    list.add(cart);
-                                }
-                            } else {
-                                message.setSuccess(true);
-                                list.add(new CMShoppingCart());
-                            }
+                            cmGoods.setGoodName(slProduct.getName());// 商品名称
+                            cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                            cmGoods.setGoodId(slProduct.getId());//商品id
+                            cmGoods.setRepositoryId(repository.getId());//规格id
+                            cmGoods.setImageUrl(repository.getProductImageUrl()); // 商品图片
+                            cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
+                            cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
+                            cmGoods.setPrice(repository.getPrice());// 商品价格
+                            cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
+                            cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                            cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
+                            cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
+                            cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
+                            cmGoods.setShopId(sc.getShopId());// 店铺id
+                            cmGoods.setShopName(slShop.getName());// 店铺名称
+                            goodsList.add(cmGoods);
+                            cart.setShopId(slShop.getId());
+                            cart.setShopName(slShop.getName());
+                            cart.setCarts(goodsList);
+                            list.add(cart);
                         }
+
                     }
                 }
                 message.setMsg("查询成功");
