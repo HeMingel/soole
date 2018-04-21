@@ -72,24 +72,24 @@ public class CmProductService {
      * @return 商品分页列表
      */
     public PageInfo selectBySalesMode(String name,
-                                                           String salesModeId,
-                                                           String activityId,
-                                                           String goodsTypeId,
-                                                           Integer goodsTypeStatus,
-                                                           Double longitudeMin,
-                                                           Double longitudeMax,
-                                                           Double latitudeMin,
-                                                           Double latitudeMax,
-                                                           String sortByPrice,
-                                                           String sortByRating,
-                                                           Integer priceMin,
-                                                           Integer priceMax,
-                                                           Integer pageNum,
-                                                           Integer pageSize,
-                                                           String sortBySale,
-                                                           String addressNow,
-                                                           Double longitudeNow,
-                                                           Double latitudeNow) {
+                                      String salesModeId,
+                                      String activityId,
+                                      String goodsTypeId,
+                                      Integer goodsTypeStatus,
+                                      Double longitudeMin,
+                                      Double longitudeMax,
+                                      Double latitudeMin,
+                                      Double latitudeMax,
+                                      String sortByPrice,
+                                      String sortByRating,
+                                      Integer priceMin,
+                                      Integer priceMax,
+                                      Integer pageNum,
+                                      Integer pageSize,
+                                      String sortBySale,
+                                      String addressNow,
+                                      Double longitudeNow,
+                                      Double latitudeNow) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -126,8 +126,7 @@ public class CmProductService {
                 //关联order_detail 表的 product_id
                 Map<String,Object> avatarMap = new HashMap<>();
                 List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("product_id").toString());
-                avatarMap.put("avatarList",avatarList);
-                avatarMap.put("goods",map);
+                map.put("avatarList",avatarList);
                 goodsList.add(avatarMap);
             }
             return new PageInfo<>(goodsList);
@@ -199,8 +198,7 @@ public class CmProductService {
                             Map<String,Object> avatarMap = new HashMap<>();
 
                             List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
-                            avatarMap.put("avatarList",avatarList);
-                            avatarMap.put("goods",map);
+                            map.put("avatarList",avatarList);
                             goodsList.add(avatarMap);
                         }
                         businessMessage.setMsg("查询成功");
