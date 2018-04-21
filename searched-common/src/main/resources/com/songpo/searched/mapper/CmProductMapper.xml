@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.CmProductMapper">
 
-    <!-- 根据销售模式查询商品 -->
+    <!-- 查询商品,模式 活动 分类 名称 ; 智能排序以及各种排序 -->
 
     <select id="selectBySalesMode" resultType="map">
         SELECT
@@ -34,8 +34,11 @@
                 <if test="activityId != '' and activityId != null and activityId != '65C872C3-9B52-6150-60E5-679A9242AC79' ">
                     and ap.activity_id = #{activityId}
                 </if>
-                <if test="goodsTypeId !='' and goodsTypeId != null ">
+                <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==2 ">
                     and p.product_type_id = #{goodsTypeId}
+                </if>
+                <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==1 ">
+                    and pt.parentId = #{goodsTypeId}
                 </if>
                 <if test="activityId =='65C872C3-9B52-6150-60E5-679A9242AC79' ">
                     and ap.sharing_rewards_id != ''
@@ -78,9 +81,7 @@
             </if>
         </trim>
     </select>
-    <!--addressNow")
-    longitudeNow"
-    latitudeNow")-->
+
 
     <!-- 根据活动唯一标识符查询商品 -->
     <select id="selectByAction" resultType="com.songpo.searched.entity.SlProduct">
