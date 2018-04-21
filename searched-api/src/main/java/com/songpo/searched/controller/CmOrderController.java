@@ -166,7 +166,10 @@ public class CmOrderController {
     /**
      * 删除订单
      *
-     * @param id
+     * @param orderId
+     * @param orderDetailId
+     * @param shopId
+     * @param orderNum
      * @return
      */
     @ApiOperation(value = "删除订单")
@@ -176,12 +179,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "orderNum", value = "订单编号", paramType = "form", required = true)
     })
     @PostMapping("delete-order")
-    public BusinessMessage deleteOrder(String orderDetailId, String shopId, String orderNum) {
-        log.debug("orderDetailId = [" + orderDetailId + "], shopId = [" + shopId + "], orderNum = [" + orderNum + "]");
-        System.out.println("orderDetailId = [" + orderDetailId + "], shopId = [" + shopId + "], orderNum = [" + orderNum + "]");
+    public BusinessMessage deleteOrder(String orderId, String orderDetailId, String shopId, String orderNum) {
         BusinessMessage message = new BusinessMessage();
         try {
-            this.cmOrderService.deleteOrder(orderDetailId, shopId, orderNum);
+            this.cmOrderService.deleteOrder(orderId, orderDetailId, shopId, orderNum);
             message.setSuccess(true);
             message.setMsg("删除成功");
         } catch (Exception e) {

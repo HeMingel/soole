@@ -1,5 +1,6 @@
 package com.songpo.searched.service;
 
+import com.alipay.api.domain.OrderDetail;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
@@ -26,12 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -69,36 +68,30 @@ public class CmOrderService {
     /**
      * 多商品下单
      *
-     * @param request 请求参数
-     * @param slOrder 订单信息
-     * @param orderDetail 订单明细
-     * @param shippingAddressId 配货地址标识
-     * @return 下单结果
+     * @param request
+     * @param slOrder
+     * @param orderDetail
+     * @param shippingAddressId
+     * @return
      */
+
     public BusinessMessage addOrder(HttpServletRequest request, SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId) {
-        log.debug("多商品下单，slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "]");
+        log.debug("slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;
         int pulse = 0;
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
-                // 查询用户收货地址
+                String orderNum = OrderNumGeneration.getOrderIdByUUId();// 生成订单编号
+                slOrder.setId(UUID.randomUUID().toString());
+                slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                slOrder.setSerialNumber(orderNum);// 订单编号
+                slOrder.setUserId(user.getId());// 用户Id
                 SlUserAddress slUserAddress = this.slUserAddressMapper.selectOne(new SlUserAddress() {{
                     setId(shippingAddressId);
                     setUserId(user.getId());
                 }});
-
-                // 生成订单编号
-                String orderNum = OrderNumGeneration.generateOrderId();
-
-                slOrder.setId(UUID.randomUUID().toString());
-                slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                // 订单编号
-                slOrder.setSerialNumber(orderNum);
-                // 用户Id
-                slOrder.setUserId(user.getId());
-
                 slOrder.setProvince(slUserAddress.getProvince());// 订单省的地址
                 slOrder.setCity(slUserAddress.getCity()); // 订单市的收货地址
                 slOrder.setCounty(slUserAddress.getCounty()); //订单区的收货地址
@@ -139,7 +132,7 @@ public class CmOrderService {
                                 SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId());
                                 //如果是无活动就不需要校验时间是否符合
                                 Boolean flag = false;
-                                if (!slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                                if (slActivityProduct.getActivityId() != ActivityConstant.NO_ACTIVITY) {
                                     //无活动就没有活动到期这一说
                                     productCache.put(slProduct.getId(), slProduct);
                                     flag = true;
@@ -150,7 +143,7 @@ public class CmOrderService {
                                     Long times = (format.parse(slActivityProduct.getEndTime()).getTime() - now.getTime());
                                     // 把查询出来的商品信息放入redis中 插入失效时间
                                     productCache.put(slProduct.getId(), slProduct, times / 1000, TimeUnit.SECONDS);
-                                    flag = productCache.hasKey("com.songpo.seached:product:time-limit:" + slActivityProduct.getId());
+                                    flag = productCache.getRedisTemplate().getExpire("com.songpo.seached:product:time-limit:" + slActivityProduct.getId()) > 0;
                                 }
                                 // 判断当前活动是否在有效期内
                                 if (flag) {
@@ -214,7 +207,7 @@ public class CmOrderService {
                                                     // 已支付
                                                     setPaymentState(1);
                                                 }});
-                                                //TODO 新人专享
+                                                // TODO 新人专享
                                                 //判断是否为首单
                                                 if (flag.equals(false)) {
                                                     // 如果是第一单的情况下 需要加上 首单奖励
@@ -460,6 +453,22 @@ public class CmOrderService {
                     setId(orderId);
                     setPaymentState(101);
                 }});
+                // 查询该订单id关联的所有商品明细
+                List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                    setOrderId(key);
+                }});
+                for (SlOrderDetail slOrderDetail : detailList) {
+                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                        setId(slOrderDetail.getRepositoryId());
+                    }});
+                    //把该订单下的数量加回去
+                    int count = repository.getCount() + slOrderDetail.getQuantity();
+                    productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                        setId(repository.getId());
+                        setCount(count);
+                    }});
+                }
+
             }
         }
     }
@@ -479,10 +488,11 @@ public class CmOrderService {
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (!StringUtils.isEmpty(user)) {
+                SlProductRepository repository = new SlProductRepository();
                 //1.先从redis中去取该商品规格的详细参数
-                SlProductRepository repository = this.repositoryCache.get(repositoryId);
+                repository = this.repositoryCache.get(repositoryId);
                 //2.如果repository为null就去数据库中查询一遍放入repository对象中
-                if (null == repository) {
+                if (StringUtils.isEmpty(repository)) {
                     repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                         setId(repositoryId);
                     }});
@@ -490,18 +500,19 @@ public class CmOrderService {
                     this.repositoryCache.put(repositoryId, repository);
                 }
                 //4.如果查询出来不为空就去查询商品信息
-                if (null != repository) {
+                if (!StringUtils.isEmpty(repository)) {
+                    SlProduct slProduct = new SlProduct();
                     //5.先从redis中取商品信息的详情
-                    SlProduct slProduct = this.productCache.get(repository.getProductId());
+                    slProduct = this.productCache.get(repository.getProductId());
                     //6.如果为空就从数据库中查询一下商品信息
-                    if (null == slProduct) {
+                    if (StringUtils.isEmpty(slProduct)) {
                         SlProductRepository finalRepository = repository;
                         slProduct = this.productService.selectOne(new SlProduct() {{
                             setId(finalRepository.getProductId());
                         }});
                     }
                     //7.如果商品存在的话
-                    if (null != slProduct) {
+                    if (!StringUtils.isEmpty(slProduct)) {
                         //查询活动商品信息
                         SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId);
                         //如果是无活动就不需要校验时间是否符合
@@ -800,7 +811,7 @@ public class CmOrderService {
      * @param shopId
      * @param orderNum
      */
-    public void deleteOrder(String detailId, String shopId, String orderNum) {
+    public void deleteOrder(String orderId ,String detailId, String shopId, String orderNum) {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrderDetail.class);
@@ -809,7 +820,7 @@ public class CmOrderService {
                     .andEqualTo("shopId", shopId)
                     .andEqualTo("creator", user.getId());
             this.orderService.delete(new SlOrder() {{
-                setSerialNumber(orderNum);
+                setSerialNumber(orderId);
                 setUserId(user.getId());
             }});
             this.orderDetailService.deleteByExample(example);
