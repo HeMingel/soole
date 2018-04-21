@@ -155,6 +155,10 @@ public class CmOrderService {
                                         if (repository.getCount() - slOrderDetail.getQuantity() >= 0) {
                                             // 钱相加 用于统计和添加到订单表扣除总钱里边
                                             money += repository.getPrice().doubleValue() * slOrderDetail.getQuantity();
+                                            // 如果邮费不为空
+                                            if (repository.getPostFee().doubleValue() > 0) {
+                                                money = money + repository.getPostFee().doubleValue();
+                                            }
                                             // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                             pulse += repository.getSilver() * slOrderDetail.getQuantity();
                                             SlProductRepository finalRepository = repository;
@@ -290,6 +294,7 @@ public class CmOrderService {
                     }
                     // 更新订单总价和总豆
                     double finalMoney = money;
+                    System.err.println(finalMoney);
                     int finalPulse = pulse;
                     this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
                         setId(slOrder.getId());
@@ -305,37 +310,37 @@ public class CmOrderService {
                 message.setMsg("用户不存在");
             }
             //下完订单直接调取微信预下单
-//        if (message.getSuccess().equals(true)) {
-//            SimpleDateFormat fm = new SimpleDateFormat("yyyyMMddHHmmss");
-//            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            try {
-//                message.setData(wxPayController.unifiedOrderByApp(
-//                        request,
-//                        null,
-//                        //描述
-//                        "搜了平台-订单编号:" + slOrder.getSerialNumber(),
-//                        null,
-//                        null,
-//                        //订单号
-//                        slOrder.getSerialNumber(),
-//                        null,
-//                        //订单金额 单位分
-//                        String.valueOf(slOrder.getTotalAmount().intValue() / 100),
-//                        //订单开始时间
-//                        fm.format(fm.format(slOrder.getCreateTime())),
-//                        //订单结束时间24小时后
-//                        fm.format(fm.format(fmt.parse(slOrder.getCreateTime()).getTime() + 86400)),
-//                        null,
-//                        null,
-//                        null,
-//                        null
-//                ));
-//
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//                log.error("微信创建订单错误", e);
-//            }
-//        }
+            if (message.getSuccess().equals(true)) {
+                SimpleDateFormat fm = new SimpleDateFormat("yyyyMMddHHmmss");
+                SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    message = (wxPayController.unifiedOrderByApp(
+                            request,
+                            null,
+                            //描述
+                            "搜了平台-订单编号:" + slOrder.getSerialNumber(),
+                            null,
+                            null,
+                            //订单号
+                            slOrder.getSerialNumber(),
+                            null,
+                            //订单金额 单位分
+                            String.valueOf(money * 100),
+                            //订单开始时间
+                            fm.format(fmt.parse(slOrder.getCreateTime())),
+                            //订单结束时间24小时后
+                            fm.format(fmt.parse(slOrder.getCreateTime()).getTime() + 86400),
+                            null,
+                            null,
+                            null,
+                            null
+                    ));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    log.error("微信创建订单错误", e);
+                }
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -811,7 +816,7 @@ public class CmOrderService {
      * @param shopId
      * @param orderNum
      */
-    public void deleteOrder(String orderId ,String detailId, String shopId, String orderNum) {
+    public void deleteOrder(String orderId, String detailId, String shopId, String orderNum) {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrderDetail.class);
