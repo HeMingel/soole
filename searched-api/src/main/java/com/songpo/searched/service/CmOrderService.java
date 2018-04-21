@@ -69,14 +69,13 @@ public class CmOrderService {
      * 多商品下单
      *
      * @param request
-     * @param response
      * @param slOrder
      * @param orderDetail
      * @param shippingAddressId
      * @return
      */
 
-    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId) {
+    public BusinessMessage addOrder(HttpServletRequest request, SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId) {
         log.debug("slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00;

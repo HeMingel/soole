@@ -166,7 +166,10 @@ public class CmOrderController {
     /**
      * 删除订单
      *
-     * @param id
+     * @param orderId
+     * @param orderDetailId
+     * @param shopId
+     * @param orderNum
      * @return
      */
     @ApiOperation(value = "删除订单")
