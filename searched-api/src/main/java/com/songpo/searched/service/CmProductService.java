@@ -9,8 +9,10 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlPresellReturnedRecord;
 import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.SlProductType;
 import com.songpo.searched.mapper.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hsqldb.lib.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class CmProductService {
     private SlActivityProductMapper activityProductMapper;
     @Autowired
     private SlPresellReturnedRecordMapper slPresellReturnedRecordMapper;
+    @Autowired
+    private SlProductTypeMapper slProductTypeMapper;
 
 
     /**
@@ -52,6 +56,8 @@ public class CmProductService {
      * @param name         商品名称
      * @param salesModeId  销售模式唯一标识符
      * @param activityId  活动Id
+     * @param goodsTypeId 商品分类Id
+     * @param goodsTypeStatus 商品分类标识
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
@@ -69,6 +75,7 @@ public class CmProductService {
                                                            String salesModeId,
                                                            String activityId,
                                                            String goodsTypeId,
+                                                           Integer goodsTypeStatus,
                                                            Double longitudeMin,
                                                            Double longitudeMax,
                                                            Double latitudeMin,
@@ -110,9 +117,8 @@ public class CmProductService {
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
-
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow);
 
         if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
             List<Object> goodsList = new ArrayList<>();
