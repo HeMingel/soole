@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -74,6 +75,7 @@ public class CmOrderService {
      * @param shippingAddressId
      * @return
      */
+
     public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail orderDetail, String shippingAddressId) {
         log.debug("slOrder = [" + slOrder + "], orderDetail = [" + orderDetail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
@@ -206,7 +208,7 @@ public class CmOrderService {
                                                     // 已支付
                                                     setPaymentState(1);
                                                 }});
-                                                //TODO 新人专享
+                                                // TODO 新人专享
                                                 //判断是否为首单
                                                 if (flag.equals(false)) {
                                                     // 如果是第一单的情况下 需要加上 首单奖励
@@ -452,6 +454,22 @@ public class CmOrderService {
                     setId(orderId);
                     setPaymentState(101);
                 }});
+                // 查询该订单id关联的所有商品明细
+                List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                    setOrderId(key);
+                }});
+                for (SlOrderDetail slOrderDetail : detailList) {
+                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                        setId(slOrderDetail.getRepositoryId());
+                    }});
+                    //把该订单下的数量加回去
+                    int count = repository.getCount() + slOrderDetail.getQuantity();
+                    productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                        setId(repository.getId());
+                        setCount(count);
+                    }});
+                }
+
             }
         }
     }
@@ -794,7 +812,7 @@ public class CmOrderService {
      * @param shopId
      * @param orderNum
      */
-    public void deleteOrder(String detailId, String shopId, String orderNum) {
+    public void deleteOrder(String orderId ,String detailId, String shopId, String orderNum) {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrderDetail.class);
@@ -803,7 +821,7 @@ public class CmOrderService {
                     .andEqualTo("shopId", shopId)
                     .andEqualTo("creator", user.getId());
             this.orderService.delete(new SlOrder() {{
-                setSerialNumber(orderNum);
+                setSerialNumber(orderId);
                 setUserId(user.getId());
             }});
             this.orderDetailService.deleteByExample(example);
