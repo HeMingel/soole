@@ -1,37 +1,42 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_partner_news")
 public class SlPartnerNews implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 高级店铺审核ID
      */
     @Column(name = "top_store_id")
     private String topStoreId;
+
     /**
      * 股东姓名
      */
     @Column(name = "partner_name")
     private String partnerName;
+
     /**
      * 股东电话
      */
     @Column(name = "partner_phone")
     private String partnerPhone;
+
     /**
      * 股东地址
      */
     @Column(name = "partner_addr")
     private String partnerAddr;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键ID

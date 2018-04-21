@@ -1,42 +1,48 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_check_top_store")
 public class SlCheckTopStore implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 店铺ID
      */
     @Column(name = "shop_id")
     private String shopId;
+
     /**
      * 预售额度ID
      */
     @Column(name = "quota_id")
     private String quotaId;
+
     /**
      * 申请时间
      */
     @Column(name = "apply_time")
     private Integer applyTime;
+
     /**
      * 审核时间
      */
     @Column(name = "check_time")
     private Integer checkTime;
+
     /**
      * 审核状态1待审核2已通过3已拒绝
      */
     @Column(name = "check_status")
     private Boolean checkStatus;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键ID

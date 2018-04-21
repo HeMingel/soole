@@ -36,6 +36,7 @@ public class ProductController {
      * @param name         商品名称
      * @param salesModeId  销售模式唯一标识符
      * @param activityId  活动Id
+     * @param goodsTypeId 商品分类
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
@@ -47,6 +48,9 @@ public class ProductController {
      * @param pageNum      页码
      * @param pageSize     容量
      * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param addressNow     当前地址
+     * @param longitudeNow     当前经度
+     * @param latitudeNow     当前纬度
      * @return 商品分页列表
      */
     @ApiOperation(value = "根据销售模式,活动id查询商品列表,经纬度排序,商品价格,评分,销量排序")
@@ -65,7 +69,10 @@ public class ProductController {
             @ApiImplicitParam(name = "priceMax", value = "价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格", paramType = "form"),
             @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
             @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form"),
-            @ApiImplicitParam(name = "sortBySale", value = "根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序", paramType = "form")
+            @ApiImplicitParam(name = "sortBySale", value = "根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序", paramType = "form"),
+            @ApiImplicitParam(name = "addressNow", value = "当前地址", paramType = "form"),
+            @ApiImplicitParam(name = "longitudeNow", value = "当前经度", paramType = "form"),
+            @ApiImplicitParam(name = "latitudeNow", value = "当前纬度", paramType = "form"),
     })
     @GetMapping("by-sales-mode")
     public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name,

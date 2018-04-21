@@ -1,32 +1,36 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Table(name = "sl_store_pic")
 public class SlStorePic implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 高级店铺审核表ID
      */
     @Column(name = "sp_top_store_id")
     private String spTopStoreId;
+
     /**
      * 高级店铺资质图片
      */
     @Column(name = "top_store_pic")
     private String topStorePic;
+
     /**
      * 图片分类1营业执照2房产证3汽车证4其他
      */
     @Column(name = "store_class")
     private Byte storeClass;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键ID
