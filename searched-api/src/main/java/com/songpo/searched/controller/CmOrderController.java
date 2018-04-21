@@ -162,4 +162,34 @@ public class CmOrderController {
         }
         return message;
     }
+
+    /**
+     * 删除订单
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "删除订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderDetailId", value = "订单Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "shopId", value = "店铺Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "orderNum", value = "订单编号", paramType = "form", required = true)
+    })
+    @PostMapping("delete-order")
+    public BusinessMessage deleteOrder(String orderDetailId, String shopId, String orderNum) {
+        log.debug("orderDetailId = [" + orderDetailId + "], shopId = [" + shopId + "], orderNum = [" + orderNum + "]");
+        System.out.println("orderDetailId = [" + orderDetailId + "], shopId = [" + shopId + "], orderNum = [" + orderNum + "]");
+        BusinessMessage message = new BusinessMessage();
+        try {
+            this.cmOrderService.deleteOrder(orderDetailId, shopId, orderNum);
+            message.setSuccess(true);
+            message.setMsg("删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("删除失败", e);
+        }
+        return message;
+    }
+
+
 }

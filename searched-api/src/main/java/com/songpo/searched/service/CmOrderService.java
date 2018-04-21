@@ -575,12 +575,12 @@ public class CmOrderService {
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage);
                                         // TODO ====== 豆赚 ======
-                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS){
+                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage);
                                         // TODO ====== 普通商品 ======
-                                    }else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL){
+                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage);
@@ -795,20 +795,18 @@ public class CmOrderService {
      * @param orderNum
      */
     public void deleteOrder(String detailId, String shopId, String orderNum) {
-        Example example = new Example(SlOrderDetail.class);
-        example.createCriteria().andEqualTo("id", detailId).andEqualTo("shopId", shopId);
-        this.orderDetailService.deleteByExample(example);
-        int count = this.orderService.selectCount(new SlOrder() {{
-            setSerialNumber(orderNum);
-        }});
-        int c = this.orderService.selectCount(new SlOrder() {{
-            setSerialNumber(orderNum);
-        }});
-        if (c == 1) {
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (null != user) {
+            Example example = new Example(SlOrderDetail.class);
+            example.createCriteria()
+                    .andEqualTo("id", detailId)
+                    .andEqualTo("shopId", shopId)
+                    .andEqualTo("creator", user.getId());
             this.orderService.delete(new SlOrder() {{
                 setSerialNumber(orderNum);
+                setUserId(user.getId());
             }});
+            this.orderDetailService.deleteByExample(example);
         }
-
     }
 }
