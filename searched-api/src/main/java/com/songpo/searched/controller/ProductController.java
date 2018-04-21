@@ -82,11 +82,18 @@ public class ProductController {
                                                                             Integer priceMax,
                                                                             Integer pageNum,
                                                                             Integer pageSize,
-                                                                            String sortBySale) {
-        log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，最小经度：{}，最大经度：{}，最小维度：{}，最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，容量：{},销售数量排序:{}", name, salesModeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale);
+                                                                            String sortBySale,
+                                                                            String addressNow,
+                                                                            Double longitudeNow,
+                                                                            Double latitudeNow) {
+        log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，商品分类唯一标识符：{}，最小经度：{}，最大经度：{}，最小维度：{}，" +
+                        "最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，" +
+                        "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{}", name, salesModeId,activityId,goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
+                latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale,addressNow,longitudeNow,latitudeNow);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         try {
-            PageInfo<Map<String, Object>> data = this.productService.selectBySalesMode(name, salesModeId,activityId,goodsTypeId, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale);
+            PageInfo data = this.productService.selectBySalesMode(name, salesModeId,activityId,goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
+                    latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale,addressNow,longitudeNow,latitudeNow);
 
             message.setData(data);
             message.setSuccess(true);

@@ -14,7 +14,7 @@ buildscript {
     }
 
     // 指定JDK版本
-    ext['java.version'] = 9
+    ext['java.version'] = 10
 
     repositories {
         mavenLocal()

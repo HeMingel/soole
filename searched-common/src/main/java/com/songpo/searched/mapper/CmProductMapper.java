@@ -42,7 +42,10 @@ public interface CmProductMapper{
                                                 @Param("sortByRating") String sortByRating,
                                                 @Param("priceMin") Integer priceMin,
                                                 @Param("priceMax") Integer priceMax,
-                                                @Param("sortBySale") String sortBySale);
+                                                @Param("sortBySale") String sortBySale,
+                                                @Param("addressNow") String addressNow,
+                                                @Param("longitudeNow")Double longitudeNow,
+                                                @Param("latitudeNow")Double latitudeNow);
 
     /**
      * 根据活动唯一标识符查询商品列表

@@ -65,7 +65,7 @@ public class CmProductService {
      * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
      * @return 商品分页列表
      */
-    public PageInfo<Map<String, Object>> selectBySalesMode(String name,
+    public PageInfo selectBySalesMode(String name,
                                                            String salesModeId,
                                                            String activityId,
                                                            String goodsTypeId,
@@ -79,7 +79,10 @@ public class CmProductService {
                                                            Integer priceMax,
                                                            Integer pageNum,
                                                            Integer pageSize,
-                                                           String sortBySale) {
+                                                           String sortBySale,
+                                                           String addressNow,
+                                                           Double longitudeNow,
+                                                           Double latitudeNow) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -109,11 +112,22 @@ public class CmProductService {
         PageHelper.startPage(pageNum, pageSize);
 
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow);
 
+        if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
+            List<Object> goodsList = new ArrayList<>();
+            for(Map<String,Object> map:list ){
+                //关联order_detail 表的 product_id
+                Map<String,Object> avatarMap = new HashMap<>();
+                List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("product_id").toString());
+                avatarMap.put("avatarList",avatarList);
+                avatarMap.put("goods",map);
+                goodsList.add(avatarMap);
+            }
+            return new PageInfo<>(goodsList);
+        }else {
             return new PageInfo<>(list);
-
-
+        }
 
     }
 
