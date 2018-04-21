@@ -2,6 +2,8 @@ package com.songpo.searched.controller;
 
 import com.songpo.searched.service.PaymentService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +16,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Api(description = "用户端管理")
 @RestController
-@RequestMapping("/api/common/v1/payment")
-public class PaymentController {
+@RequestMapping("/api/common/v1/notify")
+public class NotifyController {
+
+    public static final Logger log = LoggerFactory.getLogger(NotifyController.class);
 
     private final PaymentService paymentService;
 
     @Autowired
-    public PaymentController(PaymentService paymentService) {
+    public NotifyController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
 
@@ -44,5 +48,18 @@ public class PaymentController {
     @PostMapping("alipay-notify")
     public String aliPayNotify(HttpServletRequest request) {
         return this.paymentService.wxPayNotify(request);
+    }
+
+    /**
+     * 分享通知回调
+     *
+     * @param req 请求参数
+     */
+    @PostMapping("share-notify")
+    public void shareNotify(HttpServletRequest req) {
+        log.debug("接收分享回调");
+        req.getParameterMap().forEach((k, v) -> {
+            log.debug("参数Key: {}，参数值：{}", k, String.join(",", v));
+        });
     }
 }

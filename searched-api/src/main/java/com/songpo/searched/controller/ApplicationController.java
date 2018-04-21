@@ -29,8 +29,12 @@ public class ApplicationController {
 
     public static final Logger log = LoggerFactory.getLogger(ApplicationController.class);
 
+    private final ApplicationService applicationService;
+
     @Autowired
-    private ApplicationService applicationService;
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
 
     /**
      * 提交商户入驻申请
@@ -48,13 +52,15 @@ public class ApplicationController {
             @ApiImplicitParam(name = "street", value = "村、街道", paramType = "form"),
             @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
             @ApiImplicitParam(name = "level", value = "申请级别：1 省级代理商，2 市级代理商，3 县级代理商，4 乡级代理商，5 村级代理商", paramType = "form", required = true),
-            @ApiImplicitParam(name = "name", value = "姓名", paramType = "form", required = true),
+            @ApiImplicitParam(name = "realName", value = "姓名", paramType = "form", required = true),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
+            @ApiImplicitParam(name = "idCardFront", value = "身份证正面照片", paramType = "form", dataType = "file", required = true),
+            @ApiImplicitParam(name = "idCardBack", value = "身份证反面照片", paramType = "form", dataType = "file", required = true),
             @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
     })
     @PostMapping("agent")
-    public BusinessMessage<JSONObject> agentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
+    public BusinessMessage<JSONObject> agentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交代理入驻申请，申请信息：{}", agent);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(agent.getProvince())) {
@@ -71,11 +77,15 @@ public class ApplicationController {
             message.setMsg("电话信息为空");
         } else if (StringUtils.isBlank(agent.getIdCardNumber())) {
             message.setMsg("身份证号为空");
+        } else if (null == idCardFront || idCardFront.isEmpty()) {
+            message.setMsg("身份证正面照片为空");
+        } else if (null == idCardBack || idCardBack.isEmpty()) {
+            message.setMsg("身份证反面照片为空");
         } else if (null == idCardHand || idCardHand.isEmpty()) {
             message.setMsg("手持身份证照片为空");
         } else {
             try {
-                this.applicationService.createAgentApplication(agent, idCardHand);
+                this.applicationService.createAgentApplication(agent, idCardFront, idCardBack, idCardHand);
                 message.setSuccess(true);
             } catch (Exception e) {
                 log.error("提交代理入驻申请失败，{}", e);
@@ -102,16 +112,18 @@ public class ApplicationController {
             @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form"),
             @ApiImplicitParam(name = "street", value = "街道", paramType = "form"),
             @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
-            @ApiImplicitParam(name = "name", value = "姓名，申请类型为个人必填", paramType = "form"),
+            @ApiImplicitParam(name = "realName", value = "姓名，申请类型为个人必填", paramType = "form"),
             @ApiImplicitParam(name = "companyName", value = "企业名称，申请类型为企业时必填", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "电话", paramType = "form", required = true),
             @ApiImplicitParam(name = "type", value = "申请类型：1 个人、2 企业", paramType = "form", required = true),
-            @ApiImplicitParam(name = "businessImage", value = "营业执照照片", paramType = "form", dataType = "file"),
+            @ApiImplicitParam(name = "businessImage", value = "营业执照照片，申请类型为企业时必传", paramType = "form", dataType = "file"),
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
+            @ApiImplicitParam(name = "idCardFront", value = "身份证正面照片，申请类型为个人时必传", paramType = "form", dataType = "file"),
+            @ApiImplicitParam(name = "idCardBack", value = "身份证反面照片，申请类型为个人时必传", paramType = "form", dataType = "file"),
             @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
     })
     @PostMapping(value = "business")
-    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
+    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，申请信息：{}", business);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(business.getProvince())) {
@@ -134,7 +146,7 @@ public class ApplicationController {
                     if (StringUtils.isBlank(business.getRealName())) {
                         message.setMsg("姓名为空");
                     } else {
-                        this.applicationService.createBusinessApplication(business, businessImage, idCardHand);
+                        this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
                         message.setSuccess(true);
                     }
                 }
@@ -145,7 +157,7 @@ public class ApplicationController {
                     } else if (null == businessImage || businessImage.isEmpty()) {
                         message.setMsg("营业执照为空");
                     } else {
-                        this.applicationService.createBusinessApplication(business, businessImage, idCardHand);
+                        this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
                         message.setSuccess(true);
                     }
                 }

@@ -41,11 +41,25 @@ public class ApplicationService {
     /**
      * 提交代理商入驻申请
      *
-     * @param agent      入驻信息
-     * @param idCardHand 手持身份证照片
+     * @param agent       入驻信息
+     * @param idCardFront 身份证正面照片
+     * @param idCardBack  身份证反面照片
+     * @param idCardHand  手持身份证照片
      */
-    public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardHand) {
+    public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交代理商入驻申请， 代理商信息：{}", agent);
+        // 上传身份证正面照片
+        String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
+        if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
+            agent.setIdCardFrontImageUrl(idCardFrontImageUrl);
+        }
+
+        // 上传身份证反面照片
+        String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
+        if (StringUtils.isNotBlank(idCardBackImageUrl)) {
+            agent.setIdCardBackImageUrl(idCardBackImageUrl);
+        }
+
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("agent_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
@@ -85,9 +99,11 @@ public class ApplicationService {
      *
      * @param business      入驻信息
      * @param businessImage 营业执照
+     * @param idCardFront   身份证正面照片
+     * @param idCardBack    身份证反面照片
      * @param idCardHand    手持身份证照片
      */
-    public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardHand) {
+    public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请， 商户信息：{}", business);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
@@ -99,6 +115,18 @@ public class ApplicationService {
             String businessImageUrl = this.fileService.upload("business_application", businessImage);
             if (StringUtils.isNotBlank(businessImageUrl)) {
                 business.setBusinessImageUrl(businessImageUrl);
+            }
+        } else {
+            // 上传身份证正面照片
+            String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
+            if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
+                business.setIdCardFrontImageUrl(idCardFrontImageUrl);
+            }
+
+            // 上传身份证反面照片
+            String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
+            if (StringUtils.isNotBlank(idCardBackImageUrl)) {
+                business.setIdCardBackImageUrl(idCardBackImageUrl);
             }
         }
 
