@@ -37,8 +37,9 @@ class WxPayController(val wxPayService: WxPayService) {
     @ApiImplicitParams(value = [
         ApiImplicitParam(name = "appId", value = "应用ID或公众号ID", paramType = "form", required = true),
         ApiImplicitParam(name = "mchId", value = "商户号", paramType = "form", required = true),
-        ApiImplicitParam(name = "secret", value = "支付密钥", paramType = "form", required = true),
-        ApiImplicitParam(name = "certFile", value = "支付证书文件", paramType = "file", required = true),
+        ApiImplicitParam(name = "secret", value = "APP密钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "apiKey", value = "API密钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "certFile", value = "支付证书文件", paramType = "form", dataType = "file", required = true),
         ApiImplicitParam(name = "notifyUrl", value = "支付通知地址", paramType = "form", required = true)
     ])
     @PostMapping("/load-com.songpo.searched.alipay.configProperties")
@@ -46,13 +47,14 @@ class WxPayController(val wxPayService: WxPayService) {
             appId: String,
             mchId: String,
             secret: String,
+            apiKey: String,
             certFile: MultipartFile,
             notifyUrl: String
     ): BusinessMessage<Void> {
-        log.debug { "加载支付配置, 应用ID = [$appId], 商户号 = [$mchId], 密钥 = [$secret], 支付完成后返回的地址 = [$notifyUrl]" }
+        log.debug { "加载支付配置, 应用ID = [$appId], 商户号 = [$mchId], AppSecret = [$secret], API密钥 = [$apiKey], 支付完成后返回的地址 = [$notifyUrl]" }
         val message = BusinessMessage<Void>()
         try {
-            this.wxPayService.loadConfig(appId, mchId, secret, certFile, notifyUrl)
+            this.wxPayService.loadConfig(appId, mchId, secret, apiKey, certFile, notifyUrl)
             message.success = true
         } catch (e: Exception) {
             log.error { "加载支付配置失败，$e" }

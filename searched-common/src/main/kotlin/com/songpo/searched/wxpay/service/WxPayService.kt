@@ -18,12 +18,17 @@ class WxPayService(val config: WxPayConfigProperties) {
 
     lateinit var wxpay: WXPay
 
+    init {
+        initClient()
+    }
+
     /**
      * 加载支付配置
      *
      * @param appId    String	应用ID
      * @param mchId    String	商户号
      * @param secret    String	支付密钥
+     * @param apiKey    String	支付密钥
      * @param certFile    String	支付证书文件
      * @param notifyUrl    String	支付通知地址
      * @return 响应信息
@@ -31,11 +36,13 @@ class WxPayService(val config: WxPayConfigProperties) {
     fun loadConfig(appId: String,
                    mchId: String,
                    secret: String,
+                   apiKey: String,
                    certFile: MultipartFile,
                    notifyUrl: String) {
         config.appId = appId
         config.mchId = mchId
         config.secret = secret
+        config.apiKey = apiKey
         config.notifyUrl = notifyUrl
         config.certData = certFile.bytes
         initClient()
@@ -55,7 +62,7 @@ class WxPayService(val config: WxPayConfigProperties) {
             }
 
             override fun getKey(): String? {
-                return config.secret
+                return config.apiKey
             }
 
             override fun getCertStream(): ByteArrayInputStream {

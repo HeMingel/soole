@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ConfigurationProperties(prefix = "sp.pay.wxpay")
-open class WxPayConfigProperties(
+class WxPayConfigProperties(
         /**
          * 商户APP_Id
          * appid是微信公众账号或开放平台APP的唯一标识，
