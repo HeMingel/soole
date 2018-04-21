@@ -1,5 +1,6 @@
 package com.songpo.searched.service;
 
+import com.alipay.api.domain.OrderDetail;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
@@ -557,23 +558,34 @@ public class CmOrderService {
                                         }
                                     }
                                     //TODO ====== 如果是预售模式 ======
-                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage);
                                     }
                                     //TODO ====== 如果是助力购 ======
-                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage);
                                     }
                                     //TODO ====== 消费返利 ======
-                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage);
+                                        // TODO ====== 豆赚 ======
+                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS){
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage);
+                                        // TODO ====== 普通商品 ======
+                                    }else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL){
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage);
                                     }
+
 
                                 } else {
                                     message.setMsg("当前规格的商品,库存不足");
@@ -773,5 +785,30 @@ public class CmOrderService {
             return message;
         }
         return message;
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param detailId
+     * @param shopId
+     * @param orderNum
+     */
+    public void deleteOrder(String detailId, String shopId, String orderNum) {
+        Example example = new Example(SlOrderDetail.class);
+        example.createCriteria().andEqualTo("id", detailId).andEqualTo("shopId", shopId);
+        this.orderDetailService.deleteByExample(example);
+        int count = this.orderService.selectCount(new SlOrder() {{
+            setSerialNumber(orderNum);
+        }});
+        int c = this.orderService.selectCount(new SlOrder() {{
+            setSerialNumber(orderNum);
+        }});
+        if (c == 1) {
+            this.orderService.delete(new SlOrder() {{
+                setSerialNumber(orderNum);
+            }});
+        }
+
     }
 }
