@@ -6,7 +6,6 @@ import com.songpo.searched.wxpay.config.WxPayConfigProperties
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -59,7 +58,7 @@ class WxPayService(val config: WxPayConfigProperties) {
                 return config.secret
             }
 
-            override fun getCertStream(): InputStream? {
+            override fun getCertStream(): ByteArrayInputStream {
                 return if (null != config.certData) {
                     ByteArrayInputStream(config.certData)
                 } else {

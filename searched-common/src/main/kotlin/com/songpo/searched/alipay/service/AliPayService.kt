@@ -530,6 +530,398 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
     }
 
     /**
+     * alipay.trade.wap.pay(手机网站支付接口2.0)
+     *
+     * 外部商户创建订单并支付
+     * 参考 https://docs.open.alipay.com/api_1/alipay.trade.wap.pay/
+     *
+     * @param body    String	可选	128	订单描述
+     * @param subject    String	必选	256	订单标题
+     * @param outTradeNo String	必选	64 商户订单号,64个字符以内、可包含字母、数字、下划线；需保证在商户端不重复
+     * @param timeoutExpress    String	可选	6	该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m
+     * @param timeExpire    String	可选	32	绝对超时时间，格式为yyyy-MM-dd HH:mm。	2016-12-31 10:05
+     * @param totalAmount    Price	可选	11	订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000] 如果同时传入【可打折金额】和【不可打折金额】，该参数可以不用传入；如果同时传入了【可打折金额】，【不可打折金额】，【订单总金额】三者，则必须满足如下条件：【订单总金额】=【可打折金额】+【不可打折金额】
+     * @param sellerId    String	可选	28	如果该值为空，则默认为商户签约账号对应的支付宝用户ID
+     * @param authToken    String	可选	40	针对用户授权接口，获取用户相关数据时，用于标识用户授权关系	appopenBb64d181d0146481ab6a762c00714cC27
+     * @param goodsType    String	可选	2	商品主类型 :0-虚拟类商品,1-实物类商品	0
+     * @param passbackParams    String	可选	512	公用回传参数，如果请求时传递了该参数，则返回给商户时会回传该参数。支付宝只会在同步返回（包括跳转回商户网站）和异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝。	merchantBizType%3d3C%26merchantBizNo%3d2016010101111
+     * @param quitUrl    String	必选	400	用户付款中途退出返回商户网站的地址	http://www.taobao.com/product/113714.html
+     * @param productCode    String	必选	64	销售产品码，商家和支付宝签约的产品码	QUICK_WAP_WAY
+     * @param promoParams    String	可选	512	优惠参数 注：仅与支付宝协商后可用	{"storeIdType":"1"}
+     * @param royaltyInfo    RoyaltyInfo	可选		描述分账信息，json格式，详见分账参数说明
+    └ royalty_type	String	可选	150	分账类型 卖家的分账类型，目前只支持传入ROYALTY（普通分账类型）。	ROYALTY
+    royalty_detail_infos	RoyaltyDetailInfos[]	必填	2500	分账明细的信息，可以描述多条分账指令，json数组。
+    └ serial_no	Number	可选	9	分账序列号，表示分账执行的顺序，必须为正整数	1
+    └ trans_in_type	String	可选	24	接受分账金额的账户类型： 	userId：支付宝账 号对应的支付宝唯一用户号。  bankIndex：分账到银行账户的银行编号。目前暂时只支持分账到一个银行编号。  storeId：分账到门店对应的银行卡编号。 默认值为userId。	userId
+    └ batch_no	String	必填	32	分账批次号 分账批次号。 目前需要和转入账号类型为bankIndex配合使用。	123
+    └ out_relation_id	String	可选	64	商户分账的外部关联号，用于关联到每一笔分账信息，商户需保证其唯一性。 如果为空，该值则默认为“商户网站唯一订单号+分账序列号”	20131124001
+    └ trans_out_type	String	必填	24	要分账的账户类型。 目前只支持userId：支付宝账号对应的支付宝唯一用户号。 默认值为userId。	userId
+    └ trans_out	String	必填	16	如果转出账号类型为userId，本参数为要分账的支付宝账号对应的支付宝唯一用户号。以2088开头的纯16位数字。	2088101126765726
+    └ trans_in	String	必填	28	如果转入账号类型为userId，本参数为接受分账金额的支付宝账号对应的支付宝唯一用户号。以2088开头的纯16位数字。 	如果转入账号类型为bankIndex，本参数为28位的银行编号（商户和支付宝签约时确定）。 如果转入账号类型为storeId，本参数为商户的门店ID。	2088101126708402
+    └ amount	Number	必填	9	分账的金额，单位为元	0.1
+    └ desc	String	可选	1000	分账描述信息	分账测试1
+    └ amount_percentage	String	可选	3	分账的比例，值为20代表按20%的比例分账	100
+     * @param extendParams    ExtendParams	可选		业务扩展参数
+    └ sys_service_provider_id	String	可选	64	系统商编号 该参数作为系统商返佣数据提取的依据，请填写系统商签约协议的PID	2088511833207846
+    └ hb_fq_num	String	可选	5	使用花呗分期要进行的分期数	3
+    └ hb_fq_seller_percent	String	可选	3	使用花呗分期需要卖家承担的手续费比例的百分值，传入100代表100%	100
+    └ industry_reflux_info	String	可选	512	行业数据回流信息, 详见：地铁支付接口参数补充说明	{\"scene_code\":\"metro_tradeorder\",\"channel\":\"xxxx\",\"scene_data\":{\"asset_name\":\"ALIPAY\"}}
+    └ card_type	String	可选	32	卡类型	S0JP0000
+     * @param subMerchant    SubMerchant	可选		间连受理商户信息体，当前只对特殊银行机构特定场景下使用此字段
+    └ merchant_id	String	必填	11	间连受理商户的支付宝商户编号，通过间连商户入驻后得到。间连业务下必传，并且需要按规范传递受理商户编号。	19023454
+    └ merchant_type	String	可选	32	商户id类型，	alipay: 支付宝分配的间连商户编号, merchant: 商户端的间连商户编号
+     * @param enablePayChannels    String	可选	128	可用渠道，用户只能在指定渠道范围内支付 当有多个渠道时用“,”分隔 注，与disable_pay_channels互斥	pcredit,moneyFund,debitCardExpress
+     * @param disablePayChannels    String	可选	128	禁用渠道，用户不可用指定渠道支付  当有多个渠道时用“,”分隔 注，与enable_pay_channels互斥	pcredit,moneyFund,debitCardExpress
+     * @param storeId    String	可选	32	商户门店编号	NJ_001
+     * @param settleInfo    SettleInfo	可选		描述结算信息，json格式，详见结算参数说明
+    settle_detail_infos	SettleDetailInfo[]	必填	10	结算详细信息，json数组，目前只支持一条。
+    └ trans_in_type	String	必填	64	结算收款方的账户类型。
+    cardSerialNo：结算收款方的银行卡编号。
+    目前只支持cardSerialNo账户类型	cardSerialNo
+    └ trans_in	String	必填	64	结算收款方。当结算收款方类型是cardSerialNo时，本参数为用户在支付宝绑定的卡编号	A0001
+    └ summary_dimension	String	可选	64	结算汇总维度，按照这个维度汇总成批次结算，由商户指定。
+    目前需要和结算收款方账户类型为cardSerialNo配合使用	A0001
+    └ amount	Number	必填	9	结算的金额，单位为元。目前必须和交易金额相同	0.1
+     * @param  invoiceInfo    InvoiceInfo	可选		开票信息
+    key_info	InvoiceKeyInfo	必填	200	开票关键信息
+    └ is_support_invoice	Boolean	必填	5	该交易是否支持开票	true
+    └ invoice_merchant_name	String	必填	80	开票商户名称：商户品牌简称|商户门店简称	ABC|003
+    └ tax_num	String	必填	30	税号	1464888883494
+    └ details	String	必填	400	开票内容 注：json数组格式	[{"code":"100294400","name":"服饰","num":"2","sumPrice":"200.00","taxRate":"6%"}]
+     * @param specifiedChannel    String	可选	128	指定渠道，目前仅支持传入pcredit  若由于用户原因渠道不可用，用户可选择是否用其他渠道支付。 注：该参数不可与花呗分期参数同时传入	pcredit
+     * @param businessParams    String	可选	512	商户传入业务信息，具体值要和支付宝约定，应用于安全，营销等参数直传场景，格式为json格式	{"data":"123"}
+     * @param extUserInfo    ExtUserInfo	可选		外部指定买家
+    └ name	String	可选	16	姓名 注： need_check_info=T时该参数才有效	李明
+    └ mobile	String	可选	20	手机号 注：该参数暂不校验	16587658765
+    └ cert_type	String	可选	32	身份证：IDENTITY_CARD、护照：PASSPORT、军官证：OFFICER_CARD、士兵证：SOLDIER_CARD、户口本：HOKOU等。如有其它类型需要支持，请与蚂蚁金服工作人员联系。 注： need_check_info=T时该参数才有效	IDENTITY_CARD
+    └ cert_no	String	可选	64	证件号 注：need_check_info=T时该参数才有效	362334768769238881
+    └ min_age	String	可选	3	允许的最小买家年龄，买家年龄必须大于等于所传数值 注： 1. need_check_info=T时该参数才有效 2. min_age为整数，必须大于等于0	18
+    └ fix_buyer	String	可选	8	是否强制校验付款人身份信息 T:强制校验，F：不强制	F
+    └ need_check_info	String	可选	1	是否强制校验身份信息 T:强制校验，F：不强制	F
+     * @return 响应信息
+     */
+    fun wapPay(
+            body: String?,
+            subject: String,
+            outTradeNo: String,
+            timeoutExpress: String?,
+            timeExpire: String?,
+            totalAmount: String,
+            sellerId: String,
+            authToken: String?,
+            goodsType: String?,
+            passbackParams: String?,
+            quitUrl: String,
+            productCode: String,
+            promoParams: String?,
+            royaltyInfo: RoyaltyInfo?,
+            extendParams: ExtendParams?,
+            subMerchant: SubMerchant?,
+            enablePayChannels: String?,
+            disablePayChannels: String?,
+            storeId: String?,
+            settleInfo: SettleInfo?,
+            invoiceInfo: InvoiceInfo?,
+            specifiedChannel: String?,
+            businessParams: String?,
+            extUserInfo: ExtUserInfo?
+    ): AlipayTradeWapPayResponse? {
+        // 初始化预下单请求
+        val request = AlipayTradeWapPayRequest()
+
+        // 设置通知地址
+        request.notifyUrl = configProperties.notifyUrl
+
+        // 如果返回地址不为空，则设置返回地址
+        if (!configProperties.returnUrl.isNullOrBlank()) {
+            request.returnUrl = configProperties.returnUrl
+        }
+
+        val model = AlipayTradeWapPayModel()
+        request.bizModel = model
+
+        model.subject = subject
+        model.outTradeNo = outTradeNo
+        model.totalAmount = totalAmount
+        model.sellerId = sellerId
+        model.quitUrl = quitUrl
+        model.productCode = productCode
+
+        if (!body.isNullOrBlank()) {
+            model.body = body
+        }
+
+        if (!timeoutExpress.isNullOrBlank()) {
+            model.timeoutExpress = timeoutExpress
+        }
+
+        if (!timeExpire.isNullOrBlank()) {
+            model.timeExpire = timeExpire
+        }
+
+        if (!authToken.isNullOrBlank()) {
+            model.authToken = authToken
+        }
+
+        if (!goodsType.isNullOrBlank()) {
+            model.goodsType = goodsType
+        }
+
+        if (!passbackParams.isNullOrBlank()) {
+            model.passbackParams = passbackParams
+        }
+
+        if (!promoParams.isNullOrBlank()) {
+            model.promoParams = promoParams
+        }
+
+        if (null != royaltyInfo) {
+            model.royaltyInfo = royaltyInfo
+        }
+
+        if (null != extendParams) {
+            model.extendParams = extendParams
+        }
+
+        if (null != subMerchant) {
+            model.subMerchant = subMerchant
+        }
+
+        if (!enablePayChannels.isNullOrBlank()) {
+            model.enablePayChannels = enablePayChannels
+        }
+
+        if (!disablePayChannels.isNullOrBlank()) {
+            model.disablePayChannels = disablePayChannels
+        }
+
+        if (!storeId.isNullOrBlank()) {
+            model.storeId = storeId
+        }
+
+        if (null != settleInfo) {
+            model.settleInfo = settleInfo
+        }
+
+        if (null != invoiceInfo) {
+            model.invoiceInfo = invoiceInfo
+        }
+
+        if (!specifiedChannel.isNullOrBlank()) {
+            model.specifiedChannel = specifiedChannel
+        }
+
+        if (!businessParams.isNullOrBlank()) {
+            model.businessParams = businessParams
+        }
+
+        if (null != extUserInfo) {
+            model.extUserInfo = extUserInfo
+        }
+
+        return client.execute(request)
+    }
+
+    /**
+     * alipay.trade.app.pay(app支付接口2.0)
+     *
+     * 外部商户APP唤起快捷SDK创建订单并支付
+     * 参考 https://docs.open.alipay.com/api_1/alipay.trade.app.pay/
+     *
+     * @param timeoutExpress    String	可选	6	该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m
+     * @param totalAmount    Price	可选	11	订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000] 如果同时传入【可打折金额】和【不可打折金额】，该参数可以不用传入；如果同时传入了【可打折金额】，【不可打折金额】，【订单总金额】三者，则必须满足如下条件：【订单总金额】=【可打折金额】+【不可打折金额】
+     * @param sellerId    String	可选	28	如果该值为空，则默认为商户签约账号对应的支付宝用户ID
+     * @param productCode    String	必选	64	销售产品码，商家和支付宝签约的产品码	QUICK_WAP_WAY
+     * @param body    String	可选	128	订单描述
+     * @param subject    String	必选	256	订单标题
+     * @param outTradeNo String	必选	64 商户订单号,64个字符以内、可包含字母、数字、下划线；需保证在商户端不重复
+     * @param timeExpire    String	可选	32	绝对超时时间，格式为yyyy-MM-dd HH:mm。	2016-12-31 10:05
+     * @param goodsType    String	可选	2	商品主类型 :0-虚拟类商品,1-实物类商品	0
+     * @param promoParams    String	可选	512	优惠参数 注：仅与支付宝协商后可用	{"storeIdType":"1"}
+     * @param passbackParams    String	可选	512	公用回传参数，如果请求时传递了该参数，则返回给商户时会回传该参数。支付宝只会在同步返回（包括跳转回商户网站）和异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝。	merchantBizType%3d3C%26merchantBizNo%3d2016010101111
+     * @param royaltyInfo    RoyaltyInfo	可选		描述分账信息，json格式，详见分账参数说明
+    └ royalty_type	String	可选	150	分账类型 卖家的分账类型，目前只支持传入ROYALTY（普通分账类型）。	ROYALTY
+    royalty_detail_infos	RoyaltyDetailInfos[]	必填	2500	分账明细的信息，可以描述多条分账指令，json数组。
+    └ serial_no	Number	可选	9	分账序列号，表示分账执行的顺序，必须为正整数	1
+    └ trans_in_type	String	可选	24	接受分账金额的账户类型： 	userId：支付宝账 号对应的支付宝唯一用户号。  bankIndex：分账到银行账户的银行编号。目前暂时只支持分账到一个银行编号。  storeId：分账到门店对应的银行卡编号。 默认值为userId。	userId
+    └ batch_no	String	必填	32	分账批次号 分账批次号。 目前需要和转入账号类型为bankIndex配合使用。	123
+    └ out_relation_id	String	可选	64	商户分账的外部关联号，用于关联到每一笔分账信息，商户需保证其唯一性。 如果为空，该值则默认为“商户网站唯一订单号+分账序列号”	20131124001
+    └ trans_out_type	String	必填	24	要分账的账户类型。 目前只支持userId：支付宝账号对应的支付宝唯一用户号。 默认值为userId。	userId
+    └ trans_out	String	必填	16	如果转出账号类型为userId，本参数为要分账的支付宝账号对应的支付宝唯一用户号。以2088开头的纯16位数字。	2088101126765726
+    └ trans_in	String	必填	28	如果转入账号类型为userId，本参数为接受分账金额的支付宝账号对应的支付宝唯一用户号。以2088开头的纯16位数字。 	如果转入账号类型为bankIndex，本参数为28位的银行编号（商户和支付宝签约时确定）。 如果转入账号类型为storeId，本参数为商户的门店ID。	2088101126708402
+    └ amount	Number	必填	9	分账的金额，单位为元	0.1
+    └ desc	String	可选	1000	分账描述信息	分账测试1
+    └ amount_percentage	String	可选	3	分账的比例，值为20代表按20%的比例分账	100
+     * @param extendParams    ExtendParams	可选		业务扩展参数
+    └ sys_service_provider_id	String	可选	64	系统商编号 该参数作为系统商返佣数据提取的依据，请填写系统商签约协议的PID	2088511833207846
+    └ hb_fq_num	String	可选	5	使用花呗分期要进行的分期数	3
+    └ hb_fq_seller_percent	String	可选	3	使用花呗分期需要卖家承担的手续费比例的百分值，传入100代表100%	100
+    └ industry_reflux_info	String	可选	512	行业数据回流信息, 详见：地铁支付接口参数补充说明	{\"scene_code\":\"metro_tradeorder\",\"channel\":\"xxxx\",\"scene_data\":{\"asset_name\":\"ALIPAY\"}}
+    └ card_type	String	可选	32	卡类型	S0JP0000
+     * @param subMerchant    SubMerchant	可选		间连受理商户信息体，当前只对特殊银行机构特定场景下使用此字段
+    └ merchant_id	String	必填	11	间连受理商户的支付宝商户编号，通过间连商户入驻后得到。间连业务下必传，并且需要按规范传递受理商户编号。	19023454
+    └ merchant_type	String	可选	32	商户id类型，	alipay: 支付宝分配的间连商户编号, merchant: 商户端的间连商户编号
+     * @param enablePayChannels    String	可选	128	可用渠道，用户只能在指定渠道范围内支付 当有多个渠道时用“,”分隔 注，与disable_pay_channels互斥	pcredit,moneyFund,debitCardExpress
+     * @param storeId    String	可选	32	商户门店编号	NJ_001
+     * @param specifiedChannel    String	可选	128	指定渠道，目前仅支持传入pcredit  若由于用户原因渠道不可用，用户可选择是否用其他渠道支付。 注：该参数不可与花呗分期参数同时传入	pcredit
+     * @param disablePayChannels    String	可选	128	禁用渠道，用户不可用指定渠道支付  当有多个渠道时用“,”分隔 注，与enable_pay_channels互斥	pcredit,moneyFund,debitCardExpress
+     * @param settleInfo    SettleInfo	可选		描述结算信息，json格式，详见结算参数说明
+    settle_detail_infos	SettleDetailInfo[]	必填	10	结算详细信息，json数组，目前只支持一条。
+    └ trans_in_type	String	必填	64	结算收款方的账户类型。
+    cardSerialNo：结算收款方的银行卡编号。
+    目前只支持cardSerialNo账户类型	cardSerialNo
+    └ trans_in	String	必填	64	结算收款方。当结算收款方类型是cardSerialNo时，本参数为用户在支付宝绑定的卡编号	A0001
+    └ summary_dimension	String	可选	64	结算汇总维度，按照这个维度汇总成批次结算，由商户指定。
+    目前需要和结算收款方账户类型为cardSerialNo配合使用	A0001
+    └ amount	Number	必填	9	结算的金额，单位为元。目前必须和交易金额相同	0.1
+     * @param  invoiceInfo    InvoiceInfo	可选		开票信息
+    key_info	InvoiceKeyInfo	必填	200	开票关键信息
+    └ is_support_invoice	Boolean	必填	5	该交易是否支持开票	true
+    └ invoice_merchant_name	String	必填	80	开票商户名称：商户品牌简称|商户门店简称	ABC|003
+    └ tax_num	String	必填	30	税号	1464888883494
+    └ details	String	必填	400	开票内容 注：json数组格式	[{"code":"100294400","name":"服饰","num":"2","sumPrice":"200.00","taxRate":"6%"}]
+
+     * @param extUserInfo    ExtUserInfo	可选		外部指定买家
+    └ name	String	可选	16	姓名 注： need_check_info=T时该参数才有效	李明
+    └ mobile	String	可选	20	手机号 注：该参数暂不校验	16587658765
+    └ cert_type	String	可选	32	身份证：IDENTITY_CARD、护照：PASSPORT、军官证：OFFICER_CARD、士兵证：SOLDIER_CARD、户口本：HOKOU等。如有其它类型需要支持，请与蚂蚁金服工作人员联系。 注： need_check_info=T时该参数才有效	IDENTITY_CARD
+    └ cert_no	String	可选	64	证件号 注：need_check_info=T时该参数才有效	362334768769238881
+    └ min_age	String	可选	3	允许的最小买家年龄，买家年龄必须大于等于所传数值 注： 1. need_check_info=T时该参数才有效 2. min_age为整数，必须大于等于0	18
+    └ fix_buyer	String	可选	8	是否强制校验付款人身份信息 T:强制校验，F：不强制	F
+    └ need_check_info	String	可选	1	是否强制校验身份信息 T:强制校验，F：不强制	F
+     * @param businessParams    String	可选	512	商户传入业务信息，具体值要和支付宝约定，应用于安全，营销等参数直传场景，格式为json格式	{"data":"123"}
+     * @return 响应信息
+     */
+    fun appPay(
+            timeoutExpress: String?,
+            totalAmount: String?,
+            sellerId: String?,
+            productCode: String?,
+            body: String?,
+            subject: String?,
+            outTradeNo: String?,
+            timeExpire: String?,
+            goodsType: String?,
+            promoParams: String?,
+            passbackParams: String?,
+            royaltyInfo: RoyaltyInfo?,
+            extendParams: ExtendParams?,
+            subMerchant: SubMerchant?,
+            enablePayChannels: String?,
+            storeId: String?,
+            specifiedChannel: String?,
+            disablePayChannels: String?,
+            settleInfo: SettleInfo?,
+            invoiceInfo: InvoiceInfo?,
+            extUserInfo: ExtUserInfo?,
+            businessParams: String?
+    ): AlipayTradeAppPayResponse? {
+        // 初始化预下单请求
+        val request = AlipayTradeAppPayRequest()
+
+        // 设置通知地址
+        request.notifyUrl = configProperties.notifyUrl
+
+        // 如果返回地址不为空，则设置返回地址
+        if (!configProperties.returnUrl.isNullOrBlank()) {
+            request.returnUrl = configProperties.returnUrl
+        }
+
+        val model = AlipayTradeAppPayModel()
+        request.bizModel = model
+
+        if (!timeoutExpress.isNullOrBlank()) {
+            model.timeoutExpress = timeoutExpress
+        }
+
+        if (!totalAmount.isNullOrBlank()) {
+            model.totalAmount = totalAmount
+        }
+
+        if (!sellerId.isNullOrBlank()) {
+            model.sellerId = sellerId
+        }
+
+        if (!productCode.isNullOrBlank()) {
+            model.productCode = productCode
+        }
+
+        if (!body.isNullOrBlank()) {
+            model.body = body
+        }
+
+        if (!subject.isNullOrBlank()) {
+            model.subject = subject
+        }
+
+        if (!outTradeNo.isNullOrBlank()) {
+            model.outTradeNo = outTradeNo
+        }
+
+        if (!timeExpire.isNullOrBlank()) {
+            model.timeExpire = timeExpire
+        }
+
+        if (!goodsType.isNullOrBlank()) {
+            model.goodsType = goodsType
+        }
+
+        if (!promoParams.isNullOrBlank()) {
+            model.promoParams = promoParams
+        }
+
+        if (!passbackParams.isNullOrBlank()) {
+            model.passbackParams = passbackParams
+        }
+
+        if (null != royaltyInfo) {
+            model.royaltyInfo = royaltyInfo
+        }
+
+        if (null != extendParams) {
+            model.extendParams = extendParams
+        }
+
+        if (null != subMerchant) {
+            model.subMerchant = subMerchant
+        }
+
+        if (!enablePayChannels.isNullOrBlank()) {
+            model.enablePayChannels = enablePayChannels
+        }
+
+        if (!storeId.isNullOrBlank()) {
+            model.storeId = storeId
+        }
+
+        if (!specifiedChannel.isNullOrBlank()) {
+            model.specifiedChannel = specifiedChannel
+        }
+
+        if (!disablePayChannels.isNullOrBlank()) {
+            model.disablePayChannels = disablePayChannels
+        }
+
+        if (null != settleInfo) {
+            model.settleInfo = settleInfo
+        }
+
+        if (null != invoiceInfo) {
+            model.invoiceInfo = invoiceInfo
+        }
+
+        if (null != extUserInfo) {
+            model.extUserInfo = extUserInfo
+        }
+
+        if (!businessParams.isNullOrBlank()) {
+            model.businessParams = businessParams
+        }
+
+        return client.execute(request)
+    }
+
+    /**
      * 统一收单线下交易查询
      *
      * 该接口提供所有支付宝支付订单的查询，商户可以通过该接口主动查询订单状态，完成下一步的业务逻辑。 需要调用查询接口的情况： 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知； 调用支付接口后，返回系统错误或未知交易状态情况； 调用alipay.trade.pay，返回INPROCESS的状态； 调用alipay.trade.cancel之前，需确认支付状态；

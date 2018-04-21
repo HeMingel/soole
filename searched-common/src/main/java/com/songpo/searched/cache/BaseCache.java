@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -166,6 +167,57 @@ public class BaseCache<V> {
             return redisTemplate.hasKey(prefix + key);
         } catch (Exception e) {
             log.error("删除缓存失败，key = {}", deleteKey);
+        }
+        return false;
+    }
+
+    /**
+     * 获取Key失效时间
+     *
+     * @param key 键
+     * @return 结果
+     */
+    public Long getExpire(String key) {
+        String fullKey = prefix + key;
+        try {
+            return redisTemplate.getExpire(fullKey);
+        } catch (Exception e) {
+            log.error("获取Key失效时间失败，key = {}", fullKey);
+        }
+        return 0L;
+    }
+
+    /**
+     * 设置Key过期时间
+     *
+     * @param key      键
+     * @param timeOut  过期时长
+     * @param timeUnit 单位
+     * @return 是否设置成功
+     */
+    public Boolean expire(String key, Long timeOut, TimeUnit timeUnit) {
+        String fullKey = prefix + key;
+        try {
+            return redisTemplate.expire(fullKey, timeOut, timeUnit);
+        } catch (Exception e) {
+            log.error("获取Key失效时间失败，key = {}", fullKey);
+        }
+        return false;
+    }
+
+    /**
+     * 设置Key过期时间
+     *
+     * @param key  键
+     * @param date 过期日期
+     * @return 是否设置成功
+     */
+    public Boolean expireAt(String key, Date date) {
+        String fullKey = prefix + key;
+        try {
+            return redisTemplate.expireAt(fullKey, date);
+        } catch (Exception e) {
+            log.error("获取Key失效时间失败，key = {}", fullKey);
         }
         return false;
     }

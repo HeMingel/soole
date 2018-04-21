@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest
 @Api(description = "微信支付服务")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/wxpay")
+@RequestMapping("/api/common/v1/wxpay")
 class WxPayController(val wxPayService: WxPayService) {
 
     val log = KotlinLogging.logger {}

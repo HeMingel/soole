@@ -54,10 +54,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(HttpServletRequest request, HttpServletResponse response, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId) {
+    public BusinessMessage addOrder(HttpServletRequest request, SlOrder slOrder, CMSlOrderDetail cmSlOrderDetail, String shippingAddressId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, response, slOrder, cmSlOrderDetail, shippingAddressId);
+            message = this.cmOrderService.addOrder(request, slOrder, cmSlOrderDetail, shippingAddressId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
