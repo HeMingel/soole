@@ -426,6 +426,19 @@ public class CmOrderService {
                         //取消订单
                         setPaymentState(102);
                     }}, example);
+                    List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                        setProductId(id);
+                    }});
+                    for (SlOrderDetail detail : detailList) {
+                        SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                            setId(detail.getRepositoryId());
+                        }});
+                        // 把订单中的商品数量加到商品库存中去
+                        this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                            setId(repository.getId());
+                            setCount(repository.getCount() + detail.getQuantity());
+                        }});
+                    }
                     break;
                 case 5:
                     Example example1 = new Example(SlOrderDetail.class);
