@@ -438,6 +438,8 @@ public class CmOrderService {
                             setId(repository.getId());
                             setCount(repository.getCount() + detail.getQuantity());
                         }});
+                        //更新redids
+                        this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
                     }
                     break;
                 case 5:
@@ -482,8 +484,9 @@ public class CmOrderService {
                         setId(repository.getId());
                         setCount(count);
                     }});
+                    //更新redids
+                    this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
                 }
-
             }
         }
     }
