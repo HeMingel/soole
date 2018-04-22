@@ -143,7 +143,6 @@ public class ShoppingCartService {
                             cart.setCarts(goodsList);
                             list.add(cart);
                         }
-
                     }
                 }
                 message.setMsg("查询成功");
