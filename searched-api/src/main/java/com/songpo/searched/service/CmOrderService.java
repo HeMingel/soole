@@ -9,10 +9,9 @@ import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.CmOrderMapper;
-import com.songpo.searched.mapper.SlActivityProductMapper;
-import com.songpo.searched.mapper.SlReturnsDetailMapper;
-import com.songpo.searched.mapper.SlUserAddressMapper;
+import com.songpo.searched.mapper.*;
+import com.songpo.searched.rabbitmq.NotificationService;
+import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
 import org.slf4j.Logger;
@@ -70,6 +69,10 @@ public class CmOrderService {
     private ShoppingCartCache shoppingCartCache;
     @Autowired
     private SlReturnsDetailMapper returnsDetailMapper;
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private SlMessageMapper messageMapper;
 
     /**
      * 多商品下单
@@ -896,6 +899,49 @@ public class CmOrderService {
             }
         } catch (Exception e) {
             log.error("查询失败", e);
+        }
+        return message;
+    }
+
+    /**
+     * 提醒发货
+     *
+     * @param orderId
+     */
+    public BusinessMessage remindingTheShipments(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            SlUser user = loginUserService.getCurrentLoginUser();
+            if (null != user) {
+                SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                    setOrderId(orderId);
+                }});
+                if (null != detail) {
+                    List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
+                        setSourceId(user.getId());
+                        setTargetId(detail.getShopId());
+                    }});
+                    if (list.size() > 0) {
+                        for (SlMessage message1 : list) {
+                            if (message1.getCreateTime().substring(0, 10).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
+                                message.setMsg("今日已提醒");
+                            } else {
+                                String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                                notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                                message.setMsg("提醒成功");
+                                message.setSuccess(true);
+                            }
+                        }
+                    } else {
+                        String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                        notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                        message.setMsg("提醒成功");
+                        message.setSuccess(true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("提醒失败", e);
         }
         return message;
     }

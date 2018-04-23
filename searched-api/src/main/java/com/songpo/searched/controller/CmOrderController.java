@@ -202,7 +202,7 @@ public class CmOrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form", required = true)
     })
-    @PostMapping("pre-sale-order")
+    @GetMapping("pre-sale-order")
     public BusinessMessage preSaleOrderList(Integer status) {
         BusinessMessage message = new BusinessMessage();
         try {
@@ -217,5 +217,26 @@ public class CmOrderController {
         return message;
     }
 
+    /**
+     * 预售提醒发货
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(value = "提醒发货")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+    })
+    @PostMapping("reminding-the-shipments")
+    public BusinessMessage remindingTheShipments(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.remindingTheShipments(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("提醒失败", e);
+        }
+        return message;
+    }
 
 }
