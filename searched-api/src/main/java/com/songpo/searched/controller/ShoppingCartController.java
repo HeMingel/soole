@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ public class ShoppingCartController {
     /**
      * 购物车添加
      *
-     * @param pojo
+     * @param repositoryId
+     * @param counts
      */
     @ApiOperation(value = "添加购物车商品")
     @ApiImplicitParams({
@@ -51,14 +53,23 @@ public class ShoppingCartController {
     })
     @PostMapping("add")
     public BusinessMessage addMyShoppingCart(String repositoryId, int counts) {
-        CMShoppingCart pojo = new CMShoppingCart();
-        List<CMGoods> list = new ArrayList<>();
-        CMGoods goods = new CMGoods();
-        goods.setRepositoryId(repositoryId);
-        goods.setCounts(counts);
-        list.add(goods);
-        pojo.setCarts(list);
-        return this.shoppingCartService.addMyShoppingCart(pojo);
+        BusinessMessage message = new BusinessMessage();
+        if (!StringUtils.isEmpty(repositoryId) && !StringUtils.isEmpty(counts)) {
+            CMShoppingCart pojo = new CMShoppingCart();
+            List<CMGoods> list = new ArrayList<>();
+            CMGoods goods = new CMGoods();
+            goods.setRepositoryId(repositoryId);
+            goods.setCounts(counts);
+            list.add(goods);
+            pojo.setCarts(list);
+            message = this.shoppingCartService.addMyShoppingCart(pojo);
+            message.setMsg(message.getMsg());
+            message.setSuccess(message.getSuccess());
+            message.setData(message.getData());
+        } else {
+            message.setMsg("传入的参数为空");
+        }
+        return message;
     }
 
     @ApiOperation(value = "删除购物车的某个商品")
