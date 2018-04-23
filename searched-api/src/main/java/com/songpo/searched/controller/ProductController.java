@@ -224,14 +224,19 @@ public class ProductController {
     public BusinessMessage hotGoods(String id) {
         return this.productService.hotGoods(id);
     }
+
     @ApiOperation(value = "店铺商品查询")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "shopId", value = "店铺ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "goodsName", value = "商品名称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "goodsName", value = "商品名称", paramType = "form"),
+            @ApiImplicitParam(name = "sortBySale", value = "销售数量排序", paramType = "form"),
+            @ApiImplicitParam(name = "sortByPrice", value = "价格排序", paramType = "form"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "form", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "容量", paramType = "form" )
     })
     @GetMapping("/shopGoods")
-    public BusinessMessage shopGoods(String shopId,String goodsName) {
-        return this.productService.shopGoods(shopId,goodsName);
+    public BusinessMessage shopGoods(String shopId,String goodsName,String sortBySale,String sortByPrice,Integer pageNum,Integer pageSize) {
+        return this.productService.shopGoods(shopId,goodsName,sortBySale,sortByPrice,pageNum,pageSize);
     }
 }
 

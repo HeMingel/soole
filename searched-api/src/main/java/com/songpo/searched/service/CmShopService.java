@@ -1,15 +1,13 @@
 package com.songpo.searched.service;
 
 
+import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlShopLookNum;
-import com.songpo.searched.mapper.SlActivityProductMapper;
-import com.songpo.searched.mapper.SlProductMapper;
-import com.songpo.searched.mapper.SlShopLookNumMapper;
-import com.songpo.searched.mapper.SlShopMapper;
+import com.songpo.searched.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,8 @@ public class CmShopService {
     private SlShopLookNumMapper slShopLookNumMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
+    @Autowired
+    private CmProductMapper mapper;
 
     /**
      * 根据店铺Id查询店铺详情和商品
@@ -45,7 +45,7 @@ public class CmShopService {
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try{
-            //查询商铺
+            //查询商铺 判断是否有这家店
             SlShop shop = this.slShopMapper.selectByPrimaryKey(new SlShop () {{
                 setId(id);
             }});
@@ -58,12 +58,21 @@ public class CmShopService {
             List<SlProduct> productList = this.slProductMapper.selectByExample(example);
             List<Object> goodsList = new ArrayList<>();
             for (int i=0;i<productList.size();i++){
+
+                //如果是拼团商品,根据商品id查询
+                if(Integer.parseInt(productList.get(i).getSalesModeId())  == SalesModeConstant.SALES_MODE_GROUP){
+                    //查询该商品的拼团头像
+                    List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(productList.get(i).getId());
+                    if (avatarList != null){
+                        goodsList.add(avatarList);
+                    }
+                }
                 Map<String,Object> activityProduct = new HashMap<>();
                 Example apExample = new Example(SlActivityProduct.class);
                 apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
                 List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
                 activityProduct.put("activityProduct",activityProductList);
-                activityProduct.put("goodsBaseInfo",productList);
+                activityProduct.put("goodsBaseInfo",productList.get(i));
                 goodsList.add(activityProduct);
             }
             if(userId != null){

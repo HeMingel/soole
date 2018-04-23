@@ -180,4 +180,19 @@ public interface CmProductMapper{
      * @return 该商品分类
      */
     List<Map<String,Object>> systemGoods(@Param("goodsType")String goodsType,@Param("activityId")String activityId);
+
+    /**
+     * 商铺商品查询筛选
+     * @param shopId 店铺id
+     * @param goodsName 商品名称
+     * @param sortBySale 根据销量排序
+     * @param sortByPrice 根据价格排序
+     * @return 商品列表
+     */
+
+    List<Map<String,Object>> selectShopGoods(@Param("shopId")String shopId,
+                                             @Param("goodsName")String goodsName,
+                                             @Param("sortBySale")String sortBySale,
+                                             @Param("sortByPrice")String sortByPrice);
+
 }
