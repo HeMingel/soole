@@ -11,6 +11,7 @@ import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlUserAddressMapper;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
@@ -67,6 +68,8 @@ public class CmOrderService {
     private WxPayController wxPayController;
     @Autowired
     private ShoppingCartCache shoppingCartCache;
+    @Autowired
+    private SlReturnsDetailMapper returnsDetailMapper;
 
     /**
      * 多商品下单
@@ -619,8 +622,6 @@ public class CmOrderService {
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                     message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage);
                                 }
-
-
                             } else {
                                 message.setMsg("当前规格的商品,库存不足");
                                 return message;
@@ -839,5 +840,63 @@ public class CmOrderService {
             }});
             this.orderDetailService.deleteByExample(example);
         }
+    }
+
+    /**
+     * 预售订单
+     *
+     * @param status
+     * @return
+     */
+    public BusinessMessage preSaleOrderList(Integer status) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        try {
+            if (null != user) {
+                Example example = new Example(SlReturnsDetail.class);
+                if (!StringUtils.isEmpty(status)) {
+                    example.createCriteria().andEqualTo("returnedStatus", status);
+                }
+                example.createCriteria().andEqualTo("userId", user.getId());
+                List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
+                List<Map<String, Object>> mapList = new ArrayList<>();
+                Map<String, Object> map = new HashMap<>();
+                for (SlReturnsDetail returnsDetail : list) {
+                    SlOrder order = this.orderService.selectOne(new SlOrder() {{
+                        setId(returnsDetail.getOrderId());
+                        setPaymentState(1);
+                    }});
+                    SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                        setOrderId(order.getId());
+                    }});
+                    // 订单编号
+                    map.put("serial_number", order.getSerialNumber());
+                    // 商品标题
+                    map.put("product_name", detail.getProductName());
+                    // 商品图片
+                    map.put("product_image_url", detail.getProductImageUrl());
+                    // 预售订单总金额
+                    map.put("total_amount", order.getTotalAmount());
+                    // 预售订单总了豆
+                    map.put("deduct_total_pulse", order.getDeductTotalPulse());
+                    // 预售订单商品数量
+                    map.put("quantity", detail.getQuantity());
+                    // 预售商品邮费
+                    map.put("post_fee", detail.getPostFee());
+                    // 该订单的返钱状态
+                    map.put("status", returnsDetail.getReturnedStatus());
+                    mapList.add(map);
+                }
+                message.setMsg("查询成功");
+                message.setSuccess(true);
+                message.setData(mapList);
+            } else {
+                message.setMsg("用户不存在");
+                log.error("用户不存在");
+            }
+        } catch (Exception e) {
+            log.error("查询失败", e);
+        }
+        return message;
     }
 }
