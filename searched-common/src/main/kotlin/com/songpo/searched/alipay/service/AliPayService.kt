@@ -4,37 +4,75 @@ import com.alipay.api.DefaultAlipayClient
 import com.alipay.api.domain.*
 import com.alipay.api.request.*
 import com.alipay.api.response.*
-import com.songpo.searched.alipay.config.AliPayConfigProperties
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
  * 支付宝支付服务集成实现
  */
 @Service
-class AliPayService(val configProperties: AliPayConfigProperties) {
+class AliPayService {
 
-    lateinit var client: DefaultAlipayClient
+    var client: DefaultAlipayClient? = null
 
-    init {
-        initClient()
-    }
+    /**
+     * 商户号
+     */
+    @Value(value = "\${sp.pay.alipay.app-id}")
+    lateinit var appId: String
+
+    /**
+     * 合作伙伴身份（PID）
+     */
+    @Value(value = "\${sp.pay.alipay.partern-id}")
+    lateinit var parternId: String
+
+    /**
+     * 签名类型
+     */
+    @Value(value = "\${sp.pay.alipay.sign-type}")
+    lateinit var signType: String
+
+    /**
+     * 商户私钥
+     */
+    @Value(value = "\${sp.pay.alipay.merchant-private-key}")
+    lateinit var merchantPrivateKey: String
+
+    /**
+     * 支付宝公钥
+     */
+    @Value(value = "\${sp.pay.alipay.alipay-public-key}")
+    lateinit var alipayPublicKey: String
+
+    /**
+     * 支付通知地址
+     */
+    @Value(value = "\${sp.pay.alipay.notify-url}")
+    lateinit var notifyUrl: String
+
+    /**
+     * 支付完成后返回的地址
+     */
+    @Value(value = "\${sp.pay.alipay.return-url}")
+    lateinit var returnUrl: String
 
     /**
      * 加载支付配置
      *
      * @param appId    String	支付配置唯一标识
      * @param merchantPrivateKey    String	支付配置唯一标识
-     * @param aliPayPublicKey    String	支付配置唯一标识
+     * @param alipayPublicKey    String	支付配置唯一标识
      * @param notifyUrl    String	支付配置唯一标识
      * @param returnUrl    String	支付配置唯一标识
      * @return 响应信息
      */
-    fun loadConfig(appId: String, merchantPrivateKey: String, aliPayPublicKey: String, notifyUrl: String, returnUrl: String?) {
-        configProperties.appId = appId
-        configProperties.merchantPrivateKey = merchantPrivateKey
-        configProperties.aliPayPublicKey = aliPayPublicKey
-        configProperties.notifyUrl = notifyUrl
-        configProperties.returnUrl = returnUrl
+    fun loadConfig(appId: String, merchantPrivateKey: String, alipayPublicKey: String, notifyUrl: String, returnUrl: String) {
+        this.appId = appId
+        this.merchantPrivateKey = merchantPrivateKey
+        this.alipayPublicKey = alipayPublicKey
+        this.notifyUrl = notifyUrl
+        this.returnUrl = returnUrl
 
         initClient()
     }
@@ -45,12 +83,12 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
     private final fun initClient() {
         client = DefaultAlipayClient(
                 "https://openapi.alipay.com/gateway.do",
-                configProperties.appId,
-                configProperties.merchantPrivateKey,
+                this.appId,
+                this.merchantPrivateKey,
                 "json",
                 "UTF-8",
-                configProperties.aliPayPublicKey,
-                "RSA2")
+                this.alipayPublicKey,
+                this.signType)
     }
 
     /**
@@ -79,7 +117,10 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+        return client?.execute(request)
     }
 
     /**
@@ -112,7 +153,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.operatorId = operatorId
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -143,7 +188,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.operatorId = operatorId
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -169,7 +218,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -223,7 +276,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.terminalId = terminalId
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -265,11 +322,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
         val request = AlipayTradePrecreateRequest()
 
         // 设置通知地址
-        request.notifyUrl = configProperties.notifyUrl
+        request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!configProperties.returnUrl.isNullOrBlank()) {
-            request.returnUrl = configProperties.returnUrl
+        if (!this.returnUrl.isEmpty()) {
+            request.returnUrl = this.returnUrl
         }
 
         // 初始化预下单模型
@@ -330,7 +387,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.businessParams = businessParams
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -370,11 +431,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
         val request = AlipayTradeCreateRequest()
 
         // 设置通知地址
-        request.notifyUrl = configProperties.notifyUrl
+        request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!configProperties.returnUrl.isNullOrBlank()) {
-            request.returnUrl = configProperties.returnUrl
+        if (!this.returnUrl.isBlank()) {
+            request.returnUrl = this.returnUrl
         }
 
         val model = AlipayTradeCreateModel()
@@ -430,7 +491,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.businessParams = businessParams
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -464,11 +529,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
         val request = AlipayTradePayRequest()
 
         // 设置通知地址
-        request.notifyUrl = configProperties.notifyUrl
+        request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!configProperties.returnUrl.isNullOrBlank()) {
-            request.returnUrl = configProperties.returnUrl
+        if (!this.returnUrl.isBlank()) {
+            request.returnUrl = this.returnUrl
         }
 
         val model = AlipayTradePayModel()
@@ -526,7 +591,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.timeoutExpress = timeoutExpress
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -607,7 +676,7 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             timeoutExpress: String?,
             timeExpire: String?,
             totalAmount: String,
-            sellerId: String,
+            sellerId: String?,
             authToken: String?,
             goodsType: String?,
             passbackParams: String?,
@@ -630,11 +699,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
         val request = AlipayTradeWapPayRequest()
 
         // 设置通知地址
-        request.notifyUrl = configProperties.notifyUrl
+        request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!configProperties.returnUrl.isNullOrBlank()) {
-            request.returnUrl = configProperties.returnUrl
+        if (!this.returnUrl.isBlank()) {
+            request.returnUrl = this.returnUrl
         }
 
         val model = AlipayTradeWapPayModel()
@@ -719,7 +788,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.extUserInfo = extUserInfo
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -767,12 +840,9 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
      * @param disablePayChannels    String	可选	128	禁用渠道，用户不可用指定渠道支付  当有多个渠道时用“,”分隔 注，与enable_pay_channels互斥	pcredit,moneyFund,debitCardExpress
      * @param settleInfo    SettleInfo	可选		描述结算信息，json格式，详见结算参数说明
     settle_detail_infos	SettleDetailInfo[]	必填	10	结算详细信息，json数组，目前只支持一条。
-    └ trans_in_type	String	必填	64	结算收款方的账户类型。
-    cardSerialNo：结算收款方的银行卡编号。
-    目前只支持cardSerialNo账户类型	cardSerialNo
+    └ trans_in_type	String	必填	64	结算收款方的账户类型。 cardSerialNo：结算收款方的银行卡编号。 目前只支持cardSerialNo账户类型	cardSerialNo
     └ trans_in	String	必填	64	结算收款方。当结算收款方类型是cardSerialNo时，本参数为用户在支付宝绑定的卡编号	A0001
-    └ summary_dimension	String	可选	64	结算汇总维度，按照这个维度汇总成批次结算，由商户指定。
-    目前需要和结算收款方账户类型为cardSerialNo配合使用	A0001
+    └ summary_dimension	String	可选	64	结算汇总维度，按照这个维度汇总成批次结算，由商户指定。 目前需要和结算收款方账户类型为cardSerialNo配合使用	A0001
     └ amount	Number	必填	9	结算的金额，单位为元。目前必须和交易金额相同	0.1
      * @param  invoiceInfo    InvoiceInfo	可选		开票信息
     key_info	InvoiceKeyInfo	必填	200	开票关键信息
@@ -820,11 +890,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
         val request = AlipayTradeAppPayRequest()
 
         // 设置通知地址
-        request.notifyUrl = configProperties.notifyUrl
+        request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!configProperties.returnUrl.isNullOrBlank()) {
-            request.returnUrl = configProperties.returnUrl
+        if (!this.returnUrl.isBlank()) {
+            request.returnUrl = this.returnUrl
         }
 
         val model = AlipayTradeAppPayModel()
@@ -918,7 +988,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.businessParams = businessParams
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
     /**
@@ -944,7 +1018,11 @@ class AliPayService(val configProperties: AliPayConfigProperties) {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        if (null == client) {
+            initClient()
+        }
+
+        return client?.execute(request)
     }
 
 }

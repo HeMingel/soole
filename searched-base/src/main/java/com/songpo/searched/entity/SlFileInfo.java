@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_file_info")
 public class SlFileInfo implements Serializable {
@@ -39,6 +39,16 @@ public class SlFileInfo implements Serializable {
      * 文件路径
      */
     private String path;
+
+    /**
+     * 图片宽度
+     */
+    private Integer width;
+
+    /**
+     * 图片高度
+     */
+    private Integer height;
 
     private static final long serialVersionUID = 1L;
 
@@ -150,6 +160,42 @@ public class SlFileInfo implements Serializable {
         this.path = path == null ? null : path.trim();
     }
 
+    /**
+     * 获取图片宽度
+     *
+     * @return width - 图片宽度
+     */
+    public Integer getWidth() {
+        return width;
+    }
+
+    /**
+     * 设置图片宽度
+     *
+     * @param width 图片宽度
+     */
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    /**
+     * 获取图片高度
+     *
+     * @return height - 图片高度
+     */
+    public Integer getHeight() {
+        return height;
+    }
+
+    /**
+     * 设置图片高度
+     *
+     * @param height 图片高度
+     */
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -162,6 +208,8 @@ public class SlFileInfo implements Serializable {
         sb.append(", contentType=").append(contentType);
         sb.append(", size=").append(size);
         sb.append(", path=").append(path);
+        sb.append(", width=").append(width);
+        sb.append(", height=").append(height);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
