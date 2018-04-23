@@ -102,7 +102,8 @@
         from sl_order so
         LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
         AND so.serial_number = sod.serial_number
-        WHERE so.payment_state &lt; 100 AND sod.product_id = #{productId} and sod.creator = #{userId}
+        WHERE so.payment_state &lt; 100
+        AND sod.product_id = #{productId} and sod.creator = #{userId}
         and so.user_id = #{userId}
         and sod.activity_product_id = #{activityProductId}
     </select>

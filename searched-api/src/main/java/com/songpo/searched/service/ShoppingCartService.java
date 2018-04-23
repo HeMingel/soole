@@ -126,7 +126,7 @@ public class ShoppingCartService {
                             cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
                             cmGoods.setGoodId(slProduct.getId());//商品id
                             cmGoods.setRepositoryId(repository.getId());//规格id
-                            cmGoods.setImageUrl(repository.getProductImageUrl()); // 商品图片
+                            cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
                             cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
                             cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
                             cmGoods.setPrice(repository.getPrice());// 商品价格
@@ -143,7 +143,6 @@ public class ShoppingCartService {
                             cart.setCarts(goodsList);
                             list.add(cart);
                         }
-
                     }
                 }
                 message.setMsg("查询成功");

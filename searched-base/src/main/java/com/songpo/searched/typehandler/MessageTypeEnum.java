@@ -37,7 +37,12 @@ public enum MessageTypeEnum implements BaseEnum {
     SHIPPING_WAIT("配送等待通知", 51),
     SHIPPING_SUCCESS("配送成功通知", 52),
     SHIPPING_FAILD("配送失败通知", 53),
-    SHIPPING_CANCLE("配送取消通知", 54);
+    SHIPPING_CANCLE("配送取消通知", 54),
+
+    /**
+     * 店铺通知类型
+     */
+    STORE_REMINDING("提醒发货通知", 61);
 
     private String label;
 

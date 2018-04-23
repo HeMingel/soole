@@ -192,5 +192,51 @@ public class CmOrderController {
         return message;
     }
 
+    /**
+     * 预售订单查询
+     *
+     * @param status
+     * @return
+     */
+    @ApiOperation(value = "预售订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form", required = true)
+    })
+    @GetMapping("pre-sale-order")
+    public BusinessMessage preSaleOrderList(Integer status) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.preSaleOrderList(status);
+            message.setData(message.getData());
+            message.setSuccess(true);
+            message.setMsg("删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("删除失败", e);
+        }
+        return message;
+    }
+
+    /**
+     * 预售提醒发货
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(value = "提醒发货")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+    })
+    @PostMapping("reminding-the-shipments")
+    public BusinessMessage remindingTheShipments(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.remindingTheShipments(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("提醒失败", e);
+        }
+        return message;
+    }
 
 }
