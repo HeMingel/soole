@@ -119,8 +119,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "订单状态", value = "status", paramType = "form", required = true)
     })
     @GetMapping("list")
-    public BusinessMessage list(Integer status) {
-        return this.cmOrderService.findList(status);
+    public BusinessMessage list(Integer status,Integer pageNum,Integer pageSize) {
+        return this.cmOrderService.findList(status,pageNum,pageSize);
     }
 
     /**
