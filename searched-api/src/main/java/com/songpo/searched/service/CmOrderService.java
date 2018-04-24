@@ -827,10 +827,11 @@ public class CmOrderService {
         try {
             if (null != user) {
                 Example example = new Example(SlReturnsDetail.class);
+                Example.Criteria criteria = example.createCriteria();
                 if (!StringUtils.isEmpty(status)) {
-                    example.createCriteria().andEqualTo("returnedStatus", status);
+                    criteria.andEqualTo("returnedStatus", status);
                 }
-                example.createCriteria().andEqualTo("userId", user.getId());
+                criteria.andEqualTo("userId", user.getId());
                 List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
                 List<Map<String, Object>> mapList = new ArrayList<>();
                 for (SlReturnsDetail returnsDetail : list) {
