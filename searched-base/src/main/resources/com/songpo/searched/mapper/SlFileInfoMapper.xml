@@ -11,13 +11,13 @@
     <result column="content_type" jdbcType="VARCHAR" property="contentType" />
     <result column="size" jdbcType="INTEGER" property="size" />
     <result column="path" jdbcType="VARCHAR" property="path" />
-      <result column="width" jdbcType="INTEGER" property="width"/>
-      <result column="height" jdbcType="INTEGER" property="height"/>
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="height" jdbcType="INTEGER" property="height" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, source_name, target_name, content_type, size, path, width, height
+    id, source_name, target_name, content_type, size, path, width, height
   </sql>
 </mapper>

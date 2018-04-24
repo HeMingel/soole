@@ -79,6 +79,12 @@ public class SlActionNavigation implements Serializable {
     @Column(name = "action_type")
     private Integer actionType;
 
+    /**
+     * 排序字段（后台列表排序使用）
+     */
+    @Column(name = "action_sort")
+    private Integer actionSort;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -315,6 +321,24 @@ public class SlActionNavigation implements Serializable {
         this.actionType = actionType;
     }
 
+    /**
+     * 获取排序字段（后台列表排序使用）
+     *
+     * @return action_sort - 排序字段（后台列表排序使用）
+     */
+    public Integer getActionSort() {
+        return actionSort;
+    }
+
+    /**
+     * 设置排序字段（后台列表排序使用）
+     *
+     * @param actionSort 排序字段（后台列表排序使用）
+     */
+    public void setActionSort(Integer actionSort) {
+        this.actionSort = actionSort;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -334,6 +358,7 @@ public class SlActionNavigation implements Serializable {
         sb.append(", position=").append(position);
         sb.append(", cmdParameter=").append(cmdParameter);
         sb.append(", actionType=").append(actionType);
+        sb.append(", actionSort=").append(actionSort);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

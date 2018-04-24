@@ -22,8 +22,11 @@
         LEFT JOIN sl_shop s
         ON p.`shop_id` = s.`id`
         WHERE pc.`product_id` = #{goodsId}
-        <if test="status != null and status != '' and status !=0 ">
+        <if test="status != null and status != '' and status !=4 ">
             and pc.status = #{status}
+        </if>
+        <if test="status != null and status != '' and status ==4">
+            and pc.isImage = 1
         </if>
         order by pc.create_time desc
     </select>

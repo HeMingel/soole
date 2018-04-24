@@ -13,13 +13,13 @@
     <result column="cardholder_phone" jdbcType="VARCHAR" property="cardholderPhone" />
     <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
     <result column="affiliated_bank" jdbcType="VARCHAR" property="affiliatedBank" />
-      <result column="is_default" jdbcType="BIT" property="isDefault"/>
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, bank_name, card_number, cardholder, cardholder_phone, opening_bank,
-      affiliated_bank, is_default
+    id, user_id, bank_name, card_number, cardholder, cardholder_phone, opening_bank, 
+    affiliated_bank, is_default
   </sql>
 </mapper>
