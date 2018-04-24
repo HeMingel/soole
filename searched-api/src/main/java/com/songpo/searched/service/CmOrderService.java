@@ -139,7 +139,7 @@ public class CmOrderService {
                             //查询活动商品信息
                             SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), slOrderDetail.getActivityProductId());
                             //如果是无活动就不需要校验时间是否符合
-                            if (!slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                            if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                                 //无活动就没有活动到期这一说
                                 productCache.put(slProduct.getId(), slProduct);
                             } else {
@@ -508,7 +508,7 @@ public class CmOrderService {
                     //查询活动商品信息
                     SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                     //如果是无活动就不需要校验时间是否符合
-                    if (!activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                    if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                         //无活动就没有活动到期这一说
                         productCache.put(slProduct.getId(), slProduct);
                     } else {
