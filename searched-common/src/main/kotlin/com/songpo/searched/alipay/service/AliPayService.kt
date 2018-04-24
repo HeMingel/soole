@@ -13,19 +13,19 @@ import org.springframework.stereotype.Service
 @Service
 class AliPayService {
 
-    var client: DefaultAlipayClient? = null
+    lateinit var client: DefaultAlipayClient
+
+    /**
+     * 支付宝网关
+     */
+    @Value(value = "\${sp.pay.alipay.server-url}")
+    lateinit var serverUrl: String
 
     /**
      * 商户号
      */
     @Value(value = "\${sp.pay.alipay.app-id}")
     lateinit var appId: String
-
-    /**
-     * 合作伙伴身份（PID）
-     */
-    @Value(value = "\${sp.pay.alipay.partern-id}")
-    lateinit var parternId: String
 
     /**
      * 签名类型
@@ -36,8 +36,8 @@ class AliPayService {
     /**
      * 商户私钥
      */
-    @Value(value = "\${sp.pay.alipay.merchant-private-key}")
-    lateinit var merchantPrivateKey: String
+    @Value(value = "\${sp.pay.alipay.private-key}")
+    lateinit var privateKey: String
 
     /**
      * 支付宝公钥
@@ -49,30 +49,62 @@ class AliPayService {
      * 支付通知地址
      */
     @Value(value = "\${sp.pay.alipay.notify-url}")
-    lateinit var notifyUrl: String
+    var notifyUrl: String? = ""
 
     /**
-     * 支付完成后返回的地址
+     * 支付返回的地址
      */
     @Value(value = "\${sp.pay.alipay.return-url}")
-    lateinit var returnUrl: String
+    var returnUrl: String? = ""
+
+    /**
+     * 数据格式
+     */
+    @Value(value = "\${sp.pay.alipay.format}")
+    var format: String? = "JSON"
+
+    /**
+     * 编码格式
+     */
+    @Value(value = "\${sp.pay.alipay.charset}")
+    lateinit var charset: String
+
+    init {
+        initClient()
+    }
 
     /**
      * 加载支付配置
      *
-     * @param appId    String	支付配置唯一标识
-     * @param merchantPrivateKey    String	支付配置唯一标识
-     * @param alipayPublicKey    String	支付配置唯一标识
-     * @param notifyUrl    String	支付配置唯一标识
-     * @param returnUrl    String	支付配置唯一标识
+     * @param serverUrl 支付宝网关
+     * @param appId APPID
+     * @param privateKey 商户私钥
+     * @param format 数据格式
+     * @param returnUrl 用户取消支付后跳转的地址
+     * @param notifyUrl 支付宝服务器主动通知商户服务器里指定的页面
+     * @param charset 编码格式 UTF-8 GBK
+     * @param alipayPublicKey 支付宝公钥
+     * @param signType 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
      * @return 响应信息
      */
-    fun loadConfig(appId: String, merchantPrivateKey: String, alipayPublicKey: String, notifyUrl: String, returnUrl: String) {
+    fun loadConfig(serverUrl: String,
+                   appId: String,
+                   privateKey: String,
+                   format: String?,
+                   returnUrl: String?,
+                   notifyUrl: String?,
+                   charset: String,
+                   alipayPublicKey: String,
+                   signType: String) {
+        this.serverUrl = serverUrl
         this.appId = appId
-        this.merchantPrivateKey = merchantPrivateKey
-        this.alipayPublicKey = alipayPublicKey
-        this.notifyUrl = notifyUrl
+        this.privateKey = privateKey
+        this.format = format
         this.returnUrl = returnUrl
+        this.notifyUrl = notifyUrl
+        this.charset = charset
+        this.alipayPublicKey = alipayPublicKey
+        this.signType = signType
 
         initClient()
     }
@@ -82,11 +114,11 @@ class AliPayService {
      */
     private final fun initClient() {
         client = DefaultAlipayClient(
-                "https://openapi.alipay.com/gateway.do",
+                this.serverUrl,
                 this.appId,
-                this.merchantPrivateKey,
-                "json",
-                "UTF-8",
+                this.privateKey,
+                this.format,
+                this.charset,
                 this.alipayPublicKey,
                 this.signType)
     }
@@ -117,10 +149,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        if (null == client) {
-            initClient()
-        }
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -153,11 +182,7 @@ class AliPayService {
             model.operatorId = operatorId
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -188,11 +213,7 @@ class AliPayService {
             model.operatorId = operatorId
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -218,11 +239,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -276,11 +293,7 @@ class AliPayService {
             model.terminalId = terminalId
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -325,7 +338,7 @@ class AliPayService {
         request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!this.returnUrl.isEmpty()) {
+        if (!this.returnUrl.isNullOrBlank()) {
             request.returnUrl = this.returnUrl
         }
 
@@ -387,11 +400,7 @@ class AliPayService {
             model.businessParams = businessParams
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -434,7 +443,7 @@ class AliPayService {
         request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!this.returnUrl.isBlank()) {
+        if (!this.returnUrl.isNullOrBlank()) {
             request.returnUrl = this.returnUrl
         }
 
@@ -491,11 +500,7 @@ class AliPayService {
             model.businessParams = businessParams
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -532,7 +537,7 @@ class AliPayService {
         request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!this.returnUrl.isBlank()) {
+        if (!this.returnUrl.isNullOrBlank()) {
             request.returnUrl = this.returnUrl
         }
 
@@ -591,11 +596,7 @@ class AliPayService {
             model.timeoutExpress = timeoutExpress
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -702,7 +703,7 @@ class AliPayService {
         request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!this.returnUrl.isBlank()) {
+        if (!this.returnUrl.isNullOrBlank()) {
             request.returnUrl = this.returnUrl
         }
 
@@ -788,11 +789,7 @@ class AliPayService {
             model.extUserInfo = extUserInfo
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -893,7 +890,7 @@ class AliPayService {
         request.notifyUrl = this.notifyUrl
 
         // 如果返回地址不为空，则设置返回地址
-        if (!this.returnUrl.isBlank()) {
+        if (!this.returnUrl.isNullOrBlank()) {
             request.returnUrl = this.returnUrl
         }
 
@@ -987,12 +984,7 @@ class AliPayService {
         if (!businessParams.isNullOrBlank()) {
             model.businessParams = businessParams
         }
-
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
     /**
@@ -1018,11 +1010,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        if (null == client) {
-            initClient()
-        }
-
-        return client?.execute(request)
+        return client.execute(request)
     }
 
 }

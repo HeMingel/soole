@@ -52,7 +52,7 @@ class WxPayService(val config: WxPayConfigProperties) {
      * 初始化客户端
      */
     private final fun initClient() {
-        var wxConfig = object : WXPayConfig {
+        val wxConfig = object : WXPayConfig {
             override fun getAppID(): String? {
                 return config.appId
             }
