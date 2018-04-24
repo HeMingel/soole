@@ -203,10 +203,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form", required = true)
     })
     @GetMapping("pre-sale-order")
-    public BusinessMessage preSaleOrderList(Integer status) {
+    public BusinessMessage preSaleOrderList(Integer status,Integer pageNum,Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.preSaleOrderList(status);
+            message = this.cmOrderService.preSaleOrderList(status,pageNum,pageSize);
             message.setData(message.getData());
             message.setSuccess(true);
             message.setMsg("查询成功");

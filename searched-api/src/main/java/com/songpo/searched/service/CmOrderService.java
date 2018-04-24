@@ -827,10 +827,13 @@ public class CmOrderService {
     /**
      * 预售订单
      *
+     *
+     * @param integer
+     * @param pageNum
      * @param status
      * @return
      */
-    public BusinessMessage preSaleOrderList(Integer status) {
+    public BusinessMessage preSaleOrderList(Integer status,Integer pageNum,Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         try {
@@ -841,6 +844,14 @@ public class CmOrderService {
                     criteria.andEqualTo("returnedStatus", status);
                 }
                 criteria.andEqualTo("userId", user.getId());
+                if (null == pageNum || pageNum <= 1) {
+                    pageNum = 1;
+                }
+                if (null == pageSize || pageSize <= 1) {
+                    pageSize = 10;
+                }
+                // 设置分页参数
+                PageHelper.startPage(pageNum, pageSize);
                 List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
                 List<Map<String, Object>> mapList = new ArrayList<>();
                 for (SlReturnsDetail returnsDetail : list) {
@@ -876,7 +887,7 @@ public class CmOrderService {
                 }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-                message.setData(mapList);
+                message.setData(new PageInfo<>(mapList));
             } else {
                 message.setMsg("用户不存在");
                 log.error("用户不存在");
