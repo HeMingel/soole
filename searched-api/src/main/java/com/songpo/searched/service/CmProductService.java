@@ -6,10 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlActivityProduct;
-import com.songpo.searched.entity.SlPresellReturnedRecord;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductType;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hsqldb.lib.StringUtil;
@@ -48,6 +45,8 @@ public class CmProductService {
     private SlPresellReturnedRecordMapper slPresellReturnedRecordMapper;
     @Autowired
     private SlProductTypeMapper slProductTypeMapper;
+    @Autowired
+    private SlMyCollectionMapper slMyCollectionMapper;
 
 
     /**
@@ -264,7 +263,7 @@ public class CmProductService {
      * @param activityId 活动Id
      * @return 商品详情列表
      */
-    public BusinessMessage goodsDetail(String goodsId, String activityId) {
+    public BusinessMessage goodsDetail(String goodsId, String activityId,String userId) {
         JSONObject data = new JSONObject();
         log.debug("查询 商品Id:{},活动Id:{}", goodsId, activityId);
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
@@ -305,6 +304,22 @@ public class CmProductService {
                         data.put("groupList", null);
                     }
                 }
+
+                if (userId != null){
+                    //如果用户id 不为空,查询 是否收藏了该商品
+                    byte type=2;
+                    List<SlMyCollection> slMyCollections = this.slMyCollectionMapper.select(new SlMyCollection(){{
+                        setUserId(userId);
+                        setCollectionId(goodsId);
+                        setType(type);
+                    }});
+                    if (slMyCollections.size() > 0){
+                    data.put("isCollection",true);
+                    }else {
+                        data.put("isCollection",false);
+                    }
+                }
+
                 businessMessage.setMsg("查询完毕");
                 businessMessage.setSuccess(true);
                 businessMessage.setData(data);
