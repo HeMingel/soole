@@ -1,5 +1,7 @@
 package com.songpo.searched.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
@@ -326,11 +328,19 @@ public class CmOrderService {
      * @param status
      * @return
      */
-    public BusinessMessage findList(Integer status) {
+    public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
+                if (null == pageNum || pageNum <= 1) {
+                    pageNum = 1;
+                }
+                if (null == pageSize || pageSize <= 1) {
+                    pageSize = 10;
+                }
+                // 设置分页参数
+                PageHelper.startPage(pageNum, pageSize);
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId(), status);
                 for (Map map : list) {
                     Object type = map.get("type");
@@ -342,7 +352,7 @@ public class CmOrderService {
                 }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-                message.setData(list);
+                message.setData(new PageInfo<>(list));
             } else {
                 message.setMsg("用户不存在");
             }
@@ -861,7 +871,7 @@ public class CmOrderService {
                     // 该订单的返钱状态
                     map.put("status", returnsDetail.getReturnedStatus());
                     // 订单id
-                    map.put("orderId",order.getId());
+                    map.put("orderId", order.getId());
                     mapList.add(map);
                 }
                 message.setMsg("查询成功");
