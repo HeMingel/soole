@@ -25,33 +25,55 @@ class AlipayController(val alipayService: AliPayService) {
     /**
      * 加载支付配置
      *
-     * @param appId 支付配置唯一标识
-     * @param merchantPrivateKey 支付配置唯一标识
-     * @param alipayPublicKey 支付配置唯一标识
-     * @param notifyUrl 支付配置唯一标识
-     * @param returnUrl 支付配置唯一标识
+     * @param serverUrl 支付宝网关
+     * @param appId APPID
+     * @param privateKey 商户私钥
+     * @param format 数据格式
+     * @param returnUrl 用户取消支付后跳转的地址
+     * @param notifyUrl 支付宝服务器主动通知商户服务器里指定的页面
+     * @param charset 编码格式 UTF-8 GBK
+     * @param alipayPublicKey 支付宝公钥
+     * @param signType 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
      * @return 响应信息
      */
     @ApiOperation(value = "加载支付配置", notes = "在线重新加载支付配置信息，可以有效的解决因为配置文件错误而调整配置文件需要重启服务的问题")
     @ApiImplicitParams(value = [
-        ApiImplicitParam(name = "appId", value = "商户号", paramType = "form", required = true),
-        ApiImplicitParam(name = "merchantPrivateKey", value = "商户私钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "serverUrl", value = "支付宝网关\n - 生产环境：https://openapi.alipay.com/gateway.do\n- 开发环境：https://openapi.alipaydev.com/gateway.do", paramType = "form", required = true),
+        ApiImplicitParam(name = "appId", value = "APPID", paramType = "form", required = true),
+        ApiImplicitParam(name = "privateKey", value = "商户私钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "format", value = "数据格式，仅支持JSON", paramType = "form", required = true),
+        ApiImplicitParam(name = "returnUrl", value = "HTTP/HTTPS开头字符串，用户取消支付后跳转的地址", paramType = "form"),
+        ApiImplicitParam(name = "notifyUrl", value = "支付宝服务器主动通知商户服务器里指定的页面http/https路径。", paramType = "form", required = true),
+        ApiImplicitParam(name = "charset", value = "编码格式\n - UTF-8\n - GBK", paramType = "form", required = true),
         ApiImplicitParam(name = "alipayPublicKey", value = "支付宝公钥", paramType = "form", required = true),
-        ApiImplicitParam(name = "notifyUrl", value = "支付通知地址", paramType = "form", required = true),
-        ApiImplicitParam(name = "returnUrl", value = "支付完成后返回的地址", paramType = "form", required = true)
+        ApiImplicitParam(name = "signType", value = "商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2", paramType = "form", required = true)
     ])
     @PostMapping("/load-config")
     fun loadConfig(
+            serverUrl: String,
             appId: String,
-            merchantPrivateKey: String,
+            privateKey: String,
+            format: String,
+            returnUrl: String?,
+            notifyUrl: String?,
+            charset: String,
             alipayPublicKey: String,
-            notifyUrl: String,
-            returnUrl: String
+            signType: String
     ): BusinessMessage<Void> {
-        log.debug { "加载支付配置, 商户号 = [$appId], 商户私钥 = [$merchantPrivateKey], 支付宝公钥 = [$alipayPublicKey], 支付通知地址 = [$notifyUrl], 支付完成后返回的地址 = [$returnUrl]" }
+        log.debug {
+            "加载支付配置, 支付宝网关 = [$serverUrl], " +
+                    "商户号 = [$appId], " +
+                    "商户私钥 = [$privateKey], " +
+                    "数据格式 = [$format], " +
+                    "用户取消支付后跳转的地址 = [$returnUrl], " +
+                    "支付通知地址 = [$notifyUrl], " +
+                    "编码格式 = [$charset], " +
+                    "支付宝公钥 = [$alipayPublicKey], " +
+                    "签名算法 = [$signType]"
+        }
         val message = BusinessMessage<Void>()
         try {
-            this.alipayService.loadConfig(appId, merchantPrivateKey, alipayPublicKey, notifyUrl, returnUrl)
+            this.alipayService.loadConfig(serverUrl, appId, privateKey, format, returnUrl, notifyUrl, charset, alipayPublicKey, signType)
             message.success = true
         } catch (e: Exception) {
             log.error { "加载支付配置失败，$e" }
