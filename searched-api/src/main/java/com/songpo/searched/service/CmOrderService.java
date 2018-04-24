@@ -137,7 +137,7 @@ public class CmOrderService {
                         if (null != slProduct) {
                             SlProduct finalSlProduct = slProduct;
                             //查询活动商品信息
-                            SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId());
+                            SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), slOrderDetail.getActivityProductId());
                             //如果是无活动就不需要校验时间是否符合
                             if (!slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                                 //无活动就没有活动到期这一说
@@ -164,8 +164,8 @@ public class CmOrderService {
                                         // 钱相加 用于统计和添加到订单表扣除总钱里边
                                         money += repository.getPrice().doubleValue() * slOrderDetail.getQuantity();
                                         // 如果邮费不为空
-                                        if (Integer.parseInt(repository.getPostFee().toString()) > 0) {
-                                            money = money + Integer.parseInt(repository.getPostFee().toString());
+                                        if (repository.getPostFee().doubleValue() > 0) {
+                                            money = money + repository.getPostFee().doubleValue();
                                         }
                                         // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                         if (repository.getSilver() > 0) {
@@ -315,37 +315,6 @@ public class CmOrderService {
         } else {
             log.error("用户不存在");
             message.setMsg("用户不存在");
-        }
-        //下完订单直接调取微信预下单
-        if (message.getSuccess().equals(true)) {
-            //locatDate日期时间格式话为字符串
-            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            //String型时间格式话为字符串
-            SimpleDateFormat dmf = new SimpleDateFormat("yyyyMMddHHmmss");
-            //把微信订单时间加上失效时间为一天
-            LocalDate failureTime = LocalDate.parse(slOrder.getCreateTime()).plusDays(1);
-            message = (wxPayController.unifiedOrderByApp(
-                    request,
-                    null,
-                    //描述
-                    "搜了平台-订单编号:" + slOrder.getSerialNumber(),
-                    null,
-                    null,
-                    //订单号
-                    slOrder.getSerialNumber(),
-                    null,
-                    //订单金额 单位分
-                    String.valueOf(money * 100),
-                    //订单开始时间
-                    dmf.format(slOrder.getCreateTime()),
-                    //订单结束时间1天后
-                    df.format(failureTime),
-                    null,
-                    null,
-                    null,
-                    null
-            ));
-
         }
         return message;
     }
@@ -506,7 +475,7 @@ public class CmOrderService {
      * @param quantity
      * @return
      */
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -537,7 +506,7 @@ public class CmOrderService {
                 //7.如果商品存在的话
                 if (!StringUtils.isEmpty(slProduct)) {
                     //查询活动商品信息
-                    SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId);
+                    SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                     //如果是无活动就不需要校验时间是否符合
                     if (!activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                         //无活动就没有活动到期这一说
