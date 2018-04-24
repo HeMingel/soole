@@ -832,15 +832,17 @@ public class CmOrderService {
                 example.createCriteria().andEqualTo("userId", user.getId());
                 List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
                 List<Map<String, Object>> mapList = new ArrayList<>();
-                Map<String, Object> map = new HashMap<>();
                 for (SlReturnsDetail returnsDetail : list) {
                     SlOrder order = this.orderService.selectOne(new SlOrder() {{
                         setId(returnsDetail.getOrderId());
                         setPaymentState(1);
+                        //预售
+                        setType(3);
                     }});
                     SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                         setOrderId(order.getId());
                     }});
+                    Map<String, Object> map = new HashMap<>();
                     // 订单编号
                     map.put("serial_number", order.getSerialNumber());
                     // 商品标题
