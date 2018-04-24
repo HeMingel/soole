@@ -32,6 +32,12 @@ public class SlOrder implements Serializable {
     private BigDecimal totalAmount;
 
     /**
+     * 扣除的了豆总数
+     */
+    @Column(name = "deduct_total_pulse")
+    private Integer deductTotalPulse;
+
+    /**
      * 手续费
      */
     private BigDecimal fee;
@@ -76,12 +82,6 @@ public class SlOrder implements Serializable {
      * 记录状态 1:正常 0:删除
      */
     private Integer status;
-
-    /**
-     * 扣除的了豆总数
-     */
-    @Column(name = "deduct_total_pulse")
-    private Integer deductTotalPulse;
 
     /**
      * 收件人姓名
@@ -199,6 +199,24 @@ public class SlOrder implements Serializable {
      */
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    /**
+     * 获取扣除的了豆总数
+     *
+     * @return deduct_total_pulse - 扣除的了豆总数
+     */
+    public Integer getDeductTotalPulse() {
+        return deductTotalPulse;
+    }
+
+    /**
+     * 设置扣除的了豆总数
+     *
+     * @param deductTotalPulse 扣除的了豆总数
+     */
+    public void setDeductTotalPulse(Integer deductTotalPulse) {
+        this.deductTotalPulse = deductTotalPulse;
     }
 
     /**
@@ -351,24 +369,6 @@ public class SlOrder implements Serializable {
      */
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    /**
-     * 获取扣除的了豆总数
-     *
-     * @return deduct_total_pulse - 扣除的了豆总数
-     */
-    public Integer getDeductTotalPulse() {
-        return deductTotalPulse;
-    }
-
-    /**
-     * 设置扣除的了豆总数
-     *
-     * @param deductTotalPulse 扣除的了豆总数
-     */
-    public void setDeductTotalPulse(Integer deductTotalPulse) {
-        this.deductTotalPulse = deductTotalPulse;
     }
 
     /**
@@ -525,6 +525,7 @@ public class SlOrder implements Serializable {
         sb.append(", serialNumber=").append(serialNumber);
         sb.append(", userId=").append(userId);
         sb.append(", totalAmount=").append(totalAmount);
+        sb.append(", deductTotalPulse=").append(deductTotalPulse);
         sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);
         sb.append(", type=").append(type);
@@ -533,7 +534,6 @@ public class SlOrder implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", payTime=").append(payTime);
         sb.append(", status=").append(status);
-        sb.append(", deductTotalPulse=").append(deductTotalPulse);
         sb.append(", consigneename=").append(consigneename);
         sb.append(", consigneephone=").append(consigneephone);
         sb.append(", province=").append(province);

@@ -38,22 +38,17 @@ public class CmProductCommentService {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
             List<Map<String,Object>> mapComments = this.mapper.goodsComments(goodsId,status);
             if(mapComments.size() >0){
-                if (status !=null && status != 4){
-                    businessMessage.setData(new PageInfo<>(mapComments));
-                }else{
                     List<Object> list = new ArrayList<>();
-                    for(int i=0;i<mapComments.size();i++){
-                        Map map = mapComments.get(i);
-                        if(map.get("status").equals(4)){
-                            List<Map<String,Object>> imgMap = this.mapper.commentImages(map.get("id").toString());
-                            imgMap.add(map);
-                            list.add(imgMap);
-                        }else{
-                            list.add(map);
+                    for (Map<String,Object> mapComment: mapComments) {
+                        //如果有图片
+                        if (mapComment.get("isImage").equals(1)){
+                            //查询图片
+                            List<Map<String,Object>> imgMap = this.mapper.commentImages(mapComment.get("id").toString());
+                            mapComment.put("image",imgMap);
                         }
-                        businessMessage.setData(new PageInfo<>(list));
+                        list.add(mapComment);
                     }
-                }
+                businessMessage.setData(new PageInfo<>(list));
                 businessMessage.setMsg("查询成功");
                 businessMessage.setSuccess(true);
             }else{

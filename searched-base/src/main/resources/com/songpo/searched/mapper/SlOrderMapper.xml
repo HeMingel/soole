@@ -9,6 +9,7 @@
     <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
     <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
     <result column="type" jdbcType="INTEGER" property="type" />
@@ -17,7 +18,6 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="pay_time" jdbcType="VARCHAR" property="payTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
     <result column="consigneeName" jdbcType="VARCHAR" property="consigneename" />
     <result column="consigneePhone" jdbcType="VARCHAR" property="consigneephone" />
     <result column="province" jdbcType="VARCHAR" property="province" />
@@ -31,8 +31,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, user_id, total_amount, fee, payment_state, type, payment_channel, 
-    remark, create_time, pay_time, status, deduct_total_pulse, consigneeName, consigneePhone, 
+    id, serial_number, user_id, total_amount, deduct_total_pulse, fee, payment_state, 
+    type, payment_channel, remark, create_time, pay_time, status, consigneeName, consigneePhone, 
     province, city, county, detailed, spell_group_status, group_master
   </sql>
 </mapper>
