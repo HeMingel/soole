@@ -232,6 +232,7 @@ public class CmOrderService {
                                             }
                                         }});
                                         //TODO 忘了这块是要表达什么 ?? 如果是新人专享活动的话
+
 //                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
 //                                            Example example1 = new Example(SlActivityProduct.class);
 //                                            example1.createCriteria()
