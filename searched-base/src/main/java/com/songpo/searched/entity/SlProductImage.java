@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_product_image")
 public class SlProductImage implements Serializable {
@@ -50,6 +50,16 @@ public class SlProductImage implements Serializable {
      * 图片类型1商品轮播图2商品图文图片
      */
     private Integer type;
+
+    /**
+     * 图片宽度
+     */
+    private Integer width;
+
+    /**
+     * 图片高度
+     */
+    private Integer height;
 
     private static final long serialVersionUID = 1L;
 
@@ -197,6 +207,42 @@ public class SlProductImage implements Serializable {
         this.type = type;
     }
 
+    /**
+     * 获取图片宽度
+     *
+     * @return width - 图片宽度
+     */
+    public Integer getWidth() {
+        return width;
+    }
+
+    /**
+     * 设置图片宽度
+     *
+     * @param width 图片宽度
+     */
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    /**
+     * 获取图片高度
+     *
+     * @return height - 图片高度
+     */
+    public Integer getHeight() {
+        return height;
+    }
+
+    /**
+     * 设置图片高度
+     *
+     * @param height 图片高度
+     */
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -211,6 +257,8 @@ public class SlProductImage implements Serializable {
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
         sb.append(", type=").append(type);
+        sb.append(", width=").append(width);
+        sb.append(", height=").append(height);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

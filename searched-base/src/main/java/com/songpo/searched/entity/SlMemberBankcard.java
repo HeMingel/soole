@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_member_bankcard")
 public class SlMemberBankcard implements Serializable {
@@ -39,7 +39,7 @@ public class SlMemberBankcard implements Serializable {
     private String cardholderPhone;
 
     /**
-     * 开户行地址
+     * 开户行名称
      */
     @Column(name = "opening_bank")
     private String openingBank;
@@ -49,6 +49,12 @@ public class SlMemberBankcard implements Serializable {
      */
     @Column(name = "affiliated_bank")
     private String affiliatedBank;
+
+    /**
+     * 1.该卡为默认卡  2.该卡不是默认卡
+     */
+    @Column(name = "is_default")
+    private Boolean isDefault;
 
     private static final long serialVersionUID = 1L;
 
@@ -157,18 +163,18 @@ public class SlMemberBankcard implements Serializable {
     }
 
     /**
-     * 获取开户行地址
+     * 获取开户行名称
      *
-     * @return opening_bank - 开户行地址
+     * @return opening_bank - 开户行名称
      */
     public String getOpeningBank() {
         return openingBank;
     }
 
     /**
-     * 设置开户行地址
+     * 设置开户行名称
      *
-     * @param openingBank 开户行地址
+     * @param openingBank 开户行名称
      */
     public void setOpeningBank(String openingBank) {
         this.openingBank = openingBank == null ? null : openingBank.trim();
@@ -192,6 +198,24 @@ public class SlMemberBankcard implements Serializable {
         this.affiliatedBank = affiliatedBank == null ? null : affiliatedBank.trim();
     }
 
+    /**
+     * 获取1.该卡为默认卡  2.该卡不是默认卡
+     *
+     * @return is_default - 1.该卡为默认卡  2.该卡不是默认卡
+     */
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    /**
+     * 设置1.该卡为默认卡  2.该卡不是默认卡
+     *
+     * @param isDefault 1.该卡为默认卡  2.该卡不是默认卡
+     */
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -206,6 +230,7 @@ public class SlMemberBankcard implements Serializable {
         sb.append(", cardholderPhone=").append(cardholderPhone);
         sb.append(", openingBank=").append(openingBank);
         sb.append(", affiliatedBank=").append(affiliatedBank);
+        sb.append(", isDefault=").append(isDefault);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

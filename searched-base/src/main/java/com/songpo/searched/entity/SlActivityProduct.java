@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_activity_product")
 public class SlActivityProduct implements Serializable {
@@ -60,7 +60,7 @@ public class SlActivityProduct implements Serializable {
     private Integer referencePeas;
 
     /**
-     * 个人价格
+     * 个人价格(拼团使用)
      */
     @Column(name = "personal_price")
     private BigDecimal personalPrice;
@@ -107,7 +107,7 @@ public class SlActivityProduct implements Serializable {
     private Double awardPeasCounts;
 
     /**
-     * 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
+     * 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
      */
     @Column(name = "awward_money")
     private Double awwardMoney;
@@ -323,18 +323,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取个人价格
+     * 获取个人价格(拼团使用)
      *
-     * @return personal_price - 个人价格
+     * @return personal_price - 个人价格(拼团使用)
      */
     public BigDecimal getPersonalPrice() {
         return personalPrice;
     }
 
     /**
-     * 设置个人价格
+     * 设置个人价格(拼团使用)
      *
-     * @param personalPrice 个人价格
+     * @param personalPrice 个人价格(拼团使用)
      */
     public void setPersonalPrice(BigDecimal personalPrice) {
         this.personalPrice = personalPrice;
@@ -467,18 +467,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
+     * 获取奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @return awward_money - 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
+     * @return awward_money - 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
      */
     public Double getAwwardMoney() {
         return awwardMoney;
     }
 
     /**
-     * 设置奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
+     * 设置奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @param awwardMoney 奖励金额(列表展示奖励数量:取该商品规格奖励最多的)
+     * @param awwardMoney 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
      */
     public void setAwwardMoney(Double awwardMoney) {
         this.awwardMoney = awwardMoney;

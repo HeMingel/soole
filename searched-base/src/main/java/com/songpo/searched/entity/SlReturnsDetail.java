@@ -1,13 +1,13 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_returns_detail")
 public class SlReturnsDetail implements Serializable {
     /**
-     * 用户返还金额明细
+     * 用户返现记录唯一标识符
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class SlReturnsDetail implements Serializable {
     private String userId;
 
     /**
-     * 回款状态1.未返 2.已返 3.已逾期 4.可返
+     * 回款状态1.已返 2.待返 3.已逾期 4.可返
      */
     @Column(name = "returned_status")
     private Integer returnedStatus;
@@ -38,7 +38,7 @@ public class SlReturnsDetail implements Serializable {
     private String createTime;
 
     /**
-     * 返款时间
+     * 返款时间(yyyy-MM-dd)格式
      */
     @Column(name = "return_time")
     private String returnTime;
@@ -58,18 +58,18 @@ public class SlReturnsDetail implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取用户返还金额明细
+     * 获取用户返现记录唯一标识符
      *
-     * @return id - 用户返还金额明细
+     * @return id - 用户返现记录唯一标识符
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 设置用户返还金额明细
+     * 设置用户返现记录唯一标识符
      *
-     * @param id 用户返还金额明细
+     * @param id 用户返现记录唯一标识符
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
@@ -112,18 +112,18 @@ public class SlReturnsDetail implements Serializable {
     }
 
     /**
-     * 获取回款状态1.未返 2.已返 3.已逾期 4.可返
+     * 获取回款状态1.已返 2.待返 3.已逾期 4.可返
      *
-     * @return returned_status - 回款状态1.未返 2.已返 3.已逾期 4.可返
+     * @return returned_status - 回款状态1.已返 2.待返 3.已逾期 4.可返
      */
     public Integer getReturnedStatus() {
         return returnedStatus;
     }
 
     /**
-     * 设置回款状态1.未返 2.已返 3.已逾期 4.可返
+     * 设置回款状态1.已返 2.待返 3.已逾期 4.可返
      *
-     * @param returnedStatus 回款状态1.未返 2.已返 3.已逾期 4.可返
+     * @param returnedStatus 回款状态1.已返 2.待返 3.已逾期 4.可返
      */
     public void setReturnedStatus(Integer returnedStatus) {
         this.returnedStatus = returnedStatus;
@@ -148,18 +148,18 @@ public class SlReturnsDetail implements Serializable {
     }
 
     /**
-     * 获取返款时间
+     * 获取返款时间(yyyy-MM-dd)格式
      *
-     * @return return_time - 返款时间
+     * @return return_time - 返款时间(yyyy-MM-dd)格式
      */
     public String getReturnTime() {
         return returnTime;
     }
 
     /**
-     * 设置返款时间
+     * 设置返款时间(yyyy-MM-dd)格式
      *
-     * @param returnTime 返款时间
+     * @param returnTime 返款时间(yyyy-MM-dd)格式
      */
     public void setReturnTime(String returnTime) {
         this.returnTime = returnTime == null ? null : returnTime.trim();

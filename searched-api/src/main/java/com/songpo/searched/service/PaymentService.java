@@ -3,13 +3,13 @@ package com.songpo.searched.service;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
+import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +33,12 @@ public class PaymentService {
 
     private final WxPayService payService;
 
-    @Value("${sp.pay.alipay.aliPayPublicKey}")
-    private String aliPayPublicKey;
+    private final AliPayService aliPayService;
 
     @Autowired
-    public PaymentService(WxPayService payService) {
+    public PaymentService(WxPayService payService, AliPayService aliPayService) {
         this.payService = payService;
+        this.aliPayService = aliPayService;
     }
 
     /**
@@ -124,10 +124,10 @@ public class PaymentService {
             }
             params.put(name, valueStr);
         }
-        //切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
+        //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
         try {
             // 执行验签
-            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayPublicKey, "UTF_8", "RSA2");
+            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.alipayPublicKey, "UTF_8", aliPayService.signType);
 
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {

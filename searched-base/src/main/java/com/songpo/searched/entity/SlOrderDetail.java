@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -60,6 +60,12 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "product_detail_group_name")
     private String productDetailGroupName;
+
+    /**
+     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     */
+    @Column(name = "shipping_state")
+    private Integer shippingState;
 
     /**
      * 数量
@@ -181,12 +187,6 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
-
-    /**
-     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
-     */
-    @Column(name = "shipping_state")
-    private Integer shippingState;
 
     /**
      * 分享人的唯一标识符
@@ -362,6 +362,24 @@ public class SlOrderDetail implements Serializable {
      */
     public void setProductDetailGroupName(String productDetailGroupName) {
         this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
+    }
+
+    /**
+     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     *
+     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     */
+    public Integer getShippingState() {
+        return shippingState;
+    }
+
+    /**
+     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     *
+     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     */
+    public void setShippingState(Integer shippingState) {
+        this.shippingState = shippingState;
     }
 
     /**
@@ -743,24 +761,6 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
-     *
-     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
-     */
-    public Integer getShippingState() {
-        return shippingState;
-    }
-
-    /**
-     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
-     *
-     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
-     */
-    public void setShippingState(Integer shippingState) {
-        this.shippingState = shippingState;
-    }
-
-    /**
      * 获取分享人的唯一标识符
      *
      * @return share_of_people_id - 分享人的唯一标识符
@@ -811,6 +811,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", productName=").append(productName);
         sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
+        sb.append(", shippingState=").append(shippingState);
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", deductTotalSilver=").append(deductTotalSilver);
@@ -832,7 +833,6 @@ public class SlOrderDetail implements Serializable {
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rebatePulse=").append(rebatePulse);
-        sb.append(", shippingState=").append(shippingState);
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);

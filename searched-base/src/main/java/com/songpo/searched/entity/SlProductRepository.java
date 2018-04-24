@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product_repository")
 public class SlProductRepository implements Serializable {
@@ -148,13 +148,13 @@ public class SlProductRepository implements Serializable {
     private Integer placeOrderReturnPulse;
 
     /**
-     * 推荐奖励奖励金额(限分享奖励)
+     * 分享奖励金额(限分享奖励,商家额外分出来的利润;被分享人下单购买获得10%,分享人获得90%;)
      */
     @Column(name = "rewards_money")
     private BigDecimal rewardsMoney;
 
     /**
-     * 推荐奖励比例(限分享奖励)
+     * 分享奖励比例(限分享奖励)
      */
     @Column(name = "rewards_money_ratio")
     private Float rewardsMoneyRatio;
@@ -624,36 +624,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取推荐奖励奖励金额(限分享奖励)
+     * 获取分享奖励金额(限分享奖励,商家额外分出来的利润;被分享人下单购买获得10%,分享人获得90%;)
      *
-     * @return rewards_money - 推荐奖励奖励金额(限分享奖励)
+     * @return rewards_money - 分享奖励金额(限分享奖励,商家额外分出来的利润;被分享人下单购买获得10%,分享人获得90%;)
      */
     public BigDecimal getRewardsMoney() {
         return rewardsMoney;
     }
 
     /**
-     * 设置推荐奖励奖励金额(限分享奖励)
+     * 设置分享奖励金额(限分享奖励,商家额外分出来的利润;被分享人下单购买获得10%,分享人获得90%;)
      *
-     * @param rewardsMoney 推荐奖励奖励金额(限分享奖励)
+     * @param rewardsMoney 分享奖励金额(限分享奖励,商家额外分出来的利润;被分享人下单购买获得10%,分享人获得90%;)
      */
     public void setRewardsMoney(BigDecimal rewardsMoney) {
         this.rewardsMoney = rewardsMoney;
     }
 
     /**
-     * 获取推荐奖励比例(限分享奖励)
+     * 获取分享奖励比例(限分享奖励)
      *
-     * @return rewards_money_ratio - 推荐奖励比例(限分享奖励)
+     * @return rewards_money_ratio - 分享奖励比例(限分享奖励)
      */
     public Float getRewardsMoneyRatio() {
         return rewardsMoneyRatio;
     }
 
     /**
-     * 设置推荐奖励比例(限分享奖励)
+     * 设置分享奖励比例(限分享奖励)
      *
-     * @param rewardsMoneyRatio 推荐奖励比例(限分享奖励)
+     * @param rewardsMoneyRatio 分享奖励比例(限分享奖励)
      */
     public void setRewardsMoneyRatio(Float rewardsMoneyRatio) {
         this.rewardsMoneyRatio = rewardsMoneyRatio;

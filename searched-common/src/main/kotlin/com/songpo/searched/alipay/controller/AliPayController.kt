@@ -46,7 +46,7 @@ class AlipayController(val alipayService: AliPayService) {
             merchantPrivateKey: String,
             alipayPublicKey: String,
             notifyUrl: String,
-            returnUrl: String?
+            returnUrl: String
     ): BusinessMessage<Void> {
         log.debug { "加载支付配置, 商户号 = [$appId], 商户私钥 = [$merchantPrivateKey], 支付宝公钥 = [$alipayPublicKey], 支付通知地址 = [$notifyUrl], 支付完成后返回的地址 = [$returnUrl]" }
         val message = BusinessMessage<Void>()
@@ -531,7 +531,7 @@ class AlipayController(val alipayService: AliPayService) {
         ApiImplicitParam(name = "productCode", value = "String\t可选\t64\t销售产品码，商家和支付宝签约的产品码\tQUICK_MSECURITY_PAY", paramType = "form", required = false),
         ApiImplicitParam(name = "body", value = "String\t可选\t128\t对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。\tIphone6 16G", paramType = "form", required = false),
         ApiImplicitParam(name = "subject", value = "String\t可选\t256\t商品的标题/交易标题/订单标题/订单关键字等。\t大乐透", paramType = "form", required = false),
-        ApiImplicitParam(name = "outTradeNo", value = "商户订单号,64个字符以内、只能包含字母、数字、下划线；需保证在商户端不重复", paramType = "form", required = false),
+        ApiImplicitParam(name = "outTradeNo", value = "String\t可选\t64\t商户网站唯一订单号\t70501111111S001111119", paramType = "form", required = false),
         ApiImplicitParam(name = "timeExpire", value = "String\t可选\t32\t绝对超时时间，格式为yyyy-MM-dd HH:mm。\t2016-12-31 10:05", paramType = "form", required = false),
         ApiImplicitParam(name = "goodsType", value = "String\t可选\t2\t商品主类型 :0-虚拟类商品,1-实物类商品\t0", paramType = "form", required = false),
         ApiImplicitParam(name = "promoParams", value = "String\t可选\t512\t优惠参数 \n 注：仅与支付宝协商后可用\t{\"storeIdType\":\"1\"}", paramType = "form", required = false),
@@ -640,7 +640,7 @@ class AlipayController(val alipayService: AliPayService) {
         ApiImplicitParam(name = "timeExpire", value = "String\t可选\t32\t绝对超时时间，格式为yyyy-MM-dd HH:mm。\t2016-12-31 10:05", paramType = "form", required = false),
         ApiImplicitParam(name = "totalAmount", value = "String\t可选\t9\t订单总金额，单位为元，精确到小数点后两位，取值范围[0.01,100000000]\t9.00", paramType = "form", required = true),
         ApiImplicitParam(name = "sellerId", value = "String\t可选\t16\t收款支付宝用户ID。 如果该值为空，则默认为商户签约账号对应的支付宝用户ID\t2088102147948060", paramType = "form", required = true),
-        ApiImplicitParam(name = "authToken", value = "String\t可选\t40\t针对用户授权接口，获取用户相关数据时，用于标识用户授权关系\tappopenBb64d181d0146481ab6a762c00714cC27", paramType = "form", required = false),
+        ApiImplicitParam(name = "authToken", value = "String\\t可选\\t40\\t针对用户授权接口，获取用户相关数据时，用于标识用户授权关系\\tappopenBb64d181d0146481ab6a762c00714cC27", paramType = "form", required = false),
         ApiImplicitParam(name = "goodsType", value = "String\t可选\t2\t商品主类型 :0-虚拟类商品,1-实物类商品\t0", paramType = "form", required = false),
         ApiImplicitParam(name = "passbackParams", value = "String\t可选\t512\t公用回传参数，如果请求时传递了该参数，则返回给商户时会回传该参数。支付宝只会在同步返回（包括跳转回商户网站）和异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝。\tmerchantBizType%3d3C%26merchantBizNo%3d2016010101111", paramType = "form", required = false),
         ApiImplicitParam(name = "quitUrl", value = "String\t必选\t400\t用户付款中途退出返回商户网站的地址\thttp://www.taobao.com/product/113714.html", paramType = "form", required = true),
@@ -666,7 +666,7 @@ class AlipayController(val alipayService: AliPayService) {
             timeoutExpress: String?,
             timeExpire: String?,
             totalAmount: String,
-            sellerId: String,
+            sellerId: String?,
             authToken: String?,
             goodsType: String?,
             passbackParams: String?,
@@ -741,8 +741,8 @@ class AlipayController(val alipayService: AliPayService) {
                     extUserInfo)
             message.success = true
         } catch (e: Exception) {
-            log.error { "app支付接口2.0接口失败，$e" }
-            message.msg = "app支付接口2.0接口失败，${e.message}"
+            log.error { "手机网站支付接口2.0接口失败，$e" }
+            message.msg = "手机网站支付接口2.0接口失败，${e.message}"
         }
         return message
     }

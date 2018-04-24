@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     <result column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -14,6 +15,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, news_id, image_url, create_time
+      id, user_id, news_id, image_url, create_time
   </sql>
 </mapper>
