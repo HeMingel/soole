@@ -173,13 +173,14 @@ public class ProductController {
     @ApiOperation(value = "查询商品详情")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "form")
     })
     @GetMapping("/goods-detail")
-    public BusinessMessage goodsDetail(String id,String activityId) {
-        log.debug("根据商品Id查询普通商品，商品Id：{},活动Id: {}", id,activityId);
+    public BusinessMessage goodsDetail(String id,String activityId,String userId) {
+        log.debug("根据商品Id查询普通商品，商品Id：{},活动Id: {},用户id:{}", id,activityId,userId);
         if (id != null) {
-            return this.productService.goodsDetail(id,activityId);
+            return this.productService.goodsDetail(id,activityId,userId);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");

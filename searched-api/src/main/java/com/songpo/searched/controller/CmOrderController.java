@@ -92,10 +92,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form")
     })
     @PostMapping("purchase-immediately")
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage,String activityProductId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage,activityProductId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -209,10 +209,10 @@ public class CmOrderController {
             message = this.cmOrderService.preSaleOrderList(status);
             message.setData(message.getData());
             message.setSuccess(true);
-            message.setMsg("删除成功");
+            message.setMsg("查询成功");
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("删除失败", e);
+            log.debug("查询失败", e);
         }
         return message;
     }
