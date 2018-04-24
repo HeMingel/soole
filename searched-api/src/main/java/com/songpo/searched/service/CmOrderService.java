@@ -391,7 +391,6 @@ public class CmOrderService {
         log.debug("orderId = [" + id + "]");
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
-
             switch (Integer.parseInt(state)) {
                 case 102:
                     Example example = new Example(SlOrder.class);
@@ -861,6 +860,8 @@ public class CmOrderService {
                     map.put("post_fee", detail.getPostFee());
                     // 该订单的返钱状态
                     map.put("status", returnsDetail.getReturnedStatus());
+                    // 订单id
+                    map.put("orderId",order.getId());
                     mapList.add(map);
                 }
                 message.setMsg("查询成功");
