@@ -30,15 +30,26 @@ public class SlProductComment implements Serializable {
     private String content;
 
     /**
-     * 创建人
+     * 评论状态:1好2中3差
      */
-    private String creator;
+    private Integer status;
+
+    /**
+     * 是否有图 0无图 1有图
+     */
+    @Column(name = "isImage")
+    private Integer isimage;
 
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private String createTime;
+
+    /**
+     * 创建人
+     */
+    private String creator;
 
     /**
      * 修改人
@@ -50,11 +61,6 @@ public class SlProductComment implements Serializable {
      */
     @Column(name = "modification_time")
     private String modificationTime;
-
-    /**
-     * 评论状态:1好2中3差4有图
-     */
-    private Integer status;
 
     private static final long serialVersionUID = 1L;
 
@@ -131,21 +137,39 @@ public class SlProductComment implements Serializable {
     }
 
     /**
-     * 获取创建人
+     * 获取评论状态:1好2中3差
      *
-     * @return creator - 创建人
+     * @return status - 评论状态:1好2中3差
      */
-    public String getCreator() {
-        return creator;
+    public Integer getStatus() {
+        return status;
     }
 
     /**
-     * 设置创建人
+     * 设置评论状态:1好2中3差
      *
-     * @param creator 创建人
+     * @param status 评论状态:1好2中3差
      */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * 获取是否有图 0无图 1有图
+     *
+     * @return isImage - 是否有图 0无图 1有图
+     */
+    public Integer getIsimage() {
+        return isimage;
+    }
+
+    /**
+     * 设置是否有图 0无图 1有图
+     *
+     * @param isimage 是否有图 0无图 1有图
+     */
+    public void setIsimage(Integer isimage) {
+        this.isimage = isimage;
     }
 
     /**
@@ -164,6 +188,24 @@ public class SlProductComment implements Serializable {
      */
     public void setCreateTime(String createTime) {
         this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取创建人
+     *
+     * @return creator - 创建人
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * 设置创建人
+     *
+     * @param creator 创建人
+     */
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     /**
@@ -202,24 +244,6 @@ public class SlProductComment implements Serializable {
         this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
-    /**
-     * 获取评论状态:1好2中3差4有图
-     *
-     * @return status - 评论状态:1好2中3差4有图
-     */
-    public Integer getStatus() {
-        return status;
-    }
-
-    /**
-     * 设置评论状态:1好2中3差4有图
-     *
-     * @param status 评论状态:1好2中3差4有图
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -230,11 +254,12 @@ public class SlProductComment implements Serializable {
         sb.append(", productId=").append(productId);
         sb.append(", commentatorId=").append(commentatorId);
         sb.append(", content=").append(content);
-        sb.append(", creator=").append(creator);
+        sb.append(", status=").append(status);
+        sb.append(", isimage=").append(isimage);
         sb.append(", createTime=").append(createTime);
+        sb.append(", creator=").append(creator);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
-        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

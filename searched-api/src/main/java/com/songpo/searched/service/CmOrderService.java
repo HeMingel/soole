@@ -1,5 +1,7 @@
 package com.songpo.searched.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
@@ -139,7 +141,7 @@ public class CmOrderService {
                             //查询活动商品信息
                             SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), slOrderDetail.getActivityProductId());
                             //如果是无活动就不需要校验时间是否符合
-                            if (!slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                            if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                                 //无活动就没有活动到期这一说
                                 productCache.put(slProduct.getId(), slProduct);
                             } else {
@@ -326,11 +328,19 @@ public class CmOrderService {
      * @param status
      * @return
      */
-    public BusinessMessage findList(Integer status) {
+        public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
+                if (null == pageNum || pageNum <= 1) {
+                    pageNum = 1;
+                }
+                if (null == pageSize || pageSize <= 1) {
+                    pageSize = 10;
+                }
+                // 设置分页参数
+                PageHelper.startPage(pageNum, pageSize);
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId(), status);
                 for (Map map : list) {
                     Object type = map.get("type");
@@ -342,7 +352,7 @@ public class CmOrderService {
                 }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-                message.setData(list);
+                message.setData(new PageInfo<>(list));
             } else {
                 message.setMsg("用户不存在");
             }
@@ -508,7 +518,7 @@ public class CmOrderService {
                     //查询活动商品信息
                     SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                     //如果是无活动就不需要校验时间是否符合
-                    if (!activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                    if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                         //无活动就没有活动到期这一说
                         productCache.put(slProduct.getId(), slProduct);
                     } else {
@@ -817,10 +827,13 @@ public class CmOrderService {
     /**
      * 预售订单
      *
+     *
+     * @param integer
+     * @param pageNum
      * @param status
      * @return
      */
-    public BusinessMessage preSaleOrderList(Integer status) {
+    public BusinessMessage preSaleOrderList(Integer status,Integer pageNum,Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         try {
@@ -831,6 +844,14 @@ public class CmOrderService {
                     criteria.andEqualTo("returnedStatus", status);
                 }
                 criteria.andEqualTo("userId", user.getId());
+                if (null == pageNum || pageNum <= 1) {
+                    pageNum = 1;
+                }
+                if (null == pageSize || pageSize <= 1) {
+                    pageSize = 10;
+                }
+                // 设置分页参数
+                PageHelper.startPage(pageNum, pageSize);
                 List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
                 List<Map<String, Object>> mapList = new ArrayList<>();
                 for (SlReturnsDetail returnsDetail : list) {
@@ -861,12 +882,12 @@ public class CmOrderService {
                     // 该订单的返钱状态
                     map.put("status", returnsDetail.getReturnedStatus());
                     // 订单id
-                    map.put("orderId",order.getId());
+                    map.put("orderId", order.getId());
                     mapList.add(map);
                 }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-                message.setData(mapList);
+                message.setData(new PageInfo<>(mapList));
             } else {
                 message.setMsg("用户不存在");
                 log.error("用户不存在");
