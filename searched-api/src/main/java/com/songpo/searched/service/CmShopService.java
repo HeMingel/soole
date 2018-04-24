@@ -45,6 +45,7 @@ public class CmShopService {
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try{
+
             //查询商铺 判断是否有这家店
             SlShop shop = this.slShopMapper.selectByPrimaryKey(new SlShop () {{
                 setId(id);
@@ -92,7 +93,7 @@ public class CmShopService {
                     }});
                 }
             }
-
+            goodsList.add(shop);
             businessMessage.setData(goodsList);
             businessMessage.setSuccess(true);
             businessMessage.setMsg("查询成功");
