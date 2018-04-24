@@ -13,37 +13,35 @@ import org.springframework.stereotype.Service
 @Service
 class AliPayService {
 
-    lateinit var client: DefaultAlipayClient
-
     /**
      * 支付宝网关
      */
     @Value(value = "\${sp.pay.alipay.server-url}")
-    lateinit var serverUrl: String
+    var serverUrl: String = ""
 
     /**
      * 商户号
      */
     @Value(value = "\${sp.pay.alipay.app-id}")
-    lateinit var appId: String
+    var appId: String = ""
 
     /**
      * 签名类型
      */
     @Value(value = "\${sp.pay.alipay.sign-type}")
-    lateinit var signType: String
+    var signType: String = ""
 
     /**
      * 商户私钥
      */
     @Value(value = "\${sp.pay.alipay.private-key}")
-    lateinit var privateKey: String
+    var privateKey: String = ""
 
     /**
      * 支付宝公钥
      */
     @Value(value = "\${sp.pay.alipay.alipay-public-key}")
-    lateinit var alipayPublicKey: String
+    var alipayPublicKey: String = ""
 
     /**
      * 支付通知地址
@@ -67,11 +65,7 @@ class AliPayService {
      * 编码格式
      */
     @Value(value = "\${sp.pay.alipay.charset}")
-    lateinit var charset: String
-
-    init {
-        initClient()
-    }
+    var charset: String = "UTF-8"
 
     /**
      * 加载支付配置
@@ -105,15 +99,13 @@ class AliPayService {
         this.charset = charset
         this.alipayPublicKey = alipayPublicKey
         this.signType = signType
-
-        initClient()
     }
 
     /**
      * 初始化客户端
      */
-    private final fun initClient() {
-        client = DefaultAlipayClient(
+    private final fun client(): DefaultAlipayClient {
+        return DefaultAlipayClient(
                 this.serverUrl,
                 this.appId,
                 this.privateKey,
@@ -149,7 +141,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -182,7 +174,7 @@ class AliPayService {
             model.operatorId = operatorId
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -213,7 +205,7 @@ class AliPayService {
             model.operatorId = operatorId
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -239,7 +231,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -293,7 +285,7 @@ class AliPayService {
             model.terminalId = terminalId
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -400,7 +392,7 @@ class AliPayService {
             model.businessParams = businessParams
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -500,7 +492,7 @@ class AliPayService {
             model.businessParams = businessParams
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -596,7 +588,7 @@ class AliPayService {
             model.timeoutExpress = timeoutExpress
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -789,7 +781,7 @@ class AliPayService {
             model.extUserInfo = extUserInfo
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -984,7 +976,7 @@ class AliPayService {
         if (!businessParams.isNullOrBlank()) {
             model.businessParams = businessParams
         }
-        return client.execute(request)
+        return client().execute(request)
     }
 
     /**
@@ -1010,7 +1002,7 @@ class AliPayService {
             model.tradeNo = tradeNo
         }
 
-        return client.execute(request)
+        return client().execute(request)
     }
 
 }
