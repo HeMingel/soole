@@ -328,7 +328,7 @@ public class CmOrderService {
      * @param status
      * @return
      */
-    public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
+        public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
