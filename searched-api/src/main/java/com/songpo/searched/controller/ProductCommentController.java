@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/common/v1/goods-comment")
 public class ProductCommentController {
-//
+
     @Autowired
     private CmProductCommentService productCommentService;
 
