@@ -871,10 +871,12 @@ public class CmOrderService {
                     map.put("product_name", detail.getProductName());
                     // 商品图片
                     map.put("product_image_url", detail.getProductImageUrl());
-                    // 预售订单总金额
+                    // 预售订单单价
+                    map.put("price", detail.getPrice());
+                    // 订单合计价格
                     map.put("total_amount", order.getTotalAmount());
                     // 预售订单总了豆
-                    map.put("deduct_total_pulse", order.getDeductTotalPulse());
+                    map.put("deduct_total_pulse", detail.getDeductTotalSilver());
                     // 预售订单商品数量
                     map.put("quantity", detail.getQuantity());
                     // 预售商品邮费
@@ -883,6 +885,8 @@ public class CmOrderService {
                     map.put("status", returnsDetail.getReturnedStatus());
                     // 订单id
                     map.put("orderId", order.getId());
+                    // 发货天数
+                    map.put("shipments_days",detail.getPresellShipmentsDays());
                     mapList.add(map);
                 }
                 message.setMsg("查询成功");
