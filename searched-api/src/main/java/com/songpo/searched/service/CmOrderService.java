@@ -28,11 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -328,7 +326,7 @@ public class CmOrderService {
      * @param status
      * @return
      */
-        public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
+    public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
@@ -827,13 +825,12 @@ public class CmOrderService {
     /**
      * 预售订单
      *
-     *
      * @param integer
      * @param pageNum
      * @param status
      * @return
      */
-    public BusinessMessage preSaleOrderList(Integer status,Integer pageNum,Integer pageSize) {
+    public BusinessMessage preSaleOrderList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         try {
@@ -864,7 +861,14 @@ public class CmOrderService {
                     SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                         setOrderId(order.getId());
                     }});
+                    Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
                     Map<String, Object> map = new HashMap<>();
+                    // 店铺的账号
+                    map.put("owner", shop.get("userName"));
+                    System.err.println(shop.get("userName"));
+                    // 店铺的名字
+                    map.put("shop_name", shop.get("shopName"));
+                    System.err.println(shop.get("shopName"));
                     // 订单编号
                     map.put("serial_number", order.getSerialNumber());
                     // 商品标题
@@ -885,8 +889,12 @@ public class CmOrderService {
                     map.put("status", returnsDetail.getReturnedStatus());
                     // 订单id
                     map.put("orderId", order.getId());
-                    // 发货天数
-                    map.put("shipments_days",detail.getPresellShipmentsDays());
+                    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime time = LocalDateTime.now();
+                    LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
+                    Duration duration = Duration.between(time, ldt);
+                    // 返现时间差
+                    map.put("shipments_days", duration.toDays());
                     mapList.add(map);
                 }
                 message.setMsg("查询成功");

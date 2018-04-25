@@ -142,4 +142,12 @@
         LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
         WHERE sap.enabled = TRUE AND spr.`id`= #{repositoryId} and sap.id = #{activityProductId}
     </select>
+    <select id="selectShopUserName" resultType="java.util.Map">
+        select
+        su.username userName,
+          ss.name shopName
+         from sl_user su
+        left join sl_shop ss on ss.owner_id = su.id
+        where ss.id = #{shopId}
+    </select>
 </mapper>
