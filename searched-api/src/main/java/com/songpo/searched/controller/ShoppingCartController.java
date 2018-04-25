@@ -52,7 +52,7 @@ public class ShoppingCartController {
             @ApiImplicitParam(name = "oAuth2Authentication", value = "token", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addMyShoppingCart(String repositoryId, int counts) {
+    public BusinessMessage addMyShoppingCart(String repositoryId, int counts, String activityId) {
         BusinessMessage message = new BusinessMessage();
         if (!StringUtils.isEmpty(repositoryId) && !StringUtils.isEmpty(counts)) {
             CMShoppingCart pojo = new CMShoppingCart();
@@ -60,6 +60,7 @@ public class ShoppingCartController {
             CMGoods goods = new CMGoods();
             goods.setRepositoryId(repositoryId);
             goods.setCounts(counts);
+            goods.setActivityId(activityId);
             list.add(goods);
             pojo.setCarts(list);
             message = this.shoppingCartService.addMyShoppingCart(pojo);

@@ -4,10 +4,8 @@ import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlShop;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.SlActivityProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +25,8 @@ public class ShoppingCartService {
     private ShopService shopService;
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private SlActivityProductMapper activityProductMapper;
 
     /**
      * 新增购物车
@@ -117,6 +117,10 @@ public class ShoppingCartService {
                             setId(repository.getProductId());
                             setSoldOut(true);
                         }});
+                        SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                            setProductId(slProduct.getId());
+                            setActivityId(sc.getActivityId());
+                        }});
                         if (null != slProduct) {
                             cmGoods = new CMGoods();
                             SlShop slShop = this.shopService.selectOne(new SlShop() {{
@@ -137,6 +141,7 @@ public class ShoppingCartService {
                             cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
                             cmGoods.setShopId(sc.getShopId());// 店铺id
                             cmGoods.setShopName(slShop.getName());// 店铺名称
+                            cmGoods.setRestrictCount(activityProduct.getRestrictCount());//限制购买数量
                             goodsList.add(cmGoods);
                             cart.setShopId(slShop.getId());
                             cart.setShopName(slShop.getName());
