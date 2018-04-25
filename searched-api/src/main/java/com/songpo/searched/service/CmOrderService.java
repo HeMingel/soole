@@ -889,6 +889,8 @@ public class CmOrderService {
                     map.put("status", returnsDetail.getReturnedStatus());
                     // 订单id
                     map.put("orderId", order.getId());
+                    // 商品明细id
+                    map.put("orderDetailId", detail.getId());
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     LocalDateTime time = LocalDateTime.now();
                     LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
