@@ -69,11 +69,14 @@
         so.serial_number orderNum,
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
-        ifnull(so.payment_channel,0) paymentChannel
+        ifnull(so.payment_channel,0) paymentChannel,
+        su.username owner
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
+        left join sl_shop ss on ss.id = sod.shop_id
+        left join sl_user su on su.id = ss.owner_id
         WHERE so.user_id = #{userId} and sod.id = #{id}
     </select>
 
