@@ -34,10 +34,6 @@ repositories {
     maven { url "https://jitpack.io/" }
 }
 
-sourceSets {
-    main.java.srcDirs += 'src'
-}
-
 dependencies {
 
     // Kotlin编译插件
