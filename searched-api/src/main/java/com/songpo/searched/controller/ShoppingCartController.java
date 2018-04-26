@@ -94,15 +94,14 @@ public class ShoppingCartController {
 
     @ApiOperation(value = "编辑商品信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "counts", value = "商品数量", paramType = "form"),
-            @ApiImplicitParam(name = "agoRepositoryId", value = "之前的规格id", paramType = "form")
+            @ApiImplicitParam(name = "repository", value = "之前的规格id", paramType = "form")
     })
     @PostMapping("edit-shopping-carts")
-    public BusinessMessage editShoppingCarts(String agoRepositoryId, Integer counts) {
-        log.debug("agoRepositoryId = [" + agoRepositoryId + "], counts = [" + counts + "]");
+    public BusinessMessage editShoppingCarts(String[] repository) {
+        log.debug("repository = [" + repository + "]");
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.shoppingCartService.editShoppingCarts(agoRepositoryId, counts);
+            message = this.shoppingCartService.editShoppingCarts(repository);
             message.setSuccess(message.getSuccess());
             message.setMsg(message.getMsg());
         } catch (Exception e) {

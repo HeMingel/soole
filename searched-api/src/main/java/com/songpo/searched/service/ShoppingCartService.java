@@ -169,11 +169,10 @@ public class ShoppingCartService {
     /**
      * 修改购物车商品信息
      *
-     * @param agoRepositoryId
-     * @param counts
+     * @param repository
      * @return
      */
-    public BusinessMessage editShoppingCarts(String agoRepositoryId, Integer counts) {
+    public BusinessMessage editShoppingCarts(String[] repository) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -181,11 +180,16 @@ public class ShoppingCartService {
             if (null != pojo) {
                 List<CMGoods> goodsList = new ArrayList<>();
                 for (CMGoods goods : pojo.getCarts()) {
-                    if (agoRepositoryId.equals(goods.getRepositoryId())) {
-                        if (counts != null && counts > 0) {
-                            goods.setCounts(counts);
-                        }
-                        // 修改规格
+                    for (String re : repository) {
+                        String[] aa = re.split(",");
+                        for (String bb : aa) {
+                            String repositoryId = bb.split("\\|")[0];
+                            Integer count = Integer.valueOf(bb.split("\\|")[1]);
+                            if (repositoryId.equals(goods.getRepositoryId())) {
+                                if (count != null && count > 0) {
+                                    goods.setCounts(count);
+                                }
+                                //  修改规格
 //                        if (!StringUtils.isEmpty(repositoryId)) {
 //                            goods.setRepositoryId(repositoryId);
 //                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
@@ -193,6 +197,8 @@ public class ShoppingCartService {
 //                            }});
 //                            goods.setGoodId(repository.getProductId());
 //                        }
+                            }
+                        }
                     }
                     goodsList.add(goods);
                 }
