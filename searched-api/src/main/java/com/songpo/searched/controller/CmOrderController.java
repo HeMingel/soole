@@ -92,10 +92,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form")
     })
     @PostMapping("purchase-immediately")
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage,String activityProductId) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage,activityProductId);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
@@ -119,8 +119,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "订单状态", value = "status", paramType = "form", required = true)
     })
     @GetMapping("list")
-    public BusinessMessage list(Integer status,Integer pageNum,Integer pageSize) {
-        return this.cmOrderService.findList(status,pageNum,pageSize);
+    public BusinessMessage list(Integer status, Integer pageNum, Integer pageSize) {
+        return this.cmOrderService.findList(status, pageNum, pageSize);
     }
 
     /**
@@ -168,21 +168,18 @@ public class CmOrderController {
      *
      * @param orderId
      * @param orderDetailId
-     * @param shopId
-     * @param orderNum
      * @return
      */
     @ApiOperation(value = "删除订单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orderDetailId", value = "订单Id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "shopId", value = "店铺Id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "orderNum", value = "订单编号", paramType = "form", required = true)
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
     })
     @PostMapping("delete-order")
-    public BusinessMessage deleteOrder(String orderId, String orderDetailId, String shopId, String orderNum) {
+    public BusinessMessage deleteOrder(String orderId, String orderDetailId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            this.cmOrderService.deleteOrder(orderId, orderDetailId, shopId, orderNum);
+            this.cmOrderService.deleteOrder(orderId, orderDetailId);
             message.setSuccess(true);
             message.setMsg("删除成功");
         } catch (Exception e) {
@@ -203,10 +200,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form", required = true)
     })
     @GetMapping("pre-sale-order")
-    public BusinessMessage preSaleOrderList(Integer status,Integer pageNum,Integer pageSize) {
+    public BusinessMessage preSaleOrderList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.preSaleOrderList(status,pageNum,pageSize);
+            message = this.cmOrderService.preSaleOrderList(status, pageNum, pageSize);
             message.setData(message.getData());
             message.setSuccess(true);
             message.setMsg("查询成功");

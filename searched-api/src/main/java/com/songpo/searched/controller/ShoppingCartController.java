@@ -78,7 +78,7 @@ public class ShoppingCartController {
             @ApiImplicitParam(name = "repositoryId", value = "规格id", paramType = "form", required = true)
     })
     @PostMapping("delete-shopping-carts")
-    public BusinessMessage deleteMyShoppingCart(String repositoryId) {
+    public BusinessMessage deleteMyShoppingCart(String[] repositoryId) {
         log.debug("repositoryId = [" + repositoryId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
