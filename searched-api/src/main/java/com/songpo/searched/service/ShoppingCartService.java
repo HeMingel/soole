@@ -65,10 +65,10 @@ public class ShoppingCartService {
     /**
      * 删除 list中的某个value
      *
-     * @param repositoryId
+     * @param repositoryIds
      * @return
      */
-    public BusinessMessage deleteMyShoppingCart(String repositoryId) {
+    public BusinessMessage deleteMyShoppingCart(String[] repositoryIds) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -76,12 +76,14 @@ public class ShoppingCartService {
             if (null != pojo) {
                 for (int i = 0; i < pojo.getCarts().size(); i++) {
                     //如果传过来的repositoryId == list中的某个repositoryId
-                    if (repositoryId.equals(pojo.getCarts().get(i).getRepositoryId())) {
-                        //就把这条list删除
-                        pojo.getCarts().remove(i);
+                    for (String repositoryId : repositoryIds) {
+                        if (repositoryId.equals(pojo.getCarts().get(i).getRepositoryId())) {
+                            //就把这条list删除
+                            pojo.getCarts().remove(i);
+                        }
+                        //把删除后的list重新覆盖
+                        this.cache.put(user.getId(), pojo);
                     }
-                    //把删除后的list重新覆盖
-                    this.cache.put(user.getId(), pojo);
                 }
                 message.setMsg("删除成功");
                 message.setSuccess(true);
