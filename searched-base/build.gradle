@@ -15,8 +15,13 @@ apply plugin: 'java'
 apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 repositories {
-    maven { url "https://nexus.xzcysoft.com/repository/maven-public/" }
+    mavenLocal()
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
     mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://jitpack.io/" }
 }
 
 dependencies {

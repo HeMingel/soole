@@ -26,15 +26,10 @@ import tk.mybatis.mapper.entity.Example;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import static java.time.LocalDate.now;
 
 @Service
 public class CmOrderService {
@@ -825,7 +820,7 @@ public class CmOrderService {
     /**
      * 预售订单
      *
-     * @param integer
+     * @param status
      * @param pageNum
      * @param status
      * @return
