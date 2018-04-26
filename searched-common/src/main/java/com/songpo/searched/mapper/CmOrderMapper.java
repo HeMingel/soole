@@ -1,8 +1,10 @@
 package com.songpo.searched.mapper;
 
 import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlReturnsDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +29,6 @@ public interface CmOrderMapper {
     SlActivityProduct selectActivityProductByRepositoryId(@Param("repositoryId") String repositoryId, @Param("activityProductId") String activityProductId);
 
     Map<String,Object> selectShopUserName(String shopId);
+
+    List<SlReturnsDetail> selectReturnsDetail(@Param("status")Integer status,@Param("b") boolean b, @Param("userId")String userId);
 }
