@@ -132,7 +132,6 @@ public class CmProductService {
         }else {
             return new PageInfo<>(list);
         }
-
     }
 
     /**
