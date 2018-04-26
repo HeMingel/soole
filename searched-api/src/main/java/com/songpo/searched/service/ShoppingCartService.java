@@ -170,11 +170,10 @@ public class ShoppingCartService {
      * 修改购物车商品信息
      *
      * @param agoRepositoryId
-     * @param repositoryId
      * @param counts
      * @return
      */
-    public BusinessMessage editShoppingCarts(String agoRepositoryId, String repositoryId, Integer counts) {
+    public BusinessMessage editShoppingCarts(String agoRepositoryId, Integer counts) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -186,13 +185,14 @@ public class ShoppingCartService {
                         if (counts != null && counts > 0) {
                             goods.setCounts(counts);
                         }
-                        if (!StringUtils.isEmpty(repositoryId)) {
-                            goods.setRepositoryId(repositoryId);
-                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                setId(repositoryId);
-                            }});
-                            goods.setGoodId(repository.getProductId());
-                        }
+                        // 修改规格
+//                        if (!StringUtils.isEmpty(repositoryId)) {
+//                            goods.setRepositoryId(repositoryId);
+//                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+//                                setId(repositoryId);
+//                            }});
+//                            goods.setGoodId(repository.getProductId());
+//                        }
                     }
                     goodsList.add(goods);
                 }

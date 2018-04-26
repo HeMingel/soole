@@ -1,6 +1,8 @@
 package com.songpo.searched.service;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlActivityProduct;
@@ -8,6 +10,8 @@ import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.entity.SlShop;
 import com.songpo.searched.entity.SlShopLookNum;
 import com.songpo.searched.mapper.*;
+import io.netty.handler.codec.json.JsonObjectDecoder;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,68 +39,97 @@ public class CmShopService {
 
     /**
      * 根据店铺Id查询店铺详情和商品
-     * @param id
-     * @return
+     * @param shopId 店铺Id
+     * @param userId 用户id
+     * @param goodsName 商品名称
+     * @param sortBySale 根据销量排序
+     * @param sortByPrice 根据价格排序
+     * @param pageNum
+     * @param pageSize
+     * @return 店铺商品
      */
 
-    public BusinessMessage shopAndGoods(String id,String userId) {
-        log.debug("商户Id:{},用户id:{}",id,userId);
+    public BusinessMessage shopAndGoods(String shopId,String userId,String goodsName,String sortBySale,String sortByPrice,Integer pageNum,Integer pageSize) {
+        log.debug("商户Id:{},用户id:{},商品名称:{},销售排序:{},价格排序:{}",shopId,userId,goodsName,sortBySale,sortByPrice);
 
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
+        JSONObject data = new JSONObject();
         try{
 
             //查询商铺 判断是否有这家店
             SlShop shop = this.slShopMapper.selectByPrimaryKey(new SlShop () {{
-                setId(id);
+                setId(shopId);
             }});
             if(null == shop){
                 businessMessage.setMsg("未找到该商铺");
                 return businessMessage;
             }
-            Example example = new Example(SlProduct.class);
-            example.createCriteria().andEqualTo("soldOut",1).andEqualTo("shopId",id);
-            List<SlProduct> productList = this.slProductMapper.selectByExample(example);
-            List<Object> goodsList = new ArrayList<>();
-            for (int i=0;i<productList.size();i++){
 
-                //如果是拼团商品,根据商品id查询
-                if(Integer.parseInt(productList.get(i).getSalesModeId())  == SalesModeConstant.SALES_MODE_GROUP){
-                    //查询该商品的拼团头像
-                    List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(productList.get(i).getId());
-                    if (avatarList != null){
-                        goodsList.add(avatarList);
+
+            if (null == pageNum || pageNum <= 1) {
+                pageNum = 1;
+            }
+
+            if (null == pageSize || pageSize <= 1) {
+                pageSize = 10;
+            }
+
+            // 排序规则字符串
+            String[] orderStrArray = new String[]{"DESC", "desc", "ASC", "asc"};
+
+            // 过滤价格排序规则中的非法字符
+            if (!StringUtils.containsAny(sortByPrice, orderStrArray)) {
+                sortByPrice = StringUtils.trimToEmpty(sortByPrice);
+            }
+
+            //过滤销售数量排序中的非法字符
+            if(!StringUtils.containsAny(sortBySale, orderStrArray)){
+                sortBySale = StringUtils.trimToEmpty(sortBySale);
+            }
+
+            // 设置分页参数
+            PageHelper.startPage(pageNum, pageSize);
+
+            //执行查询 查询该商铺商品
+            List<Map<String,Object>> goodsList = this.mapper.selectShopGoods(shopId,goodsName,sortBySale,sortByPrice);
+            //如果是拼团产品 需要查询拼团产品的头像
+            for (Map<String,Object> map : goodsList){
+                //判断
+                if (Integer.parseInt(map.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP ){
+                    //查询拼团商品拼主的头像 在订单表有记录
+                    List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
+                    if (avatarList.size() >0){
+                        map.put("avatarList",avatarList);
                     }
                 }
-                Map<String,Object> activityProduct = new HashMap<>();
-                Example apExample = new Example(SlActivityProduct.class);
-                apExample.createCriteria().andEqualTo("productId",productList.get(i).getId()).andEqualTo("enabled",1);
-                List<SlActivityProduct> activityProductList = this.activityProductMapper.selectByExample(apExample);
-                activityProduct.put("activityProduct",activityProductList);
-                activityProduct.put("goodsBaseInfo",productList.get(i));
-                goodsList.add(activityProduct);
             }
-            if(userId != null){
+            //涉及到访问量
+            if(userId != null) {
                 Date date = new Date();
-                SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
 
                 SlShopLookNum slShopLookNum = this.slShopLookNumMapper.selectOne(new SlShopLookNum() {{
                     setDay(time.format(date));
                     setUserId(userId);
                 }});
-                if(slShopLookNum == null) {
+                if (slShopLookNum == null) {
                     this.slShopLookNumMapper.insert(new SlShopLookNum() {{
                         setUserId(userId);
                         setDay(time.format(date));
-                        setShopId(id);
+                        setShopId(shopId);
                         setId(UUID.randomUUID().toString());
                     }});
                 }
             }
-            goodsList.add(shop);
-            businessMessage.setData(goodsList);
-            businessMessage.setSuccess(true);
-            businessMessage.setMsg("查询成功");
+
+                data.put("shopDetail",shop);
+                data.put("goodsInfo",goodsList);
+
+                businessMessage.setData(data);
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询成功");
+
         }catch (Exception e){
             businessMessage.setMsg("查询失败");
             log.error("商铺查询失败:{}",e);

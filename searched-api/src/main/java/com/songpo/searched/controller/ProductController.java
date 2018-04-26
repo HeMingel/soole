@@ -35,8 +35,8 @@ public class ProductController {
      *
      * @param name         商品名称
      * @param salesModeId  销售模式唯一标识符
-     * @param activityId  活动Id
-     * @param goodsTypeId 商品分类
+     * @param activityId   活动Id
+     * @param goodsTypeId  商品分类
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
@@ -47,10 +47,10 @@ public class ProductController {
      * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
      * @param pageNum      页码
      * @param pageSize     容量
-     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
-     * @param addressNow     当前地址
-     * @param longitudeNow     当前经度
-     * @param latitudeNow     当前纬度
+     * @param sortBySale   根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param addressNow   当前地址
+     * @param longitudeNow 当前经度
+     * @param latitudeNow  当前纬度
      * @return 商品分页列表
      */
     @ApiOperation(value = "根据销售模式,活动id查询商品列表,经纬度排序,商品价格,评分,销量排序")
@@ -96,12 +96,12 @@ public class ProductController {
                                                                             Double latitudeNow) {
         log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，商品分类唯一标识符：{}，商品分类标识(一级二级):{},最小经度：{}，最大经度：{}，最小维度：{}，" +
                         "最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，" +
-                        "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{}", name, salesModeId,activityId,goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
-                latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale,addressNow,longitudeNow,latitudeNow);
+                        "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{}", name, salesModeId, activityId, goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
+                latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         try {
-            PageInfo data = this.productService.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin,
-                    latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize,sortBySale,addressNow,longitudeNow,latitudeNow);
+            PageInfo data = this.productService.selectBySalesMode(name, salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin,
+                    latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow);
 
             message.setData(data);
             message.setSuccess(true);
@@ -177,10 +177,10 @@ public class ProductController {
             @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "form")
     })
     @GetMapping("/goods-detail")
-    public BusinessMessage goodsDetail(String id,String activityId,String userId) {
-        log.debug("根据商品Id查询普通商品，商品Id：{},活动Id: {},用户id:{}", id,activityId,userId);
+    public BusinessMessage goodsDetail(String id, String activityId, String userId) {
+        log.debug("根据商品Id查询普通商品，商品Id：{},活动Id: {},用户id:{}", id, activityId, userId);
         if (id != null) {
-            return this.productService.goodsDetail(id,activityId,userId);
+            return this.productService.goodsDetail(id, activityId, userId);
         } else {
             BusinessMessage businessMessage = new BusinessMessage();
             businessMessage.setMsg("商品ID为空");
@@ -212,9 +212,9 @@ public class ProductController {
             @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
     })
     @GetMapping("goods-specification")
-    public BusinessMessage goodsSpecification(String id,String activityId) {
-        log.debug("商品规格,商品Id:{},活动Id", id,activityId);
-        return this.productService.goodsNormalSpecification(id,activityId);
+    public BusinessMessage goodsSpecification(String id, String activityId) {
+        log.debug("商品规格,商品Id:{},活动Id", id, activityId);
+        return this.productService.goodsNormalSpecification(id, activityId);
     }
 
     @ApiOperation(value = "热品推荐")
@@ -225,21 +225,10 @@ public class ProductController {
     public BusinessMessage hotGoods(String id) {
         return this.productService.hotGoods(id);
     }
-
-    @ApiOperation(value = "店铺商品查询")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "shopId", value = "店铺ID", paramType = "form", required = true),
-            @ApiImplicitParam(name = "goodsName", value = "商品名称", paramType = "form"),
-            @ApiImplicitParam(name = "sortBySale", value = "销售数量排序", paramType = "form"),
-            @ApiImplicitParam(name = "sortByPrice", value = "价格排序", paramType = "form"),
-            @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "form", required = true),
-            @ApiImplicitParam(name = "pageSize", value = "容量", paramType = "form" )
-    })
-    @GetMapping("/shopGoods")
-    public BusinessMessage shopGoods(String shopId,String goodsName,String sortBySale,String sortByPrice,Integer pageNum,Integer pageSize) {
-        return this.productService.shopGoods(shopId,goodsName,sortBySale,sortByPrice,pageNum,pageSize);
-    }
 }
+
+
+
 
 
 
