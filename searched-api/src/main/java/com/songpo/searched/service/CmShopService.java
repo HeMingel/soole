@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlActivityProduct;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlShop;
-import com.songpo.searched.entity.SlShopLookNum;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import io.netty.handler.codec.json.JsonObjectDecoder;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +33,8 @@ public class CmShopService {
     private SlActivityProductMapper activityProductMapper;
     @Autowired
     private CmProductMapper mapper;
+    @Autowired
+    private SlMyCollectionMapper slMyCollectionMapper;
 
     /**
      * 根据店铺Id查询店铺详情和商品
@@ -65,6 +64,14 @@ public class CmShopService {
                 businessMessage.setMsg("未找到该商铺");
                 return businessMessage;
             }
+            //查询收藏的数量
+            //1：收藏的为店铺
+            //2：收藏的为商品
+            Byte type =1;
+             int count = this.slMyCollectionMapper.selectCount(new SlMyCollection(){{
+                 setType(type);
+                 setCollectionId(shopId);
+             }});
 
 
             if (null == pageNum || pageNum <= 1) {
@@ -124,6 +131,7 @@ public class CmShopService {
             }
 
                 data.put("shopDetail",shop);
+                data.put("collectionNum",count);
                 data.put("goodsInfo",goodsList);
 
                 businessMessage.setData(data);
