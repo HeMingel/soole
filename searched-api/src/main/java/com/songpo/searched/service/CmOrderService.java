@@ -806,16 +806,16 @@ public class CmOrderService {
      * @param shopId
      * @param orderNum
      */
-    public void deleteOrder(String orderId, String detailId, String shopId, String orderNum) {
+    public void deleteOrder(String orderId, String detailId) {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             Example example = new Example(SlOrderDetail.class);
             example.createCriteria()
                     .andEqualTo("id", detailId)
-                    .andEqualTo("shopId", shopId)
-                    .andEqualTo("creator", user.getId());
+                    .andEqualTo("creator", user.getId())
+                    .andEqualTo("orderId", orderId);
             this.orderService.delete(new SlOrder() {{
-                setSerialNumber(orderId);
+                setId(orderId);
                 setUserId(user.getId());
             }});
             this.orderDetailService.deleteByExample(example);
@@ -830,6 +830,7 @@ public class CmOrderService {
      * @param status
      * @return
      */
+    // TODO  =======
     public BusinessMessage preSaleOrderList(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -841,6 +842,7 @@ public class CmOrderService {
                     criteria.andEqualTo("returnedStatus", status);
                 }
                 criteria.andEqualTo("userId", user.getId());
+                criteria.andNotEqualTo("confirmReceipt", false);
                 if (null == pageNum || pageNum <= 1) {
                     pageNum = 1;
                 }
@@ -849,55 +851,55 @@ public class CmOrderService {
                 }
                 // 设置分页参数
                 PageHelper.startPage(pageNum, pageSize);
+                example.setOrderByClause("return_time ASC");
                 List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
                 List<Map<String, Object>> mapList = new ArrayList<>();
                 for (SlReturnsDetail returnsDetail : list) {
-                    SlOrder order = this.orderService.selectOne(new SlOrder() {{
+                    List<SlOrder> list1 = this.orderService.select(new SlOrder() {{
                         setId(returnsDetail.getOrderId());
-                        setPaymentState(1);
                         //预售
                         setType(3);
                     }});
-                    SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-                        setOrderId(order.getId());
-                    }});
-                    Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
-                    Map<String, Object> map = new HashMap<>();
-                    // 店铺的账号
-                    map.put("owner", shop.get("userName"));
-                    System.err.println(shop.get("userName"));
-                    // 店铺的名字
-                    map.put("shop_name", shop.get("shopName"));
-                    System.err.println(shop.get("shopName"));
-                    // 订单编号
-                    map.put("serial_number", order.getSerialNumber());
-                    // 商品标题
-                    map.put("product_name", detail.getProductName());
-                    // 商品图片
-                    map.put("product_image_url", detail.getProductImageUrl());
-                    // 预售订单单价
-                    map.put("price", detail.getPrice());
-                    // 订单合计价格
-                    map.put("total_amount", order.getTotalAmount());
-                    // 预售订单总了豆
-                    map.put("deduct_total_pulse", detail.getDeductTotalSilver());
-                    // 预售订单商品数量
-                    map.put("quantity", detail.getQuantity());
-                    // 预售商品邮费
-                    map.put("post_fee", detail.getPostFee());
-                    // 该订单的返钱状态
-                    map.put("status", returnsDetail.getReturnedStatus());
-                    // 订单id
-                    map.put("orderId", order.getId());
-                    // 商品明细id
-                    map.put("orderDetailId", detail.getId());
-                    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    LocalDateTime time = LocalDateTime.now();
-                    LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
-                    Duration duration = Duration.between(time, ldt);
-                    // 返现时间差
-                    map.put("shipments_days", duration.toDays());
-                    mapList.add(map);
+                    for (SlOrder order : list1) {
+                        SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                            setOrderId(order.getId());
+                        }});
+                        Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
+                        Map<String, Object> map = new HashMap<>();
+                        // 店铺的账号
+                        map.put("owner", shop.get("userName"));
+                        // 店铺的名字
+                        map.put("shop_name", shop.get("shopName"));
+                        // 订单编号
+                        map.put("serial_number", order.getSerialNumber());
+                        // 商品标题
+                        map.put("product_name", detail.getProductName());
+                        // 商品图片
+                        map.put("product_image_url", detail.getProductImageUrl());
+                        // 预售订单单价
+                        map.put("price", detail.getPrice());
+                        // 订单合计价格
+                        map.put("total_amount", order.getTotalAmount());
+                        // 预售订单总了豆
+                        map.put("deduct_total_pulse", detail.getDeductTotalSilver());
+                        // 预售订单商品数量
+                        map.put("quantity", detail.getQuantity());
+                        // 预售商品邮费
+                        map.put("post_fee", detail.getPostFee());
+                        // 该订单的返钱状态
+                        map.put("status", returnsDetail.getReturnedStatus());
+                        // 订单id
+                        map.put("orderId", order.getId());
+                        // 商品明细id
+                        map.put("orderDetailId", detail.getId());
+                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        LocalDateTime time = LocalDateTime.now();
+                        LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
+                        Duration duration = Duration.between(time, ldt);
+                        // 返现时间差
+                        map.put("shipments_days", duration.toDays());
+                        mapList.add(map);
+                    }
                 }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
