@@ -355,7 +355,8 @@
           AND p.`sold_out` = 1
           AND ap.`enabled` = 1
         <if test="goodsName != null and goodsName !='' ">
-            and p.name like #{goodsName}
+            <bind name="pGoodsName" value="'%' + goodsName + '%'"/>
+            and p.name like #{pGoodsName}
         </if>
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
         <trim prefix="ORDER BY" suffixOverrides=",">

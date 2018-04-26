@@ -25,6 +25,18 @@ public class ShopController {
     @Autowired
     private CmShopService cmShopService;
 
+    /**
+     * 根据店铺Id查询店铺详情和商品
+     * @param shopId 店铺Id
+     * @param userId 用户id
+     * @param goodsName 商品名称
+     * @param sortBySale 根据销量排序
+     * @param sortByPrice 根据价格排序
+     * @param pageNum
+     * @param pageSize
+     * @return 店铺商品
+     */
+
     @ApiOperation(value = "查询商铺")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "shopId", value = "商铺Id", paramType = "form", required = true),

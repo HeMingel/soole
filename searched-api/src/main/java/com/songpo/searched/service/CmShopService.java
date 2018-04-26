@@ -39,12 +39,18 @@ public class CmShopService {
 
     /**
      * 根据店铺Id查询店铺详情和商品
-     * @param id
-     * @return
+     * @param shopId 店铺Id
+     * @param userId 用户id
+     * @param goodsName 商品名称
+     * @param sortBySale 根据销量排序
+     * @param sortByPrice 根据价格排序
+     * @param pageNum
+     * @param pageSize
+     * @return 店铺商品
      */
 
     public BusinessMessage shopAndGoods(String shopId,String userId,String goodsName,String sortBySale,String sortByPrice,Integer pageNum,Integer pageSize) {
-        log.debug("商户Id:{},用户id:{}",shopId,userId);
+        log.debug("商户Id:{},用户id:{},商品名称:{},销售排序:{},价格排序:{}",shopId,userId,goodsName,sortBySale,sortByPrice);
 
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
@@ -81,7 +87,6 @@ public class CmShopService {
             if(!StringUtils.containsAny(sortBySale, orderStrArray)){
                 sortBySale = StringUtils.trimToEmpty(sortBySale);
             }
-            goodsName = '%'+goodsName+'%';
 
             // 设置分页参数
             PageHelper.startPage(pageNum, pageSize);
