@@ -26,12 +26,6 @@ public class SlActivityProduct implements Serializable {
     private String activityId;
 
     /**
-     * （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
-     */
-    @Column(name = "sharing_rewards_id")
-    private String sharingRewardsId;
-
-    /**
      * 活动仓库规格序号
      */
     @Column(name = "activity_product_repository_serial_number")
@@ -54,25 +48,19 @@ public class SlActivityProduct implements Serializable {
     private Integer peas;
 
     /**
-     * 参考豆子
-     */
-    @Column(name = "reference_peas")
-    private Integer referencePeas;
-
-    /**
      * 个人价格(拼团使用)
      */
     @Column(name = "personal_price")
     private BigDecimal personalPrice;
 
     /**
-     * 活动开始时间(必须设置开始时间)
+     * 活动开始时间(无活动除外，必须设置开始时间)
      */
     @Column(name = "begin_time")
     private String beginTime;
 
     /**
-     * 活动结束时间(必须设置结束时间)
+     * 活动结束时间(无活动除外，必须设置开始时间)
      */
     @Column(name = "end_time")
     private String endTime;
@@ -89,7 +77,7 @@ public class SlActivityProduct implements Serializable {
     private Integer peopleNum;
 
     /**
-     * 已拼单人数
+     * 已拼单人数（按下单人数计算）
      */
     @Column(name = "orders_num")
     private Integer ordersNum;
@@ -101,13 +89,13 @@ public class SlActivityProduct implements Serializable {
     private Integer surplusProductCount;
 
     /**
-     * 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
+     * 奖励金豆数量(只限新人专享10%，列表展示奖励数量:取该商品规格奖励最多的)
      */
     @Column(name = "award_peas_counts")
     private Double awardPeasCounts;
 
     /**
-     * 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
+     * 奖励金额(只限分享奖励，商家自定义让利金额，后台设定)
      */
     @Column(name = "awward_money")
     private Double awwardMoney;
@@ -124,7 +112,7 @@ public class SlActivityProduct implements Serializable {
     private String creator;
 
     /**
-     * 该活动商品限制单数
+     * 该活动商品限制数量
      */
     @Column(name = "restrict_count")
     private Integer restrictCount;
@@ -136,27 +124,39 @@ public class SlActivityProduct implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 列表展示返现money(显示规格最高的)
+     * 是否启用(1:启用 0;下架)
      */
-    @Column(name = "return_money")
-    private BigDecimal returnMoney;
+    private Boolean enabled;
 
     /**
-     * 列表展示返豆数量(显示规格最多的)
+     * 参考豆子（暂未使用）
      */
-    @Column(name = "return_peas")
-    private Integer returnPeas;
+    @Column(name = "reference_peas")
+    private Integer referencePeas;
 
     /**
-     * 商家奖励额度
+     * （暂未使用）商家奖励额度
      */
     @Column(name = "reward_value")
     private Double rewardValue;
 
     /**
-     * 是否启用(1:启用 0;下架)
+     * （暂未使用）列表展示返现money(显示规格最高的)
      */
-    private Boolean enabled;
+    @Column(name = "return_money")
+    private BigDecimal returnMoney;
+
+    /**
+     * （暂未使用）列表展示返豆数量(显示规格最多的)
+     */
+    @Column(name = "return_peas")
+    private Integer returnPeas;
+
+    /**
+     * （不使用）（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    @Column(name = "sharing_rewards_id")
+    private String sharingRewardsId;
 
     private static final long serialVersionUID = 1L;
 
@@ -212,24 +212,6 @@ public class SlActivityProduct implements Serializable {
      */
     public void setActivityId(String activityId) {
         this.activityId = activityId == null ? null : activityId.trim();
-    }
-
-    /**
-     * 获取（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
-     *
-     * @return sharing_rewards_id - （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
-     */
-    public String getSharingRewardsId() {
-        return sharingRewardsId;
-    }
-
-    /**
-     * 设置（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
-     *
-     * @param sharingRewardsId （分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
-     */
-    public void setSharingRewardsId(String sharingRewardsId) {
-        this.sharingRewardsId = sharingRewardsId == null ? null : sharingRewardsId.trim();
     }
 
     /**
@@ -305,24 +287,6 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取参考豆子
-     *
-     * @return reference_peas - 参考豆子
-     */
-    public Integer getReferencePeas() {
-        return referencePeas;
-    }
-
-    /**
-     * 设置参考豆子
-     *
-     * @param referencePeas 参考豆子
-     */
-    public void setReferencePeas(Integer referencePeas) {
-        this.referencePeas = referencePeas;
-    }
-
-    /**
      * 获取个人价格(拼团使用)
      *
      * @return personal_price - 个人价格(拼团使用)
@@ -341,36 +305,36 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取活动开始时间(必须设置开始时间)
+     * 获取活动开始时间(无活动除外，必须设置开始时间)
      *
-     * @return begin_time - 活动开始时间(必须设置开始时间)
+     * @return begin_time - 活动开始时间(无活动除外，必须设置开始时间)
      */
     public String getBeginTime() {
         return beginTime;
     }
 
     /**
-     * 设置活动开始时间(必须设置开始时间)
+     * 设置活动开始时间(无活动除外，必须设置开始时间)
      *
-     * @param beginTime 活动开始时间(必须设置开始时间)
+     * @param beginTime 活动开始时间(无活动除外，必须设置开始时间)
      */
     public void setBeginTime(String beginTime) {
         this.beginTime = beginTime == null ? null : beginTime.trim();
     }
 
     /**
-     * 获取活动结束时间(必须设置结束时间)
+     * 获取活动结束时间(无活动除外，必须设置开始时间)
      *
-     * @return end_time - 活动结束时间(必须设置结束时间)
+     * @return end_time - 活动结束时间(无活动除外，必须设置开始时间)
      */
     public String getEndTime() {
         return endTime;
     }
 
     /**
-     * 设置活动结束时间(必须设置结束时间)
+     * 设置活动结束时间(无活动除外，必须设置开始时间)
      *
-     * @param endTime 活动结束时间(必须设置结束时间)
+     * @param endTime 活动结束时间(无活动除外，必须设置开始时间)
      */
     public void setEndTime(String endTime) {
         this.endTime = endTime == null ? null : endTime.trim();
@@ -413,18 +377,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取已拼单人数
+     * 获取已拼单人数（按下单人数计算）
      *
-     * @return orders_num - 已拼单人数
+     * @return orders_num - 已拼单人数（按下单人数计算）
      */
     public Integer getOrdersNum() {
         return ordersNum;
     }
 
     /**
-     * 设置已拼单人数
+     * 设置已拼单人数（按下单人数计算）
      *
-     * @param ordersNum 已拼单人数
+     * @param ordersNum 已拼单人数（按下单人数计算）
      */
     public void setOrdersNum(Integer ordersNum) {
         this.ordersNum = ordersNum;
@@ -449,36 +413,36 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
+     * 获取奖励金豆数量(只限新人专享10%，列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @return award_peas_counts - 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
+     * @return award_peas_counts - 奖励金豆数量(只限新人专享10%，列表展示奖励数量:取该商品规格奖励最多的)
      */
     public Double getAwardPeasCounts() {
         return awardPeasCounts;
     }
 
     /**
-     * 设置奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
+     * 设置奖励金豆数量(只限新人专享10%，列表展示奖励数量:取该商品规格奖励最多的)
      *
-     * @param awardPeasCounts 奖励金豆数量(列表展示奖励数量:取该商品规格奖励最多的)
+     * @param awardPeasCounts 奖励金豆数量(只限新人专享10%，列表展示奖励数量:取该商品规格奖励最多的)
      */
     public void setAwardPeasCounts(Double awardPeasCounts) {
         this.awardPeasCounts = awardPeasCounts;
     }
 
     /**
-     * 获取奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
+     * 获取奖励金额(只限分享奖励，商家自定义让利金额，后台设定)
      *
-     * @return awward_money - 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
+     * @return awward_money - 奖励金额(只限分享奖励，商家自定义让利金额，后台设定)
      */
     public Double getAwwardMoney() {
         return awwardMoney;
     }
 
     /**
-     * 设置奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
+     * 设置奖励金额(只限分享奖励，商家自定义让利金额，后台设定)
      *
-     * @param awwardMoney 奖励金额(用于分享奖励，返现金额，列表展示奖励数量:取该商品规格奖励最多的)
+     * @param awwardMoney 奖励金额(只限分享奖励，商家自定义让利金额，后台设定)
      */
     public void setAwwardMoney(Double awwardMoney) {
         this.awwardMoney = awwardMoney;
@@ -521,18 +485,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取该活动商品限制单数
+     * 获取该活动商品限制数量
      *
-     * @return restrict_count - 该活动商品限制单数
+     * @return restrict_count - 该活动商品限制数量
      */
     public Integer getRestrictCount() {
         return restrictCount;
     }
 
     /**
-     * 设置该活动商品限制单数
+     * 设置该活动商品限制数量
      *
-     * @param restrictCount 该活动商品限制单数
+     * @param restrictCount 该活动商品限制数量
      */
     public void setRestrictCount(Integer restrictCount) {
         this.restrictCount = restrictCount;
@@ -557,60 +521,6 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取列表展示返现money(显示规格最高的)
-     *
-     * @return return_money - 列表展示返现money(显示规格最高的)
-     */
-    public BigDecimal getReturnMoney() {
-        return returnMoney;
-    }
-
-    /**
-     * 设置列表展示返现money(显示规格最高的)
-     *
-     * @param returnMoney 列表展示返现money(显示规格最高的)
-     */
-    public void setReturnMoney(BigDecimal returnMoney) {
-        this.returnMoney = returnMoney;
-    }
-
-    /**
-     * 获取列表展示返豆数量(显示规格最多的)
-     *
-     * @return return_peas - 列表展示返豆数量(显示规格最多的)
-     */
-    public Integer getReturnPeas() {
-        return returnPeas;
-    }
-
-    /**
-     * 设置列表展示返豆数量(显示规格最多的)
-     *
-     * @param returnPeas 列表展示返豆数量(显示规格最多的)
-     */
-    public void setReturnPeas(Integer returnPeas) {
-        this.returnPeas = returnPeas;
-    }
-
-    /**
-     * 获取商家奖励额度
-     *
-     * @return reward_value - 商家奖励额度
-     */
-    public Double getRewardValue() {
-        return rewardValue;
-    }
-
-    /**
-     * 设置商家奖励额度
-     *
-     * @param rewardValue 商家奖励额度
-     */
-    public void setRewardValue(Double rewardValue) {
-        this.rewardValue = rewardValue;
-    }
-
-    /**
      * 获取是否启用(1:启用 0;下架)
      *
      * @return enabled - 是否启用(1:启用 0;下架)
@@ -628,6 +538,96 @@ public class SlActivityProduct implements Serializable {
         this.enabled = enabled;
     }
 
+    /**
+     * 获取参考豆子（暂未使用）
+     *
+     * @return reference_peas - 参考豆子（暂未使用）
+     */
+    public Integer getReferencePeas() {
+        return referencePeas;
+    }
+
+    /**
+     * 设置参考豆子（暂未使用）
+     *
+     * @param referencePeas 参考豆子（暂未使用）
+     */
+    public void setReferencePeas(Integer referencePeas) {
+        this.referencePeas = referencePeas;
+    }
+
+    /**
+     * 获取（暂未使用）商家奖励额度
+     *
+     * @return reward_value - （暂未使用）商家奖励额度
+     */
+    public Double getRewardValue() {
+        return rewardValue;
+    }
+
+    /**
+     * 设置（暂未使用）商家奖励额度
+     *
+     * @param rewardValue （暂未使用）商家奖励额度
+     */
+    public void setRewardValue(Double rewardValue) {
+        this.rewardValue = rewardValue;
+    }
+
+    /**
+     * 获取（暂未使用）列表展示返现money(显示规格最高的)
+     *
+     * @return return_money - （暂未使用）列表展示返现money(显示规格最高的)
+     */
+    public BigDecimal getReturnMoney() {
+        return returnMoney;
+    }
+
+    /**
+     * 设置（暂未使用）列表展示返现money(显示规格最高的)
+     *
+     * @param returnMoney （暂未使用）列表展示返现money(显示规格最高的)
+     */
+    public void setReturnMoney(BigDecimal returnMoney) {
+        this.returnMoney = returnMoney;
+    }
+
+    /**
+     * 获取（暂未使用）列表展示返豆数量(显示规格最多的)
+     *
+     * @return return_peas - （暂未使用）列表展示返豆数量(显示规格最多的)
+     */
+    public Integer getReturnPeas() {
+        return returnPeas;
+    }
+
+    /**
+     * 设置（暂未使用）列表展示返豆数量(显示规格最多的)
+     *
+     * @param returnPeas （暂未使用）列表展示返豆数量(显示规格最多的)
+     */
+    public void setReturnPeas(Integer returnPeas) {
+        this.returnPeas = returnPeas;
+    }
+
+    /**
+     * 获取（不使用）（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     *
+     * @return sharing_rewards_id - （不使用）（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    public String getSharingRewardsId() {
+        return sharingRewardsId;
+    }
+
+    /**
+     * 设置（不使用）（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     *
+     * @param sharingRewardsId （不使用）（分享奖励活动和其他活动可以共存）是否存在分享奖励的id，若存在，则说明该商品参加分享奖励，不存在，即不参加分享奖励
+     */
+    public void setSharingRewardsId(String sharingRewardsId) {
+        this.sharingRewardsId = sharingRewardsId == null ? null : sharingRewardsId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -637,12 +637,10 @@ public class SlActivityProduct implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
         sb.append(", activityId=").append(activityId);
-        sb.append(", sharingRewardsId=").append(sharingRewardsId);
         sb.append(", activityProductRepositorySerialNumber=").append(activityProductRepositorySerialNumber);
         sb.append(", price=").append(price);
         sb.append(", referencePrice=").append(referencePrice);
         sb.append(", peas=").append(peas);
-        sb.append(", referencePeas=").append(referencePeas);
         sb.append(", personalPrice=").append(personalPrice);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
@@ -656,10 +654,12 @@ public class SlActivityProduct implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", restrictCount=").append(restrictCount);
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
+        sb.append(", enabled=").append(enabled);
+        sb.append(", referencePeas=").append(referencePeas);
+        sb.append(", rewardValue=").append(rewardValue);
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", returnPeas=").append(returnPeas);
-        sb.append(", rewardValue=").append(rewardValue);
-        sb.append(", enabled=").append(enabled);
+        sb.append(", sharingRewardsId=").append(sharingRewardsId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

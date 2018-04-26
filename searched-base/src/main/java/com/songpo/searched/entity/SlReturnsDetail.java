@@ -55,6 +55,12 @@ public class SlReturnsDetail implements Serializable {
     @Column(name = "order_id")
     private String orderId;
 
+    /**
+     * 是否确认收货(true:确认 false:否)
+     */
+    @Column(name = "confirm_receipt")
+    private Boolean confirmReceipt;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -201,6 +207,24 @@ public class SlReturnsDetail implements Serializable {
         this.orderId = orderId == null ? null : orderId.trim();
     }
 
+    /**
+     * 获取是否确认收货(true:确认 false:否)
+     *
+     * @return confirm_receipt - 是否确认收货(true:确认 false:否)
+     */
+    public Boolean getConfirmReceipt() {
+        return confirmReceipt;
+    }
+
+    /**
+     * 设置是否确认收货(true:确认 false:否)
+     *
+     * @param confirmReceipt 是否确认收货(true:确认 false:否)
+     */
+    public void setConfirmReceipt(Boolean confirmReceipt) {
+        this.confirmReceipt = confirmReceipt;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -215,6 +239,7 @@ public class SlReturnsDetail implements Serializable {
         sb.append(", returnTime=").append(returnTime);
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", orderId=").append(orderId);
+        sb.append(", confirmReceipt=").append(confirmReceipt);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

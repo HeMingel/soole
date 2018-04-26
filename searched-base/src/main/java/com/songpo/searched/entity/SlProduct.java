@@ -18,11 +18,6 @@ public class SlProduct implements Serializable {
     private String name;
 
     /**
-     * 备注
-     */
-    private String remark;
-
-    /**
      * 图片
      */
     @Column(name = "image_url")
@@ -32,11 +27,6 @@ public class SlProduct implements Serializable {
      * 简介
      */
     private String introduction;
-
-    /**
-     * 详情
-     */
-    private String detail;
 
     /**
      * 商品类别
@@ -91,14 +81,24 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
-     * 关键词
+     * 关键词（暂未使用）
      */
     private String antistop;
 
     /**
-     * 商品审核未通过原因
+     * 商品审核未通过原因（暂未使用）
      */
     private String reason;
+
+    /**
+     * 备注(暂时未用)
+     */
+    private String remark;
+
+    /**
+     * 详情（暂时未用）
+     */
+    private String detail;
 
     private static final long serialVersionUID = 1L;
 
@@ -139,24 +139,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取备注
-     *
-     * @return remark - 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置备注
-     *
-     * @param remark 备注
-     */
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
      * 获取图片
      *
      * @return image_url - 图片
@@ -190,24 +172,6 @@ public class SlProduct implements Serializable {
      */
     public void setIntroduction(String introduction) {
         this.introduction = introduction == null ? null : introduction.trim();
-    }
-
-    /**
-     * 获取详情
-     *
-     * @return detail - 详情
-     */
-    public String getDetail() {
-        return detail;
-    }
-
-    /**
-     * 设置详情
-     *
-     * @param detail 详情
-     */
-    public void setDetail(String detail) {
-        this.detail = detail == null ? null : detail.trim();
     }
 
     /**
@@ -373,39 +337,75 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取关键词
+     * 获取关键词（暂未使用）
      *
-     * @return antistop - 关键词
+     * @return antistop - 关键词（暂未使用）
      */
     public String getAntistop() {
         return antistop;
     }
 
     /**
-     * 设置关键词
+     * 设置关键词（暂未使用）
      *
-     * @param antistop 关键词
+     * @param antistop 关键词（暂未使用）
      */
     public void setAntistop(String antistop) {
         this.antistop = antistop == null ? null : antistop.trim();
     }
 
     /**
-     * 获取商品审核未通过原因
+     * 获取商品审核未通过原因（暂未使用）
      *
-     * @return reason - 商品审核未通过原因
+     * @return reason - 商品审核未通过原因（暂未使用）
      */
     public String getReason() {
         return reason;
     }
 
     /**
-     * 设置商品审核未通过原因
+     * 设置商品审核未通过原因（暂未使用）
      *
-     * @param reason 商品审核未通过原因
+     * @param reason 商品审核未通过原因（暂未使用）
      */
     public void setReason(String reason) {
         this.reason = reason == null ? null : reason.trim();
+    }
+
+    /**
+     * 获取备注(暂时未用)
+     *
+     * @return remark - 备注(暂时未用)
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置备注(暂时未用)
+     *
+     * @param remark 备注(暂时未用)
+     */
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    /**
+     * 获取详情（暂时未用）
+     *
+     * @return detail - 详情（暂时未用）
+     */
+    public String getDetail() {
+        return detail;
+    }
+
+    /**
+     * 设置详情（暂时未用）
+     *
+     * @param detail 详情（暂时未用）
+     */
+    public void setDetail(String detail) {
+        this.detail = detail == null ? null : detail.trim();
     }
 
     @Override
@@ -416,10 +416,8 @@ public class SlProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", remark=").append(remark);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", introduction=").append(introduction);
-        sb.append(", detail=").append(detail);
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
@@ -431,6 +429,8 @@ public class SlProduct implements Serializable {
         sb.append(", soldOut=").append(soldOut);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);
+        sb.append(", remark=").append(remark);
+        sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
