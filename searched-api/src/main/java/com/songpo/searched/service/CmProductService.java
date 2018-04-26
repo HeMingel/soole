@@ -318,6 +318,20 @@ public class CmProductService {
                         data.put("isCollection",false);
                     }
                 }
+                //查询商品规格
+                //STEP1:商品活动
+                List<Map<String, Object>> goodsActivityList = this.mapper.goodsActivityList(goodsId, activityId);
+                List<Object> goodsRepositoryList = new ArrayList<>();
+                if (goodsActivityList.size() > 0) {
+                    for (int i = 0; i < goodsActivityList.size(); i++) {
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                        goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
+                        goodsRepositoryList.add(goodsRepository);
+                    }
+                    businessMessage.setData(goodsRepositoryList);
+                    data.put("goodsRepositoryList",goodsRepositoryList);
+
+                }
 
                 businessMessage.setMsg("查询完毕");
                 businessMessage.setSuccess(true);
@@ -385,6 +399,7 @@ public class CmProductService {
             if (goodsActivityList.size() > 0) {
                 for (int i = 0; i < goodsActivityList.size(); i++) {
                     Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                    goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
                     goodsRepositoryList.add(goodsRepository);
                 }
                 businessMessage.setSuccess(true);
