@@ -67,6 +67,7 @@
         so.total_amount totalAmount,
         so.deduct_total_pulse totalPulse,
         so.serial_number orderNum,
+        so.type type,
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
         ifnull(so.payment_channel,0) paymentChannel,
