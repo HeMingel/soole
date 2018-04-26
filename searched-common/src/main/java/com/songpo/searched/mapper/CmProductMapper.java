@@ -64,7 +64,7 @@ public interface CmProductMapper{
 
     /**
      * 分类查询商品 + 商品的筛选 + 根据名称查询
-     * @param goodsType 商品分类
+     * @param goodsTypeId 商品分类
      * @param screenGoods 筛选条件
      * @param saleMode 销售模式
      * @param goodsName 商品名称

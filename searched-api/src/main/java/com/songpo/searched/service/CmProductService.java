@@ -454,58 +454,7 @@ public class CmProductService {
         return businessMessage;
     }
 
-    /**
-     * 根据名称查询店铺商品
-     *
-     * @param shopId    店铺Id
-     * @param goodsName 商品名称
-     * @return 商品列表
-     */
-    public BusinessMessage shopGoods(String shopId, String goodsName,String sortBySale,String sortByPrice,Integer pageNum,Integer pageSize) {
-        log.debug("店铺id:{},商品名称:{},销量排序:{},价格排序:{}", shopId,goodsName,sortBySale,sortByPrice);
-        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
-        businessMessage.setSuccess(false);
-        try {
 
-            if (null == pageNum || pageNum <= 1) {
-                pageNum = 1;
-            }
-
-            if (null == pageSize || pageSize <= 1) {
-                pageSize = 10;
-            }
-
-            // 排序规则字符串
-            String[] orderStrArray = new String[]{"DESC", "desc", "ASC", "asc"};
-
-            // 过滤价格排序规则中的非法字符
-            if (!StringUtils.containsAny(sortByPrice, orderStrArray)) {
-                sortByPrice = StringUtils.trimToEmpty(sortByPrice);
-            }
-
-            //过滤销售数量排序中的非法字符
-            if(!StringUtils.containsAny(sortBySale, orderStrArray)){
-                sortBySale = StringUtils.trimToEmpty(sortBySale);
-            }
-            goodsName = '%'+goodsName+'%';
-            // 设置分页参数
-            PageHelper.startPage(pageNum, pageSize);
-            //执行查询
-            List<Map<String,Object>> goodsList = this.mapper.selectShopGoods(shopId,goodsName,sortBySale,sortByPrice);
-            if (goodsList.size() >0){
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询成功");
-                businessMessage.setData(goodsList);
-            }else {
-                businessMessage.setSuccess(true);
-                businessMessage.setMsg("查询无数据");
-            }
-        } catch (Exception e) {
-            log.error("查询店铺商品异常", e);
-            businessMessage.setMsg("查询店铺商品异常");
-        }
-        return businessMessage;
-    }
 
     /**
      * 处理秒杀商品限时结束事件

@@ -31,7 +31,7 @@
                 <if test="salesModeId != '' and salesModeId != null">
                     AND p.sales_mode_id = #{salesModeId}
                 </if>
-                <if test="activityId != '' and activityId != null and activityId != '65C872C3-9B52-6150-60E5-679A9242AC79' ">
+                <if test="activityId != '' and activityId != null ">
                     and ap.activity_id = #{activityId}
                 </if>
                 <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==2 ">
@@ -40,9 +40,7 @@
                 <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==1 ">
                     and pt.parentId = #{goodsTypeId}
                 </if>
-                <if test="activityId =='65C872C3-9B52-6150-60E5-679A9242AC79' ">
-                    and ap.sharing_rewards_id != ''
-                </if>
+
                 <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
                 <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
                     AND s.longitude BETWEEN #{longitudeMin} - 10 AND #{longitudeMax}
@@ -139,7 +137,12 @@
     <!--查询拼团商品发起人的头像-->
     <select id="selectGroupAvatar" resultType="Map" parameterType="String">
         SELECT
-          *
+            COUNT(*) AS already_group,
+            od.group_people AS need_group,
+            (COUNT(*) - od.group_people) AS shengyu_group,
+            u.`id` AS user_id,
+            u.avatar,
+            o.serial_number
         FROM
           sl_order_detail od
           LEFT JOIN sl_order o
@@ -148,7 +151,8 @@
             ON u.id = o.user_id
         WHERE o.payment_state = '1'
           AND od.product_id = #{goodsId}
-        GROUP BY od.product_id
+          and o.spell_group_status =1
+        GROUP BY o.serial_number
         ORDER BY o.pay_time DESC
         LIMIT 3
     </select>
@@ -203,10 +207,11 @@
           sl_product_image
         WHERE product_id = #{goodsId}
     </select>
-    <!--商品活动库存列表-->
+    <!--商品活动库存列表 restrict_count限购数量-->
     <select id="goodsActivityList" parameterType="String" resultType="Map">
         SELECT
-          apr.*
+          apr.*,
+          ap.restrict_count
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
@@ -317,7 +322,7 @@
         p.introduction,
         p.remark,
         p.image_url,
-          ap.*
+        ap.*
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
@@ -333,7 +338,15 @@
     <!--店铺商品查询排序-->
     <select id="selectShopGoods" resultType="Map">
         SELECT
-          *
+        p.id as goods_id,
+        p.sales_mode_id,
+        p.name,
+        p.comment_num,
+        p.sales_volume,
+        p.introduction,
+        p.remark,
+        p.image_url,
+        ap.*
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
