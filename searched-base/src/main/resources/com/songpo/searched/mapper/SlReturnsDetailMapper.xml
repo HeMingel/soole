@@ -13,12 +13,13 @@
     <result column="return_time" jdbcType="VARCHAR" property="returnTime" />
     <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="confirm_receipt" jdbcType="BIT" property="confirmReceipt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, presell_returned_record_id, user_id, returned_status, create_time, return_time, 
-    return_money, order_id
+    return_money, order_id, confirm_receipt
   </sql>
 </mapper>

@@ -4,10 +4,8 @@ import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
-import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.entity.SlProductRepository;
-import com.songpo.searched.entity.SlShop;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.SlActivityProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +25,8 @@ public class ShoppingCartService {
     private ShopService shopService;
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private SlActivityProductMapper activityProductMapper;
 
     /**
      * 新增购物车
@@ -65,10 +65,10 @@ public class ShoppingCartService {
     /**
      * 删除 list中的某个value
      *
-     * @param repositoryId
+     * @param repositoryIds
      * @return
      */
-    public BusinessMessage deleteMyShoppingCart(String repositoryId) {
+    public BusinessMessage deleteMyShoppingCart(String[] repositoryIds) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -76,12 +76,14 @@ public class ShoppingCartService {
             if (null != pojo) {
                 for (int i = 0; i < pojo.getCarts().size(); i++) {
                     //如果传过来的repositoryId == list中的某个repositoryId
-                    if (repositoryId.equals(pojo.getCarts().get(i).getRepositoryId())) {
-                        //就把这条list删除
-                        pojo.getCarts().remove(i);
+                    for (String repositoryId : repositoryIds) {
+                        if (repositoryId.equals(pojo.getCarts().get(i).getRepositoryId())) {
+                            //就把这条list删除
+                            pojo.getCarts().remove(i);
+                        }
+                        //把删除后的list重新覆盖
+                        this.cache.put(user.getId(), pojo);
                     }
-                    //把删除后的list重新覆盖
-                    this.cache.put(user.getId(), pojo);
                 }
                 message.setMsg("删除成功");
                 message.setSuccess(true);
@@ -117,6 +119,10 @@ public class ShoppingCartService {
                             setId(repository.getProductId());
                             setSoldOut(true);
                         }});
+                        SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                            setProductId(slProduct.getId());
+                            setActivityId(sc.getActivityId());
+                        }});
                         if (null != slProduct) {
                             cmGoods = new CMGoods();
                             SlShop slShop = this.shopService.selectOne(new SlShop() {{
@@ -137,6 +143,7 @@ public class ShoppingCartService {
                             cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
                             cmGoods.setShopId(sc.getShopId());// 店铺id
                             cmGoods.setShopName(slShop.getName());// 店铺名称
+                            cmGoods.setRestrictCount(activityProduct.getRestrictCount());//限制购买数量
                             goodsList.add(cmGoods);
                             cart.setShopId(slShop.getId());
                             cart.setShopName(slShop.getName());
@@ -163,11 +170,10 @@ public class ShoppingCartService {
      * 修改购物车商品信息
      *
      * @param agoRepositoryId
-     * @param repositoryId
      * @param counts
      * @return
      */
-    public BusinessMessage editShoppingCarts(String agoRepositoryId, String repositoryId, Integer counts) {
+    public BusinessMessage editShoppingCarts(String agoRepositoryId, Integer counts) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -179,13 +185,14 @@ public class ShoppingCartService {
                         if (counts != null && counts > 0) {
                             goods.setCounts(counts);
                         }
-                        if (!StringUtils.isEmpty(repositoryId)) {
-                            goods.setRepositoryId(repositoryId);
-                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                setId(repositoryId);
-                            }});
-                            goods.setGoodId(repository.getProductId());
-                        }
+                        // 修改规格
+//                        if (!StringUtils.isEmpty(repositoryId)) {
+//                            goods.setRepositoryId(repositoryId);
+//                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+//                                setId(repositoryId);
+//                            }});
+//                            goods.setGoodId(repository.getProductId());
+//                        }
                     }
                     goodsList.add(goods);
                 }

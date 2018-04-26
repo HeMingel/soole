@@ -1,6 +1,50 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+        mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://jitpack.io/" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.cuisongliu.plugin:mybatis-generator:0.9.6"
+
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion"
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: "kotlin-noarg"
+
+repositories {
+    mavenLocal()
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
+    mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://jitpack.io/" }
+}
+
+sourceSets {
+    main.java.srcDirs += 'src'
+}
 
 dependencies {
+
+    // Kotlin编译插件
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}")
 
     // 依赖基础工程
     compile project(':searched-base')
@@ -42,6 +86,13 @@ dependencies {
     // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
     compile group: 'com.alipay.sdk', name: 'alipay-sdk-java', version: '3.0.0'
 
+    // 二维码组件
+    // https://mvnrepository.com/artifact/com.google.zxing/core
+    compile group: 'com.google.zxing', name: 'core', version: '3.3.2'
+
+    // https://mvnrepository.com/artifact/net.coobird/thumbnailator
+    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+
     // 日志
     compile "io.github.microutils:kotlin-logging:${kotlinLoggingVersion}"
 
@@ -51,6 +102,15 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
     }
 
+    // JDK10 支持
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.0'
+    // https://mvnrepository.com/artifact/javax.activation/activation
+    compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+
     // 正式打包时，请移除该注释
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
@@ -59,6 +119,19 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
 }
 
 // 指定工程编码格式

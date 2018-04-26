@@ -70,7 +70,16 @@
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
         ifnull(so.payment_channel,0) paymentChannel,
-        su.username owner
+        su.username owner,
+        ss.id shopId,
+        ss.name shopName,
+        sod.product_name productName,
+        sod.product_id productId,
+        sod.price price,
+        sod.quantity quantity,
+        sod.product_image_url productImageUrl,
+        ss.image_url shopImageUrl,
+        sod.post_fee postFee
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
@@ -152,5 +161,25 @@
          from sl_user su
         left join sl_shop ss on ss.owner_id = su.id
         where ss.id = #{shopId}
+    </select>
+
+    <select id="selectReturnsDetail" resultType="com.songpo.searched.entity.SlReturnsDetail">
+        select
+        srd.id id,
+        srd.returned_status returnedStatus,
+        srd.create_time createTime,
+        srd.order_id orderId,
+        srd.presell_returned_record_id presellReturnedRecord_id,
+        srd.return_money returnMoney,
+        srd.return_time returnTime,
+        srd.user_id userId
+        from sl_returns_detail srd
+        WHERE srd.`user_id` = #{userId}
+        and srd.`confirm_receipt` = #{b}
+        <if test="status != null">
+            and srd.returned_status = #{status}
+        </if>
+        GROUP BY srd.`order_id`
+        order by srd.`return_time` ASC
     </select>
 </mapper>

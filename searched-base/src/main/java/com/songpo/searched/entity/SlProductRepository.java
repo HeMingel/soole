@@ -32,33 +32,10 @@ public class SlProductRepository implements Serializable {
     private String productName;
 
     /**
-     * 规格明细图片
-     */
-    @Column(name = "product_image_url")
-    private String productImageUrl;
-
-    /**
      * 商品规格名称
      */
     @Column(name = "product_detail_group_name")
     private String productDetailGroupName;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 利润比例
-     */
-    @Column(name = "product_profit_ratio")
-    private Float productProfitRatio;
-
-    /**
-     * 商品利润金额
-     */
-    @Column(name = "product_profit_money")
-    private BigDecimal productProfitMoney;
 
     /**
      * 实际规格价格
@@ -90,36 +67,9 @@ public class SlProductRepository implements Serializable {
     private BigDecimal postFee;
 
     /**
-     * 折扣
-     */
-    private BigDecimal discount;
-
-    /**
-     * 参考价格
-     */
-    @Column(name = "reference_price")
-    private BigDecimal referencePrice;
-
-    /**
-     * 状态
-     */
-    private Integer state;
-
-    /**
      * 库存数量
      */
     private Integer count;
-
-    /**
-     * 评分
-     */
-    private BigDecimal score;
-
-    /**
-     * 成本价格
-     */
-    @Column(name = "cost_price")
-    private BigDecimal costPrice;
 
     /**
      * 重量
@@ -132,17 +82,12 @@ public class SlProductRepository implements Serializable {
     private Boolean ship;
 
     /**
-     * 金币
-     */
-    private Integer gold;
-
-    /**
-     * 银币(暂时先消费银币不足时扣除金币)
+     * 了豆价格(暂时先消费银币不足时扣除金币)
      */
     private Integer silver;
 
     /**
-     * 下单获得了豆数量(纯金钱的商品都会返)
+     * 下单获得了豆数量(返商品现金价格的16%)
      */
     @Column(name = "place_order_return_pulse")
     private Integer placeOrderReturnPulse;
@@ -170,6 +115,61 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "people_num")
     private Integer peopleNum;
+
+    /**
+     * （暂未使用）金币
+     */
+    private Integer gold;
+
+    /**
+     * （暂未使用）成本价格
+     */
+    @Column(name = "cost_price")
+    private BigDecimal costPrice;
+
+    /**
+     * （暂未使用）评分
+     */
+    private BigDecimal score;
+
+    /**
+     * （暂未使用）状态
+     */
+    private Integer state;
+
+    /**
+     * （暂未使用）参考价格
+     */
+    @Column(name = "reference_price")
+    private BigDecimal referencePrice;
+
+    /**
+     * （暂未使用）折扣
+     */
+    private BigDecimal discount;
+
+    /**
+     * （暂未使用）商品利润金额
+     */
+    @Column(name = "product_profit_money")
+    private BigDecimal productProfitMoney;
+
+    /**
+     * （暂未使用）利润比例
+     */
+    @Column(name = "product_profit_ratio")
+    private Float productProfitRatio;
+
+    /**
+     * （暂未使用）备注
+     */
+    private String remark;
+
+    /**
+     * （暂未使用）规格明细图片
+     */
+    @Column(name = "product_image_url")
+    private String productImageUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -246,24 +246,6 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取规格明细图片
-     *
-     * @return product_image_url - 规格明细图片
-     */
-    public String getProductImageUrl() {
-        return productImageUrl;
-    }
-
-    /**
-     * 设置规格明细图片
-     *
-     * @param productImageUrl 规格明细图片
-     */
-    public void setProductImageUrl(String productImageUrl) {
-        this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
-    }
-
-    /**
      * 获取商品规格名称
      *
      * @return product_detail_group_name - 商品规格名称
@@ -279,60 +261,6 @@ public class SlProductRepository implements Serializable {
      */
     public void setProductDetailGroupName(String productDetailGroupName) {
         this.productDetailGroupName = productDetailGroupName == null ? null : productDetailGroupName.trim();
-    }
-
-    /**
-     * 获取备注
-     *
-     * @return remark - 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置备注
-     *
-     * @param remark 备注
-     */
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取利润比例
-     *
-     * @return product_profit_ratio - 利润比例
-     */
-    public Float getProductProfitRatio() {
-        return productProfitRatio;
-    }
-
-    /**
-     * 设置利润比例
-     *
-     * @param productProfitRatio 利润比例
-     */
-    public void setProductProfitRatio(Float productProfitRatio) {
-        this.productProfitRatio = productProfitRatio;
-    }
-
-    /**
-     * 获取商品利润金额
-     *
-     * @return product_profit_money - 商品利润金额
-     */
-    public BigDecimal getProductProfitMoney() {
-        return productProfitMoney;
-    }
-
-    /**
-     * 设置商品利润金额
-     *
-     * @param productProfitMoney 商品利润金额
-     */
-    public void setProductProfitMoney(BigDecimal productProfitMoney) {
-        this.productProfitMoney = productProfitMoney;
     }
 
     /**
@@ -426,60 +354,6 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取折扣
-     *
-     * @return discount - 折扣
-     */
-    public BigDecimal getDiscount() {
-        return discount;
-    }
-
-    /**
-     * 设置折扣
-     *
-     * @param discount 折扣
-     */
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
-
-    /**
-     * 获取参考价格
-     *
-     * @return reference_price - 参考价格
-     */
-    public BigDecimal getReferencePrice() {
-        return referencePrice;
-    }
-
-    /**
-     * 设置参考价格
-     *
-     * @param referencePrice 参考价格
-     */
-    public void setReferencePrice(BigDecimal referencePrice) {
-        this.referencePrice = referencePrice;
-    }
-
-    /**
-     * 获取状态
-     *
-     * @return state - 状态
-     */
-    public Integer getState() {
-        return state;
-    }
-
-    /**
-     * 设置状态
-     *
-     * @param state 状态
-     */
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    /**
      * 获取库存数量
      *
      * @return count - 库存数量
@@ -495,42 +369,6 @@ public class SlProductRepository implements Serializable {
      */
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    /**
-     * 获取评分
-     *
-     * @return score - 评分
-     */
-    public BigDecimal getScore() {
-        return score;
-    }
-
-    /**
-     * 设置评分
-     *
-     * @param score 评分
-     */
-    public void setScore(BigDecimal score) {
-        this.score = score;
-    }
-
-    /**
-     * 获取成本价格
-     *
-     * @return cost_price - 成本价格
-     */
-    public BigDecimal getCostPrice() {
-        return costPrice;
-    }
-
-    /**
-     * 设置成本价格
-     *
-     * @param costPrice 成本价格
-     */
-    public void setCostPrice(BigDecimal costPrice) {
-        this.costPrice = costPrice;
     }
 
     /**
@@ -570,54 +408,36 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取金币
+     * 获取了豆价格(暂时先消费银币不足时扣除金币)
      *
-     * @return gold - 金币
-     */
-    public Integer getGold() {
-        return gold;
-    }
-
-    /**
-     * 设置金币
-     *
-     * @param gold 金币
-     */
-    public void setGold(Integer gold) {
-        this.gold = gold;
-    }
-
-    /**
-     * 获取银币(暂时先消费银币不足时扣除金币)
-     *
-     * @return silver - 银币(暂时先消费银币不足时扣除金币)
+     * @return silver - 了豆价格(暂时先消费银币不足时扣除金币)
      */
     public Integer getSilver() {
         return silver;
     }
 
     /**
-     * 设置银币(暂时先消费银币不足时扣除金币)
+     * 设置了豆价格(暂时先消费银币不足时扣除金币)
      *
-     * @param silver 银币(暂时先消费银币不足时扣除金币)
+     * @param silver 了豆价格(暂时先消费银币不足时扣除金币)
      */
     public void setSilver(Integer silver) {
         this.silver = silver;
     }
 
     /**
-     * 获取下单获得了豆数量(纯金钱的商品都会返)
+     * 获取下单获得了豆数量(返商品现金价格的16%)
      *
-     * @return place_order_return_pulse - 下单获得了豆数量(纯金钱的商品都会返)
+     * @return place_order_return_pulse - 下单获得了豆数量(返商品现金价格的16%)
      */
     public Integer getPlaceOrderReturnPulse() {
         return placeOrderReturnPulse;
     }
 
     /**
-     * 设置下单获得了豆数量(纯金钱的商品都会返)
+     * 设置下单获得了豆数量(返商品现金价格的16%)
      *
-     * @param placeOrderReturnPulse 下单获得了豆数量(纯金钱的商品都会返)
+     * @param placeOrderReturnPulse 下单获得了豆数量(返商品现金价格的16%)
      */
     public void setPlaceOrderReturnPulse(Integer placeOrderReturnPulse) {
         this.placeOrderReturnPulse = placeOrderReturnPulse;
@@ -695,6 +515,186 @@ public class SlProductRepository implements Serializable {
         this.peopleNum = peopleNum;
     }
 
+    /**
+     * 获取（暂未使用）金币
+     *
+     * @return gold - （暂未使用）金币
+     */
+    public Integer getGold() {
+        return gold;
+    }
+
+    /**
+     * 设置（暂未使用）金币
+     *
+     * @param gold （暂未使用）金币
+     */
+    public void setGold(Integer gold) {
+        this.gold = gold;
+    }
+
+    /**
+     * 获取（暂未使用）成本价格
+     *
+     * @return cost_price - （暂未使用）成本价格
+     */
+    public BigDecimal getCostPrice() {
+        return costPrice;
+    }
+
+    /**
+     * 设置（暂未使用）成本价格
+     *
+     * @param costPrice （暂未使用）成本价格
+     */
+    public void setCostPrice(BigDecimal costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    /**
+     * 获取（暂未使用）评分
+     *
+     * @return score - （暂未使用）评分
+     */
+    public BigDecimal getScore() {
+        return score;
+    }
+
+    /**
+     * 设置（暂未使用）评分
+     *
+     * @param score （暂未使用）评分
+     */
+    public void setScore(BigDecimal score) {
+        this.score = score;
+    }
+
+    /**
+     * 获取（暂未使用）状态
+     *
+     * @return state - （暂未使用）状态
+     */
+    public Integer getState() {
+        return state;
+    }
+
+    /**
+     * 设置（暂未使用）状态
+     *
+     * @param state （暂未使用）状态
+     */
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    /**
+     * 获取（暂未使用）参考价格
+     *
+     * @return reference_price - （暂未使用）参考价格
+     */
+    public BigDecimal getReferencePrice() {
+        return referencePrice;
+    }
+
+    /**
+     * 设置（暂未使用）参考价格
+     *
+     * @param referencePrice （暂未使用）参考价格
+     */
+    public void setReferencePrice(BigDecimal referencePrice) {
+        this.referencePrice = referencePrice;
+    }
+
+    /**
+     * 获取（暂未使用）折扣
+     *
+     * @return discount - （暂未使用）折扣
+     */
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    /**
+     * 设置（暂未使用）折扣
+     *
+     * @param discount （暂未使用）折扣
+     */
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+
+    /**
+     * 获取（暂未使用）商品利润金额
+     *
+     * @return product_profit_money - （暂未使用）商品利润金额
+     */
+    public BigDecimal getProductProfitMoney() {
+        return productProfitMoney;
+    }
+
+    /**
+     * 设置（暂未使用）商品利润金额
+     *
+     * @param productProfitMoney （暂未使用）商品利润金额
+     */
+    public void setProductProfitMoney(BigDecimal productProfitMoney) {
+        this.productProfitMoney = productProfitMoney;
+    }
+
+    /**
+     * 获取（暂未使用）利润比例
+     *
+     * @return product_profit_ratio - （暂未使用）利润比例
+     */
+    public Float getProductProfitRatio() {
+        return productProfitRatio;
+    }
+
+    /**
+     * 设置（暂未使用）利润比例
+     *
+     * @param productProfitRatio （暂未使用）利润比例
+     */
+    public void setProductProfitRatio(Float productProfitRatio) {
+        this.productProfitRatio = productProfitRatio;
+    }
+
+    /**
+     * 获取（暂未使用）备注
+     *
+     * @return remark - （暂未使用）备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置（暂未使用）备注
+     *
+     * @param remark （暂未使用）备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    /**
+     * 获取（暂未使用）规格明细图片
+     *
+     * @return product_image_url - （暂未使用）规格明细图片
+     */
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    /**
+     * 设置（暂未使用）规格明细图片
+     *
+     * @param productImageUrl （暂未使用）规格明细图片
+     */
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl == null ? null : productImageUrl.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -705,31 +705,31 @@ public class SlProductRepository implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", productId=").append(productId);
         sb.append(", productName=").append(productName);
-        sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
-        sb.append(", remark=").append(remark);
-        sb.append(", productProfitRatio=").append(productProfitRatio);
-        sb.append(", productProfitMoney=").append(productProfitMoney);
         sb.append(", price=").append(price);
         sb.append(", personalPrice=").append(personalPrice);
         sb.append(", returnCashRatio=").append(returnCashRatio);
         sb.append(", returnCashMoney=").append(returnCashMoney);
         sb.append(", postFee=").append(postFee);
-        sb.append(", discount=").append(discount);
-        sb.append(", referencePrice=").append(referencePrice);
-        sb.append(", state=").append(state);
         sb.append(", count=").append(count);
-        sb.append(", score=").append(score);
-        sb.append(", costPrice=").append(costPrice);
         sb.append(", weight=").append(weight);
         sb.append(", ship=").append(ship);
-        sb.append(", gold=").append(gold);
         sb.append(", silver=").append(silver);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
         sb.append(", firstOrderPulse=").append(firstOrderPulse);
         sb.append(", peopleNum=").append(peopleNum);
+        sb.append(", gold=").append(gold);
+        sb.append(", costPrice=").append(costPrice);
+        sb.append(", score=").append(score);
+        sb.append(", state=").append(state);
+        sb.append(", referencePrice=").append(referencePrice);
+        sb.append(", discount=").append(discount);
+        sb.append(", productProfitMoney=").append(productProfitMoney);
+        sb.append(", productProfitRatio=").append(productProfitRatio);
+        sb.append(", remark=").append(remark);
+        sb.append(", productImageUrl=").append(productImageUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

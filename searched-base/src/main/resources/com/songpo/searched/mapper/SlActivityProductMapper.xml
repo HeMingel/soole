@@ -8,12 +8,10 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
-    <result column="sharing_rewards_id" jdbcType="VARCHAR" property="sharingRewardsId" />
     <result column="activity_product_repository_serial_number" jdbcType="VARCHAR" property="activityProductRepositorySerialNumber" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="reference_price" jdbcType="DECIMAL" property="referencePrice" />
     <result column="peas" jdbcType="INTEGER" property="peas" />
-    <result column="reference_peas" jdbcType="INTEGER" property="referencePeas" />
     <result column="personal_price" jdbcType="DECIMAL" property="personalPrice" />
     <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
@@ -27,19 +25,20 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="restrict_count" jdbcType="INTEGER" property="restrictCount" />
     <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="reference_peas" jdbcType="INTEGER" property="referencePeas" />
+    <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
     <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
     <result column="return_peas" jdbcType="INTEGER" property="returnPeas" />
-    <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
-    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="sharing_rewards_id" jdbcType="VARCHAR" property="sharingRewardsId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, activity_id, sharing_rewards_id, activity_product_repository_serial_number, 
-    price, reference_price, peas, reference_peas, personal_price, begin_time, end_time, 
-    count, people_num, orders_num, surplus_product_count, award_peas_counts, awward_money, 
-    create_time, creator, restrict_count, presell_shipments_days, return_money, return_peas, 
-    reward_value, enabled
+    id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price, 
+    peas, personal_price, begin_time, end_time, count, people_num, orders_num, surplus_product_count, 
+    award_peas_counts, awward_money, create_time, creator, restrict_count, presell_shipments_days, 
+    enabled, reference_peas, reward_value, return_money, return_peas, sharing_rewards_id
   </sql>
 </mapper>

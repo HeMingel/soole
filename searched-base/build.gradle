@@ -15,8 +15,13 @@ apply plugin: 'java'
 apply plugin: "com.cuisongliu.plugin.mybatis-generator"
 
 repositories {
-    maven { url "https://nexus.xzcysoft.com/repository/maven-public/" }
+    mavenLocal()
+    maven { url 'https://nexus.xzcysoft.com/repository/maven-public/' }
     mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://jitpack.io/" }
 }
 
 dependencies {
@@ -56,9 +61,9 @@ mbg {
     generatorFile = "src/main/resources/generatorConfig.xml"
     jdbc{
         driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://47.95.229.56:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        url    = "jdbc:mysql://rm-2zend88t7j7w34bo8jo.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
         username = "searched"
-        password = "searched"
+        password = "ZEROaxmfq2TglFgGOWM5pXinR3Fqakdo"
     }
     xml{
         tableName = 'sl'

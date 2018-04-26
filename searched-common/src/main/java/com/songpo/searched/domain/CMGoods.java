@@ -74,6 +74,15 @@ public class CMGoods {
      * 是否下架
      */
     private boolean soldOut;
+    /**
+     * 该商品限制数量
+     */
+    private Integer restrictCount;
+    /**
+     * 商品的活动id
+     */
+    private String activityId;
+
 
     public String getGoodId() {
         return goodId;
@@ -201,5 +210,21 @@ public class CMGoods {
 
     public void setSoldOut(boolean soldOut) {
         this.soldOut = soldOut;
+    }
+
+    public Integer getRestrictCount() {
+        return restrictCount;
+    }
+
+    public void setRestrictCount(Integer restrictCount) {
+        this.restrictCount = restrictCount;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 }
