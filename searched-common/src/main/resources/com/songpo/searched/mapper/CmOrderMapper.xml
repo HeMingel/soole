@@ -173,7 +173,7 @@
         srd.returned_status returnedStatus,
         srd.create_time createTime,
         srd.order_id orderId,
-        srd.presell_returned_record_id presellReturnedRecord_id,
+        srd.presell_returned_record_id presellReturnedRecordId,
         srd.return_money returnMoney,
         srd.return_time returnTime,
         srd.user_id userId

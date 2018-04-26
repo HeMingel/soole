@@ -502,7 +502,16 @@ public class CmOrderService {
      * @param quantity
      * @return
      */
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            String repositoryId,
+                                            Integer quantity,
+                                            String shareOfPeopleId,
+                                            String serialNumber,
+                                            String groupMaster,
+                                            String shippingAddressId,
+                                            String buyerMessage,
+                                            String activityProductId) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
         BusinessMessage message = new BusinessMessage();
         try {
@@ -978,5 +987,9 @@ public class CmOrderService {
             log.error("提醒失败", e);
         }
         return message;
+    }
+
+    public void presellPremises(String orderDetailId) {
+
     }
 }
