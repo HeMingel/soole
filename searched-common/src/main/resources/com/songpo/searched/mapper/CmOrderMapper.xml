@@ -80,7 +80,10 @@
         sod.quantity quantity,
         sod.product_image_url productImageUrl,
         ss.image_url shopImageUrl,
-        sod.post_fee postFee
+        sod.post_fee postFee,
+        ss.phone shopPhone,
+        so.payment_state paymentState,
+        sod.shipping_state shippingState
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
