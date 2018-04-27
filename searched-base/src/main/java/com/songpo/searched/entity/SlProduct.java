@@ -1,6 +1,7 @@
 package com.songpo.searched.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "sl_product")
@@ -73,6 +74,11 @@ public class SlProduct implements Serializable {
      * 是否为推荐商品，0:否 1:是
      */
     private Integer recommend;
+
+    /**
+     * 邮费
+     */
+    private BigDecimal postage;
 
     /**
      * 1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
@@ -319,6 +325,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取邮费
+     *
+     * @return postage - 邮费
+     */
+    public BigDecimal getPostage() {
+        return postage;
+    }
+
+    /**
+     * 设置邮费
+     *
+     * @param postage 邮费
+     */
+    public void setPostage(BigDecimal postage) {
+        this.postage = postage;
+    }
+
+    /**
      * 获取1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
      *
      * @return sold_out - 1.上架审核通过 0.下架 booble型(1:true 0:false),2 待审核3未通过
@@ -426,6 +450,7 @@ public class SlProduct implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", recommend=").append(recommend);
+        sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);

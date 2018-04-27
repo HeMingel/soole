@@ -179,9 +179,11 @@
         srd.user_id userId
         from sl_returns_detail srd
         WHERE srd.`user_id` = #{userId}
-        and srd.`confirm_receipt` = #{b}
         <if test="status != null">
             and srd.returned_status = #{status}
+        </if>
+        <if test="status != 5">
+            and srd.`confirm_receipt` = #{b}
         </if>
         GROUP BY srd.`order_id`
         order by srd.`return_time` ASC

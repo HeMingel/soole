@@ -129,7 +129,7 @@ public class SlActivityProduct implements Serializable {
     private Boolean enabled;
 
     /**
-     * 参考豆子（暂未使用）
+     * （暂未使用）参考豆子
      */
     @Column(name = "reference_peas")
     private Integer referencePeas;
@@ -539,18 +539,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取参考豆子（暂未使用）
+     * 获取（暂未使用）参考豆子
      *
-     * @return reference_peas - 参考豆子（暂未使用）
+     * @return reference_peas - （暂未使用）参考豆子
      */
     public Integer getReferencePeas() {
         return referencePeas;
     }
 
     /**
-     * 设置参考豆子（暂未使用）
+     * 设置（暂未使用）参考豆子
      *
-     * @param referencePeas 参考豆子（暂未使用）
+     * @param referencePeas （暂未使用）参考豆子
      */
     public void setReferencePeas(Integer referencePeas) {
         this.referencePeas = referencePeas;

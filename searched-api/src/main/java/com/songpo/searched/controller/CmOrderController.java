@@ -236,4 +236,33 @@ public class CmOrderController {
         return message;
     }
 
+    /**
+     * 预售确认收货
+     *
+     * @param orderId
+     * @return
+     */
+
+    @ApiOperation(value = "预售确认收货")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "returnsDetailId", value = "预售返现记录表", paramType = "form", required = true)
+    })
+    @PostMapping("presell-premises")
+    public BusinessMessage presellPremises(String returnsDetailId,String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.presellPremises(returnsDetailId,orderId);
+            message.setMsg(message.getMsg());
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("确认失败", e);
+        }
+        return message;
+    }
+
+
+
+
 }

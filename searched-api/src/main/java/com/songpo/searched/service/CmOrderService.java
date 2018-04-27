@@ -168,8 +168,8 @@ public class CmOrderService {
                                                     // 钱相加 用于统计和添加到订单表扣除总钱里边
                                                     money += repository.getPrice().doubleValue() * quantity;
                                                     // 如果邮费不为空
-                                                    if (repository.getPostFee().doubleValue() > 0) {
-                                                        money = money + repository.getPostFee().doubleValue();
+                                                    if (slProduct.getPostage().doubleValue() > 0) {
+                                                        money = money + slProduct.getPostage().doubleValue();
                                                     }
                                                     // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                                     if (repository.getSilver() > 0) {
@@ -671,7 +671,17 @@ public class CmOrderService {
      *
      * @return
      */
-    public BusinessMessage processingOrders(String userId, String serialNumber, SlActivityProduct activityProduct, String groupMaster, String shippingAddressId, SlProductRepository repository, Integer quantity, String shareOfPeopleId, SlProduct slProduct, int type, String buyerMessage) {
+    public BusinessMessage processingOrders(String userId,
+                                            String serialNumber,
+                                            SlActivityProduct activityProduct,
+                                            String groupMaster,
+                                            String shippingAddressId,
+                                            SlProductRepository repository,
+                                            Integer quantity,
+                                            String shareOfPeopleId,
+                                            SlProduct slProduct,
+                                            int type,
+                                            String buyerMessage) {
         BusinessMessage message = new BusinessMessage();
         SlOrder slOrder = new SlOrder();
         // 订单id
@@ -989,7 +999,66 @@ public class CmOrderService {
         return message;
     }
 
-    public void presellPremises(String orderDetailId) {
+    /**
+     * 预售确认收货
+     *
+     * @param orderDetailId
+     */
+    public BusinessMessage presellPremises(String returnsDetailId, String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            SlUser user = loginUserService.getCurrentLoginUser();
+            // 查询有没有这个订单
+            SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                setOrderId(orderId);
+                //并且是待发货状态
+                setShippingState(3);
+            }});
+            // 有这个订单明细
+            if (null != detail) {
+                Example example = new Example(SlReturnsDetail.class);
+                example.setOrderByClause("return_time DESC");
+                example.createCriteria()
+                        .andEqualTo("userId", user.getId())
+                        .andEqualTo("orderId", orderId);
+                List<SlReturnsDetail> list = this.returnsDetailMapper.selectByExample(example);
+                if (list.size() > 0) {
+                    //如果本次确认收货的预售订单==最后一次返现的预售订单id
+                    if (list.get(0).getId().equals(returnsDetailId)) {
+                        //把本期的确认收货
+                        this.returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
+                            setId(returnsDetailId);
+                            //本期已返状态
+                            setConfirmReceipt(true);
+                        }});
+                        this.orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                            setId(detail.getId());
+                            // 已完成/未评价
+                            setShippingState(5);
+                        }});
+                        //把改订单号的所有订单更新为已完成状态
+                        this.returnsDetailMapper.updateByExampleSelective(new SlReturnsDetail() {{
+                            setReturnedStatus(5);
+                        }}, example);
 
+                    } else {
+                        this.returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
+                            setId(returnsDetailId);
+                            //本期已返状态
+                            setConfirmReceipt(true);
+                        }});
+                    }
+                    message.setSuccess(true);
+                    message.setMsg("确认订单成功");
+                } else {
+                    message.setMsg("预售订单不存在");
+                }
+            } else {
+                message.setMsg("该订单不存在");
+            }
+        } catch (Exception e) {
+            log.error("预售订单确认收货失败", e);
+        }
+        return message;
     }
 }

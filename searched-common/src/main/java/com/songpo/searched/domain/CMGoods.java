@@ -82,6 +82,10 @@ public class CMGoods {
      * 商品的活动id
      */
     private String activityId;
+    /**
+     * 邮费
+     */
+    private BigDecimal postFee;
 
 
     public String getGoodId() {
@@ -226,5 +230,13 @@ public class CMGoods {
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public BigDecimal getPostFee() {
+        return postFee;
+    }
+
+    public void setPostFee(BigDecimal postFee) {
+        this.postFee = postFee;
     }
 }

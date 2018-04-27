@@ -17,6 +17,7 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
+    <result column="postage" jdbcType="DECIMAL" property="postage" />
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
     <result column="antistop" jdbcType="VARCHAR" property="antistop" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
@@ -28,7 +29,7 @@
       WARNING - @mbg.generated
     -->
     id, name, image_url, introduction, product_type_id, comment_num, sales_volume, shop_id, 
-    sales_mode_id, creator, create_time, recommend, sold_out, antistop, reason, remark, 
-    detail
+    sales_mode_id, creator, create_time, recommend, postage, sold_out, antistop, reason, 
+    remark, detail
   </sql>
 </mapper>

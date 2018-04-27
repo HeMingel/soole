@@ -61,12 +61,6 @@ public class SlProductRepository implements Serializable {
     private BigDecimal returnCashMoney;
 
     /**
-     * 邮费
-     */
-    @Column(name = "post_fee")
-    private BigDecimal postFee;
-
-    /**
      * 库存数量
      */
     private Integer count;
@@ -333,24 +327,6 @@ public class SlProductRepository implements Serializable {
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
-    }
-
-    /**
-     * 获取邮费
-     *
-     * @return post_fee - 邮费
-     */
-    public BigDecimal getPostFee() {
-        return postFee;
-    }
-
-    /**
-     * 设置邮费
-     *
-     * @param postFee 邮费
-     */
-    public void setPostFee(BigDecimal postFee) {
-        this.postFee = postFee;
     }
 
     /**
@@ -710,7 +686,6 @@ public class SlProductRepository implements Serializable {
         sb.append(", personalPrice=").append(personalPrice);
         sb.append(", returnCashRatio=").append(returnCashRatio);
         sb.append(", returnCashMoney=").append(returnCashMoney);
-        sb.append(", postFee=").append(postFee);
         sb.append(", count=").append(count);
         sb.append(", weight=").append(weight);
         sb.append(", ship=").append(ship);
