@@ -145,6 +145,7 @@ public class ShoppingCartService {
                             cmGoods.setShopName(slShop.getName());// 店铺名称
                             cmGoods.setRestrictCount(activityProduct.getRestrictCount());//限制购买数量
                             cmGoods.setActivityId(activityProduct.getActivityId());// 活动id
+                            cmGoods.setPostAge(slProduct.getPostage());//邮费
                             goodsList.add(cmGoods);
                             cart.setShopId(slShop.getId());
                             cart.setShopName(slShop.getName());

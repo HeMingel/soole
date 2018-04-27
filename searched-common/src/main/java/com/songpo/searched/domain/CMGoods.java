@@ -85,7 +85,7 @@ public class CMGoods {
     /**
      * 邮费
      */
-    private BigDecimal postFee;
+    private BigDecimal postAge;
 
 
     public String getGoodId() {
@@ -232,11 +232,11 @@ public class CMGoods {
         this.activityId = activityId;
     }
 
-    public BigDecimal getPostFee() {
-        return postFee;
+    public BigDecimal getPostAge() {
+        return postAge;
     }
 
-    public void setPostFee(BigDecimal postFee) {
-        this.postFee = postFee;
+    public void setPostAge(BigDecimal postAge) {
+        this.postAge = postAge;
     }
 }
