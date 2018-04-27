@@ -202,7 +202,7 @@
     <!--搜索商品所有图片-->
     <select id="goodsImageUrl" resultType="Map" parameterType="String">
         SELECT
-          image_url,type
+          image_url,type,width,height
         FROM
           sl_product_image
         WHERE product_id = #{goodsId}
