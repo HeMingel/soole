@@ -28,9 +28,10 @@ class QrCodeController(private val qrCodeService: QrCodeService) {
      * 生成二维码
      *
      * @param content 内容
+     * @param width 二维码宽度
+     * @param height 二维码高度
      * @param logo 图标
-     * @param backgroundImage 背景图片，二维码背景图片
-     * @param size 二维码大小，指定生成的二维码大小
+     * @param back 背景图片，二维码背景图片
      * @return 响应信息
      */
     @ApiOperation(value = "生成二维码", notes = "生成二维码")
@@ -64,7 +65,7 @@ class QrCodeController(private val qrCodeService: QrCodeService) {
             } else {
                 log.warn { "二维码内容不能为空" }
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             log.error { "生成二维码失败，$e" }
         }
         return ResponseEntity.ok(ByteArray(0))

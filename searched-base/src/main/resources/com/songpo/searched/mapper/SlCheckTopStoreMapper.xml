@@ -8,6 +8,8 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="quota_id" jdbcType="VARCHAR" property="quotaId" />
+    <result column="identy_front" jdbcType="VARCHAR" property="identyFront" />
+    <result column="identy_back" jdbcType="VARCHAR" property="identyBack" />
     <result column="apply_time" jdbcType="INTEGER" property="applyTime" />
     <result column="check_time" jdbcType="INTEGER" property="checkTime" />
     <result column="check_status" jdbcType="BIT" property="checkStatus" />
@@ -16,6 +18,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, quota_id, apply_time, check_time, check_status
+    id, shop_id, quota_id, identy_front, identy_back, apply_time, check_time, check_status
   </sql>
 </mapper>

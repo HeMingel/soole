@@ -25,6 +25,18 @@ public class SlCheckTopStore implements Serializable {
     private String quotaId;
 
     /**
+     * 身份证正面
+     */
+    @Column(name = "identy_front")
+    private String identyFront;
+
+    /**
+     * 身份证反面
+     */
+    @Column(name = "identy_back")
+    private String identyBack;
+
+    /**
      * 申请时间
      */
     @Column(name = "apply_time")
@@ -99,6 +111,42 @@ public class SlCheckTopStore implements Serializable {
     }
 
     /**
+     * 获取身份证正面
+     *
+     * @return identy_front - 身份证正面
+     */
+    public String getIdentyFront() {
+        return identyFront;
+    }
+
+    /**
+     * 设置身份证正面
+     *
+     * @param identyFront 身份证正面
+     */
+    public void setIdentyFront(String identyFront) {
+        this.identyFront = identyFront == null ? null : identyFront.trim();
+    }
+
+    /**
+     * 获取身份证反面
+     *
+     * @return identy_back - 身份证反面
+     */
+    public String getIdentyBack() {
+        return identyBack;
+    }
+
+    /**
+     * 设置身份证反面
+     *
+     * @param identyBack 身份证反面
+     */
+    public void setIdentyBack(String identyBack) {
+        this.identyBack = identyBack == null ? null : identyBack.trim();
+    }
+
+    /**
      * 获取申请时间
      *
      * @return apply_time - 申请时间
@@ -161,6 +209,8 @@ public class SlCheckTopStore implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
         sb.append(", quotaId=").append(quotaId);
+        sb.append(", identyFront=").append(identyFront);
+        sb.append(", identyBack=").append(identyBack);
         sb.append(", applyTime=").append(applyTime);
         sb.append(", checkTime=").append(checkTime);
         sb.append(", checkStatus=").append(checkStatus);

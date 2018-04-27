@@ -26,7 +26,7 @@ public class SlReturnsDetail implements Serializable {
     private String userId;
 
     /**
-     * 回款状态1.已返 2.待返 3.已逾期 4.可返
+     * 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
      */
     @Column(name = "returned_status")
     private Integer returnedStatus;
@@ -118,18 +118,18 @@ public class SlReturnsDetail implements Serializable {
     }
 
     /**
-     * 获取回款状态1.已返 2.待返 3.已逾期 4.可返
+     * 获取回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
      *
-     * @return returned_status - 回款状态1.已返 2.待返 3.已逾期 4.可返
+     * @return returned_status - 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
      */
     public Integer getReturnedStatus() {
         return returnedStatus;
     }
 
     /**
-     * 设置回款状态1.已返 2.待返 3.已逾期 4.可返
+     * 设置回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
      *
-     * @param returnedStatus 回款状态1.已返 2.待返 3.已逾期 4.可返
+     * @param returnedStatus 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
      */
     public void setReturnedStatus(Integer returnedStatus) {
         this.returnedStatus = returnedStatus;
