@@ -129,10 +129,15 @@ public class CmShopService {
                     }});
                 }
             }
+            //查询访问量 包含同一个人(需求不明)
+            int lookNum = this.slShopLookNumMapper.selectCount(new SlShopLookNum(){{
+                setShopId(shopId);
+            }});
 
                 data.put("shopDetail",shop);
                 data.put("collectionNum",count);
                 data.put("goodsInfo",goodsList);
+                data.put("lookNum",lookNum);
 
                 businessMessage.setData(data);
                 businessMessage.setSuccess(true);
