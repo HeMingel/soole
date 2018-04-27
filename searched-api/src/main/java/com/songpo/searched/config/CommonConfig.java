@@ -118,47 +118,20 @@ public class CommonConfig {
                 }}, example);
                 if (count == 1) {
                     if (detail.getId().equals(list.get(0).getId())) {
+                        Example example1 = new Example(SlOrderDetail.class);
+                        example1.createCriteria().andEqualTo("orderId", detail.getOrderId());
+                        this.orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                            // 已完成/未评价
+                            setShippingState(5);
+                        }}, example1);
                         //把改订单号的所有订单更新为已完成状态
                         this.returnsDetailMapper.updateByExampleSelective(new SlReturnsDetail() {{
                             setReturnedStatus(5);
                         }}, example);
-                        this.orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
-                            setId(detail.getId());
-                            // 已完成/未评价
-                            setShippingState(5);
-                        }});
+
                     }
                 }
             }
         }
     }
-
-
-//    @Autowired
-//    private OrderService orderService;
-
-    //    @Scheduled(cron = "0 30 * * * *")
-//    void updOrderState() {
-//        try {
-//            Example example = new Example(SlOrder.class);
-//            example.setOrderByClause("create_time ASC");
-//            example.createCriteria().andEqualTo("paymentState", 0);
-//            List<SlOrder> list = orderService.selectByExample(example);
-//            if (list.size()>0){
-//                for (SlOrder slOrder : list) {
-//                    SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    Date date = sdf.parse(slOrder.getCreateTime());
-//                    Long res = new Date().getTime() - date.getTime();
-//                    if (res >=1800) {
-//                        this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
-//                            setId(slOrder.getId());
-//                            setPaymentState(-1);
-//                        }});
-//                    }
-//                }
-//            }
-//        }catch (Exception e){
-//            log.error("更新失败",e);
-//        }
-//    }
 }
