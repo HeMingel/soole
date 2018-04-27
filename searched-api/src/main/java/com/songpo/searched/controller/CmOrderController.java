@@ -197,7 +197,7 @@ public class CmOrderController {
      */
     @ApiOperation(value = "预售订单")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form", required = true)
+            @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form")
     })
     @GetMapping("pre-sale-order")
     public BusinessMessage preSaleOrderList(Integer status, Integer pageNum, Integer pageSize) {

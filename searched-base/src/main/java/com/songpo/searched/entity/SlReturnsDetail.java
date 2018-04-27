@@ -61,6 +61,11 @@ public class SlReturnsDetail implements Serializable {
     @Column(name = "confirm_receipt")
     private Boolean confirmReceipt;
 
+    /**
+     * 是否已完成(true:已完成 false:未完成)
+     */
+    private Boolean completed;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -225,6 +230,24 @@ public class SlReturnsDetail implements Serializable {
         this.confirmReceipt = confirmReceipt;
     }
 
+    /**
+     * 获取是否已完成(true:已完成 false:未完成)
+     *
+     * @return completed - 是否已完成(true:已完成 false:未完成)
+     */
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    /**
+     * 设置是否已完成(true:已完成 false:未完成)
+     *
+     * @param completed 是否已完成(true:已完成 false:未完成)
+     */
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -240,6 +263,7 @@ public class SlReturnsDetail implements Serializable {
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", orderId=").append(orderId);
         sb.append(", confirmReceipt=").append(confirmReceipt);
+        sb.append(", completed=").append(completed);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

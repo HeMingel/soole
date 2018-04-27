@@ -54,6 +54,12 @@ public class SlCheckTopStore implements Serializable {
     @Column(name = "check_status")
     private Boolean checkStatus;
 
+    /**
+     * 未通过的原因
+     */
+    @Column(name = "check_because")
+    private String checkBecause;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -200,6 +206,24 @@ public class SlCheckTopStore implements Serializable {
         this.checkStatus = checkStatus;
     }
 
+    /**
+     * 获取未通过的原因
+     *
+     * @return check_because - 未通过的原因
+     */
+    public String getCheckBecause() {
+        return checkBecause;
+    }
+
+    /**
+     * 设置未通过的原因
+     *
+     * @param checkBecause 未通过的原因
+     */
+    public void setCheckBecause(String checkBecause) {
+        this.checkBecause = checkBecause == null ? null : checkBecause.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -214,6 +238,7 @@ public class SlCheckTopStore implements Serializable {
         sb.append(", applyTime=").append(applyTime);
         sb.append(", checkTime=").append(checkTime);
         sb.append(", checkStatus=").append(checkStatus);
+        sb.append(", checkBecause=").append(checkBecause);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

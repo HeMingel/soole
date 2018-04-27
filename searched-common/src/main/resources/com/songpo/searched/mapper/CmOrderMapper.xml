@@ -179,13 +179,15 @@
         srd.user_id userId
         from sl_returns_detail srd
         WHERE srd.`user_id` = #{userId}
-        <if test="status != null">
+        <if test="status != null and status != 2">
             and srd.returned_status = #{status}
         </if>
         <if test="status != 5">
             and srd.`confirm_receipt` = #{b}
         </if>
+        and srd.completed = false
         GROUP BY srd.`order_id`
         order by srd.`return_time` ASC
     </select>
+
 </mapper>

@@ -10,11 +10,12 @@
     <result column="partner_name" jdbcType="VARCHAR" property="partnerName" />
     <result column="partner_phone" jdbcType="VARCHAR" property="partnerPhone" />
     <result column="partner_addr" jdbcType="VARCHAR" property="partnerAddr" />
+    <result column="partner_order" jdbcType="INTEGER" property="partnerOrder" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, top_store_id, partner_name, partner_phone, partner_addr
+    id, top_store_id, partner_name, partner_phone, partner_addr, partner_order
   </sql>
 </mapper>

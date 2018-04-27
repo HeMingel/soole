@@ -36,6 +36,12 @@ public class SlPartnerNews implements Serializable {
     @Column(name = "partner_addr")
     private String partnerAddr;
 
+    /**
+     * 排序
+     */
+    @Column(name = "partner_order")
+    private Integer partnerOrder;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -128,6 +134,24 @@ public class SlPartnerNews implements Serializable {
         this.partnerAddr = partnerAddr == null ? null : partnerAddr.trim();
     }
 
+    /**
+     * 获取排序
+     *
+     * @return partner_order - 排序
+     */
+    public Integer getPartnerOrder() {
+        return partnerOrder;
+    }
+
+    /**
+     * 设置排序
+     *
+     * @param partnerOrder 排序
+     */
+    public void setPartnerOrder(Integer partnerOrder) {
+        this.partnerOrder = partnerOrder;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -139,6 +163,7 @@ public class SlPartnerNews implements Serializable {
         sb.append(", partnerName=").append(partnerName);
         sb.append(", partnerPhone=").append(partnerPhone);
         sb.append(", partnerAddr=").append(partnerAddr);
+        sb.append(", partnerOrder=").append(partnerOrder);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

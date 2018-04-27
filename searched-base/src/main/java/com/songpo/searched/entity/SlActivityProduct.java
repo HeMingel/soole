@@ -158,6 +158,12 @@ public class SlActivityProduct implements Serializable {
     @Column(name = "sharing_rewards_id")
     private String sharingRewardsId;
 
+    /**
+     * 分组id
+     */
+    @Column(name = "group_id")
+    private String groupId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -628,6 +634,24 @@ public class SlActivityProduct implements Serializable {
         this.sharingRewardsId = sharingRewardsId == null ? null : sharingRewardsId.trim();
     }
 
+    /**
+     * 获取分组id
+     *
+     * @return group_id - 分组id
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * 设置分组id
+     *
+     * @param groupId 分组id
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId == null ? null : groupId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -660,6 +684,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", returnPeas=").append(returnPeas);
         sb.append(", sharingRewardsId=").append(sharingRewardsId);
+        sb.append(", groupId=").append(groupId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

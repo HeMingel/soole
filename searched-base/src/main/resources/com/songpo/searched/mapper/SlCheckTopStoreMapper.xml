@@ -13,11 +13,13 @@
     <result column="apply_time" jdbcType="INTEGER" property="applyTime" />
     <result column="check_time" jdbcType="INTEGER" property="checkTime" />
     <result column="check_status" jdbcType="BIT" property="checkStatus" />
+    <result column="check_because" jdbcType="VARCHAR" property="checkBecause" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, quota_id, identy_front, identy_back, apply_time, check_time, check_status
+    id, shop_id, quota_id, identy_front, identy_back, apply_time, check_time, check_status, 
+    check_because
   </sql>
 </mapper>

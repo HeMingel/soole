@@ -87,22 +87,22 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
-     * 关键词（暂未使用）
+     * （暂未使用）关键词
      */
     private String antistop;
 
     /**
-     * 商品审核未通过原因（暂未使用）
+     * （暂未使用）商品审核未通过原因
      */
     private String reason;
 
     /**
-     * 备注(暂时未用)
+     * （暂时未用）备注
      */
     private String remark;
 
     /**
-     * 详情（暂时未用）
+     * （暂时未用）详情
      */
     private String detail;
 
@@ -361,72 +361,72 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取关键词（暂未使用）
+     * 获取（暂未使用）关键词
      *
-     * @return antistop - 关键词（暂未使用）
+     * @return antistop - （暂未使用）关键词
      */
     public String getAntistop() {
         return antistop;
     }
 
     /**
-     * 设置关键词（暂未使用）
+     * 设置（暂未使用）关键词
      *
-     * @param antistop 关键词（暂未使用）
+     * @param antistop （暂未使用）关键词
      */
     public void setAntistop(String antistop) {
         this.antistop = antistop == null ? null : antistop.trim();
     }
 
     /**
-     * 获取商品审核未通过原因（暂未使用）
+     * 获取（暂未使用）商品审核未通过原因
      *
-     * @return reason - 商品审核未通过原因（暂未使用）
+     * @return reason - （暂未使用）商品审核未通过原因
      */
     public String getReason() {
         return reason;
     }
 
     /**
-     * 设置商品审核未通过原因（暂未使用）
+     * 设置（暂未使用）商品审核未通过原因
      *
-     * @param reason 商品审核未通过原因（暂未使用）
+     * @param reason （暂未使用）商品审核未通过原因
      */
     public void setReason(String reason) {
         this.reason = reason == null ? null : reason.trim();
     }
 
     /**
-     * 获取备注(暂时未用)
+     * 获取（暂时未用）备注
      *
-     * @return remark - 备注(暂时未用)
+     * @return remark - （暂时未用）备注
      */
     public String getRemark() {
         return remark;
     }
 
     /**
-     * 设置备注(暂时未用)
+     * 设置（暂时未用）备注
      *
-     * @param remark 备注(暂时未用)
+     * @param remark （暂时未用）备注
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
 
     /**
-     * 获取详情（暂时未用）
+     * 获取（暂时未用）详情
      *
-     * @return detail - 详情（暂时未用）
+     * @return detail - （暂时未用）详情
      */
     public String getDetail() {
         return detail;
     }
 
     /**
-     * 设置详情（暂时未用）
+     * 设置（暂时未用）详情
      *
-     * @param detail 详情（暂时未用）
+     * @param detail （暂时未用）详情
      */
     public void setDetail(String detail) {
         this.detail = detail == null ? null : detail.trim();
