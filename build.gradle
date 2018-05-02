@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.31'
+        kotlinVersion = '1.2.41'
         kotlinLoggingVersion = '1.5.4'
         springBootVersion = '2.0.1.RELEASE'
         springVersion = '5.0.4.RELEASE'
@@ -15,7 +15,6 @@ buildscript {
 
     // 指定JDK版本
     ext['java.version'] = 10
-    ext['kotlin.version'] = '1.2.31'
 
     repositories {
         mavenLocal()

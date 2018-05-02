@@ -24,13 +24,14 @@
     <result column="agent_create_time" jdbcType="VARCHAR" property="agentCreateTime" />
     <result column="agent_check_time" jdbcType="VARCHAR" property="agentCheckTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="agent_name" jdbcType="VARCHAR" property="agentName"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, province, city, country, town, street, other_address, level, real_name, 
-    phone, id_card_number, id_card_front_image_url, id_card_back_image_url, id_card_hand_image_url, 
-    agent_check_state, agent_create_time, agent_check_time, status
+    id, user_id, province, city, country, town, street, other_address, level, real_name,
+      phone, id_card_number, id_card_front_image_url, id_card_back_image_url, id_card_hand_image_url,
+      agent_check_state, agent_create_time, agent_check_time, status, agent_name
   </sql>
 </mapper>

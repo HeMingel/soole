@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_agent_application")
 public class SlAgentApplication implements Serializable {
@@ -111,6 +111,12 @@ public class SlAgentApplication implements Serializable {
      * 账号状态：0 禁用， 1 启用
      */
     private Integer status;
+
+    /**
+     * 代理商名称。PHP新增
+     */
+    @Column(name = "agent_name")
+    private String agentName;
 
     private static final long serialVersionUID = 1L;
 
@@ -456,6 +462,24 @@ public class SlAgentApplication implements Serializable {
         this.status = status;
     }
 
+    /**
+     * 获取代理商名称。PHP新增
+     *
+     * @return agent_name - 代理商名称。PHP新增
+     */
+    public String getAgentName() {
+        return agentName;
+    }
+
+    /**
+     * 设置代理商名称。PHP新增
+     *
+     * @param agentName 代理商名称。PHP新增
+     */
+    public void setAgentName(String agentName) {
+        this.agentName = agentName == null ? null : agentName.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -481,6 +505,7 @@ public class SlAgentApplication implements Serializable {
         sb.append(", agentCreateTime=").append(agentCreateTime);
         sb.append(", agentCheckTime=").append(agentCheckTime);
         sb.append(", status=").append(status);
+        sb.append(", agentName=").append(agentName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

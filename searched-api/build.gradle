@@ -24,7 +24,7 @@ dependencies {
     // OAUTH2组件
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
     // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
-    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.0.RELEASE'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.2.RELEASE'
 //    compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.BUILD-SNAPSHOT")
 
     // RabbitMQ消息队列
