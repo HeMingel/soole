@@ -86,6 +86,10 @@ public class CMGoods {
      * 邮费
      */
     private BigDecimal postAge;
+    /**
+     * 活动商品id
+     */
+    private String activityProductId;
 
 
     public String getGoodId() {
@@ -238,5 +242,13 @@ public class CMGoods {
 
     public void setPostAge(BigDecimal postAge) {
         this.postAge = postAge;
+    }
+
+    public String getActivityProductId() {
+        return activityProductId;
+    }
+
+    public void setActivityProductId(String activityProductId) {
+        this.activityProductId = activityProductId;
     }
 }
