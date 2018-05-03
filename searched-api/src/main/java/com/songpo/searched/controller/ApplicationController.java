@@ -85,8 +85,12 @@ public class ApplicationController {
             message.setMsg("手持身份证照片为空");
         } else {
             try {
-                this.applicationService.createAgentApplication(agent, idCardFront, idCardBack, idCardHand);
-                message.setSuccess(true);
+                if (this.applicationService.agentExists(agent.getPhone()) > 0) {
+                    message.setMsg("用户申请已存在，请勿重复提交");
+                } else {
+                    this.applicationService.createAgentApplication(agent, idCardFront, idCardBack, idCardHand);
+                    message.setSuccess(true);
+                }
             } catch (Exception e) {
                 log.error("提交代理入驻申请失败，{}", e);
 
@@ -142,23 +146,27 @@ public class ApplicationController {
             message.setMsg("手持身份证照片为空");
         } else {
             try {
-                if (business.getType().equals(BusinessApplicationTypeEnum.PERSONAL.getValue())) {
-                    if (StringUtils.isBlank(business.getRealName())) {
-                        message.setMsg("姓名为空");
-                    } else {
-                        this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
-                        message.setSuccess(true);
+                if (this.applicationService.businessExists(business.getPhone()) > 0) {
+                    message.setMsg("用户申请已存在，请勿重复提交");
+                } else {
+                    if (business.getType().equals(BusinessApplicationTypeEnum.PERSONAL.getValue())) {
+                        if (StringUtils.isBlank(business.getRealName())) {
+                            message.setMsg("姓名为空");
+                        } else {
+                            this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
+                            message.setSuccess(true);
+                        }
                     }
-                }
 
-                if (business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue())) {
-                    if (StringUtils.isBlank(business.getCompanyName())) {
-                        message.setMsg("公司名称为空");
-                    } else if (null == businessImage || businessImage.isEmpty()) {
-                        message.setMsg("营业执照为空");
-                    } else {
-                        this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
-                        message.setSuccess(true);
+                    if (business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue())) {
+                        if (StringUtils.isBlank(business.getCompanyName())) {
+                            message.setMsg("公司名称为空");
+                        } else if (null == businessImage || businessImage.isEmpty()) {
+                            message.setMsg("营业执照为空");
+                        } else {
+                            this.applicationService.createBusinessApplication(business, businessImage, idCardFront, idCardBack, idCardHand);
+                            message.setSuccess(true);
+                        }
                     }
                 }
             } catch (Exception e) {
