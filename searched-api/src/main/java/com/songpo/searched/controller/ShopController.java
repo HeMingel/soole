@@ -73,7 +73,7 @@ public class ShopController {
             @ApiImplicitParam(name = "userId",value = "用户Id",paramType = "form",required = true),
             @ApiImplicitParam(name = "shopId",value = "相关Id",paramType = "form",required = true)
     })
-    @GetMapping("/have-collection")
+    @GetMapping("have-collection")
     public BusinessMessage isCollection(String userId,String shopId ) {
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
