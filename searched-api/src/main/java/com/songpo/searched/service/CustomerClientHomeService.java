@@ -121,6 +121,12 @@ public class CustomerClientHomeService {
         data.put("videoInfo", videoList.size() > 0 ? videoList.get(0) : "");
         data.put("videoInfos", videoList);
 
+        // 获取直播列表
+        List<SlActionNavigation> videoLiveList = this.actionNavigationService.select(new SlActionNavigation() {{
+            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO_LIVE.getValue());
+        }});
+        data.put("videoLives", videoLiveList);
+
         // 获取热词
         List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
         data.put("hotKeywords", hotKeywordsList);
@@ -130,6 +136,12 @@ public class CustomerClientHomeService {
             setType(ArticleTypeEnum.HOMES_HAINAN.getValue());
         }});
         data.put("homesHaiNanArticles", homesHanNanArticleList);
+
+        // 搜了头条
+        List<SlArticle> searchedHeadLinesArticleList = this.slArticleMapper.select(new SlArticle() {{
+            setType(ArticleTypeEnum.SEARCHED_HEADLINES.getValue());
+        }});
+        data.put("searchedHeadLines", searchedHeadLinesArticleList);
 
         // 搜了故事
         List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{

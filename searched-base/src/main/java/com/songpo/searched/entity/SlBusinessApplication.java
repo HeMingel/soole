@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_business_application")
 public class SlBusinessApplication implements Serializable {
@@ -124,6 +124,12 @@ public class SlBusinessApplication implements Serializable {
      */
     @Column(name = "business_check_time")
     private String businessCheckTime;
+
+    /**
+     * 审核拒绝原因。PHP新增
+     */
+    @Column(name = "deny_because")
+    private String denyBecause;
 
     /**
      * 账号状态：0 禁用， 1 启用
@@ -511,6 +517,24 @@ public class SlBusinessApplication implements Serializable {
     }
 
     /**
+     * 获取审核拒绝原因。PHP新增
+     *
+     * @return deny_because - 审核拒绝原因。PHP新增
+     */
+    public String getDenyBecause() {
+        return denyBecause;
+    }
+
+    /**
+     * 设置审核拒绝原因。PHP新增
+     *
+     * @param denyBecause 审核拒绝原因。PHP新增
+     */
+    public void setDenyBecause(String denyBecause) {
+        this.denyBecause = denyBecause == null ? null : denyBecause.trim();
+    }
+
+    /**
      * 获取账号状态：0 禁用， 1 启用
      *
      * @return status - 账号状态：0 禁用， 1 启用
@@ -555,6 +579,7 @@ public class SlBusinessApplication implements Serializable {
         sb.append(", businessImageUrl=").append(businessImageUrl);
         sb.append(", businessCreateTime=").append(businessCreateTime);
         sb.append(", businessCheckTime=").append(businessCheckTime);
+        sb.append(", denyBecause=").append(denyBecause);
         sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

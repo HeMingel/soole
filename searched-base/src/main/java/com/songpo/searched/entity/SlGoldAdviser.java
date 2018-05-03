@@ -5,31 +5,36 @@ import java.io.Serializable;
 
 @Table(name = "sl_gold_adviser")
 public class SlGoldAdviser implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 唯一标识
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 昵称，例如：金牌顾问李白
      */
     private String nickname;
+
     /**
      * 顾问介绍
      */
     private String description;
+
     /**
      * 封面图片
      */
     @Column(name = "cover_url")
     private String coverUrl;
+
     /**
      * 介绍视频
      */
     @Column(name = "video_url")
     private String videoUrl;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取唯一标识
