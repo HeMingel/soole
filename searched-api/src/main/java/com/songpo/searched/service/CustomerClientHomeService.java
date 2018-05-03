@@ -75,6 +75,9 @@ public class CustomerClientHomeService {
     @Autowired
     private SlArticleMapper slArticleMapper;
 
+    @Autowired
+    private SlGoldAdviserMapper slGoldAdviserMapper;
+
     /**
      * 获取首页所有数据
      *
@@ -115,7 +118,8 @@ public class CustomerClientHomeService {
         List<SlActionNavigation> videoList = this.actionNavigationService.select(new SlActionNavigation() {{
             setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO.getValue());
         }});
-        data.put("videoInfo", videoList.get(0));
+        data.put("videoInfo", videoList.size() > 0 ? videoList.get(0) : "");
+        data.put("videoInfos", videoList);
 
         // 获取热词
         List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
@@ -132,6 +136,10 @@ public class CustomerClientHomeService {
             setType(ArticleTypeEnum.SEARCHED_STORY.getValue());
         }});
         data.put("searchedStoryArticles", searchedStoryArticleList);
+
+        // 金牌顾问
+        List<SlGoldAdviser> goldAdvisers = this.slGoldAdviserMapper.selectAll();
+        data.put("goldAdvisers", goldAdvisers);
 
         return data;
     }
