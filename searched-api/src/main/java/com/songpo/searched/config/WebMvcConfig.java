@@ -1,5 +1,7 @@
 package com.songpo.searched.config;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +28,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         // 添加FastJSOn消息转换器
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         fastJsonHttpMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+
+        FastJsonConfig fastJsonConfig = fastJsonHttpMessageConverter.getFastJsonConfig();
+        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
+
         converters.add(fastJsonHttpMessageConverter);
         super.configureMessageConverters(converters);
     }

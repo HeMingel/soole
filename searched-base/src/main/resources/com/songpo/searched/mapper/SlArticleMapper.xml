@@ -13,11 +13,13 @@
     <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
     <result column="reference_url" jdbcType="VARCHAR" property="referenceUrl" />
     <result column="add_time" jdbcType="INTEGER" property="addTime" />
+      <result column="type" jdbcType="INTEGER" property="type"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, content, image_url, read_count, praise_count, reference_url, add_time
+      id, title, content, image_url, read_count, praise_count, reference_url, add_time,
+      type
   </sql>
 </mapper>

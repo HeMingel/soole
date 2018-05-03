@@ -19,12 +19,13 @@
     <result column="cmd_parameter" jdbcType="VARCHAR" property="cmdParameter" />
     <result column="action_type" jdbcType="INTEGER" property="actionType" />
     <result column="action_sort" jdbcType="INTEGER" property="actionSort" />
+      <result column="type" jdbcType="INTEGER" property="type"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, description, image_url, url, cmd_android, cmd_ios, type_id, serial_number, 
-    size, position, cmd_parameter, action_type, action_sort
+      id, title, description, image_url, url, cmd_android, cmd_ios, type_id, serial_number,
+      size, position, cmd_parameter, action_type, action_sort, type
   </sql>
 </mapper>

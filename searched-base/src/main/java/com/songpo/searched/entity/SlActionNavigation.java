@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_action_navigation")
 public class SlActionNavigation implements Serializable {
@@ -84,6 +84,11 @@ public class SlActionNavigation implements Serializable {
      */
     @Column(name = "action_sort")
     private Integer actionSort;
+
+    /**
+     * 导航类型：1用户端_首页_轮播图，2用户端_首页_入口，3用户端_首页_促销活动，4用户端_首页_视频，5用户端_首页_销售模式，6用户端_首页_搜了直播
+     */
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
@@ -339,6 +344,24 @@ public class SlActionNavigation implements Serializable {
         this.actionSort = actionSort;
     }
 
+    /**
+     * 获取导航类型：1用户端_首页_轮播图，2用户端_首页_入口，3用户端_首页_促销活动，4用户端_首页_视频，5用户端_首页_销售模式，6用户端_首页_搜了直播
+     *
+     * @return type - 导航类型：1用户端_首页_轮播图，2用户端_首页_入口，3用户端_首页_促销活动，4用户端_首页_视频，5用户端_首页_销售模式，6用户端_首页_搜了直播
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置导航类型：1用户端_首页_轮播图，2用户端_首页_入口，3用户端_首页_促销活动，4用户端_首页_视频，5用户端_首页_销售模式，6用户端_首页_搜了直播
+     *
+     * @param type 导航类型：1用户端_首页_轮播图，2用户端_首页_入口，3用户端_首页_促销活动，4用户端_首页_视频，5用户端_首页_销售模式，6用户端_首页_搜了直播
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -359,6 +382,7 @@ public class SlActionNavigation implements Serializable {
         sb.append(", cmdParameter=").append(cmdParameter);
         sb.append(", actionType=").append(actionType);
         sb.append(", actionSort=").append(actionSort);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
