@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_article")
 public class SlArticle implements Serializable {
@@ -51,6 +51,11 @@ public class SlArticle implements Serializable {
      */
     @Column(name = "add_time")
     private Integer addTime;
+
+    /**
+     * 文章类型：1搜了头条，2海南之窗，3搜了故事
+     */
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
@@ -198,6 +203,24 @@ public class SlArticle implements Serializable {
         this.addTime = addTime;
     }
 
+    /**
+     * 获取文章类型：1搜了头条，2海南之窗，3搜了故事
+     *
+     * @return type - 文章类型：1搜了头条，2海南之窗，3搜了故事
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置文章类型：1搜了头条，2海南之窗，3搜了故事
+     *
+     * @param type 文章类型：1搜了头条，2海南之窗，3搜了故事
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -212,6 +235,7 @@ public class SlArticle implements Serializable {
         sb.append(", praiseCount=").append(praiseCount);
         sb.append(", referenceUrl=").append(referenceUrl);
         sb.append(", addTime=").append(addTime);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

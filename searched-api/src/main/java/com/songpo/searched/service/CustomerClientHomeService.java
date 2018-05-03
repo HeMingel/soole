@@ -8,6 +8,9 @@ import com.songpo.searched.domain.CMGoods;
 import com.songpo.searched.domain.CMShoppingCart;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
+import com.songpo.searched.typehandler.ActionNavigationTypeEnum;
+import com.songpo.searched.typehandler.ArticleTypeEnum;
+import com.songpo.searched.typehandler.ProductEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -69,6 +72,12 @@ public class CustomerClientHomeService {
     @Autowired
     private LoginUserService loginUserService;
 
+    @Autowired
+    private SlArticleMapper slArticleMapper;
+
+    @Autowired
+    private SlGoldAdviserMapper slGoldAdviserMapper;
+
     /**
      * 获取首页所有数据
      *
@@ -82,30 +91,55 @@ public class CustomerClientHomeService {
         data.put("productTypes", productTypes);
 
         // 获取广告轮播图列表
-        List<Map<String, Object>> bannerList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_BANNER");
+        List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
+            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_BANNER.getValue());
+        }});
         data.put("banners", bannerList);
 
         // 获取入口列表
-        List<Map<String, Object>> gatewayList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_SALES_MODE");
+        List<SlActionNavigation> gatewayList = this.actionNavigationService.select(new SlActionNavigation() {{
+            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_GATEWAY.getValue());
+        }});
         data.put("gateways", gatewayList);
 
         // 获取活动列表
-        List<Map<String, Object>> actionList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_ACTIVITY");
+        List<SlActionNavigation> actionList = this.actionNavigationService.select(new SlActionNavigation() {{
+            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTION.getValue());
+        }});
         data.put("actions", actionList);
 
         // 获取推荐商品列表
         List<SlProduct> productList = this.productMapper.select(new SlProduct() {{
-            setRecommend(1);
+            setRecommend(ProductEnum.PRODUCT_RECOMMEND_ENABLE.getValue());
         }});
         data.put("products", productList);
 
         // 获取首页视频信息
-        List<Map<String, Object>> videoList = this.actionNavigationMapper.selectByConfigKey("CUSTOMER_CLIENT_HOME_VIDEO");
-        data.put("videoInfo", videoList.get(0));
+        List<SlActionNavigation> videoList = this.actionNavigationService.select(new SlActionNavigation() {{
+            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO.getValue());
+        }});
+        data.put("videoInfo", videoList.size() > 0 ? videoList.get(0) : "");
+        data.put("videoInfos", videoList);
 
         // 获取热词
         List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
         data.put("hotKeywords", hotKeywordsList);
+
+        // 海南之家
+        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
+            setType(ArticleTypeEnum.HOMES_HAINAN.getValue());
+        }});
+        data.put("homesHaiNanArticles", homesHanNanArticleList);
+
+        // 搜了故事
+        List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{
+            setType(ArticleTypeEnum.SEARCHED_STORY.getValue());
+        }});
+        data.put("searchedStoryArticles", searchedStoryArticleList);
+
+        // 金牌顾问
+        List<SlGoldAdviser> goldAdvisers = this.slGoldAdviserMapper.selectAll();
+        data.put("goldAdvisers", goldAdvisers);
 
         return data;
     }
@@ -152,7 +186,7 @@ public class CustomerClientHomeService {
             CMShoppingCart pojo = this.cache.get(user.getId());
             if (pojo != null) {
                 List<CMGoods> list = new ArrayList<>();
-                CMGoods cmGoods = null;
+                CMGoods cmGoods;
                 if (null != pojo) {
                     for (CMGoods sc : pojo.getCarts()) {
                         if (StringUtils.isEmpty(sc.getGoodId())) {
