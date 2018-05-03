@@ -86,7 +86,7 @@ public class ApplicationController {
         } else {
             try {
                 if (this.applicationService.agentExists(agent.getPhone()) > 0) {
-                    message.setMsg("用户申请已存在，请勿重复提交");
+                    message.setMsg("申请信息已存在，请勿重复提交");
                 } else {
                     this.applicationService.createAgentApplication(agent, idCardFront, idCardBack, idCardHand);
                     message.setSuccess(true);
@@ -147,7 +147,7 @@ public class ApplicationController {
         } else {
             try {
                 if (this.applicationService.businessExists(business.getPhone()) > 0) {
-                    message.setMsg("用户申请已存在，请勿重复提交");
+                    message.setMsg("申请信息已存在，请勿重复提交");
                 } else {
                     if (business.getType().equals(BusinessApplicationTypeEnum.PERSONAL.getValue())) {
                         if (StringUtils.isBlank(business.getRealName())) {
