@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author 刘松坡
@@ -82,16 +81,10 @@ public class ApplicationService {
             }});
         }
 
-        // 如果用户已经被关联到某个代理商，则无法进行再次关联
-        Example example = new Example(SlAgentApplication.class);
-        example.createCriteria().andEqualTo("userId", user.getId());
-        Integer count = this.agentApplicationMapper.selectCountByExample(example);
-        if (count == 0) {
-            // 设置为用户标志
-            agent.setUserId(user.getId());
+        // 设置为用户标志
+        agent.setUserId(user.getId());
 
-            this.agentApplicationMapper.insertSelective(agent);
-        }
+        this.agentApplicationMapper.insertSelective(agent);
     }
 
     /**
@@ -104,7 +97,7 @@ public class ApplicationService {
      * @param idCardHand    手持身份证照片
      */
     public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
-        log.debug("提交商户入驻申请， 商户信息：{}", business);
+        log.debug("提交商户入驻申请，商户信息：{}", business);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
@@ -146,15 +139,33 @@ public class ApplicationService {
             }});
         }
 
-        // 如果用户已经被关联到某个代理商，则无法进行再次关联
-        Example example = new Example(SlAgentApplication.class);
-        example.createCriteria().andEqualTo("userId", user.getId());
-        Integer count = this.businessApplicationMapper.selectCountByExample(example);
-        if (count == 0) {
-            // 设置为用户标志
-            business.setUserId(user.getId());
+        // 设置为用户标志
+        business.setUserId(user.getId());
 
-            this.businessApplicationMapper.insertSelective(business);
-        }
+        this.businessApplicationMapper.insertSelective(business);
+    }
+
+    /**
+     * 检测是否已申请
+     *
+     * @param phone 手机号码
+     * @return 是否已存在
+     */
+    public int businessExists(String phone) {
+        return this.businessApplicationMapper.selectCount(new SlBusinessApplication() {{
+            setPhone(phone);
+        }});
+    }
+
+    /**
+     * 检测是否已申请
+     *
+     * @param phone 手机号码
+     * @return 是否已存在
+     */
+    public int agentExists(String phone) {
+        return this.agentApplicationMapper.selectCount(new SlAgentApplication() {{
+            setPhone(phone);
+        }});
     }
 }
