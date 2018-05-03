@@ -219,6 +219,8 @@ public class CmOrderService {
                                                             // 插入分享人id
                                                             String shareOfPeopleId = cc.split("\\|")[4];
                                                             setShareOfPeopleId(shareOfPeopleId);
+                                                            //分享奖励金额
+                                                            setReturnCashMoney(finalRepository.getReturnCashMoney());
                                                         }
                                                         // 查询当前用户的支付订单
                                                         Boolean flag = orderService.exist(new SlOrder() {{
@@ -593,7 +595,7 @@ public class CmOrderService {
                                                     return message;
                                                 }
                                             } else {
-                                                message.setMsg("订单错误");
+                                                message.setMsg("订单失效或不存在");
                                                 return message;
                                             }
                                         } else {
