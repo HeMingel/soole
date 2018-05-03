@@ -63,7 +63,7 @@ public class AfterSalesService {
             this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
             orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
                 setId(detail.getId());
-                setShippingState(6);
+                setShippingState(7);
             }});
         }
         if (files.length <= 3 && files.length > 0) {
