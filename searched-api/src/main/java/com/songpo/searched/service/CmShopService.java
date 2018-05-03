@@ -149,4 +149,23 @@ public class CmShopService {
         }
         return businessMessage;
     }
+
+    /**
+     *
+     * @param userId 用户Id
+     * @param shopId 收藏信息
+     * @return
+     */
+    public boolean isCollection(String userId,String shopId) {
+
+        List<SlMyCollection> slMyCollections = this.slMyCollectionMapper.select(new SlMyCollection(){{
+            setUserId(userId);
+            setCollectionId(shopId);
+        }});
+        if(slMyCollections.size()>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

@@ -114,37 +114,6 @@ public class ProductController {
     }
 
     /**
-     * 根据活动唯一标识符分页查询商品列表
-     *
-     * @param actionId 销售模式
-     * @param pageNum  页码
-     * @param pageSize 容量
-     * @return 商品分页列表
-     */
-    @ApiOperation(value = "根据活动分页查询商品列表")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "actionId", value = "活动唯一标识符", paramType = "form", required = true),
-            @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
-            @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
-    })
-    @GetMapping("by-activity")
-    public BusinessMessage<PageInfo<SlProduct>> selectByActivity(String actionId, Integer pageNum, Integer pageSize) {
-        log.debug("分页查询商品，页码：{}，数量：{}", pageNum, pageSize);
-        BusinessMessage<PageInfo<SlProduct>> message = new BusinessMessage<>();
-        try {
-            PageInfo<SlProduct> data = this.productService.selectByAction(actionId, pageNum, pageSize);
-
-            message.setData(data);
-            message.setSuccess(true);
-        } catch (Exception e) {
-            log.error("分页查询商品失败，{}", e);
-
-            message.setMsg("分页查询商品失败，请重试");
-        }
-        return message;
-    }
-
-    /**
      * 商品分类只查询普通商品 和名字
      * 商品分类查询商品,商品筛选分类 + 筛选
      *
@@ -206,7 +175,7 @@ public class ProductController {
         }
     }
 
-    @ApiOperation(value = "根据商品Id,活动Id查询普通商品普通规格")
+    @ApiOperation(value = "根据商品Id,活动Id查询商品规格")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "activityId", value = "活动ID", paramType = "form", required = true)
@@ -224,6 +193,38 @@ public class ProductController {
     @GetMapping("/hotGoods")
     public BusinessMessage hotGoods(String id) {
         return this.productService.hotGoods(id);
+    }
+
+    /**
+     * 没用到
+     * 根据活动唯一标识符分页查询商品列表
+     *
+     * @param actionId 销售模式
+     * @param pageNum  页码
+     * @param pageSize 容量
+     * @return 商品分页列表
+     */
+    @ApiOperation(value = "根据活动分页查询商品列表")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "actionId", value = "活动唯一标识符", paramType = "form", required = true),
+            @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
+            @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
+    })
+    @GetMapping("by-activity")
+    public BusinessMessage<PageInfo<SlProduct>> selectByActivity(String actionId, Integer pageNum, Integer pageSize) {
+        log.debug("分页查询商品，页码：{}，数量：{}", pageNum, pageSize);
+        BusinessMessage<PageInfo<SlProduct>> message = new BusinessMessage<>();
+        try {
+            PageInfo<SlProduct> data = this.productService.selectByAction(actionId, pageNum, pageSize);
+
+            message.setData(data);
+            message.setSuccess(true);
+        } catch (Exception e) {
+            log.error("分页查询商品失败，{}", e);
+
+            message.setMsg("分页查询商品失败，请重试");
+        }
+        return message;
     }
 }
 
