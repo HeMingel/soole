@@ -208,7 +208,7 @@ public class CmOrderService {
                                                         // 订单编号
                                                         setSerialNumber(orderNum);
                                                         // TODO 消费奖励
-                                                        if (finalSlProduct.getSalesModeId().equals(SalesModeConstant.SALES_MODE_REBATE)) {
+                                                        if (Integer.parseInt(finalSlProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                                             if (finalRepository.getReturnCashMoney().compareTo(new BigDecimal(0)) > 0) {
                                                                 // 消费返利金额
                                                                 setReturnCashMoney(finalRepository.getReturnCashMoney());
@@ -700,19 +700,19 @@ public class CmOrderService {
         slOrder.setGroupMaster(groupMaster);
         // 订单类型
         slOrder.setType(type);
-        // 如果是拼团订单
-        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
-            // 查询该订单号的所有订单 && 支付成功状态
-            int count2 = this.orderService.selectCount(new SlOrder() {{
-                setSerialNumber(serialNumber);
-                setPaymentState(1);
-            }});
-            // 如果单数 + 他自己 <=所需人数
-            if (count2 + 1 <= activityProduct.getPeopleNum()) {
-                // 拼团状态为拼团中状态
-                slOrder.setSpellGroupStatus(1);
-            }
-        }
+        // 如果是拼团订单 TODO 改成支付完成后处理拼团状态
+//        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
+//            // 查询该订单号的所有订单 && 支付成功状态
+//            int count2 = this.orderService.selectCount(new SlOrder() {{
+//                setSerialNumber(serialNumber);
+//                setPaymentState(1);
+//            }});
+//            // 如果单数 + 他自己 <=所需人数
+//            if (count2 + 1 <= activityProduct.getPeopleNum()) {
+//                // 拼团状态为拼团中状态
+//                slOrder.setSpellGroupStatus(1);
+//            }
+//        }
         // 该商品的规格价格 * 加入购物车中的数量 = 该用户本次加入商品的价格
         Double d = repository.getPrice().doubleValue() * quantity;
         BigDecimal money = new BigDecimal(d.toString());
@@ -776,7 +776,7 @@ public class CmOrderService {
                 setSerialNumber(serialNumber);
                 // 商品规格名称
                 setProductDetailGroupName(finalRepository1.getProductDetailGroupName());
-                if (slProduct.getSalesModeId().equals(SalesModeConstant.SALES_MODE_GROUP)) {
+                if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
                     // 拼团所需人数
                     setGroupPeople(activityProduct.getPeopleNum());
                 }
@@ -992,7 +992,6 @@ public class CmOrderService {
                         mapList.add(map);
                     }
                 }
-
                 message.setMsg("查询成功");
                 message.setSuccess(true);
                 message.setData(new PageInfo<>(mapList));
