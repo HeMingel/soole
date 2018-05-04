@@ -1,9 +1,8 @@
 package com.songpo.searched.controller;
 
 
+import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.CMSlOrderDetail;
-import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.service.CmOrderService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Api(description = "订单管理")
 @RestController
@@ -262,7 +262,64 @@ public class CmOrderController {
         return message;
     }
 
+    /**
+     * 微信App预下单
+     *
+     * @param productName 商品名称
+     * @return 预下单信息
+     */
+    @PostMapping("wechat-app-pay-test")
+    public BusinessMessage<Map<String, String>> wechatAppPayTest(HttpServletRequest req, String productName) {
+        log.debug("微信App下单，productName = {}", productName);
+        BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
+        try {
+            message.setData(this.cmOrderService.wechatAppPayTest(req, productName));
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("微信App下单失败，{}", e);
+        }
+        return message;
+    }
 
+    /**
+     * 支付宝App预下单
+     *
+     * @param productName 商品名称
+     * @return 预下单信息
+     */
+    @PostMapping("alipay-app-pay-test")
+    public BusinessMessage<String> alipayAppPayTest(String productName) {
+        log.debug("支付宝App下单，productName = {}", productName);
+        BusinessMessage<String> message = new BusinessMessage<>();
+        try {
+            message.setData(this.cmOrderService.alipayAppPayTest(productName));
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("支付宝App下单失败，{}", e);
+        }
+        return message;
+    }
 
+    /**
+     * 支付宝H5预下单
+     *
+     * @param productName 商品名称
+     * @return 预下单信息
+     */
+    @PostMapping("alipay-h5-pay-test")
+    public BusinessMessage<AlipayTradeWapPayResponse> alipayH5PayTest(String productName) {
+        log.debug("支付宝H5下单，productName = {}", productName);
+        BusinessMessage<AlipayTradeWapPayResponse> message = new BusinessMessage<>();
+        try {
+            message.setData(this.cmOrderService.alipayH5PayTest(productName));
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("支付宝H5下单失败，{}", e);
+        }
+        return message;
+    }
 
 }
