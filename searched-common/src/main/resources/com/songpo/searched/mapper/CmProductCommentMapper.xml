@@ -39,7 +39,7 @@
     <select id="goodsCommentsNum" resultType="Map">
         SELECT
         pc.status,
-        COUNT(*)
+        COUNT(*) as num
       FROM
         sl_product_comment pc
       WHERE pc.`product_id` = #{goodsId}

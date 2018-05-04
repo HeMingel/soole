@@ -3,6 +3,7 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
@@ -136,7 +137,7 @@ public class CmShopService {
 
                 data.put("shopDetail",shop);
                 data.put("collectionNum",count);
-                data.put("goodsInfo",goodsList);
+                data.put("goodsInfo",new PageInfo<>(goodsList));
                 data.put("lookNum",lookNum);
 
                 businessMessage.setData(data);
