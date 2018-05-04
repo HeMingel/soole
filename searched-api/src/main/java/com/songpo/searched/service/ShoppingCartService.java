@@ -41,15 +41,23 @@ public class ShoppingCartService {
             CMShoppingCart shoppingCart = this.cache.get(user.getId());
             if (!StringUtils.isEmpty(shoppingCart) && shoppingCart.getCarts().size() > 0) {
                 String repositoryId = pojo.getCarts().get(0).getRepositoryId();
-                int count = pojo.getCarts().get(0).getCounts();
-                for (CMGoods goods : shoppingCart.getCarts()) {
-                    if (goods.getRepositoryId().equals(repositoryId)) {
-                        pojo.getCarts().get(0).setCounts(count + goods.getCounts());
-                    } else {
-                        pojo.getCarts().add(goods);
+                SlProductRepository repository = productRepositoryService.selectOne(new SlProductRepository() {{
+                    setId(repositoryId);
+                }});
+                if (null != repository) {
+                    int count = pojo.getCarts().get(0).getCounts();
+                    for (CMGoods goods : shoppingCart.getCarts()) {
+                        if (goods.getRepositoryId().equals(repositoryId)) {
+                            pojo.getCarts().get(0).setCounts(count + goods.getCounts());
+                        } else {
+                            pojo.getCarts().add(goods);
+                        }
                     }
+                    this.cache.put(user.getId(), pojo);
+                } else {
+                    message.setMsg("该商品规格不存在");
+                    return message;
                 }
-                this.cache.put(user.getId(), pojo);
             } else {
                 this.cache.put(user.getId(), pojo);
             }
@@ -113,45 +121,58 @@ public class ShoppingCartService {
                         CMShoppingCart cart = new CMShoppingCart();
                         SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                             setId(sc.getRepositoryId());
-                            setProductId(sc.getGoodId());
                         }});
-                        SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
-                            setId(repository.getProductId());
-                            setSoldOut(true);
-                        }});
-                        SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
-                            setProductId(slProduct.getId());
-                            setActivityId(sc.getActivityId());
-                        }});
-                        if (null != slProduct) {
-                            cmGoods = new CMGoods();
-                            SlShop slShop = this.shopService.selectOne(new SlShop() {{
-                                setId(slProduct.getShopId());
+                        if (null != repository) {
+                            SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
+                                setId(repository.getProductId());
                             }});
-                            cmGoods.setGoodName(slProduct.getName());// 商品名称
-                            cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
-                            cmGoods.setGoodId(slProduct.getId());//商品id
-                            cmGoods.setRepositoryId(repository.getId());//规格id
-                            cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
-                            cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
-                            cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
-                            cmGoods.setPrice(repository.getPrice());// 商品价格
-                            cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
-                            cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
-                            cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
-                            cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
-                            cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
-                            cmGoods.setShopId(sc.getShopId());// 店铺id
-                            cmGoods.setShopName(slShop.getName());// 店铺名称
-                            cmGoods.setRestrictCount(activityProduct.getRestrictCount());//限制购买数量
-                            cmGoods.setActivityId(activityProduct.getActivityId());// 活动id
-                            cmGoods.setPostAge(slProduct.getPostage());//邮费
-                            cmGoods.setActivityProductId(activityProduct.getId());//活动商品id
-                            goodsList.add(cmGoods);
-                            cart.setShopId(slShop.getId());
-                            cart.setShopName(slShop.getName());
-                            cart.setCarts(goodsList);
-                            list.add(cart);
+                            if (null != slProduct) {
+                                SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                                    setProductId(slProduct.getId());
+                                    setActivityId(sc.getActivityId());
+                                }});
+                                if (null != activityProduct) {
+                                    cmGoods = new CMGoods();
+                                    SlShop slShop = this.shopService.selectOne(new SlShop() {{
+                                        setId(slProduct.getShopId());
+                                    }});
+                                    cmGoods.setGoodName(slProduct.getName());// 商品名称
+                                    cmGoods.setCounts(sc.getCounts());// 加入购物车商品的数量
+                                    cmGoods.setGoodId(slProduct.getId());//商品id
+                                    cmGoods.setRepositoryId(repository.getId());//规格id
+                                    cmGoods.setImageUrl(slProduct.getImageUrl()); // 商品图片
+                                    cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
+                                    cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
+                                    cmGoods.setPrice(repository.getPrice());// 商品价格
+                                    cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
+                                    cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
+                                    cmGoods.setSoldOut(slProduct.getSoldOut());// 商品是否下架 true:已下架前台就显示失效  false:未下架
+                                    cmGoods.setRebatePulse(repository.getPlaceOrderReturnPulse());// 纯金钱商品返了豆数量
+                                    cmGoods.setMyBeansCounts(user.getCoin() + user.getSilver()); // 我剩余豆子总和金豆加银豆
+                                    cmGoods.setShopId(sc.getShopId());// 店铺id
+                                    cmGoods.setShopName(slShop.getName());// 店铺名称
+                                    cmGoods.setRestrictCount(activityProduct.getRestrictCount());//限制购买数量
+                                    cmGoods.setActivityId(activityProduct.getActivityId());// 活动id
+                                    cmGoods.setPostAge(slProduct.getPostage());//邮费
+                                    cmGoods.setActivityProductId(activityProduct.getId());//活动商品id
+                                    goodsList.add(cmGoods);
+                                    cart.setShopId(slShop.getId());
+                                    cart.setShopName(slShop.getName());
+                                    cart.setCarts(goodsList);
+                                    list.add(cart);
+                                } else {
+                                    message.setMsg("活动商品不存在");
+                                    return message;
+                                }
+                            } else {
+                                message.setMsg("商品不存在");
+                                return message;
+                            }
+                        } else {
+                            // 加入购物车中的商品如果查不到的话就把这个规格id删除掉
+                            System.err.println(sc.getRepositoryId());
+                            String[] str = new String[]{sc.getRepositoryId()};
+                            deleteMyShoppingCart(str);
                         }
                     }
                 }
