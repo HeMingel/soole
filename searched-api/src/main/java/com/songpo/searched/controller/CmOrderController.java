@@ -28,8 +28,8 @@ public class CmOrderController {
     /**
      * 多商品订单
      *
-     * @param slOrder
-     * @param cmSlOrderDetail
+     * @param shippingAddressId
+     * @param detail
      * @return
      */
     @ApiOperation(value = "多商品下单", authorizations = {
