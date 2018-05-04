@@ -414,7 +414,7 @@ class WxPayService(val config: WxPayConfigProperties) {
      * @return 响应信息
      */
     fun unifiedOrderByWeChatPublic(device_info: String?, body: String, detail: String?, attach: String?,
-                                   out_trade_no: String, fee_type: String?, total_fee: String, spbill_create_ip: String, time_start: String?, time_expire: String?, goods_tag: String?,
+                                   out_trade_no: String, fee_type: String?, total_fee: String, spbill_create_ip: String?, time_start: String?, time_expire: String?, goods_tag: String?,
                                    notify_url: String?, product_id: String?, limit_pay: String?, openid: String, scene_info: String?): Map<String, String>? {
         val data = HashMap<String, String>()
         if (!device_info.isNullOrBlank()) {
@@ -441,7 +441,7 @@ class WxPayService(val config: WxPayConfigProperties) {
 
         data.put("total_fee", total_fee)
 
-        data.put("spbill_create_ip", spbill_create_ip)
+        data.put("spbill_create_ip", spbill_create_ip!!)
 
         if (!time_start.isNullOrBlank()) {
             data.put("time_start", time_start!!)

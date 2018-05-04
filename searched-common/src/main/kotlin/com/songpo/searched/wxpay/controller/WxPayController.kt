@@ -271,6 +271,7 @@ class WxPayController(val wxPayService: WxPayService) {
         ApiImplicitParam(name = "out_trade_no", value = "商户订单号\t是 \tString(32) \t20150806125346 \t商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号", paramType = "form", required = true),
         ApiImplicitParam(name = "fee_type", value = "货币类型 \t否 \tString(16) \tCNY \t符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型", paramType = "form", required = false),
         ApiImplicitParam(name = "total_fee", value = "总金额 \t是 \tInt \t888 \t订单总金额，单位为分，详见支付金额", paramType = "form", required = false),
+        ApiImplicitParam(name = "clientIp", value = "客户端IP", paramType = "form", required = false),
         ApiImplicitParam(name = "time_start", value = "交易起始时间 \t否 \tString(14) \t20091225091010 \t订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则", paramType = "form", required = false),
         ApiImplicitParam(name = "time_expire", value = "交易结束时间 \t否 \tString(14) \t20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟", paramType = "form", required = false),
         ApiImplicitParam(name = "goods_tag", value = "订单优惠标记 \t否 \tString(32) \tWXG \t订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠", paramType = "form", required = false),
@@ -282,7 +283,7 @@ class WxPayController(val wxPayService: WxPayService) {
     ])
     @PostMapping("/unified-order-wechat-public")
     fun unifiedOrderByWeChatPublic(request: HttpServletRequest, device_info: String?, body: String, detail: String?,
-                                   attach: String?, out_trade_no: String, fee_type: String?, total_fee: String,
+                                   attach: String?, out_trade_no: String, fee_type: String?, total_fee: String, clientIp: String?,
                                    time_start: String?, time_expire: String?, goods_tag: String?, notify_url: String?, product_id: String?,
                                    limit_pay: String?, openid: String, scene_info: String?): BusinessMessage<Map<String, String>> {
         log.debug {
@@ -294,8 +295,11 @@ class WxPayController(val wxPayService: WxPayService) {
         }
         val message = BusinessMessage<Map<String, String>>()
         try {
-            val clientIp = ClientIPUtil.getClientIP(request)
-            message.data = this.wxPayService.unifiedOrderByWeChatPublic(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, clientIp, time_start, time_expire, goods_tag, notify_url, product_id, limit_pay, openid, scene_info)
+            var tempClientIp = clientIp
+            if (tempClientIp.isNullOrBlank()) {
+                tempClientIp = ClientIPUtil.getClientIP(request)
+            }
+            message.data = this.wxPayService.unifiedOrderByWeChatPublic(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, tempClientIp, time_start, time_expire, goods_tag, notify_url, product_id, limit_pay, openid, scene_info)
             message.success = true
         } catch (e: Exception) {
             log.error { "统一下单-JSAPI(公众号)失败，$e" }
@@ -345,6 +349,7 @@ class WxPayController(val wxPayService: WxPayService) {
         ApiImplicitParam(name = "out_trade_no", value = "商户订单号\t是 \tString(32) \t20150806125346 \t商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号", paramType = "form", required = true),
         ApiImplicitParam(name = "fee_type", value = "货币类型 \t否 \tString(16) \tCNY \t符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型", paramType = "form", required = false),
         ApiImplicitParam(name = "total_fee", value = "总金额 \t是 \tInt \t888 \t订单总金额，单位为分，详见支付金额", paramType = "form", required = false),
+        ApiImplicitParam(name = "clientIp", value = "客户端IP", paramType = "form", required = false),
         ApiImplicitParam(name = "time_start", value = "交易起始时间 \t否 \tString(14) \t20091225091010 \t订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则", paramType = "form", required = false),
         ApiImplicitParam(name = "time_expire", value = "交易结束时间 \t否 \tString(14) \t20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟", paramType = "form", required = false),
         ApiImplicitParam(name = "goods_tag", value = "订单优惠标记 \t否 \tString(32) \tWXG \t订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠", paramType = "form", required = false),
@@ -356,20 +361,23 @@ class WxPayController(val wxPayService: WxPayService) {
     ])
     @PostMapping("/unified-order-native")
     fun unifiedOrderByNative(request: HttpServletRequest, device_info: String?, body: String, detail: String?,
-                             attach: String?, out_trade_no: String, fee_type: String?, total_fee: String,
+                             attach: String?, out_trade_no: String, fee_type: String?, total_fee: String, clientIp: String?,
                              time_start: String?, time_expire: String?, goods_tag: String?, notify_url: String?, product_id: String,
                              limit_pay: String?, openid: String?, scene_info: String?): BusinessMessage<Map<String, String>> {
         log.debug {
             "统一下单-JSAPI(公众号)，设备号= [$device_info], 商品描述 = [$body], 商品详情 = [$detail], " +
                     "附加数据 = [$attach], 商户订单号 = [$out_trade_no], 货币类型 = [$fee_type], " +
-                    "总金额 = [$total_fee], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
+                    "总金额 = [$total_fee], 客户端IP = [$clientIp], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
                     "订单优惠标记 = [$goods_tag], 通知地址 = [$notify_url], 商品ID = [$product_id], 指定支付方式 = [$limit_pay], " +
                     "用户标识 = [$openid], 场景信息 = [$scene_info]"
         }
         val message = BusinessMessage<Map<String, String>>()
         try {
-            val clientIp = ClientIPUtil.getClientIP(request)
-            message.data = this.wxPayService.unifiedOrderByNative(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, clientIp, time_start, time_expire, goods_tag, notify_url, product_id, limit_pay, openid, scene_info)
+            var tempClientIp = clientIp
+            if (tempClientIp.isNullOrBlank()) {
+                tempClientIp = ClientIPUtil.getClientIP(request)
+            }
+            message.data = this.wxPayService.unifiedOrderByNative(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, tempClientIp!!, time_start, time_expire, goods_tag, notify_url, product_id, limit_pay, openid, scene_info)
             message.success = true
         } catch (e: Exception) {
             log.error { "统一下单-JSAPI(公众号)失败，$e" }
@@ -391,6 +399,7 @@ class WxPayController(val wxPayService: WxPayService) {
      * @param out_trade_no 商户订单号	是 	String(32) 	20150806125346 	商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号
      * @param fee_type    货币类型 	否 	String(16) 	CNY 	符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型
      * @param total_fee    总金额 	是 	Int 	888 	订单总金额，单位为分，详见支付金额
+     * @param clientIp    客户端IP 	是 	Int 	888 	订单总金额，单位为分，详见支付金额
      * @param time_start    交易起始时间 	否 	String(14) 	20091225091010 	订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
      * @param time_expire    交易结束时间 	否 	String(14) 	20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟
      * @param goods_tag    订单优惠标记 	否 	String(32) 	WXG 	订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠
@@ -413,6 +422,7 @@ class WxPayController(val wxPayService: WxPayService) {
         ApiImplicitParam(name = "out_trade_no", value = "商户订单号\t是 \tString(32) \t20150806125346 \t商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号", paramType = "form", required = true),
         ApiImplicitParam(name = "fee_type", value = "货币类型 \t否 \tString(16) \tCNY \t符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型", paramType = "form", required = false),
         ApiImplicitParam(name = "total_fee", value = "总金额 \t是 \tInt \t888 \t订单总金额，单位为分，详见支付金额", paramType = "form", required = false),
+        ApiImplicitParam(name = "clientIp", value = "客户端IP", paramType = "form", required = false),
         ApiImplicitParam(name = "time_start", value = "交易起始时间 \t否 \tString(14) \t20091225091010 \t订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则", paramType = "form", required = false),
         ApiImplicitParam(name = "time_expire", value = "交易结束时间 \t否 \tString(14) \t20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟", paramType = "form", required = false),
         ApiImplicitParam(name = "goods_tag", value = "订单优惠标记 \t否 \tString(32) \tWXG \t订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠", paramType = "form", required = false),
@@ -422,18 +432,21 @@ class WxPayController(val wxPayService: WxPayService) {
     ])
     @PostMapping("/unified-order-app")
     fun unifiedOrderByApp(request: HttpServletRequest, device_info: String?, body: String, detail: String?, attach: String?,
-                          out_trade_no: String, fee_type: String?, total_fee: String, time_start: String?, time_expire: String?, goods_tag: String?,
+                          out_trade_no: String, fee_type: String?, total_fee: String, clientIp: String?, time_start: String?, time_expire: String?, goods_tag: String?,
                           notify_url: String?, limit_pay: String?, scene_info: String?): BusinessMessage<Map<String, String>> {
         log.debug {
             "统一下单-APP，设备号= [$device_info], 商品描述 = [$body], 商品详情 = [$detail], " +
                     "附加数据 = [$attach], 商户订单号 = [$out_trade_no], 货币类型 = [$fee_type], " +
-                    "总金额 = [$total_fee], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
+                    "总金额 = [$total_fee], 客户端IP = [$clientIp], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
                     "订单优惠标记 = [$goods_tag], 通知地址 = [$notify_url], 指定支付方式 = [$limit_pay], 场景信息 = [$scene_info]"
         }
         val message = BusinessMessage<Map<String, String>>()
         try {
-            val clientIp = ClientIPUtil.getClientIP(request)
-            message.data = this.wxPayService.unifiedOrderByApp(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, clientIp, time_start, time_expire, goods_tag, notify_url, limit_pay, scene_info)
+            var tempClientIp = clientIp
+            if (tempClientIp.isNullOrBlank()) {
+                tempClientIp = ClientIPUtil.getClientIP(request)
+            }
+            message.data = this.wxPayService.unifiedOrderByApp(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, tempClientIp!!, time_start, time_expire, goods_tag, notify_url, limit_pay, scene_info)
             message.success = true
         } catch (e: Exception) {
             log.error { "统一下单-APP失败，$e" }
@@ -455,6 +468,7 @@ class WxPayController(val wxPayService: WxPayService) {
      * @param out_trade_no 商户订单号	是 	String(32) 	20150806125346 	商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号
      * @param fee_type    货币类型 	否 	String(16) 	CNY 	符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型
      * @param total_fee    总金额 	是 	Int 	888 	订单总金额，单位为分，详见支付金额
+     * @param clientIp    客户端IP
      * @param time_start    交易起始时间 	否 	String(14) 	20091225091010 	订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
      * @param time_expire    交易结束时间 	否 	String(14) 	20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟
      * @param goods_tag    订单优惠标记 	否 	String(32) 	WXG 	订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠
@@ -495,6 +509,7 @@ class WxPayController(val wxPayService: WxPayService) {
         ApiImplicitParam(name = "out_trade_no", value = "商户订单号\t是 \tString(32) \t20150806125346 \t商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号", paramType = "form", required = true),
         ApiImplicitParam(name = "fee_type", value = "货币类型 \t否 \tString(16) \tCNY \t符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型", paramType = "form", required = false),
         ApiImplicitParam(name = "total_fee", value = "总金额 \t是 \tInt \t888 \t订单总金额，单位为分，详见支付金额", paramType = "form", required = false),
+        ApiImplicitParam(name = "clientIp", value = "客户端IP \t否 \tString(14) \t20091225091010 \t订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则", paramType = "form", required = false),
         ApiImplicitParam(name = "time_start", value = "交易起始时间 \t否 \tString(14) \t20091225091010 \t订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则", paramType = "form", required = false),
         ApiImplicitParam(name = "time_expire", value = "交易结束时间 \t否 \tString(14) \t20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟", paramType = "form", required = false),
         ApiImplicitParam(name = "goods_tag", value = "订单优惠标记 \t否 \tString(32) \tWXG \t订单优惠标记，代金券或立减优惠功能的参数，说明详见代金券或立减优惠", paramType = "form", required = false),
@@ -505,18 +520,21 @@ class WxPayController(val wxPayService: WxPayService) {
     ])
     @PostMapping("/unified-order-h5")
     fun unifiedOrderByH5(request: HttpServletRequest, device_info: String?, body: String, detail: String?, attach: String?,
-                         out_trade_no: String, fee_type: String?, total_fee: String, time_start: String?, time_expire: String?, goods_tag: String?,
+                         out_trade_no: String, fee_type: String?, total_fee: String, clientIp: String?, time_start: String?, time_expire: String?, goods_tag: String?,
                          notify_url: String?, limit_pay: String?, openid: String?, scene_info: String): BusinessMessage<Map<String, String>> {
         log.debug {
             "统一下单-H5，设备号= [$device_info], 商品描述 = [$body], 商品详情 = [$detail], " +
                     "附加数据 = [$attach], 商户订单号 = [$out_trade_no], 货币类型 = [$fee_type], " +
-                    "总金额 = [$total_fee], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
+                    "总金额 = [$total_fee], 客户端IP = [$clientIp], 交易起始时间 = [$time_start], 交易结束时间 = [$time_expire], " +
                     "订单优惠标记 = [$goods_tag], 通知地址 = [$notify_url], 指定支付方式 = [$limit_pay], 场景信息 = [$scene_info]"
         }
         val message = BusinessMessage<Map<String, String>>()
         try {
-            val clientIp = ClientIPUtil.getClientIP(request)
-            message.data = this.wxPayService.unifiedOrderByH5(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, clientIp, time_start, time_expire, goods_tag, notify_url, limit_pay, openid, scene_info)
+            var tempClientIp = clientIp
+            if (tempClientIp.isNullOrBlank()) {
+                tempClientIp = ClientIPUtil.getClientIP(request)
+            }
+            message.data = this.wxPayService.unifiedOrderByH5(device_info, body, detail, attach, out_trade_no, fee_type, total_fee, tempClientIp!!, time_start, time_expire, goods_tag, notify_url, limit_pay, openid, scene_info)
             message.success = true
         } catch (e: Exception) {
             log.error { "统一下单-H5失败，$e" }
