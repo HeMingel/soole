@@ -14,6 +14,7 @@ import com.songpo.searched.typehandler.ProductEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,21 +92,24 @@ public class CustomerClientHomeService {
         data.put("productTypes", productTypes);
 
         // 获取广告轮播图列表
-        List<SlActionNavigation> bannerList = this.actionNavigationService.select(new SlActionNavigation() {{
-            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_BANNER.getValue());
-        }});
+        Example bannerExample = new Example(SlActionNavigation.class);
+        bannerExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_BANNER.getValue());
+        bannerExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> bannerList = this.actionNavigationService.selectByExample(bannerExample);
         data.put("banners", bannerList);
 
         // 获取入口列表
-        List<SlActionNavigation> gatewayList = this.actionNavigationService.select(new SlActionNavigation() {{
-            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_GATEWAY.getValue());
-        }});
+        Example gatewayExample = new Example(SlActionNavigation.class);
+        gatewayExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_GATEWAY.getValue());
+        gatewayExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> gatewayList = this.actionNavigationService.selectByExample(gatewayExample);
         data.put("gateways", gatewayList);
 
         // 获取活动列表
-        List<SlActionNavigation> actionList = this.actionNavigationService.select(new SlActionNavigation() {{
-            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTION.getValue());
-        }});
+        Example actionExample = new Example(SlActionNavigation.class);
+        actionExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTION.getValue());
+        actionExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> actionList = this.actionNavigationService.selectByExample(actionExample);
         data.put("actions", actionList);
 
         // 获取推荐商品列表
@@ -115,16 +119,18 @@ public class CustomerClientHomeService {
         data.put("products", productList);
 
         // 获取首页视频信息
-        List<SlActionNavigation> videoList = this.actionNavigationService.select(new SlActionNavigation() {{
-            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO.getValue());
-        }});
+        Example videoExample = new Example(SlActionNavigation.class);
+        videoExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO.getValue());
+        videoExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> videoList = this.actionNavigationService.selectByExample(videoExample);
         data.put("videoInfo", videoList.size() > 0 ? videoList.get(0) : "");
         data.put("videoInfos", videoList);
 
         // 获取直播列表
-        List<SlActionNavigation> videoLiveList = this.actionNavigationService.select(new SlActionNavigation() {{
-            setType(ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO_LIVE.getValue());
-        }});
+        Example videoLiveExample = new Example(SlActionNavigation.class);
+        videoLiveExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO_LIVE.getValue());
+        videoLiveExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> videoLiveList = this.actionNavigationService.selectByExample(videoLiveExample);
         data.put("videoLives", videoLiveList);
 
         // 获取热词

@@ -16,6 +16,7 @@ repositories {
 dependencies {
 
     // Kotlin编译插件
+    compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
