@@ -157,6 +157,17 @@
         LIMIT 3
     </select>
 
+    <select id="selectCustomerService" parameterType="String" resultType="Map">
+
+        SELECT
+           u.`id`,u.`avatar`,u.`nick_name`,u.`username`
+        FROM
+          sl_shop s
+          LEFT JOIN sl_user u
+          ON s.`owner_id` = u.`id`
+          WHERE s.`id` =#{shopId}
+    </select>
+
     <!--根据商品名称查询商品-->
     <select id="selectByName" resultType="Map" parameterType="String">
         SELECT
