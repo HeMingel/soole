@@ -39,6 +39,7 @@ class AlipayController(val alipayService: AliPayService) {
     @ApiOperation(value = "加载支付配置", notes = "在线重新加载支付配置信息，可以有效的解决因为配置文件错误而调整配置文件需要重启服务的问题")
     @ApiImplicitParams(value = [
         ApiImplicitParam(name = "serverUrl", value = "支付宝网关\n - 生产环境：https://openapi.alipay.com/gateway.do\n- 开发环境：https://openapi.alipaydev.com/gateway.do", paramType = "form", required = true),
+        ApiImplicitParam(name = "pid", value = "合作伙伴身份标识", paramType = "form", required = true),
         ApiImplicitParam(name = "appId", value = "APPID", paramType = "form", required = true),
         ApiImplicitParam(name = "privateKey", value = "商户私钥", paramType = "form", required = true),
         ApiImplicitParam(name = "format", value = "数据格式，仅支持JSON", paramType = "form", required = true),
@@ -51,6 +52,7 @@ class AlipayController(val alipayService: AliPayService) {
     @PostMapping("/load-config")
     fun loadConfig(
             serverUrl: String,
+            pid: String,
             appId: String,
             privateKey: String,
             format: String,
@@ -62,7 +64,8 @@ class AlipayController(val alipayService: AliPayService) {
     ): BusinessMessage<Void> {
         log.debug {
             "加载支付配置, 支付宝网关 = [$serverUrl], " +
-                    "商户号 = [$appId], " +
+                    "合作伙伴身份标识 = [$pid], " +
+                    "应用标识 = [$appId], " +
                     "商户私钥 = [$privateKey], " +
                     "数据格式 = [$format], " +
                     "用户取消支付后跳转的地址 = [$returnUrl], " +
@@ -73,7 +76,7 @@ class AlipayController(val alipayService: AliPayService) {
         }
         val message = BusinessMessage<Void>()
         try {
-            this.alipayService.loadConfig(serverUrl, appId, privateKey, format, returnUrl, notifyUrl, charset, alipayPublicKey, signType)
+            this.alipayService.loadConfig(serverUrl, pid, appId, privateKey, format, returnUrl, notifyUrl, charset, alipayPublicKey, signType)
             message.success = true
         } catch (e: Exception) {
             log.error { "加载支付配置失败，$e" }
@@ -594,7 +597,7 @@ class AlipayController(val alipayService: AliPayService) {
             invoiceInfo: InvoiceInfo?,
             extUserInfo: ExtUserInfo?,
             businessParams: String?
-    ): BusinessMessage<AlipayTradeAppPayResponse> {
+    ): BusinessMessage<String> {
         log.debug {
             "app支付接口2.0，" +
                     "该笔订单允许的最晚付款时间= [$timeoutExpress], " +
@@ -620,7 +623,7 @@ class AlipayController(val alipayService: AliPayService) {
                     "外部指定买家 = [$extUserInfo], " +
                     "商户传入业务信息 = [$businessParams]"
         }
-        val message = BusinessMessage<AlipayTradeAppPayResponse>()
+        val message = BusinessMessage<String>()
         try {
             message.data = this.alipayService.appPay(timeoutExpress,
                     totalAmount,
@@ -646,6 +649,7 @@ class AlipayController(val alipayService: AliPayService) {
                     businessParams)
             message.success = true
         } catch (e: Exception) {
+            e.printStackTrace()
             log.error { "app支付接口2.0接口失败，$e" }
             message.msg = "app支付接口2.0接口失败，${e.message}"
         }
@@ -763,6 +767,7 @@ class AlipayController(val alipayService: AliPayService) {
                     extUserInfo)
             message.success = true
         } catch (e: Exception) {
+            e.printStackTrace()
             log.error { "手机网站支付接口2.0接口失败，$e" }
             message.msg = "手机网站支付接口2.0接口失败，${e.message}"
         }
