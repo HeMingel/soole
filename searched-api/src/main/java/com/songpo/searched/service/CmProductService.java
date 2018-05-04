@@ -278,8 +278,9 @@ public class CmProductService {
                 //商品评论
                 List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, 1);
                 if (mapComments.size() > 0) {
-                    List<Map<String,Object>> commentsNum = this.cmProductCommentMapper.goodsCommentsNum(goodsId);
-                    data.put("productCommentsNum",commentsNum);
+                    //查询商品评论图片
+                    List<Map<String,Object>> commentsNum = this.cmProductCommentMapper.commentImages(goodsId);
+                        data.put("productCommentsNum",commentsNum);
                     data.put("productComments", mapComments);
                 }
                 //   查询拼团信息
@@ -333,6 +334,10 @@ public class CmProductService {
 
                 }
 
+                //查询客服信息(店铺主人的 id username 昵称 头像)
+                //根据商铺ID
+                Map<String,String> customer = this.mapper.selectCustomerService(goodsBaseInfo.get("shop_id").toString());
+                data.put("custmerService",customer);
                 businessMessage.setMsg("查询完毕");
                 businessMessage.setSuccess(true);
                 businessMessage.setData(data);

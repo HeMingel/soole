@@ -78,6 +78,13 @@ public interface CmProductMapper{
      * @return 头像列表
      */
     List<Map<String, Object>> selectGroupAvatar(String goodsId);
+
+    /**
+     * 查询客服
+     * @param shopId 商店ID
+     * @return 客服信息
+     */
+    Map<String,String> selectCustomerService(String shopId);
     /**
      * 根据名称查询商品
      * @param goodsName 商品名称
