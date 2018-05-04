@@ -1,11 +1,18 @@
 package com.songpo.searched.alipay.service
 
+import com.alipay.api.AlipayApiException
+import com.alipay.api.AlipayConstants
+import com.alipay.api.AlipayRequest
 import com.alipay.api.DefaultAlipayClient
 import com.alipay.api.domain.*
+import com.alipay.api.internal.util.*
+import com.alipay.api.internal.util.json.JSONWriter
 import com.alipay.api.request.*
 import com.alipay.api.response.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 支付宝支付服务集成实现
@@ -18,6 +25,12 @@ class AliPayService {
      */
     @Value(value = "\${sp.pay.alipay.server-url}")
     var serverUrl: String = ""
+
+    /**
+     * 合作伙伴标识
+     */
+    @Value(value = "\${sp.pay.alipay.pid}")
+    var pid: String = ""
 
     /**
      * 商户号
@@ -72,6 +85,7 @@ class AliPayService {
      *
      * @param serverUrl 支付宝网关
      * @param appId APPID
+     * @param pid 合作伙伴标识
      * @param privateKey 商户私钥
      * @param format 数据格式
      * @param returnUrl 用户取消支付后跳转的地址
@@ -83,6 +97,7 @@ class AliPayService {
      */
     fun loadConfig(serverUrl: String,
                    appId: String,
+                   pid: String,
                    privateKey: String,
                    format: String?,
                    returnUrl: String?,
@@ -92,6 +107,7 @@ class AliPayService {
                    signType: String) {
         this.serverUrl = serverUrl
         this.appId = appId
+        this.pid = pid
         this.privateKey = privateKey
         this.format = format
         this.returnUrl = returnUrl
@@ -874,7 +890,7 @@ class AliPayService {
             invoiceInfo: InvoiceInfo?,
             extUserInfo: ExtUserInfo?,
             businessParams: String?
-    ): AlipayTradeAppPayResponse? {
+    ): String? {
         // 初始化预下单请求
         val request = AlipayTradeAppPayRequest()
 
@@ -976,7 +992,13 @@ class AliPayService {
         if (!businessParams.isNullOrBlank()) {
             model.businessParams = businessParams
         }
-        return client().execute(request)
+
+        val holder = this.getRequestHolderWithSign(request)
+        val data = sortedMapOf<String, String>()
+        data.putAll(holder.applicationParams)
+        data.putAll(holder.protocalMustParams)
+        data.putAll(holder.protocalOptParams)
+        return data.map { entry -> "${entry.key}=${entry.value}" }.joinToString("&")
     }
 
     /**
@@ -1003,6 +1025,73 @@ class AliPayService {
         }
 
         return client().execute(request)
+    }
+
+    /**
+     * 组装接口参数，处理加密、签名逻辑
+     *
+     * @param request
+     * @param accessToken
+     * @param appAuthToken
+     * @return
+     * @throws AlipayApiException
+     */
+    @Throws(AlipayApiException::class)
+    private fun getRequestHolderWithSign(request: AlipayRequest<*>): RequestParametersHolder {
+        val requestHolder = RequestParametersHolder()
+        val appParams = AlipayHashMap(request.textParams)
+
+        // 仅当API包含biz_content参数且值为空时，序列化bizModel填充bizContent
+        try {
+            if (request.javaClass.getMethod("getBizContent") != null
+                    && StringUtils.isEmpty(appParams[AlipayConstants.BIZ_CONTENT_KEY])
+                    && request.bizModel != null) {
+                appParams[AlipayConstants.BIZ_CONTENT_KEY] = JSONWriter().write(request.bizModel, true)
+            }
+        } catch (e: NoSuchMethodException) {
+            // 找不到getBizContent则什么都不做
+        } catch (e: SecurityException) {
+            AlipayLogger.logBizError(e)
+        }
+
+        requestHolder.applicationParams = appParams
+
+        if (StringUtils.isEmpty(this.charset)) {
+            this.charset = AlipayConstants.CHARSET_UTF8
+        }
+
+        val protocalMustParams = AlipayHashMap()
+        protocalMustParams[AlipayConstants.METHOD] = request.apiMethodName
+        protocalMustParams[AlipayConstants.VERSION] = request.apiVersion
+        protocalMustParams[AlipayConstants.APP_ID] = this.appId
+        protocalMustParams[AlipayConstants.SIGN_TYPE] = this.signType
+        protocalMustParams[AlipayConstants.TERMINAL_TYPE] = request.terminalType
+        protocalMustParams[AlipayConstants.TERMINAL_INFO] = request.terminalInfo
+        protocalMustParams[AlipayConstants.NOTIFY_URL] = request.notifyUrl
+        protocalMustParams[AlipayConstants.RETURN_URL] = request.returnUrl
+        protocalMustParams[AlipayConstants.CHARSET] = this.charset
+
+        val timestamp = System.currentTimeMillis()
+        val df = SimpleDateFormat(AlipayConstants.DATE_TIME_FORMAT)
+        df.timeZone = TimeZone.getTimeZone(AlipayConstants.DATE_TIMEZONE)
+        protocalMustParams[AlipayConstants.TIMESTAMP] = df.format(Date(timestamp))
+        requestHolder.protocalMustParams = protocalMustParams
+
+        val protocalOptParams = AlipayHashMap()
+        protocalOptParams[AlipayConstants.FORMAT] = format
+        protocalOptParams[AlipayConstants.ALIPAY_SDK] = AlipayConstants.SDK_VERSION
+        protocalOptParams[AlipayConstants.PROD_CODE] = request.prodCode
+        requestHolder.protocalOptParams = protocalOptParams
+
+        if (!StringUtils.isEmpty(this.signType)) {
+
+            val signContent = AlipaySignature.getSignatureContent(requestHolder)
+            protocalMustParams[AlipayConstants.SIGN] = AlipaySignature.rsaSign(signContent, privateKey, this.charset, this.signType)
+
+        } else {
+            protocalMustParams[AlipayConstants.SIGN] = ""
+        }
+        return requestHolder
     }
 
 }
