@@ -897,7 +897,7 @@ public class CmOrderService {
                 }
                 // 设置分页参数
                 PageHelper.startPage(pageNum, pageSize);
-                List<SlReturnsDetail> list = this.cmOrderMapper.selectReturnsDetail(status, false, user.getId());
+                List<SlReturnsDetail> list = this.cmOrderMapper.selectReturnsDetail(status, user.getId());
                 List<Map<String, Object>> mapList = new ArrayList<>();
                 for (SlReturnsDetail returnsDetail : list) {
                     if (null != status && status == 2) {
@@ -1074,12 +1074,6 @@ public class CmOrderService {
                 if (list.size() > 0) {
                     //如果本次确认收货的预售订单==最后一次返现的预售订单id
                     if (list.get(0).getId().equals(returnsDetailId)) {
-                        //把本期的确认收货
-                        this.returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
-                            setId(returnsDetailId);
-                            //本期已返状态
-                            setConfirmReceipt(true);
-                        }});
                         this.orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
                             setId(detail.getId());
                             // 已完成/未评价
@@ -1088,8 +1082,8 @@ public class CmOrderService {
                         //把改订单号的所有订单更新为已完成状态
                         this.returnsDetailMapper.updateByExampleSelective(new SlReturnsDetail() {{
                             setReturnedStatus(5);
+                            setConfirmReceipt(false);
                         }}, example);
-
                     } else {
                         this.returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
                             setId(returnsDetailId);

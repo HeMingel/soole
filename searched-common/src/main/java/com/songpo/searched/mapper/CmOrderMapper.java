@@ -30,5 +30,5 @@ public interface CmOrderMapper {
 
     Map<String,Object> selectShopUserName(String shopId);
 
-    List<SlReturnsDetail> selectReturnsDetail(@Param("status")Integer status,@Param("b") boolean b, @Param("userId")String userId);
+    List<SlReturnsDetail> selectReturnsDetail(@Param("status")Integer status, @Param("userId")String userId);
 }
