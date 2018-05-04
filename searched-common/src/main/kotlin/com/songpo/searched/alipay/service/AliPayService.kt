@@ -797,7 +797,7 @@ class AliPayService {
             model.extUserInfo = extUserInfo
         }
 
-        return client().execute(request)
+        return client().pageExecute(request)
     }
 
     /**
