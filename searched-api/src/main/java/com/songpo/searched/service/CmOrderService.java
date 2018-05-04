@@ -1,7 +1,9 @@
 package com.songpo.searched.service;
 
+import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
@@ -9,13 +11,14 @@ import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.domain.CMSlOrderDetail;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
+import com.songpo.searched.wxpay.service.WxPayService;
+import com.songpo.searched.wxpay.util.ClientIPUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,12 @@ public class CmOrderService {
     private NotificationService notificationService;
     @Autowired
     private SlMessageMapper messageMapper;
+
+    @Autowired
+    private WxPayService wxPayService;
+
+    @Autowired
+    private AliPayService aliPayService;
 
     /**
      * 多商品下单
@@ -1103,5 +1112,17 @@ public class CmOrderService {
             log.error("预售订单确认收货失败", e);
         }
         return message;
+    }
+
+    public Map<String, String> wechatAppPayTest(HttpServletRequest req, String productName) {
+        return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+    }
+
+    public String alipayAppPayTest(String productName) {
+        return this.aliPayService.appPay("", "0.01", "", "", productName, "", OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+    }
+
+    public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
+        return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 }
