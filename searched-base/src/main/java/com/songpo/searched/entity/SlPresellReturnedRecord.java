@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_presell_returned_record")
 public class SlPresellReturnedRecord implements Serializable {
@@ -65,6 +65,12 @@ public class SlPresellReturnedRecord implements Serializable {
      */
     @Column(name = "everyday_money")
     private BigDecimal everydayMoney;
+
+    /**
+     * 期数计数
+     */
+    @Column(name = "number_of_periods")
+    private Integer numberOfPeriods;
 
     private static final long serialVersionUID = 1L;
 
@@ -248,6 +254,24 @@ public class SlPresellReturnedRecord implements Serializable {
         this.everydayMoney = everydayMoney;
     }
 
+    /**
+     * 获取期数计数
+     *
+     * @return number_of_periods - 期数计数
+     */
+    public Integer getNumberOfPeriods() {
+        return numberOfPeriods;
+    }
+
+    /**
+     * 设置期数计数
+     *
+     * @param numberOfPeriods 期数计数
+     */
+    public void setNumberOfPeriods(Integer numberOfPeriods) {
+        this.numberOfPeriods = numberOfPeriods;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -264,6 +288,7 @@ public class SlPresellReturnedRecord implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", awardYear=").append(awardYear);
         sb.append(", everydayMoney=").append(everydayMoney);
+        sb.append(", numberOfPeriods=").append(numberOfPeriods);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -33,9 +33,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, product_type_id, province, city, country, town, street, other_address, 
-    type, real_name, company_name, phone, id_card_number, id_card_front_image_url, id_card_back_image_url, 
-    id_card_hand_image_url, business_check_state, business_image_url, business_create_time,
+    id, user_id, product_type_id, province, city, country, town, street, other_address,
+      type, real_name, company_name, phone, id_card_number, id_card_front_image_url, id_card_back_image_url,
+      id_card_hand_image_url, business_check_state, business_image_url, business_create_time,
       business_check_time, deny_because, status
   </sql>
 </mapper>

@@ -15,10 +15,10 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
+import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
-import com.songpo.searched.wxpay.util.ClientIPUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1123,6 +1123,6 @@ public class CmOrderService {
     }
 
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        return this.aliPayService.wapPay(productName, "", OrderNumGeneration.generateOrderId(), null, null, "0.01", null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
     }
 }

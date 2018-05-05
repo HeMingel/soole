@@ -1,7 +1,6 @@
 package com.songpo.searched.service;
 
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlActivityProduct;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlUser;
@@ -15,7 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 
-public class processOrders {
+public class ProcessOrders {
 
     @Autowired
     private LoginUserService loginUserService;
@@ -28,7 +27,7 @@ public class processOrders {
     @Autowired
     private UserService userService;
 
-    public static final Logger log = LoggerFactory.getLogger(processOrders.class);
+    public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
     /**
      * 支付后订单处理

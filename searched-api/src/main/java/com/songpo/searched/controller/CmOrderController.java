@@ -262,19 +262,26 @@ public class CmOrderController {
         return message;
     }
 
+    ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
+
     /**
      * 微信App预下单
      *
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("wechat-app-pay-test")
+    public BusinessMessage<Map<String, String>> wechatAppPayTestGet(HttpServletRequest req, String productName) {
+        return wechatAppPayTestPost(req, productName);
+    }
+
     @PostMapping("wechat-app-pay-test")
-    public BusinessMessage<Map<String, String>> wechatAppPayTest(HttpServletRequest req, String productName) {
+    public BusinessMessage<Map<String, String>> wechatAppPayTestPost(HttpServletRequest req, String productName) {
         log.debug("微信App下单，productName = {}", productName);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.wechatAppPayTest(req, productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("微信App下单失败，{}", e);
@@ -288,13 +295,18 @@ public class CmOrderController {
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("alipay-app-pay-test")
+    public BusinessMessage<String> alipayAppPayTestGet(String productName) {
+        return alipayAppPayTestPost(productName);
+    }
+
     @PostMapping("alipay-app-pay-test")
-    public BusinessMessage<String> alipayAppPayTest(String productName) {
+    public BusinessMessage<String> alipayAppPayTestPost(String productName) {
         log.debug("支付宝App下单，productName = {}", productName);
         BusinessMessage<String> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.alipayAppPayTest(productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("支付宝App下单失败，{}", e);
@@ -308,18 +320,24 @@ public class CmOrderController {
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("alipay-h5-pay-test")
+    public BusinessMessage<AlipayTradeWapPayResponse> alipayH5PayTestGet(String productName) {
+        return alipayH5PayTestPost(productName);
+    }
+
     @PostMapping("alipay-h5-pay-test")
-    public BusinessMessage<AlipayTradeWapPayResponse> alipayH5PayTest(String productName) {
+    public BusinessMessage<AlipayTradeWapPayResponse> alipayH5PayTestPost(String productName) {
         log.debug("支付宝H5下单，productName = {}", productName);
         BusinessMessage<AlipayTradeWapPayResponse> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.alipayH5PayTest(productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("支付宝H5下单失败，{}", e);
         }
         return message;
     }
+    ///////////////////////////////////////////////// 支付测试结束 /////////////////////////////////////////////////////
 
 }

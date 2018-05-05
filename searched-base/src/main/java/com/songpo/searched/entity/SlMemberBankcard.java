@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_member_bankcard")
 public class SlMemberBankcard implements Serializable {
@@ -55,6 +55,12 @@ public class SlMemberBankcard implements Serializable {
      */
     @Column(name = "is_default")
     private Boolean isDefault;
+
+    /**
+     * 银行id
+     */
+    @Column(name = "bank_list_id")
+    private String bankListId;
 
     private static final long serialVersionUID = 1L;
 
@@ -216,6 +222,24 @@ public class SlMemberBankcard implements Serializable {
         this.isDefault = isDefault;
     }
 
+    /**
+     * 获取银行id
+     *
+     * @return bank_list_id - 银行id
+     */
+    public String getBankListId() {
+        return bankListId;
+    }
+
+    /**
+     * 设置银行id
+     *
+     * @param bankListId 银行id
+     */
+    public void setBankListId(String bankListId) {
+        this.bankListId = bankListId == null ? null : bankListId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -231,6 +255,7 @@ public class SlMemberBankcard implements Serializable {
         sb.append(", openingBank=").append(openingBank);
         sb.append(", affiliatedBank=").append(affiliatedBank);
         sb.append(", isDefault=").append(isDefault);
+        sb.append(", bankListId=").append(bankListId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
