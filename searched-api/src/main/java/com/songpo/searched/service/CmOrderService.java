@@ -1198,12 +1198,12 @@ public class CmOrderService {
         return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
     }
 
-    public String alipayAppPayTest(String productName) {
-        return this.aliPayService.appPay("", "0.01", "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+    public String alipayAppPayTest(String productName, String sellerId) {
+        return this.aliPayService.appPay("", "0.01", sellerId, "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
     }
 
-    public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.01", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    public AlipayTradeWapPayResponse alipayH5PayTest(String productName, String sellerId) {
+        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.01", sellerId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
 
