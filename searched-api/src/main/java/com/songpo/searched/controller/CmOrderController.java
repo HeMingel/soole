@@ -262,19 +262,22 @@ public class CmOrderController {
         return message;
     }
 
+    ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
+
     /**
      * 微信App预下单
      *
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("wechat-app-pay-test")
     @PostMapping("wechat-app-pay-test")
     public BusinessMessage<Map<String, String>> wechatAppPayTest(HttpServletRequest req, String productName) {
         log.debug("微信App下单，productName = {}", productName);
         BusinessMessage<Map<String, String>> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.wechatAppPayTest(req, productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("微信App下单失败，{}", e);
@@ -288,13 +291,14 @@ public class CmOrderController {
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("alipay-app-pay-test")
     @PostMapping("alipay-app-pay-test")
     public BusinessMessage<String> alipayAppPayTest(String productName) {
         log.debug("支付宝App下单，productName = {}", productName);
         BusinessMessage<String> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.alipayAppPayTest(productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("支付宝App下单失败，{}", e);
@@ -308,18 +312,20 @@ public class CmOrderController {
      * @param productName 商品名称
      * @return 预下单信息
      */
+    @GetMapping("alipay-h5-pay-test")
     @PostMapping("alipay-h5-pay-test")
     public BusinessMessage<AlipayTradeWapPayResponse> alipayH5PayTest(String productName) {
         log.debug("支付宝H5下单，productName = {}", productName);
         BusinessMessage<AlipayTradeWapPayResponse> message = new BusinessMessage<>();
         try {
             message.setData(this.cmOrderService.alipayH5PayTest(productName));
-            message.setSuccess(message.getSuccess());
+            message.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("支付宝H5下单失败，{}", e);
         }
         return message;
     }
+    ///////////////////////////////////////////////// 支付测试结束 /////////////////////////////////////////////////////
 
 }
