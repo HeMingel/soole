@@ -18,13 +18,13 @@ public interface CmOrderMapper {
 
     Map<String, Object> selectMyOrderInfo(@Param("userId") String userId, @Param("id") String id);
 
-    Map<String, Object> findActivityProduct(@Param("productId") String productId);
+//    Map<String, Object> findActivityProduct(@Param("productId") String productId);
 
     Integer selectOrdersCount(@Param("productId") String productId, @Param("userId") String userId, @Param("activityProductId") String activityProductId);
 
-    List<String> findProductsRepositoryId(@Param("productId") String productId, @Param("activityId") String activityId);
+//    List<String> findProductsRepositoryId(@Param("productId") String productId, @Param("activityId") String activityId);
 
-    Integer groupOrdersByUser(@Param("productId") String productId, @Param("activityId") String activityId, @Param("userId") String userId);
+//    Integer groupOrdersByUser(@Param("productId") String productId, @Param("activityId") String activityId, @Param("userId") String userId);
 
     SlActivityProduct selectActivityProductByRepositoryId(@Param("repositoryId") String repositoryId, @Param("activityProductId") String activityProductId);
 
