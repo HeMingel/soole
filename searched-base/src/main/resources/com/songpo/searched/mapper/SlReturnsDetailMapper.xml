@@ -15,12 +15,13 @@
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="confirm_receipt" jdbcType="BIT" property="confirmReceipt" />
     <result column="completed" jdbcType="BIT" property="completed" />
+      <result column="number_of_periods" jdbcType="INTEGER" property="numberOfPeriods"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, presell_returned_record_id, user_id, returned_status, create_time, return_time, 
-    return_money, order_id, confirm_receipt, completed
+      id, presell_returned_record_id, user_id, returned_status, create_time, return_time,
+      return_money, order_id, confirm_receipt, completed, number_of_periods
   </sql>
 </mapper>

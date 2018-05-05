@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -30,9 +30,9 @@ public class SlTransactionDetail implements Serializable {
     private String redPacketId;
 
     /**
-     * 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
+     * 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 交易金额
@@ -40,10 +40,26 @@ public class SlTransactionDetail implements Serializable {
     private BigDecimal money;
 
     /**
-     * 交易货币类型  1.余额  2.了豆
+     * 交易金豆数量
+     */
+    private Integer coin;
+
+    /**
+     * 交易银豆数量
+     */
+    private Integer silver;
+
+    /**
+     * 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
      */
     @Column(name = "deal_type")
-    private Boolean dealType;
+    private Integer dealType;
+
+    /**
+     * 交易类型  1.支出  2.收入
+     */
+    @Column(name = "transaction_type")
+    private Integer transactionType;
 
     /**
      * 创建时间
@@ -122,20 +138,20 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
+     * 获取消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      *
-     * @return type - 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
+     * @return type - 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
-    public Boolean getType() {
+    public Integer getType() {
         return type;
     }
 
     /**
-     * 设置消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
+     * 设置消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      *
-     * @param type 消费方式 1.转账 2. 接收转账 3.发红包 4.抢红包  5.红包过期退回
+     * @param type 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
-    public void setType(Boolean type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -158,21 +174,75 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取交易货币类型  1.余额  2.了豆
+     * 获取交易金豆数量
      *
-     * @return deal_type - 交易货币类型  1.余额  2.了豆
+     * @return coin - 交易金豆数量
      */
-    public Boolean getDealType() {
+    public Integer getCoin() {
+        return coin;
+    }
+
+    /**
+     * 设置交易金豆数量
+     *
+     * @param coin 交易金豆数量
+     */
+    public void setCoin(Integer coin) {
+        this.coin = coin;
+    }
+
+    /**
+     * 获取交易银豆数量
+     *
+     * @return silver - 交易银豆数量
+     */
+    public Integer getSilver() {
+        return silver;
+    }
+
+    /**
+     * 设置交易银豆数量
+     *
+     * @param silver 交易银豆数量
+     */
+    public void setSilver(Integer silver) {
+        this.silver = silver;
+    }
+
+    /**
+     * 获取交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     *
+     * @return deal_type - 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     */
+    public Integer getDealType() {
         return dealType;
     }
 
     /**
-     * 设置交易货币类型  1.余额  2.了豆
+     * 设置交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
      *
-     * @param dealType 交易货币类型  1.余额  2.了豆
+     * @param dealType 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
      */
-    public void setDealType(Boolean dealType) {
+    public void setDealType(Integer dealType) {
         this.dealType = dealType;
+    }
+
+    /**
+     * 获取交易类型  1.支出  2.收入
+     *
+     * @return transaction_type - 交易类型  1.支出  2.收入
+     */
+    public Integer getTransactionType() {
+        return transactionType;
+    }
+
+    /**
+     * 设置交易类型  1.支出  2.收入
+     *
+     * @param transactionType 交易类型  1.支出  2.收入
+     */
+    public void setTransactionType(Integer transactionType) {
+        this.transactionType = transactionType;
     }
 
     /**
@@ -205,7 +275,10 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", redPacketId=").append(redPacketId);
         sb.append(", type=").append(type);
         sb.append(", money=").append(money);
+        sb.append(", coin=").append(coin);
+        sb.append(", silver=").append(silver);
         sb.append(", dealType=").append(dealType);
+        sb.append(", transactionType=").append(transactionType);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

@@ -127,6 +127,12 @@ public class SlOrder implements Serializable {
     @Column(name = "group_master")
     private String groupMaster;
 
+    /**
+     * 商品活动id
+     */
+    @Column(name = "activity_product_id")
+    private String activityProductId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -515,6 +521,24 @@ public class SlOrder implements Serializable {
         this.groupMaster = groupMaster == null ? null : groupMaster.trim();
     }
 
+    /**
+     * 获取商品活动id
+     *
+     * @return activity_product_id - 商品活动id
+     */
+    public String getActivityProductId() {
+        return activityProductId;
+    }
+
+    /**
+     * 设置商品活动id
+     *
+     * @param activityProductId 商品活动id
+     */
+    public void setActivityProductId(String activityProductId) {
+        this.activityProductId = activityProductId == null ? null : activityProductId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -542,6 +566,7 @@ public class SlOrder implements Serializable {
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
+        sb.append(", activityProductId=").append(activityProductId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

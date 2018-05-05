@@ -9,15 +9,19 @@
     <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="red_packet_id" jdbcType="VARCHAR" property="redPacketId" />
-    <result column="type" jdbcType="BIT" property="type" />
+      <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="money" jdbcType="DECIMAL" property="money" />
-    <result column="deal_type" jdbcType="BIT" property="dealType" />
+      <result column="coin" jdbcType="INTEGER" property="coin"/>
+      <result column="silver" jdbcType="INTEGER" property="silver"/>
+      <result column="deal_type" jdbcType="INTEGER" property="dealType"/>
+      <result column="transaction_type" jdbcType="INTEGER" property="transactionType"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, source_id, target_id, red_packet_id, type, money, deal_type, create_time
+      id, source_id, target_id, red_packet_id, type, money, coin, silver, deal_type, transaction_type,
+      create_time
   </sql>
 </mapper>
