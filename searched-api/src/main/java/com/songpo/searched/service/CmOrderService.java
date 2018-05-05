@@ -346,15 +346,14 @@ public class CmOrderService {
                 } else {
                     log.error("收货地址不存在");
                     message.setMsg("收货地址不存在");
+                    return message;
                 }
             } else {
                 log.error("用户不存在");
                 message.setMsg("用户不存在");
+                return message;
             }
-        } catch (
-                Exception e)
-
-        {
+        } catch (Exception e) {
             log.error("多商品下单失败", e);
         }
         return message;
@@ -1154,9 +1153,10 @@ public class CmOrderService {
                     setId(emsId);
                 }});
                 if (null != ems) {
-                    String key = "okSdVYuq5224";
+                    //TODO 这里把申请下来的数据填上就行了
+                    String key = "";
                     String param = "{\"com\":\"" + ems.getName() + "\",\"num\":\"" + expressCode + "\"}";
-                    String customer = "76E90F32D42A15315AC3AB85B00FBFD8";
+                    String customer = "";
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
                     String sign = MD5Util.MD5Encode(param + key + customer, null);
