@@ -1123,6 +1123,6 @@ public class CmOrderService {
     }
 
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        return this.aliPayService.wapPay(productName, "", OrderNumGeneration.generateOrderId(), null, null, "0.01", null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
     }
 }
