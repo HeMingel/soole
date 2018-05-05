@@ -1156,6 +1156,7 @@ public class CmOrderService {
                     //TODO 这里把申请下来的数据填上就行了
                     String key = "";
                     String param = "{\"com\":\"" + ems.getName() + "\",\"num\":\"" + expressCode + "\"}";
+                    //TODO 这里把申请下来的数据填上就行了
                     String customer = "";
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
