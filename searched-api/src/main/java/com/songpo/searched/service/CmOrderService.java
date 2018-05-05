@@ -1,7 +1,6 @@
 package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,10 +18,10 @@ import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.util.HttpRequest;
+import com.songpo.searched.util.MD5Util;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
-import com.songpo.searched.wxpay.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1160,14 +1159,14 @@ public class CmOrderService {
                     String customer = "";
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
-                    String sign = MD5Util.MD5Encode(param + key + customer, null);
+                    String sign = MD5Util.md5encode(param + key + customer, "UTF-8");
                     HashMap params = new HashMap();
                     params.put("param", param);
                     params.put("sign", sign.toUpperCase());
                     params.put("customer", customer);
                     String resp;
                     try {
-                        resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8").toString();
+                        resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8");
                         System.out.println(resp);
                         JSONArray jsonArray = new JSONArray();
                         jsonArray.add(resp);
