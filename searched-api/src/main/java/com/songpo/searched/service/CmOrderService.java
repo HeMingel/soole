@@ -1155,7 +1155,6 @@ public class CmOrderService {
                     //TODO 这里把申请下来的数据填上就行了
                     String key = "";
                     String param = "{\"com\":\"" + ems.getName() + "\",\"num\":\"" + expressCode + "\"}";
-                    //TODO 这里把申请下来的数据填上就行了
                     String customer = "";
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
@@ -1198,12 +1197,12 @@ public class CmOrderService {
         return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
     }
 
-    public String alipayAppPayTest(String productName, String sellerId) {
-        return this.aliPayService.appPay("", "0.01", sellerId, "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+    public String alipayAppPayTest(String productName) {
+        return this.aliPayService.appPay("", "0.01", "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
     }
 
-    public AlipayTradeWapPayResponse alipayH5PayTest(String productName, String sellerId) {
-        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.01", sellerId, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
+        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.01", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
 
