@@ -1,4 +1,4 @@
-package com.songpo.searched.wxpay.util;
+package com.songpo.searched.util;
 
 import javax.servlet.http.HttpServletRequest;
 

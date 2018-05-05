@@ -5,7 +5,9 @@ import com.songpo.searched.cache.SmsPasswordCache;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.UserService;
 import io.swagger.annotations.Api;
@@ -19,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
@@ -51,6 +55,9 @@ public class SystemController {
 
     @Autowired
     private SmsPasswordCache smsPasswordCache;
+
+    @Autowired
+    private SlTransactionDetailMapper slTransactionDetailMapper;
 
     /**
      * 登录
@@ -464,6 +471,9 @@ public class SystemController {
                 user.setOpenId(openId);
                 user.setType(type);
 
+                // 天降洪福，100乐豆（银豆）
+                user.setSilver(100);
+
                 // 定义生成字符串范围
                 char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                 // 初始化随机生成器
@@ -475,8 +485,10 @@ public class SystemController {
                 // 添加
                 userService.insertSelective(user);
 
-                this.userCache.put(openId, user);
+                this.sendRegisterGiftToNewUser(user.getId());
             }
+
+            this.userCache.put(openId, user);
 
             JSONObject data = new JSONObject();
             data.put("clientId", user.getClientId());
@@ -540,6 +552,9 @@ public class SystemController {
                             user = new SlUser();
                             user.setPhone(phone);
 
+                            // 天降洪福，100乐豆（银豆）
+                            user.setSilver(100);
+
                             // 定义生成字符串范围
                             char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                             // 初始化随机生成器
@@ -550,6 +565,9 @@ public class SystemController {
 
                             // 添加
                             userService.insertSelective(user);
+
+                            // 天降洪福，100乐豆（银豆）
+                            sendRegisterGiftToNewUser(user.getId());
                         }
 
                         this.userCache.put(phone, user);
@@ -655,5 +673,28 @@ public class SystemController {
             }
         }
         return message;
+    }
+
+    /**
+     * 新用户注册福利
+     *
+     * @param userId 用户标识
+     */
+    private void sendRegisterGiftToNewUser(String userId) {
+        SlTransactionDetail detail = new SlTransactionDetail();
+        // 设置hi目标用户
+        detail.setTargetId(userId);
+        // 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现 （100-199：活动相关） 100：新人礼包 101：签到 102：邀请好友 （200-299：购物相关） 200：购物支付 201：购物赠送 202：评价晒单 （300-400：收益相关）
+        detail.setType(100);
+        // 赠送100了豆（银豆）
+        detail.setSilver(100);
+        // 交易类型 1.支出 2.收入
+        detail.setTransactionType(2);
+        // 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+        detail.setDealType(2);
+        // 设置创建时间
+        detail.setCreateTime(new Date());
+
+        this.slTransactionDetailMapper.insertSelective(detail);
     }
 }
