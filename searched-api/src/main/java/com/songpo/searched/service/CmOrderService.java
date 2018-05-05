@@ -983,6 +983,7 @@ public class CmOrderService {
                         }});
                         Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
                         Map<String, Object> map = new HashMap<>();
+                        map.put("returnsDetailId", returnsDetail.getId());
                         // 店铺的账号
                         map.put("owner", shop.get("userName"));
                         // 店铺的名字
