@@ -11,6 +11,7 @@ import com.alipay.api.request.*
 import com.alipay.api.response.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -998,7 +999,7 @@ class AliPayService {
         data.putAll(holder.applicationParams)
         data.putAll(holder.protocalMustParams)
         data.putAll(holder.protocalOptParams)
-        return data.map { entry -> "${entry.key}=${entry.value}" }.joinToString("&")
+        return data.map { entry -> "${entry.key}=${URLEncoder.encode(entry.value, this.charset)}" }.joinToString("&")
     }
 
     /**
