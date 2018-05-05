@@ -77,7 +77,7 @@ public class SlActivityProduct implements Serializable {
     private Integer peopleNum;
 
     /**
-     * 已拼单人数（按下单人数计算）
+     * 已下单(已支付)人数
      */
     @Column(name = "orders_num")
     private Integer ordersNum;
@@ -383,18 +383,18 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取已拼单人数（按下单人数计算）
+     * 获取已下单(已支付)人数
      *
-     * @return orders_num - 已拼单人数（按下单人数计算）
+     * @return orders_num - 已下单(已支付)人数
      */
     public Integer getOrdersNum() {
         return ordersNum;
     }
 
     /**
-     * 设置已拼单人数（按下单人数计算）
+     * 设置已下单(已支付)人数
      *
-     * @param ordersNum 已拼单人数（按下单人数计算）
+     * @param ordersNum 已下单(已支付)人数
      */
     public void setOrdersNum(Integer ordersNum) {
         this.ordersNum = ordersNum;

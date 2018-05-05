@@ -1,5 +1,7 @@
 package com.songpo.searched.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,20 +17,24 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
+import com.songpo.searched.util.HttpRequest;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
 import com.songpo.searched.wxpay.util.ClientIPUtil;
+import com.songpo.searched.wxpay.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.security.MessageDigest;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -77,6 +83,14 @@ public class CmOrderService {
 
     @Autowired
     private AliPayService aliPayService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private SlEmsMapper emsMapper;
+
+    private HttpRequest expressUtils = new HttpRequest(restTemplate);
 
     /**
      * 多商品下单
@@ -460,6 +474,8 @@ public class CmOrderService {
                         orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                             //确认订单未评价
                             setShippingState(5);
+                            //确认收货时间
+                            setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         }}, example1);
                 }
             }
@@ -921,6 +937,7 @@ public class CmOrderService {
                             }});
                             Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
                             Map<String, Object> map = new HashMap<>();
+                            map.put("returnsDetailId", returnsDetail.getId());
                             // 店铺的账号
                             map.put("owner", shop.get("userName"));
                             // 店铺的名字
@@ -1114,6 +1131,68 @@ public class CmOrderService {
         return message;
     }
 
+    /**
+     * 快递100 接口
+     *
+     * @param expressName
+     * @param expressCode
+     * @param clientId
+     * @return
+     */
+    public BusinessMessage searchExpress(Integer emsId, String expressCode) {
+        BusinessMessage message = new BusinessMessage(false);
+        SlUser user = loginUserService.getCurrentLoginUser();
+        SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+            // 物流单号唯一
+            setShipNumber(expressCode);
+        }});
+        //存在这个订单
+        if (detail != null) {
+            if (null != user) {
+                SlEms ems = emsMapper.selectOne(new SlEms() {{
+                    setId(emsId);
+                }});
+                if (null != ems) {
+                    String key = "okSdVYuq5224";
+                    String param = "{\"com\":\"" + ems.getName() + "\",\"num\":\"" + expressCode + "\"}";
+                    String customer = "76E90F32D42A15315AC3AB85B00FBFD8";
+                    //MD5.encode(param+key+customer);
+                    MessageDigest MD5 = null;
+                    String sign = MD5Util.MD5Encode(param + key + customer, null);
+                    HashMap params = new HashMap();
+                    params.put("param", param);
+                    params.put("sign", sign.toUpperCase());
+                    params.put("customer", customer);
+                    String resp;
+                    try {
+                        resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8").toString();
+                        System.out.println(resp);
+                        JSONArray jsonArray = new JSONArray();
+                        jsonArray.add(resp);
+                        //快递名称
+                        jsonArray.add(ems.getName());
+                        //快递单号
+                        jsonArray.add(detail.getShipNumber());
+                        //订单状态
+                        jsonArray.add(detail.getShippingState());
+                        message.setData(jsonArray);
+                        message.setSuccess(true);
+                    } catch (Exception e) {
+                        log.error("快递信息查询失败", e);
+                        e.printStackTrace();
+                    }
+                } else {
+                    message.setMsg("该订单不存在");
+                }
+            } else {
+                message.setMsg("查询失败");
+            }
+        } else {
+            message.setMsg("订单不存在");
+        }
+        return message;
+    }
+
     public Map<String, String> wechatAppPayTest(HttpServletRequest req, String productName) {
         return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
     }
@@ -1125,4 +1204,6 @@ public class CmOrderService {
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
         return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
+
+
 }

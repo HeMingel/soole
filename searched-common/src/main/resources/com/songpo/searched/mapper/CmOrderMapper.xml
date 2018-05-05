@@ -24,7 +24,9 @@
         so.total_amount totalAmount,
         so.deduct_total_pulse deductTotalPulse,
         sod.buyer_message buyerMessage,
-        ss.phone shopPhone
+        ss.phone shopPhone,
+        sod.ems_id emsId,
+        sod.ship_number shipNumber
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
@@ -84,7 +86,9 @@
         sod.post_fee postFee,
         ss.phone shopPhone,
         so.payment_state paymentState,
-        sod.shipping_state shippingState
+        sod.shipping_state shippingState,
+        sod.ems_id emsId,
+        sod.ship_number shipNumber
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id

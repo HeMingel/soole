@@ -90,6 +90,12 @@ public class SlOrderDetail implements Serializable {
     private Integer deductTotalGold;
 
     /**
+     * 确认收货时间
+     */
+    @Column(name = "confirm_receipt_time")
+    private String confirmReceiptTime;
+
+    /**
      * 折扣
      */
     private Integer discount;
@@ -129,12 +135,6 @@ public class SlOrderDetail implements Serializable {
     private String buyerMessage;
 
     /**
-     * 返了豆数量(限推荐奖励活动)
-     */
-    @Column(name = "return_cash_pulse")
-    private Integer returnCashPulse;
-
-    /**
      * 发货时间
      */
     @Column(name = "shipping_time")
@@ -165,7 +165,7 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现金额(限全返模式)
+     * 返现金额(限消费奖励模式)
      */
     @Column(name = "return_cash_money")
     private BigDecimal returnCashMoney;
@@ -177,16 +177,10 @@ public class SlOrderDetail implements Serializable {
     private Integer placeOrderReturnPulse;
 
     /**
-     * 推荐奖励奖励金额
+     * 奖励金额
      */
     @Column(name = "rewards_money")
     private BigDecimal rewardsMoney;
-
-    /**
-     * 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    @Column(name = "rebate_pulse")
-    private Integer rebatePulse;
 
     /**
      * 分享人的唯一标识符
@@ -199,6 +193,18 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "activity_product_id")
     private String activityProductId;
+
+    /**
+     * (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    @Column(name = "return_cash_pulse")
+    private Integer returnCashPulse;
+
+    /**
+     * (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    @Column(name = "rebate_pulse")
+    private Integer rebatePulse;
 
     private static final long serialVersionUID = 1L;
 
@@ -455,6 +461,24 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
+     * 获取确认收货时间
+     *
+     * @return confirm_receipt_time - 确认收货时间
+     */
+    public String getConfirmReceiptTime() {
+        return confirmReceiptTime;
+    }
+
+    /**
+     * 设置确认收货时间
+     *
+     * @param confirmReceiptTime 确认收货时间
+     */
+    public void setConfirmReceiptTime(String confirmReceiptTime) {
+        this.confirmReceiptTime = confirmReceiptTime == null ? null : confirmReceiptTime.trim();
+    }
+
+    /**
      * 获取折扣
      *
      * @return discount - 折扣
@@ -581,24 +605,6 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返了豆数量(限推荐奖励活动)
-     *
-     * @return return_cash_pulse - 返了豆数量(限推荐奖励活动)
-     */
-    public Integer getReturnCashPulse() {
-        return returnCashPulse;
-    }
-
-    /**
-     * 设置返了豆数量(限推荐奖励活动)
-     *
-     * @param returnCashPulse 返了豆数量(限推荐奖励活动)
-     */
-    public void setReturnCashPulse(Integer returnCashPulse) {
-        this.returnCashPulse = returnCashPulse;
-    }
-
-    /**
      * 获取发货时间
      *
      * @return shipping_time - 发货时间
@@ -689,18 +695,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现金额(限全返模式)
+     * 获取返现金额(限消费奖励模式)
      *
-     * @return return_cash_money - 返现金额(限全返模式)
+     * @return return_cash_money - 返现金额(限消费奖励模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(限全返模式)
+     * 设置返现金额(限消费奖励模式)
      *
-     * @param returnCashMoney 返现金额(限全返模式)
+     * @param returnCashMoney 返现金额(限消费奖励模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -725,39 +731,21 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取推荐奖励奖励金额
+     * 获取奖励金额
      *
-     * @return rewards_money - 推荐奖励奖励金额
+     * @return rewards_money - 奖励金额
      */
     public BigDecimal getRewardsMoney() {
         return rewardsMoney;
     }
 
     /**
-     * 设置推荐奖励奖励金额
+     * 设置奖励金额
      *
-     * @param rewardsMoney 推荐奖励奖励金额
+     * @param rewardsMoney 奖励金额
      */
     public void setRewardsMoney(BigDecimal rewardsMoney) {
         this.rewardsMoney = rewardsMoney;
-    }
-
-    /**
-     * 获取奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @return rebate_pulse - 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public Integer getRebatePulse() {
-        return rebatePulse;
-    }
-
-    /**
-     * 设置奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @param rebatePulse 奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public void setRebatePulse(Integer rebatePulse) {
-        this.rebatePulse = rebatePulse;
     }
 
     /**
@@ -796,6 +784,42 @@ public class SlOrderDetail implements Serializable {
         this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
+    /**
+     * 获取(暂未使用)返了豆数量(限推荐奖励活动)
+     *
+     * @return return_cash_pulse - (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    public Integer getReturnCashPulse() {
+        return returnCashPulse;
+    }
+
+    /**
+     * 设置(暂未使用)返了豆数量(限推荐奖励活动)
+     *
+     * @param returnCashPulse (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    public void setReturnCashPulse(Integer returnCashPulse) {
+        this.returnCashPulse = returnCashPulse;
+    }
+
+    /**
+     * 获取(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @return rebate_pulse - (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public Integer getRebatePulse() {
+        return rebatePulse;
+    }
+
+    /**
+     * 设置(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @param rebatePulse (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public void setRebatePulse(Integer rebatePulse) {
+        this.rebatePulse = rebatePulse;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -816,6 +840,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", price=").append(price);
         sb.append(", deductTotalSilver=").append(deductTotalSilver);
         sb.append(", deductTotalGold=").append(deductTotalGold);
+        sb.append(", confirmReceiptTime=").append(confirmReceiptTime);
         sb.append(", discount=").append(discount);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
@@ -823,7 +848,6 @@ public class SlOrderDetail implements Serializable {
         sb.append(", modificationTime=").append(modificationTime);
         sb.append(", postFee=").append(postFee);
         sb.append(", buyerMessage=").append(buyerMessage);
-        sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", shippingTime=").append(shippingTime);
         sb.append(", emsId=").append(emsId);
         sb.append(", shipNumber=").append(shipNumber);
@@ -832,9 +856,10 @@ public class SlOrderDetail implements Serializable {
         sb.append(", returnCashMoney=").append(returnCashMoney);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
-        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", activityProductId=").append(activityProductId);
+        sb.append(", returnCashPulse=").append(returnCashPulse);
+        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

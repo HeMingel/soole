@@ -15,12 +15,13 @@
     <result column="type" jdbcType="CHAR" property="type" />
     <result column="award_year" jdbcType="CHAR" property="awardYear" />
     <result column="everyday_money" jdbcType="DECIMAL" property="everydayMoney" />
+    <result column="number_of_periods" jdbcType="INTEGER" property="numberOfPeriods" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, product_id, product_repository_id, shop_id, returned_money, returned_number, 
-    create_time, type, award_year, everyday_money
+    create_time, type, award_year, everyday_money, number_of_periods
   </sql>
 </mapper>

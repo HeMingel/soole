@@ -26,7 +26,7 @@ public class SlReturnsDetail implements Serializable {
     private String userId;
 
     /**
-     * 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
+     * 回款状态1.已发货 2.未发货 3.已逾期 4.可发货 5.订单交易完成
      */
     @Column(name = "returned_status")
     private Integer returnedStatus;
@@ -65,6 +65,12 @@ public class SlReturnsDetail implements Serializable {
      * 是否已完成(true:已完成 false:未完成)
      */
     private Boolean completed;
+
+    /**
+     * 期数计数
+     */
+    @Column(name = "number_of_periods")
+    private Integer numberOfPeriods;
 
     private static final long serialVersionUID = 1L;
 
@@ -123,18 +129,18 @@ public class SlReturnsDetail implements Serializable {
     }
 
     /**
-     * 获取回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
+     * 获取回款状态1.已发货 2.未发货 3.已逾期 4.可发货 5.订单交易完成
      *
-     * @return returned_status - 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
+     * @return returned_status - 回款状态1.已发货 2.未发货 3.已逾期 4.可发货 5.订单交易完成
      */
     public Integer getReturnedStatus() {
         return returnedStatus;
     }
 
     /**
-     * 设置回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
+     * 设置回款状态1.已发货 2.未发货 3.已逾期 4.可发货 5.订单交易完成
      *
-     * @param returnedStatus 回款状态1.已返 2.待返 3.已逾期 4.可返 5.订单交易完成
+     * @param returnedStatus 回款状态1.已发货 2.未发货 3.已逾期 4.可发货 5.订单交易完成
      */
     public void setReturnedStatus(Integer returnedStatus) {
         this.returnedStatus = returnedStatus;
@@ -248,6 +254,24 @@ public class SlReturnsDetail implements Serializable {
         this.completed = completed;
     }
 
+    /**
+     * 获取期数计数
+     *
+     * @return number_of_periods - 期数计数
+     */
+    public Integer getNumberOfPeriods() {
+        return numberOfPeriods;
+    }
+
+    /**
+     * 设置期数计数
+     *
+     * @param numberOfPeriods 期数计数
+     */
+    public void setNumberOfPeriods(Integer numberOfPeriods) {
+        this.numberOfPeriods = numberOfPeriods;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -264,6 +288,7 @@ public class SlReturnsDetail implements Serializable {
         sb.append(", orderId=").append(orderId);
         sb.append(", confirmReceipt=").append(confirmReceipt);
         sb.append(", completed=").append(completed);
+        sb.append(", numberOfPeriods=").append(numberOfPeriods);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

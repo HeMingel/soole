@@ -15,12 +15,12 @@ public class SlRedPacket implements Serializable {
     private String userId;
 
     /**
-     * 红包金额/ 红豆金额
+     * 红包金额/ 了豆个数
      */
     private BigDecimal money;
 
     /**
-     * 剩余红包金额/剩余金豆个数
+     * 剩余红包金额/剩余了豆个数
      */
     @Column(name = "surplus_money")
     private BigDecimal surplusMoney;
@@ -101,36 +101,36 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
-     * 获取红包金额/ 红豆金额
+     * 获取红包金额/ 了豆个数
      *
-     * @return money - 红包金额/ 红豆金额
+     * @return money - 红包金额/ 了豆个数
      */
     public BigDecimal getMoney() {
         return money;
     }
 
     /**
-     * 设置红包金额/ 红豆金额
+     * 设置红包金额/ 了豆个数
      *
-     * @param money 红包金额/ 红豆金额
+     * @param money 红包金额/ 了豆个数
      */
     public void setMoney(BigDecimal money) {
         this.money = money;
     }
 
     /**
-     * 获取剩余红包金额/剩余金豆个数
+     * 获取剩余红包金额/剩余了豆个数
      *
-     * @return surplus_money - 剩余红包金额/剩余金豆个数
+     * @return surplus_money - 剩余红包金额/剩余了豆个数
      */
     public BigDecimal getSurplusMoney() {
         return surplusMoney;
     }
 
     /**
-     * 设置剩余红包金额/剩余金豆个数
+     * 设置剩余红包金额/剩余了豆个数
      *
-     * @param surplusMoney 剩余红包金额/剩余金豆个数
+     * @param surplusMoney 剩余红包金额/剩余了豆个数
      */
     public void setSurplusMoney(BigDecimal surplusMoney) {
         this.surplusMoney = surplusMoney;

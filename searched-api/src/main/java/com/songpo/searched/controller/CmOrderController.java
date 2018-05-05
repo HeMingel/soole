@@ -263,6 +263,18 @@ public class CmOrderController {
     }
 
     /**
+     * 快递100 接口
+     *
+     * @param emsId
+     * @param expressCode
+     * @return
+     */
+    @RequestMapping("/searchExpress")
+    public BusinessMessage SearchExpress(Integer emsId, String expressCode) {
+        return this.cmOrderService.searchExpress(emsId,expressCode);
+    }
+
+    /**
      * 微信App预下单
      *
      * @param productName 商品名称
