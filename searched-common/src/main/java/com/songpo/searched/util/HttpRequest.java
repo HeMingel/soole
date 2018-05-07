@@ -4,6 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.Map;
 
+@Component
 public class HttpRequest {
 
     private RestTemplate restTemplate;
@@ -43,7 +45,7 @@ public class HttpRequest {
         params.forEach((k, v) -> {
             multiValueMap.put(k, Arrays.asList(v));
         });
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity(params, headers);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity(multiValueMap, headers);
 
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, entity, String.class);
         return responseEntity.getBody();

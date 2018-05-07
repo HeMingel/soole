@@ -127,7 +127,7 @@ public class CmProductService {
                 Map<String,Object> avatarMap = new HashMap<>();
                 List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("product_id").toString());
                 map.put("avatarList",avatarList);
-                goodsList.add(avatarMap);
+                goodsList.add(map);
             }
             return new PageInfo<>(goodsList);
         }else {
