@@ -3,8 +3,10 @@ package com.songpo.searched.service;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
+import com.songpo.searched.entity.SlReturnsDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlActivityProductMapper;
+import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.util.Arith;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,9 +25,9 @@ public class ProcessOrders {
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
-    private SlActivityProductMapper slActivityProductMapper;
-    @Autowired
     private UserService userService;
+    @Autowired
+    private SlReturnsDetailMapper returnsDetailMapper;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -95,42 +97,45 @@ public class ProcessOrders {
                                 } else {
                                     orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                         setId(orderId);
-                                        //拼团中
+                                        // 拼团中
                                         setSpellGroupStatus(1);
                                     }});
                                 }
                             } else {
                                 orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                     setId(orderId);
-                                    //拼团中
+                                    // 拼团中
                                     setSpellGroupStatus(1);
                                 }});
                             }
                             break;
+                            //预售订单
+                            case 3:
+
                         // 消费奖励
-                        case 5:
-                            // 如果分享人不为空
-                            if (StringUtils.isNotBlank(detail.getShareOfPeopleId())) {
-                                SlUser shareOfPeople = userService.selectOne(new SlUser() {{
-                                    setId(detail.getShareOfPeopleId());
-                                }});
-                                if (shareOfPeople != null) {
-                                    // 分享人获得商家额外利润的90%
-                                    userService.updateByPrimaryKeySelective(new SlUser() {{
-                                        setId(detail.getShareOfPeopleId());
-                                        setMoney(BigDecimal.valueOf(Arith.add(Arith.mul(detail.getRewardsMoney().doubleValue(), 0.9), shareOfPeople.getMoney().doubleValue())));
-                                    }});
-                                } else {
-                                    message.setMsg("分享人不存在");
-                                }
-                                // 被分享人获得商家额外利润的10%
-                                userService.updateByPrimaryKeySelective(new SlUser() {{
-                                    setId(user.getId());
-                                    setMoney(BigDecimal.valueOf(Arith.add(Arith.mul(detail.getRewardsMoney().doubleValue(), 0.1), user.getMoney().doubleValue())));
-                                }});
-                            } else {
-                                message.setMsg("分享人为空");
-                            }
+//                        case 5:
+                        // 如果分享人不为空
+//                            if (StringUtils.isNotBlank(detail.getShareOfPeopleId())) {
+//                                SlUser shareOfPeople = userService.selectOne(new SlUser() {{
+//                                    setId(detail.getShareOfPeopleId());
+//                                }});
+//                                if (shareOfPeople != null) {
+//                                    // 分享人获得商家额外利润的90%
+//                                    userService.updateByPrimaryKeySelective(new SlUser() {{
+//                                        setId(detail.getShareOfPeopleId());
+//                                        setMoney(BigDecimal.valueOf(Arith.add(Arith.mul(detail.getRewardsMoney().doubleValue(), 0.9), shareOfPeople.getMoney().doubleValue())));
+//                                    }});
+//                                } else {
+//                                    message.setMsg("分享人不存在");
+//                                }
+//                                // 被分享人获得商家额外利润的10%
+//                                userService.updateByPrimaryKeySelective(new SlUser() {{
+//                                    setId(user.getId());
+//                                    setMoney(BigDecimal.valueOf(Arith.add(Arith.mul(detail.getRewardsMoney().doubleValue(), 0.1), user.getMoney().doubleValue())));
+//                                }});
+//                            } else {
+//                                message.setMsg("分享人为空");
+//                            }
                     }
                 } else {
                     message.setMsg("该订单不存在");
