@@ -1184,7 +1184,7 @@ public class CmOrderService {
                             //订单状态
                             data.put("shippingState", detail.getShippingState());
                             // 快递信息
-                            data.put("expressData", expressData.getJSONObject("data"));
+                            data.put("expressData", expressData.getJSONArray("data"));
 
                             message.setData(data);
                             message.setSuccess(true);
