@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,12 +23,12 @@ import com.songpo.searched.util.MD5Util;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import tk.mybatis.mapper.entity.Example;
 
@@ -542,7 +543,7 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
-            if (!StringUtils.isEmpty(user)) {
+            if (null != user) {
 //                SlProductRepository repository = new SlProductRepository();
 //                //1.先从redis中去取该商品规格的详细参数
 //                repository = this.repositoryCache.get(repositoryId);
@@ -558,7 +559,7 @@ public class CmOrderService {
                     setId(repositoryId);
                 }});
                 //4.如果查询出来不为空就去查询商品信息
-                if (!StringUtils.isEmpty(repository)) {
+                if (null != repository) {
 //                    SlProduct slProduct = new SlProduct();
 //                    //5.先从redis中取商品信息的详情
 //                    slProduct = this.productCache.get(repository.getProductId());
@@ -573,7 +574,7 @@ public class CmOrderService {
                         setId(repository.getProductId());
                     }});
                     //7.如果商品存在的话
-                    if (!StringUtils.isEmpty(slProduct)) {
+                    if (null != slProduct) {
                         //查询活动商品信息
                         SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                         //如果是无活动就不需要校验时间是否符合
@@ -753,7 +754,7 @@ public class CmOrderService {
             setId(shippingAddressId);
             setUserId(userId);
         }});
-        if (!StringUtils.isEmpty(slUserAddress)) {
+        if (null != slUserAddress) {
             // 订单省的地址
             slOrder.setProvince(slUserAddress.getProvince());
             // 订单市的收货地址
@@ -1145,8 +1146,8 @@ public class CmOrderService {
      * @param clientId
      * @return
      */
-    public BusinessMessage searchExpress(Integer emsId, String expressCode) {
-        BusinessMessage message = new BusinessMessage(false);
+    public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
+        BusinessMessage<JSONObject> message = new BusinessMessage<>(false);
         SlUser user = loginUserService.getCurrentLoginUser();
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
             // 物流单号唯一
@@ -1165,24 +1166,29 @@ public class CmOrderService {
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
                     String sign = MD5Util.md5encode(param + key + customer, "UTF-8");
-                    HashMap params = new HashMap();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("param", param);
                     params.put("sign", sign.toUpperCase());
                     params.put("customer", customer);
                     String resp;
                     try {
                         resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8");
-                        System.out.println(resp);
-                        JSONArray jsonArray = new JSONArray();
-                        jsonArray.add(resp);
-                        //快递名称
-                        jsonArray.add(ems.getName());
-                        //快递单号
-                        jsonArray.add(detail.getShipNumber());
-                        //订单状态
-                        jsonArray.add(detail.getShippingState());
-                        message.setData(jsonArray);
-                        message.setSuccess(true);
+                        if (StringUtils.isNotBlank(resp)) {
+                            JSONObject expressData = JSON.parseObject(resp);
+
+                            JSONObject data = new JSONObject();
+                            //快递名称
+                            data.put("name", ems.getName());
+                            //快递单号
+                            data.put("shipNumber", detail.getShipNumber());
+                            //订单状态
+                            data.put("shippingState", detail.getShippingState());
+                            // 快递信息
+                            data.put("expressData", expressData.getJSONObject("data"));
+
+                            message.setData(data);
+                            message.setSuccess(true);
+                        }
                     } catch (Exception e) {
                         log.error("快递信息查询失败", e);
                         e.printStackTrace();
