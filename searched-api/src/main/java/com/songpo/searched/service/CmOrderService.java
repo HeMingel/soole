@@ -70,10 +70,6 @@ public class CmOrderService {
     @Autowired
     private OrderCache orderCache;
     @Autowired
-    private WxPayController wxPayController;
-    @Autowired
-    private ShoppingCartCache shoppingCartCache;
-    @Autowired
     private SlReturnsDetailMapper returnsDetailMapper;
     @Autowired
     private NotificationService notificationService;
@@ -84,8 +80,6 @@ public class CmOrderService {
     @Autowired
     private AliPayService aliPayService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     private SlEmsMapper emsMapper;
     @Autowired
     private HttpRequest expressUtils;
@@ -94,8 +88,7 @@ public class CmOrderService {
      * 多商品下单
      *
      * @param request
-     * @param slOrder
-     * @param orderDetail
+     * @param detail
      * @param shippingAddressId
      * @return
      */
@@ -883,8 +876,7 @@ public class CmOrderService {
      * 删除订单
      *
      * @param detailId
-     * @param shopId
-     * @param orderNum
+     * @param orderId
      */
     public void deleteOrder(String orderId, String detailId) {
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -1084,7 +1076,8 @@ public class CmOrderService {
     /**
      * 预售确认收货
      *
-     * @param orderDetailId
+     * @param returnsDetailId
+     * @param orderId
      */
     public BusinessMessage presellPremises(String returnsDetailId, String orderId) {
         BusinessMessage message = new BusinessMessage();
@@ -1141,9 +1134,8 @@ public class CmOrderService {
     /**
      * 快递100 接口
      *
-     * @param expressName
+     * @param emsId
      * @param expressCode
-     * @param clientId
      * @return
      */
     public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
@@ -1175,7 +1167,6 @@ public class CmOrderService {
                         resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8");
                         if (StringUtils.isNotBlank(resp)) {
                             JSONObject expressData = JSON.parseObject(resp);
-
                             JSONObject data = new JSONObject();
                             //快递名称
                             data.put("name", ems.getName());
@@ -1183,9 +1174,10 @@ public class CmOrderService {
                             data.put("shipNumber", detail.getShipNumber());
                             //订单状态
                             data.put("shippingState", detail.getShippingState());
-                            // 快递信息
+                            //商品图片
+                            data.put("productImg", detail.getProductImageUrl());
+                            //快递信息
                             data.put("expressData", expressData.getJSONArray("data"));
-
                             message.setData(data);
                             message.setSuccess(true);
                         }
@@ -1216,6 +1208,5 @@ public class CmOrderService {
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
         return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
-
 
 }
