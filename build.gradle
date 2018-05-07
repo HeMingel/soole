@@ -10,7 +10,7 @@ buildscript {
         commonsLang3Version = '3.6'
         swaggerSpringBootStarterVersion = '1.7.0.RELEASE'
         mapperSpringBootStarterVersion = '2.0.1'
-        pagehelperSpringBootStarterVersion = '1.2.3'
+        pagehelperSpringBootStarterVersion = '1.2.5'
     }
 
     // 指定JDK版本

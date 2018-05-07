@@ -38,7 +38,7 @@ dependencies {
     compile("com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperSpringBootStarterVersion")
 
     // MySQL驱动
-    compile('mysql:mysql-connector-java:5.1.45')
+    compile('mysql:mysql-connector-java:5.1.46')
 }
 
 // 指定工程编码格式
