@@ -286,7 +286,7 @@ class WxPayService(val config: WxPayConfigProperties) {
                     Pair("prepayId", result["prepay_id"] ?: ""),
                     Pair("package", "Sign=WXPay"),
                     Pair("nonceStr", result["nonce_str"] ?: ""),
-                    Pair("timeStamp", Date().time.toString()),
+                    Pair("timeStamp", (Date().time / 1000).toString()),
                     Pair("sign", result["sign"] ?: "")
             )
         }
