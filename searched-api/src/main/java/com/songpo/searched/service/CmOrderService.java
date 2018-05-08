@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,7 +9,6 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
-import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -20,15 +20,13 @@ import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.util.HttpRequest;
 import com.songpo.searched.util.MD5Util;
 import com.songpo.searched.util.OrderNumGeneration;
-import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,10 +67,6 @@ public class CmOrderService {
     @Autowired
     private OrderCache orderCache;
     @Autowired
-    private WxPayController wxPayController;
-    @Autowired
-    private ShoppingCartCache shoppingCartCache;
-    @Autowired
     private SlReturnsDetailMapper returnsDetailMapper;
     @Autowired
     private NotificationService notificationService;
@@ -83,8 +77,6 @@ public class CmOrderService {
     @Autowired
     private AliPayService aliPayService;
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     private SlEmsMapper emsMapper;
     @Autowired
     private HttpRequest expressUtils;
@@ -93,8 +85,7 @@ public class CmOrderService {
      * 多商品下单
      *
      * @param request
-     * @param slOrder
-     * @param orderDetail
+     * @param detail
      * @param shippingAddressId
      * @return
      */
@@ -310,41 +301,39 @@ public class CmOrderService {
                                                 message.setSuccess(true);
                                             } else {
                                                 log.error("当前库存不足");
-                                                message.setMsg("当前库存不足");
+                                                message.setMsg(slProduct.getName() + "当前库存不足");
                                                 message.setSuccess(false);
                                                 break;
                                             }
                                         } else {
                                             log.error("已超过最大购买数量");
-                                            message.setMsg("已超过最大购买数量");
+                                            message.setMsg(slProduct.getName() + "已超过最大购买数量");
                                             message.setSuccess(false);
                                             break;
                                         }
                                     } else {
                                         log.error("活动商品时间错误");
-                                        message.setMsg("活动商品时间错误");
+                                        message.setMsg(slProduct.getName() + "活动商品时间错误");
                                         message.setSuccess(false);
                                         break;
                                     }
                                 } else {
                                     log.error("该商品不存在或已下架");
-                                    message.setMsg("该商品不存在或已下架");
+                                    message.setMsg(slProduct.getName() + " 该商品不存在或已下架");
                                     message.setSuccess(false);
                                     break;
                                 }
                             }
-
-                            // 更新订单总价和总豆
-                            double finalMoney = money;
-                            int finalPulse = pulse;
-                            this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
-                                setId(slOrder.getId());
-                                setTotalAmount(BigDecimal.valueOf(finalMoney));
-                                setDeductTotalPulse(finalPulse);
-                            }});
-
                         }
                     }
+                    // 更新订单总价和总豆
+                    double finalMoney = money;
+                    int finalPulse = pulse;
+                    this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                        setId(slOrder.getId());
+                        setTotalAmount(BigDecimal.valueOf(finalMoney));
+                        setDeductTotalPulse(finalPulse);
+                    }});
                 }
             } else {
                 log.error("收货地址不存在");
@@ -542,7 +531,7 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
-            if (!StringUtils.isEmpty(user)) {
+            if (null != user) {
 //                SlProductRepository repository = new SlProductRepository();
 //                //1.先从redis中去取该商品规格的详细参数
 //                repository = this.repositoryCache.get(repositoryId);
@@ -558,7 +547,7 @@ public class CmOrderService {
                     setId(repositoryId);
                 }});
                 //4.如果查询出来不为空就去查询商品信息
-                if (!StringUtils.isEmpty(repository)) {
+                if (null != repository) {
 //                    SlProduct slProduct = new SlProduct();
 //                    //5.先从redis中取商品信息的详情
 //                    slProduct = this.productCache.get(repository.getProductId());
@@ -573,7 +562,7 @@ public class CmOrderService {
                         setId(repository.getProductId());
                     }});
                     //7.如果商品存在的话
-                    if (!StringUtils.isEmpty(slProduct)) {
+                    if (null != slProduct) {
                         //查询活动商品信息
                         SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                         //如果是无活动就不需要校验时间是否符合
@@ -753,7 +742,7 @@ public class CmOrderService {
             setId(shippingAddressId);
             setUserId(userId);
         }});
-        if (!StringUtils.isEmpty(slUserAddress)) {
+        if (null != slUserAddress) {
             // 订单省的地址
             slOrder.setProvince(slUserAddress.getProvince());
             // 订单市的收货地址
@@ -882,8 +871,7 @@ public class CmOrderService {
      * 删除订单
      *
      * @param detailId
-     * @param shopId
-     * @param orderNum
+     * @param orderId
      */
     public void deleteOrder(String orderId, String detailId) {
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -1047,31 +1035,39 @@ public class CmOrderService {
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
-                SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-                    setOrderId(orderId);
+                int count = this.orderService.selectCount(new SlOrder() {{
+                    setId(orderId);
+                    setType(3);
                 }});
-                if (null != detail) {
-                    List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
-                        setSourceId(user.getId());
-                        setTargetId(detail.getShopId());
+                if (count == 1) {
+                    SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                        setOrderId(orderId);
                     }});
-                    if (list.size() > 0) {
-                        for (SlMessage message1 : list) {
-                            if (message1.getCreateTime().substring(0, 10).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
-                                message.setMsg("今日已提醒");
-                            } else {
-                                String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
-                                notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
-                                message.setMsg("提醒成功");
-                                message.setSuccess(true);
+                    if (null != detail) {
+                        List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
+                            setSourceId(user.getId());
+                            setTargetId(detail.getShopId());
+                        }});
+                        if (list.size() > 0) {
+                            for (SlMessage message1 : list) {
+                                if (message1.getCreateTime().substring(0, 10).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
+                                    message.setMsg("今日已提醒");
+                                } else {
+                                    String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                                    notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                                    message.setMsg("提醒成功");
+                                    message.setSuccess(true);
+                                }
                             }
+                        } else {
+                            String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                            notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                            message.setMsg("提醒成功");
+                            message.setSuccess(true);
                         }
-                    } else {
-                        String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
-                        notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
-                        message.setMsg("提醒成功");
-                        message.setSuccess(true);
                     }
+                } else {
+                    message.setMsg("订单错误,或不存在");
                 }
             }
         } catch (Exception e) {
@@ -1083,7 +1079,8 @@ public class CmOrderService {
     /**
      * 预售确认收货
      *
-     * @param orderDetailId
+     * @param returnsDetailId
+     * @param orderId
      */
     public BusinessMessage presellPremises(String returnsDetailId, String orderId) {
         BusinessMessage message = new BusinessMessage();
@@ -1140,13 +1137,12 @@ public class CmOrderService {
     /**
      * 快递100 接口
      *
-     * @param expressName
+     * @param emsId
      * @param expressCode
-     * @param clientId
      * @return
      */
-    public BusinessMessage searchExpress(Integer emsId, String expressCode) {
-        BusinessMessage message = new BusinessMessage(false);
+    public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
+        BusinessMessage<JSONObject> message = new BusinessMessage<>(false);
         SlUser user = loginUserService.getCurrentLoginUser();
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
             // 物流单号唯一
@@ -1165,24 +1161,31 @@ public class CmOrderService {
                     //MD5.encode(param+key+customer);
                     MessageDigest MD5 = null;
                     String sign = MD5Util.md5encode(param + key + customer, "UTF-8");
-                    HashMap params = new HashMap();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("param", param);
                     params.put("sign", sign.toUpperCase());
                     params.put("customer", customer);
                     String resp;
                     try {
                         resp = expressUtils.postData("http://poll.kuaidi100.com/poll/query.do", params, "utf-8");
-                        System.out.println(resp);
-                        JSONArray jsonArray = new JSONArray();
-                        jsonArray.add(resp);
-                        //快递名称
-                        jsonArray.add(ems.getName());
-                        //快递单号
-                        jsonArray.add(detail.getShipNumber());
-                        //订单状态
-                        jsonArray.add(detail.getShippingState());
-                        message.setData(jsonArray);
-                        message.setSuccess(true);
+                        if (StringUtils.isNotBlank(resp)) {
+                            JSONObject expressData = JSON.parseObject(resp);
+                            JSONObject data = new JSONObject();
+                            //快递名称
+                            data.put("name", ems.getName());
+                            //快递单号
+                            data.put("shipNumber", detail.getShipNumber());
+                            //订单状态
+                            data.put("shippingState", detail.getShippingState());
+                            //商品图片
+                            data.put("productImg", detail.getProductImageUrl());
+                            //快递信息
+                            data.put("expressData", expressData.getJSONArray("data"));
+                            //签收状态
+                            data.put("expressState", expressData.get("state"));
+                            message.setData(data);
+                            message.setSuccess(true);
+                        }
                     } catch (Exception e) {
                         log.error("快递信息查询失败", e);
                         e.printStackTrace();
@@ -1204,12 +1207,13 @@ public class CmOrderService {
     }
 
     public String alipayAppPayTest(String productName) {
-        return this.aliPayService.appPay("", "0.01", "", "", productName, "", OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+        int suffix = new Random().nextInt(3);
+        return this.aliPayService.appPay("", "0.0" + suffix, "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
     }
 
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        int suffix = new Random().nextInt(3);
+        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.0" + suffix, null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
     }
-
 
 }

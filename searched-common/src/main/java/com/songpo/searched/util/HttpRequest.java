@@ -9,7 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 @Component
@@ -38,15 +38,15 @@ public class HttpRequest {
     }
 
 
-    public synchronized String postData(String url, Map<String, String> params, String codePage) {
+    public synchronized String postData(String url, Map<String, Object> params, String codePage) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //  封装参数，千万不要替换为Map与HashMap，否则参数无法传递
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>(params.size());
+        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>(params.size());
         params.forEach((k, v) -> {
-            multiValueMap.put(k, Arrays.asList(v));
+            multiValueMap.put(k, Collections.singletonList(v));
         });
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity(multiValueMap, headers);
+        HttpEntity entity = new HttpEntity(multiValueMap, headers);
 
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, entity, String.class);
         return responseEntity.getBody();

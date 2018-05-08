@@ -28,6 +28,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class FileService {
 
     private final SlFileInfoMapper fileMapper;
 
-    private static List<String> IMAGE_TYPE_ARRAY = List.of("image/bmp", "image/jpg", "image/jpeg", "image/png");
+    private static List<String> IMAGE_TYPE_ARRAY = Arrays.asList("image/bmp", "image/jpg", "image/jpeg", "image/png");
 
     @Autowired
     public FileService(SlSystemConfigMapper configMapper, SlFileInfoMapper fileMapper) {
