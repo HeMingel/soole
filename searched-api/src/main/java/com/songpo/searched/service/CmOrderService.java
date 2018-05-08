@@ -301,25 +301,25 @@ public class CmOrderService {
                                                 message.setSuccess(true);
                                             } else {
                                                 log.error("当前库存不足");
-                                                message.setMsg("当前库存不足");
+                                                message.setMsg(slProduct.getName() + "当前库存不足");
                                                 message.setSuccess(false);
                                                 break;
                                             }
                                         } else {
                                             log.error("已超过最大购买数量");
-                                            message.setMsg("已超过最大购买数量");
+                                            message.setMsg(slProduct.getName() + "已超过最大购买数量");
                                             message.setSuccess(false);
                                             break;
                                         }
                                     } else {
                                         log.error("活动商品时间错误");
-                                        message.setMsg("活动商品时间错误");
+                                        message.setMsg(slProduct.getName() + "活动商品时间错误");
                                         message.setSuccess(false);
                                         break;
                                     }
                                 } else {
                                     log.error("该商品不存在或已下架");
-                                    message.setMsg("该商品不存在或已下架");
+                                    message.setMsg(slProduct.getName() + " 该商品不存在或已下架");
                                     message.setSuccess(false);
                                     break;
                                 }
@@ -1035,31 +1035,39 @@ public class CmOrderService {
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
-                SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-                    setOrderId(orderId);
+                int count = this.orderService.selectCount(new SlOrder() {{
+                    setId(orderId);
+                    setType(3);
                 }});
-                if (null != detail) {
-                    List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
-                        setSourceId(user.getId());
-                        setTargetId(detail.getShopId());
+                if (count == 1) {
+                    SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                        setOrderId(orderId);
                     }});
-                    if (list.size() > 0) {
-                        for (SlMessage message1 : list) {
-                            if (message1.getCreateTime().substring(0, 10).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
-                                message.setMsg("今日已提醒");
-                            } else {
-                                String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
-                                notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
-                                message.setMsg("提醒成功");
-                                message.setSuccess(true);
+                    if (null != detail) {
+                        List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
+                            setSourceId(user.getId());
+                            setTargetId(detail.getShopId());
+                        }});
+                        if (list.size() > 0) {
+                            for (SlMessage message1 : list) {
+                                if (message1.getCreateTime().substring(0, 10).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
+                                    message.setMsg("今日已提醒");
+                                } else {
+                                    String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                                    notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                                    message.setMsg("提醒成功");
+                                    message.setSuccess(true);
+                                }
                             }
+                        } else {
+                            String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
+                            notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
+                            message.setMsg("提醒成功");
+                            message.setSuccess(true);
                         }
-                    } else {
-                        String content = user.getName() + ":提醒发货,订单号:" + detail.getSerialNumber();
-                        notificationService.sendToQueue(user.getId(), detail.getShopId(), content, MessageTypeEnum.STORE_REMINDING);
-                        message.setMsg("提醒成功");
-                        message.setSuccess(true);
                     }
+                } else {
+                    message.setMsg("订单错误,或不存在");
                 }
             }
         } catch (Exception e) {
@@ -1174,7 +1182,7 @@ public class CmOrderService {
                             //快递信息
                             data.put("expressData", expressData.getJSONArray("data"));
                             //签收状态
-                            data.put("expressState",expressData.get("state"));
+                            data.put("expressState", expressData.get("state"));
                             message.setData(data);
                             message.setSuccess(true);
                         }
