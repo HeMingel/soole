@@ -23,6 +23,8 @@ public class SignInService {
     private SlSignInMapper slSignInMapper;
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private UserService userService;
 
     public BusinessMessage addSignIn() {
         BusinessMessage message = new BusinessMessage();
@@ -98,7 +100,16 @@ public class SignInService {
                 signIn.setSignNum(checkTimes);
             }
             signIn.setSignTime(format.format(new Date()));
-            slSignInMapper.insertSelective(signIn);
+            int count = slSignInMapper.insertSelective(signIn);
+            if (count == 1) {
+                SlSignIn finalSignIn = signIn;
+                userService.updateByPrimaryKeySelective(new SlUser() {{
+                    setId(user.getId());
+                    setSilver(user.getSilver() + finalSignIn.getAwardSilver());
+                }});
+            } else {
+                message.setMsg("签到信息错误");
+            }
             message.setMsg("今日签到成功");
             message.setSuccess(true);
         } else {
