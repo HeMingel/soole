@@ -232,12 +232,17 @@
             on ap.activity_product_repository_serial_number = apr.serial_number
             WHERE p.id= #{goodsId} AND ap.activity_id= #{activityId} and p.`sold_out`=1 AND ap.enabled = 1
     </select>
-    <!--查询商品库存-->
+    <!--查询商品库存规格-->
     <select id="goodsRepository" resultType="Map" parameterType="String">
-        SELECT
-          pr.*
-        FROM sl_product_repository pr
-          WHERE pr.`id` = #{repositoryId}
+          SELECT
+            pr.* ,ap.id AS activity_product_id
+          FROM
+            sl_product_repository pr
+            LEFT JOIN sl_activity_product_repository apr
+              ON pr.id= apr.product_repository_id
+              LEFT JOIN sl_activity_product ap
+              ON apr.`serial_number` = ap.`activity_product_repository_serial_number`
+              WHERE pr.`id`  = #{repositoryId}
     </select>
 
     <!-- 查询预售商品列表 -->
