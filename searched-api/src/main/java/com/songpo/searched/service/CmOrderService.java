@@ -9,7 +9,6 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
-import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -21,7 +20,6 @@ import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.util.HttpRequest;
 import com.songpo.searched.util.MD5Util;
 import com.songpo.searched.util.OrderNumGeneration;
-import com.songpo.searched.wxpay.controller.WxPayController;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -1202,11 +1199,13 @@ public class CmOrderService {
     }
 
     public String alipayAppPayTest(String productName) {
-        return this.aliPayService.appPay("", "0.01", "", "", productName, "", OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+        int suffix = new Random().nextInt(3);
+        return this.aliPayService.appPay("", "0.0" + suffix, "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
     }
 
     public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        return this.aliPayService.wapPay(productName, null, OrderNumGeneration.generateOrderId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        int suffix = new Random().nextInt(3);
+        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.0" + suffix, null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
 }
