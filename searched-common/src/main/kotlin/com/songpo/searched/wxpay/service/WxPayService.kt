@@ -279,7 +279,7 @@ class WxPayService(val config: WxPayConfigProperties) {
         }
 
         val result = wxpay.unifiedOrder(data)
-        if (result["return_code"] === "SUCCESS" && result["result_code"] === "SUCCESS") {
+        if (result["return_code"].equals("SUCCESS") && result["result_code"].equals("SUCCESS")) {
             return mapOf(
                     Pair("partnerId", this.config.mchId),
                     Pair("prepayId", result["prepay_id"] ?: ""),
