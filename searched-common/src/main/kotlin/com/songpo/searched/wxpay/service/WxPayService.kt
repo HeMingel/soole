@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
 
 /**
  * 支付宝支付服务集成实现
@@ -279,7 +278,18 @@ class WxPayService(val config: WxPayConfigProperties) {
             data.put("scene_info", scene_info!!)
         }
 
-        return wxpay.unifiedOrder(data)
+        val result = wxpay.unifiedOrder(data)
+        if (result["return_code"].equals("SUCCESS") && result["result_code"].equals("SUCCESS")) {
+            return mapOf(
+                    Pair("partnerId", this.config.mchId),
+                    Pair("prepayId", result["prepay_id"] ?: ""),
+                    Pair("package", "Sign=WXPay"),
+                    Pair("nonceStr", result["nonce_str"] ?: ""),
+                    Pair("timeStamp", result["time_stamp"] ?: ""),
+                    Pair("sign", result["sign"] ?: "")
+            )
+        }
+        return result
     }
 
     /**
