@@ -1176,6 +1176,8 @@ public class CmOrderService {
                             data.put("productImg", detail.getProductImageUrl());
                             //快递信息
                             data.put("expressData", expressData.getJSONArray("data"));
+                            //签收状态
+                            data.put("expressState",expressData.get("state"));
                             message.setData(data);
                             message.setSuccess(true);
                         }
