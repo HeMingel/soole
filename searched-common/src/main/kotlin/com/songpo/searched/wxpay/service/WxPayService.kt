@@ -283,7 +283,8 @@ class WxPayService(val config: WxPayConfigProperties) {
         val result = wxpay.unifiedOrder(data)
         if (result["return_code"].equals("SUCCESS") && result["result_code"].equals("SUCCESS")) {
             // 拼装用于App支付的参数
-            val resultData = mutableMapOf(
+            val resultData = sortedMapOf(
+                    Pair("appId", this.config.appId),
                     Pair("partnerId", this.config.mchId),
                     Pair("prepayId", result["prepay_id"] ?: ""),
                     Pair("package", "Sign=WXPay"),
