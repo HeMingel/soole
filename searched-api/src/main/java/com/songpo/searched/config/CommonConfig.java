@@ -8,7 +8,6 @@ import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlSignInMapper;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.OrderDetailService;
-import com.songpo.searched.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +92,53 @@ public class CommonConfig {
     }
 
     /**
+     * 7天自动确认收货(普通商品)
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    void updOrderConfirmReceipt() {
+        LocalTime localTime = LocalTime.now();
+        localTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+            setShippingState(4);
+        }});
+        for (SlOrderDetail detail : detailList) {
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate ldt = LocalDate.parse(detail.getShippingTime(), df);
+            //如果发货时间 + 7天
+            if (ldt.plusDays(7).equals(localTime)) {
+                orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                    setId(detail.getId());
+                    // 已完成/已收货
+                    setShippingState(5);
+                }});
+            }
+        }
+
+
+//        for (SlReturnsDetail detail : list) {
+//            if (detail.getReturnTime().equals(localTime)) {
+//                returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
+//                    setId(detail.getId());
+//                    // 当前时间和返现时间相同的话把状态改为可返
+//                    setReturnedStatus(4);
+//                }});
+//            }
+//            if (detail.getReturnedStatus().equals(4)) {
+//                DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//                LocalDate ldt = LocalDate.parse(detail.getReturnTime(), df);
+//                // 如果返现时间+3天 并且状态还是可返状态
+//                if (ldt.plusDays(3).equals(localTime)) {
+//                    // 把状态改为已逾期
+//                    returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
+//                        setId(detail.getId());
+//                        setReturnedStatus(3);
+//                    }});
+//                }
+//            }
+//        }
+    }
+
+    /**
      * 预售订单确认收货(商家发货3天,自动确认收货)
      */
     @Scheduled(cron = "0 0 0 * * ?")
@@ -128,7 +174,6 @@ public class CommonConfig {
                         this.returnsDetailMapper.updateByExampleSelective(new SlReturnsDetail() {{
                             setReturnedStatus(5);
                         }}, example);
-
                     }
                 }
             }
