@@ -327,18 +327,16 @@ public class CmOrderService {
                                     break;
                                 }
                             }
-
-                            // 更新订单总价和总豆
-                            double finalMoney = money;
-                            int finalPulse = pulse;
-                            this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
-                                setId(slOrder.getId());
-                                setTotalAmount(BigDecimal.valueOf(finalMoney));
-                                setDeductTotalPulse(finalPulse);
-                            }});
-
                         }
                     }
+                    // 更新订单总价和总豆
+                    double finalMoney = money;
+                    int finalPulse = pulse;
+                    this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                        setId(slOrder.getId());
+                        setTotalAmount(BigDecimal.valueOf(finalMoney));
+                        setDeductTotalPulse(finalPulse);
+                    }});
                 }
             } else {
                 log.error("收货地址不存在");
