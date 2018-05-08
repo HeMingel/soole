@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlSignIn;
 import com.songpo.searched.entity.SlUser;
@@ -25,6 +26,8 @@ public class SignInService {
     private LoginUserService loginUserService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserCache userCache;
 
     public BusinessMessage addSignIn() {
         BusinessMessage message = new BusinessMessage();
@@ -103,9 +106,12 @@ public class SignInService {
             int count = slSignInMapper.insertSelective(signIn);
             if (count == 1) {
                 SlSignIn finalSignIn = signIn;
+                int silver = user.getSilver() + finalSignIn.getAwardSilver();
+                user.setSilver(silver);
+                userCache.put(user.getClientId(),user);
                 userService.updateByPrimaryKeySelective(new SlUser() {{
                     setId(user.getId());
-                    setSilver(user.getSilver() + finalSignIn.getAwardSilver());
+                    setSilver(silver);
                 }});
             } else {
                 message.setMsg("签到信息错误");
