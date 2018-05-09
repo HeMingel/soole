@@ -4,6 +4,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.songpo.searched.alipay.service.AliPayService;
+import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,9 @@ public class PaymentService {
     private final WxPayService payService;
 
     private final AliPayService aliPayService;
+
+    @Autowired
+    private ProcessOrders processOrders;
 
     @Autowired
     public PaymentService(WxPayService payService, AliPayService aliPayService) {
@@ -125,24 +129,24 @@ public class PaymentService {
             params.put(name, valueStr);
         }
         //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
+        // TODO 处理系统订单状态等业务逻辑
         try {
             // 执行验签
             boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicKey(), "UTF_8", aliPayService.getSignType());
 
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
-                // TODO 处理系统订单状态等业务逻辑
-//                String orderNum = request.getParameter("out_trade_no");
-//                if (null != orderNum) {
-//                    ProcessOrders orders = new ProcessOrders();
-//                    orders.processOrders(orderNum);
-//                }
+                String orderNum = params.get("out_trade_no");
+                if (null != orderNum) {
+                    processOrders.processOrders(orderNum);
+                }
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";
             }
         } catch (AlipayApiException e) {
             log.error("支付宝支付通知验签失败，{}", e);
         }
+
         return result;
     }
 }
