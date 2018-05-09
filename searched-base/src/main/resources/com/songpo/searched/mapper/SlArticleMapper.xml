@@ -12,7 +12,7 @@
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
     <result column="reference_url" jdbcType="VARCHAR" property="referenceUrl" />
-    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
     <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">

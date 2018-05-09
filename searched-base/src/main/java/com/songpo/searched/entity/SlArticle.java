@@ -50,7 +50,7 @@ public class SlArticle implements Serializable {
      * 添加时间
      */
     @Column(name = "add_time")
-    private Integer addTime;
+    private String addTime;
 
     /**
      * 文章类型：1搜了头条，2海南之窗，3搜了故事
@@ -190,7 +190,7 @@ public class SlArticle implements Serializable {
      *
      * @return add_time - 添加时间
      */
-    public Integer getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
@@ -199,8 +199,8 @@ public class SlArticle implements Serializable {
      *
      * @param addTime 添加时间
      */
-    public void setAddTime(Integer addTime) {
-        this.addTime = addTime;
+    public void setAddTime(String addTime) {
+        this.addTime = addTime == null ? null : addTime.trim();
     }
 
     /**

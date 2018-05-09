@@ -71,6 +71,12 @@ public class SlProduct implements Serializable {
     private String createTime;
 
     /**
+     * 审核时间(预售商品/了豆商品/消费返利商品审核时间)
+     */
+    @Column(name = "pro_check_time")
+    private String proCheckTime;
+
+    /**
      * 是否为推荐商品，0:否 1:是
      */
     private Integer recommend;
@@ -87,6 +93,11 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
+     * 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    private String detail;
+
+    /**
      * （暂未使用）关键词
      */
     private String antistop;
@@ -100,11 +111,6 @@ public class SlProduct implements Serializable {
      * （暂时未用）备注
      */
     private String remark;
-
-    /**
-     * （暂时未用）详情
-     */
-    private String detail;
 
     private static final long serialVersionUID = 1L;
 
@@ -307,6 +313,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取审核时间(预售商品/了豆商品/消费返利商品审核时间)
+     *
+     * @return pro_check_time - 审核时间(预售商品/了豆商品/消费返利商品审核时间)
+     */
+    public String getProCheckTime() {
+        return proCheckTime;
+    }
+
+    /**
+     * 设置审核时间(预售商品/了豆商品/消费返利商品审核时间)
+     *
+     * @param proCheckTime 审核时间(预售商品/了豆商品/消费返利商品审核时间)
+     */
+    public void setProCheckTime(String proCheckTime) {
+        this.proCheckTime = proCheckTime == null ? null : proCheckTime.trim();
+    }
+
+    /**
      * 获取是否为推荐商品，0:否 1:是
      *
      * @return recommend - 是否为推荐商品，0:否 1:是
@@ -358,6 +382,24 @@ public class SlProduct implements Serializable {
      */
     public void setSoldOut(Boolean soldOut) {
         this.soldOut = soldOut;
+    }
+
+    /**
+     * 获取商品详情（存放商品的图文和详情图片 h5展示）
+     *
+     * @return detail - 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    public String getDetail() {
+        return detail;
+    }
+
+    /**
+     * 设置商品详情（存放商品的图文和详情图片 h5展示）
+     *
+     * @param detail 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    public void setDetail(String detail) {
+        this.detail = detail == null ? null : detail.trim();
     }
 
     /**
@@ -414,24 +456,6 @@ public class SlProduct implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    /**
-     * 获取（暂时未用）详情
-     *
-     * @return detail - （暂时未用）详情
-     */
-    public String getDetail() {
-        return detail;
-    }
-
-    /**
-     * 设置（暂时未用）详情
-     *
-     * @param detail （暂时未用）详情
-     */
-    public void setDetail(String detail) {
-        this.detail = detail == null ? null : detail.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -449,13 +473,14 @@ public class SlProduct implements Serializable {
         sb.append(", salesModeId=").append(salesModeId);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
+        sb.append(", proCheckTime=").append(proCheckTime);
         sb.append(", recommend=").append(recommend);
         sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
+        sb.append(", detail=").append(detail);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);
         sb.append(", remark=").append(remark);
-        sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

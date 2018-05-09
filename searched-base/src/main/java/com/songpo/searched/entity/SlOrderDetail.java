@@ -206,6 +206,11 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "rebate_pulse")
     private Integer rebatePulse;
 
+    /**
+     * 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    private Integer type;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -820,6 +825,24 @@ public class SlOrderDetail implements Serializable {
         this.rebatePulse = rebatePulse;
     }
 
+    /**
+     * 获取1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     *
+     * @return type - 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     *
+     * @param type 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -860,6 +883,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", activityProductId=").append(activityProductId);
         sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", rebatePulse=").append(rebatePulse);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -30,6 +30,12 @@ public class SlTransactionDetail implements Serializable {
     private String redPacketId;
 
     /**
+     * 订单id（购物相关使用）
+     */
+    @Column(name = "order_id")
+    private String orderId;
+
+    /**
      * 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
     private Integer type;
@@ -50,7 +56,7 @@ public class SlTransactionDetail implements Serializable {
     private Integer silver;
 
     /**
-     * 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     * 交易货币类型 1.账户余额 2.略 3.钱 4.钱+豆 5.金豆 6.银豆
      */
     @Column(name = "deal_type")
     private Integer dealType;
@@ -138,6 +144,24 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
+     * 获取订单id（购物相关使用）
+     *
+     * @return order_id - 订单id（购物相关使用）
+     */
+    public String getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * 设置订单id（购物相关使用）
+     *
+     * @param orderId 订单id（购物相关使用）
+     */
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    /**
      * 获取消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      *
      * @return type - 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
@@ -210,18 +234,18 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     * 获取交易货币类型 1.账户余额 2.略 3.钱 4.钱+豆 5.金豆 6.银豆
      *
-     * @return deal_type - 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     * @return deal_type - 交易货币类型 1.账户余额 2.略 3.钱 4.钱+豆 5.金豆 6.银豆
      */
     public Integer getDealType() {
         return dealType;
     }
 
     /**
-     * 设置交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     * 设置交易货币类型 1.账户余额 2.略 3.钱 4.钱+豆 5.金豆 6.银豆
      *
-     * @param dealType 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+     * @param dealType 交易货币类型 1.账户余额 2.略 3.钱 4.钱+豆 5.金豆 6.银豆
      */
     public void setDealType(Integer dealType) {
         this.dealType = dealType;
@@ -273,6 +297,7 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", sourceId=").append(sourceId);
         sb.append(", targetId=").append(targetId);
         sb.append(", redPacketId=").append(redPacketId);
+        sb.append(", orderId=").append(orderId);
         sb.append(", type=").append(type);
         sb.append(", money=").append(money);
         sb.append(", coin=").append(coin);

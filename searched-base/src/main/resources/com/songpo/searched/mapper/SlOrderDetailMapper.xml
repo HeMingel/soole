@@ -39,6 +39,7 @@
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
     <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -49,6 +50,6 @@
     deduct_total_gold, confirm_receipt_time, discount, creator, create_time, modifier, 
     modification_time, post_fee, buyer_message, shipping_time, ems_id, ship_number, group_people, 
     presell_shipments_days, return_cash_money, place_order_return_pulse, rewards_money, 
-    share_of_people_id, activity_product_id, return_cash_pulse, rebate_pulse
+    share_of_people_id, activity_product_id, return_cash_pulse, rebate_pulse, type
   </sql>
 </mapper>
