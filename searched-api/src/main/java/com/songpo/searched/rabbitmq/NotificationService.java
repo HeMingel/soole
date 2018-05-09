@@ -10,6 +10,7 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class NotificationService {
 
     @Autowired
     private RabbitAdmin rabbitAdmin;
+
+    @Autowired
+    private Environment env;
 
     /**
      * 发送消息到指定单播队列
@@ -103,7 +107,7 @@ public class NotificationService {
         this.messageMapper.insertSelective(message);
 
         // 如果频道不存在，则进行创建
-        String channelName = "topic_globalMessage";
+        String channelName = env.getProperty("spring.rabbitmq.channelname");
 
         checkChannelName(channelName);
 
