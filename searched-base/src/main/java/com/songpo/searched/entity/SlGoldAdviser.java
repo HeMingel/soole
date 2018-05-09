@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_gold_adviser")
 public class SlGoldAdviser implements Serializable {
@@ -13,26 +13,42 @@ public class SlGoldAdviser implements Serializable {
     private String id;
 
     /**
-     * 昵称，例如：金牌顾问李白
+     * 客服用户ID（聊天用ID）
      */
-    private String nickname;
+    @Column(name = "user_id")
+    private String userId;
 
     /**
-     * 顾问介绍
+     * 客服真实姓名
      */
-    private String description;
+    private String name;
 
     /**
-     * 封面图片
+     * 首页封面职位描述
+     */
+    private String identity;
+
+    /**
+     * 顾问首页封面图片
      */
     @Column(name = "cover_url")
     private String coverUrl;
 
     /**
-     * 介绍视频
+     * 昵称，例如：金牌顾问李白
      */
-    @Column(name = "video_url")
-    private String videoUrl;
+    private String nickname;
+
+    /**
+     * 顾问详细介绍
+     */
+    private String description;
+
+    /**
+     * 顾问详情页图片
+     */
+    @Column(name = "detail_url")
+    private String detailUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -55,6 +71,78 @@ public class SlGoldAdviser implements Serializable {
     }
 
     /**
+     * 获取客服用户ID（聊天用ID）
+     *
+     * @return user_id - 客服用户ID（聊天用ID）
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置客服用户ID（聊天用ID）
+     *
+     * @param userId 客服用户ID（聊天用ID）
+     */
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    /**
+     * 获取客服真实姓名
+     *
+     * @return name - 客服真实姓名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置客服真实姓名
+     *
+     * @param name 客服真实姓名
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取首页封面职位描述
+     *
+     * @return identity - 首页封面职位描述
+     */
+    public String getIdentity() {
+        return identity;
+    }
+
+    /**
+     * 设置首页封面职位描述
+     *
+     * @param identity 首页封面职位描述
+     */
+    public void setIdentity(String identity) {
+        this.identity = identity == null ? null : identity.trim();
+    }
+
+    /**
+     * 获取顾问首页封面图片
+     *
+     * @return cover_url - 顾问首页封面图片
+     */
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    /**
+     * 设置顾问首页封面图片
+     *
+     * @param coverUrl 顾问首页封面图片
+     */
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl == null ? null : coverUrl.trim();
+    }
+
+    /**
      * 获取昵称，例如：金牌顾问李白
      *
      * @return nickname - 昵称，例如：金牌顾问李白
@@ -73,57 +161,39 @@ public class SlGoldAdviser implements Serializable {
     }
 
     /**
-     * 获取顾问介绍
+     * 获取顾问详细介绍
      *
-     * @return description - 顾问介绍
+     * @return description - 顾问详细介绍
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * 设置顾问介绍
+     * 设置顾问详细介绍
      *
-     * @param description 顾问介绍
+     * @param description 顾问详细介绍
      */
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
 
     /**
-     * 获取封面图片
+     * 获取顾问详情页图片
      *
-     * @return cover_url - 封面图片
+     * @return detail_url - 顾问详情页图片
      */
-    public String getCoverUrl() {
-        return coverUrl;
+    public String getDetailUrl() {
+        return detailUrl;
     }
 
     /**
-     * 设置封面图片
+     * 设置顾问详情页图片
      *
-     * @param coverUrl 封面图片
+     * @param detailUrl 顾问详情页图片
      */
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl == null ? null : coverUrl.trim();
-    }
-
-    /**
-     * 获取介绍视频
-     *
-     * @return video_url - 介绍视频
-     */
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    /**
-     * 设置介绍视频
-     *
-     * @param videoUrl 介绍视频
-     */
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl == null ? null : videoUrl.trim();
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl == null ? null : detailUrl.trim();
     }
 
     @Override
@@ -133,10 +203,13 @@ public class SlGoldAdviser implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
+        sb.append(", name=").append(name);
+        sb.append(", identity=").append(identity);
+        sb.append(", coverUrl=").append(coverUrl);
         sb.append(", nickname=").append(nickname);
         sb.append(", description=").append(description);
-        sb.append(", coverUrl=").append(coverUrl);
-        sb.append(", videoUrl=").append(videoUrl);
+        sb.append(", detailUrl=").append(detailUrl);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
