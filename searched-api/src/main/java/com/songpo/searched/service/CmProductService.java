@@ -6,16 +6,17 @@ import com.github.pagehelper.PageInfo;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.*;
+import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlMyCollection;
+import com.songpo.searched.entity.SlPresellReturnedRecord;
+import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.typehandler.ProductEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.hsqldb.lib.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +172,8 @@ public class CmProductService {
     /**
      * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
-     * @param goodsTypeId  商品分类ID
+     * @param goodsTypeId  商品分类ID sl_product.product_type_id
+     * @param name 商品名称
      * @param screenType 筛选类型
      * @param page       商品当前页
      * @param size       每页容量
