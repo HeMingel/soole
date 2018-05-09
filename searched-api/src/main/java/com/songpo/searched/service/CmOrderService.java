@@ -1348,6 +1348,7 @@ public class CmOrderService {
         Boolean flag = false;
         int count = 0;
         if (order.getDeductTotalPulse() > 0) {
+
             if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
                 if (user.getSilver() > order.getDeductTotalPulse()) {
                     int pulse = user.getSilver() - order.getDeductTotalPulse();
