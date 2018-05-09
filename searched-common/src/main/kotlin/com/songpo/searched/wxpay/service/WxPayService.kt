@@ -2,12 +2,14 @@ package com.songpo.searched.wxpay.service
 
 import com.github.wxpay.sdk.WXPay
 import com.github.wxpay.sdk.WXPayConfig
+import com.github.wxpay.sdk.WXPayUtil
 import com.songpo.searched.wxpay.config.WxPayConfigProperties
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 
 /**
  * 支付宝支付服务集成实现
@@ -280,14 +282,20 @@ class WxPayService(val config: WxPayConfigProperties) {
 
         val result = wxpay.unifiedOrder(data)
         if (result["return_code"].equals("SUCCESS") && result["result_code"].equals("SUCCESS")) {
-            return mapOf(
+            // 拼装用于App支付的参数
+            val resultData = sortedMapOf(
+                    Pair("appId", this.config.appId),
                     Pair("partnerId", this.config.mchId),
                     Pair("prepayId", result["prepay_id"] ?: ""),
                     Pair("package", "Sign=WXPay"),
                     Pair("nonceStr", result["nonce_str"] ?: ""),
-                    Pair("timeStamp", result["time_stamp"] ?: ""),
-                    Pair("sign", result["sign"] ?: "")
+                    Pair("timeStamp", (Date().time / 1000).toString())
             )
+
+            // 对数据进行签名
+            resultData["sign"] = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+
+            return resultData
         }
         return result
     }
