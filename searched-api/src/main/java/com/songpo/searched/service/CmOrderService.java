@@ -887,6 +887,7 @@ public class CmOrderService {
             }}, example1);
             message.setMsg("订单生成成功");
             message.setSuccess(true);
+            message.setData(slOrder.getId());
         } else {
             message.setMsg("用户地址不存在");
             return message;
@@ -1267,23 +1268,9 @@ public class CmOrderService {
                 if (orderDetails.size() > 0) {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
-                        str = this.aliPayService.appPay("", String.valueOf(order.getTotalAmount()), "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                        str = this.aliPayService.appPay("15d", String.valueOf(order.getTotalAmount()), "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                         if (StringUtils.isNotBlank(str)) {
                             message.setData(str);
-                            //TODO 支付异步通知后处理
-//                            Example example = new Example(SlOrder.class);
-//                            example.createCriteria()
-//                                    .andEqualTo("id", orderId)
-//                                    .andEqualTo("paymentState", 2)
-//                                    .andEqualTo("userId", user.getId());
-//                            orderService.updateByExampleSelective(new SlOrder() {{
-//                                // 改成已支付
-//                                setPaymentState(1);
-//                            }}, example);
-//                            ProcessOrders processOrders = new ProcessOrders();
-//                            for (SlOrderDetail detail : orderDetails) {
-//                                processOrders.processOrders(order, user, detail.getActivityProductId());
-//                            }
                             message.setSuccess(true);
                             message.setMsg("支付成功");
                         }
