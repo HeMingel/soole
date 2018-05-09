@@ -9,6 +9,7 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
+import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -80,6 +81,10 @@ public class CmOrderService {
     private SlEmsMapper emsMapper;
     @Autowired
     private HttpRequest expressUtils;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserCache userCache;
 
     /**
      * 多商品下单
@@ -368,29 +373,6 @@ public class CmOrderService {
             return message;
         }
         return message;
-        //TODO 支付完成处理
-//        if (message.getSuccess() == true) {
-//            if (pulse > 0 && (user.getSilver() + user.getCoin()) > pulse) {
-//                int count = 0;
-//                if (user.getSilver() > pulse) {
-//                    int finalPulse1 = pulse;
-//                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
-//                        setId(user.getId());
-//                        setSilver(user.getSilver() - finalPulse1);
-//                    }});
-//                } else {
-//                    int p = pulse - user.getSilver();
-//                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
-//                        setId(user.getId());
-//                        setCoin(user.getCoin() - p);
-//                        setSilver(0);
-//                    }});
-//                }
-//            } else {
-//                message.setMsg("了豆数量不足");
-//            }
-//
-//        }
     }
 
     /**
@@ -1261,4 +1243,146 @@ public class CmOrderService {
         return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.0" + suffix, null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
+    /**
+     * 支付宝支付
+     *
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage<String> alipayAppPay(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        String str = null;
+        if (null != user) {
+            SlOrder order = orderService.selectOne(new SlOrder() {{
+                setId(orderId);
+                setUserId(user.getId());
+            }});
+            if (null != order) {
+                List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
+                    setOrderId(orderId);
+                    setCreator(user.getId());
+                }});
+                if (orderDetails.size() > 0) {
+                    Boolean f = checkTheOrder(order, user);
+                    if (f) {
+                        str = this.aliPayService.appPay("", String.valueOf(order.getTotalAmount()), "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                        if (StringUtils.isNotBlank(str)) {
+                            message.setData(str);
+                            //TODO 支付异步通知后处理
+//                            Example example = new Example(SlOrder.class);
+//                            example.createCriteria()
+//                                    .andEqualTo("id", orderId)
+//                                    .andEqualTo("paymentState", 2)
+//                                    .andEqualTo("userId", user.getId());
+//                            orderService.updateByExampleSelective(new SlOrder() {{
+//                                // 改成已支付
+//                                setPaymentState(1);
+//                            }}, example);
+//                            ProcessOrders processOrders = new ProcessOrders();
+//                            for (SlOrderDetail detail : orderDetails) {
+//                                processOrders.processOrders(order, user, detail.getActivityProductId());
+//                            }
+                            message.setSuccess(true);
+                            message.setMsg("支付成功");
+                        }
+                    }
+                }
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 微信支付
+     *
+     * @param req
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage<Map> wechatAppPay(HttpServletRequest req, String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        Map<String, String> map = new HashMap<>();
+        if (null != user) {
+            SlOrder order = orderService.selectOne(new SlOrder() {{
+                setId(orderId);
+                setUserId(user.getId());
+            }});
+            if (null != order) {
+                List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
+                    setOrderId(orderId);
+                    setCreator(user.getId());
+                }});
+                if (orderDetails.size() > 0) {
+                    Boolean f = checkTheOrder(order, user);
+                    if (f) {
+                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", String.valueOf(order.getTotalAmount().doubleValue() * 100), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                        if (map.size() > 0) {
+                            message.setData(map);
+//                            Example example = new Example(SlOrder.class);
+//                            example.createCriteria()
+//                                    .andEqualTo("id", orderId)
+//                                    .andEqualTo("paymentState", 2)
+//                                    .andEqualTo("userId", user.getId());
+//                            orderService.updateByExampleSelective(new SlOrder() {{
+//                                // 改成已支付
+//                                setPaymentState(1);
+//                            }}, example);
+//                            ProcessOrders processOrders = new ProcessOrders();
+//                            for (SlOrderDetail detail : orderDetails) {
+//                                processOrders.processOrders(order, user, detail.getActivityProductId());
+//                            }
+                            message.setSuccess(true);
+                            message.setMsg("支付成功");
+                        }
+                    }
+                }
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 校验扣除了豆
+     *
+     * @param order
+     * @return
+     */
+    public Boolean checkTheOrder(SlOrder order, SlUser user) {
+        Boolean flag = false;
+        int count = 0;
+        if (order.getDeductTotalPulse() > 0) {
+            if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
+                if (user.getSilver() > order.getDeductTotalPulse()) {
+                    int pulse = user.getSilver() - order.getDeductTotalPulse();
+                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                        setId(user.getId());
+                        setSilver(pulse);
+                    }});
+                    user.setSilver(pulse);
+                    userCache.put(user.getClientId(), user);
+                } else {
+                    int p = order.getDeductTotalPulse() - user.getSilver();
+                    int c = user.getCoin() - p;
+                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                        setId(user.getId());
+                        setCoin(c);
+                        setSilver(0);
+                    }});
+                    user.setSilver(0);
+                    user.setCoin(c);
+                    userCache.put(user.getClientId(), user);
+                }
+            }
+        } else if (order.getDeductTotalPulse() == 0) {
+            flag = true;
+        }
+        if (count == 1) {
+            flag = true;
+        }
+        return flag;
+    }
 }

@@ -263,8 +263,6 @@ public class CmOrderController {
         return message;
     }
 
-    ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
-
     /**
      * 快递100 接口
      *
@@ -276,6 +274,35 @@ public class CmOrderController {
     public BusinessMessage SearchExpress(Integer emsId, String expressCode) {
         return this.cmOrderService.searchExpress(emsId,expressCode);
     }
+
+    /**
+     * 支付宝App预下单
+     *
+     * @param orderId 订单id
+     * @return 预下单信息
+     */
+    @GetMapping("alipay-app-pay")
+    public BusinessMessage<String> alipayAppPayGet(String orderId) {
+        return alipayAppPayTestPost(orderId);
+    }
+
+    @PostMapping("alipay-app-pay")
+    public BusinessMessage<String> alipayAppPayPost(String orderId) {
+        log.debug("支付宝App下单，productName = {}", orderId);
+        BusinessMessage<String> message = new BusinessMessage<>();
+        try {
+            message = this.cmOrderService.alipayAppPay(orderId);
+            message.setData(message.getData());
+            message.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("支付宝App下单失败，{}", e);
+        }
+        return message;
+    }
+
+    ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
+
 
     /**
      * 微信App预下单
