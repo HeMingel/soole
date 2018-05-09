@@ -744,7 +744,7 @@ public class CmOrderService {
         slOrder.setGroupMaster(groupMaster);
         // 订单类型
 //        slOrder.setType(type);
-        // 如果是拼团订单 TODO 改成支付完成后处理拼团状态
+        // 如果是拼团订单
 //        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
 //            // 查询该订单号的所有订单 && 支付成功状态
 //            int count2 = this.orderService.selectCount(new SlOrder() {{
@@ -1315,19 +1315,6 @@ public class CmOrderService {
                         map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", String.valueOf(order.getTotalAmount().doubleValue() * 100), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                         if (map.size() > 0) {
                             message.setData(map);
-//                            Example example = new Example(SlOrder.class);
-//                            example.createCriteria()
-//                                    .andEqualTo("id", orderId)
-//                                    .andEqualTo("paymentState", 2)
-//                                    .andEqualTo("userId", user.getId());
-//                            orderService.updateByExampleSelective(new SlOrder() {{
-//                                // 改成已支付
-//                                setPaymentState(1);
-//                            }}, example);
-//                            ProcessOrders processOrders = new ProcessOrders();
-//                            for (SlOrderDetail detail : orderDetails) {
-//                                processOrders.processOrders(order, user, detail.getActivityProductId());
-//                            }
                             message.setSuccess(true);
                             message.setMsg("支付成功");
                         }
