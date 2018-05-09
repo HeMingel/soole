@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_product")
 public class SlProduct implements Serializable {
@@ -17,6 +17,12 @@ public class SlProduct implements Serializable {
      * 名称
      */
     private String name;
+
+    /**
+     * 商品编号
+     */
+    @Column(name = "product_number")
+    private Integer productNumber;
 
     /**
      * 图片
@@ -148,6 +154,24 @@ public class SlProduct implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取商品编号
+     *
+     * @return product_number - 商品编号
+     */
+    public Integer getProductNumber() {
+        return productNumber;
+    }
+
+    /**
+     * 设置商品编号
+     *
+     * @param productNumber 商品编号
+     */
+    public void setProductNumber(Integer productNumber) {
+        this.productNumber = productNumber;
     }
 
     /**
@@ -464,6 +488,7 @@ public class SlProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", productNumber=").append(productNumber);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", introduction=").append(introduction);
         sb.append(", productTypeId=").append(productTypeId);

@@ -8,9 +8,9 @@ public enum ArticleTypeEnum implements BaseEnum {
     /**
      * 用户端首页
      */
-    HOMES_HAINAN("海南之家", 1),
-    SEARCHED_STORY("搜了故事", 2),
-    SEARCHED_HEADLINES("搜了头条", 3);
+    HOMES_HAINAN("海南之家", 2),
+    SEARCHED_STORY("搜了故事", 3),
+    SEARCHED_HEADLINES("搜了头条", 1);
 
     private String label;
 

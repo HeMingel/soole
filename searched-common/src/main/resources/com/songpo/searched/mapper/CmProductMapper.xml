@@ -223,6 +223,7 @@
     <select id="goodsActivityList" parameterType="String" resultType="Map">
         SELECT
           apr.*,
+
           ap.restrict_count
         FROM
           sl_product p
@@ -235,13 +236,15 @@
     <!--查询商品库存规格-->
     <select id="goodsRepository" resultType="Map" parameterType="String">
           SELECT
-            pr.* ,ap.id AS activity_product_id
+            pr.* ,p.postage,ap.id AS activity_product_id
           FROM
             sl_product_repository pr
             LEFT JOIN sl_activity_product_repository apr
               ON pr.id= apr.product_repository_id
               LEFT JOIN sl_activity_product ap
               ON apr.`serial_number` = ap.`activity_product_repository_serial_number`
+              LEFT JOIN sl_product p
+              ON ap.`product_id` = p.`id`
               WHERE pr.`id`  = #{repositoryId}
     </select>
 
