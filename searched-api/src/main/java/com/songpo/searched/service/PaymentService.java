@@ -45,7 +45,7 @@ public class PaymentService {
      * 返回给微信端的状态
      *
      * @param returnCode 返回状态码 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
-     * @param returnMsg 返回信息 返回信息，如非空，为错误原因 签名失败 参数格式校验错误
+     * @param returnMsg  返回信息 返回信息，如非空，为错误原因 签名失败 参数格式校验错误
      * @return 通知参数
      */
     public static String wxPayNotifyProcess(String returnCode, String returnMsg) {
@@ -132,7 +132,11 @@ public class PaymentService {
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
                 // TODO 处理系统订单状态等业务逻辑
-
+//                String orderNum = request.getParameter("out_trade_no");
+//                if (null != orderNum) {
+//                    ProcessOrders orders = new ProcessOrders();
+//                    orders.processOrders(orderNum);
+//                }
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";
             }
