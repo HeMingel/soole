@@ -1275,8 +1275,14 @@ public class CmOrderService {
                             message.setMsg("支付成功");
                         }
                     }
+                } else {
+                    message.setMsg("订单出错");
                 }
+            } else {
+                message.setMsg("订单不存在");
             }
+        } else {
+            message.setMsg("请登录");
         }
         return message;
     }
