@@ -47,7 +47,7 @@ public class NotifyController {
      */
     @PostMapping("alipay-notify")
     public String aliPayNotify(HttpServletRequest request) {
-        return this.paymentService.wxPayNotify(request);
+        return this.paymentService.aliPayNotify(request);
     }
 
     /**
