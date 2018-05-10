@@ -361,6 +361,10 @@ public class CmOrderService {
                         setDeductTotalPulse(finalPulse);
                     }});
                 }
+                Map<String, String> map = new HashMap<>();
+                map.put("order_num", slOrder.getId());
+                map.put("total_amount", slOrder.getTotalAmount().toString());
+                map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
                 message.setData(slOrder.getId());
             } else {
                 log.error("收货地址不存在");
@@ -887,6 +891,10 @@ public class CmOrderService {
             }}, example1);
             message.setMsg("订单生成成功");
             message.setSuccess(true);
+            Map<String, String> map = new HashMap<>();
+            map.put("order_num", slOrder.getId());
+            map.put("total_amount", slOrder.getTotalAmount().toString());
+            map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
             message.setData(slOrder.getId());
         } else {
             message.setMsg("用户地址不存在");
