@@ -46,7 +46,8 @@ class AlipayController(val alipayService: AliPayService) {
         ApiImplicitParam(name = "returnUrl", value = "HTTP/HTTPS开头字符串，用户取消支付后跳转的地址", paramType = "form"),
         ApiImplicitParam(name = "notifyUrl", value = "支付宝服务器主动通知商户服务器里指定的页面http/https路径。", paramType = "form", required = true),
         ApiImplicitParam(name = "charset", value = "编码格式\n - UTF-8\n - GBK", paramType = "form", required = true),
-        ApiImplicitParam(name = "alipayPublicKey", value = "支付宝公钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "alipayPublicKey", value = "支付宝应用公钥", paramType = "form", required = true),
+        ApiImplicitParam(name = "alipayPublicPayKey", value = "支付宝支付公钥", paramType = "form", required = true),
         ApiImplicitParam(name = "signType", value = "商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2", paramType = "form", required = true)
     ])
     @PostMapping("/load-config")
@@ -60,6 +61,7 @@ class AlipayController(val alipayService: AliPayService) {
             notifyUrl: String?,
             charset: String,
             alipayPublicKey: String,
+            alipayPublicPayKey: String,
             signType: String
     ): BusinessMessage<Void> {
         log.debug {
@@ -71,12 +73,13 @@ class AlipayController(val alipayService: AliPayService) {
                     "用户取消支付后跳转的地址 = [$returnUrl], " +
                     "支付通知地址 = [$notifyUrl], " +
                     "编码格式 = [$charset], " +
-                    "支付宝公钥 = [$alipayPublicKey], " +
+                    "支付宝应用公钥 = [$alipayPublicKey], " +
+                    "支付宝支付公钥 = [$alipayPublicPayKey], " +
                     "签名算法 = [$signType]"
         }
         val message = BusinessMessage<Void>()
         try {
-            this.alipayService.loadConfig(serverUrl, pid, appId, privateKey, format, returnUrl, notifyUrl, charset, alipayPublicKey, signType)
+            this.alipayService.loadConfig(serverUrl, pid, appId, privateKey, format, returnUrl, notifyUrl, charset, alipayPublicKey, alipayPublicPayKey, signType)
             message.success = true
         } catch (e: Exception) {
             log.error { "加载支付配置失败，$e" }

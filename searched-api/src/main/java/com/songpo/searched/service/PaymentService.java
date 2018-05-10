@@ -4,7 +4,6 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.songpo.searched.alipay.service.AliPayService;
-import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -139,7 +138,7 @@ public class PaymentService {
         // TODO 处理系统订单状态等业务逻辑
         try {
             // 执行验签
-            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicKey(), "UTF_8", aliPayService.getSignType());
+            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicPayKey(), "UTF_8", aliPayService.getSignType());
             log.debug("支付宝执行验签结果: {}",flag);
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {

@@ -52,10 +52,16 @@ class AliPayService {
     var privateKey: String = ""
 
     /**
-     * 支付宝公钥
+     * 支付宝应用公钥
      */
     @Value(value = "\${sp.pay.alipay.alipay-public-key}")
     var alipayPublicKey: String = ""
+
+    /**
+     * 支付宝应用公钥
+     */
+    @Value(value = "\${sp.pay.alipay.alipay-pay-public-key}")
+    var alipayPublicPayKey: String = ""
 
     /**
      * 支付通知地址
@@ -92,7 +98,8 @@ class AliPayService {
      * @param returnUrl 用户取消支付后跳转的地址
      * @param notifyUrl 支付宝服务器主动通知商户服务器里指定的页面
      * @param charset 编码格式 UTF-8 GBK
-     * @param alipayPublicKey 支付宝公钥
+     * @param alipayPublicKey 支付宝应用公钥
+     * @param alipayPublicPayKey 支付宝支付公钥
      * @param signType 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
      * @return 响应信息
      */
@@ -105,6 +112,7 @@ class AliPayService {
                    notifyUrl: String?,
                    charset: String,
                    alipayPublicKey: String,
+                   alipayPublicPayKey: String,
                    signType: String) {
         this.serverUrl = serverUrl
         this.appId = appId
@@ -115,6 +123,7 @@ class AliPayService {
         this.notifyUrl = notifyUrl
         this.charset = charset
         this.alipayPublicKey = alipayPublicKey
+        this.alipayPublicPayKey = alipayPublicPayKey
         this.signType = signType
     }
 
