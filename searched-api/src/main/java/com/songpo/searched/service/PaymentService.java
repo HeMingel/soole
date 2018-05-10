@@ -116,23 +116,6 @@ public class PaymentService {
         log.debug("阿里支付通知参数:{}","request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
-//        //获取支付宝POST过来反馈信息
-//        Map<String, String> params = new HashMap<>();
-//        Map<String, String[]> requestParams = request.getParameterMap();
-//        for (String name : requestParams.keySet()) {
-//            String[] values = requestParams.get(name);
-//            String valueStr = "";
-//            for (int i = 0; i < values.length; i++) {
-//                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
-//            }
-//            //乱码解决，这段代码在出现乱码时使用。
-//            try {
-//                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-//            } catch (UnsupportedEncodingException e) {
-//                log.error("解析参数失败，{}", e);
-//            }
-//            params.put(name, valueStr);
-//        }
         //获取支付宝POST过来反馈信息
         Map<String, String> maps = new HashMap<String, String>();
         Map requestParams = request.getParameterMap();
@@ -165,6 +148,7 @@ public class PaymentService {
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";
             }
+
         } catch (AlipayApiException e) {
             log.error("支付宝支付通知验签失败，{}", e);
         }

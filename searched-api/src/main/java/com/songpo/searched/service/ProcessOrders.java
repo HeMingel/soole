@@ -41,14 +41,14 @@ public class ProcessOrders {
     /**
      * 支付后订单处理
      *
-     * @param orderId
+     * @param orderNum
      * @return
      */
     @Transactional
-    public void processOrders(String orderId,int payType) {
+    public void processOrders(String orderNum,int payType) {
         String dete = null;
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
-            setId(orderId);
+            setSerialNumber(orderNum);
         }});
         if (null != order) {
             SlUser user = userService.selectByPrimaryKey(order.getUserId());
