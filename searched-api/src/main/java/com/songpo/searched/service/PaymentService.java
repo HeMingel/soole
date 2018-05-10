@@ -4,7 +4,6 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.songpo.searched.alipay.service.AliPayService;
-import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -113,7 +112,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String aliPayNotify(HttpServletRequest request) {
-        log.debug("阿里支付通知参数:","request = [" + request + "]");
+        log.debug("阿里支付通知参数:{0}", "request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
         //获取支付宝POST过来反馈信息

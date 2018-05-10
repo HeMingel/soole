@@ -164,6 +164,7 @@ public class CmProductCommentService {
         //评论入库
         productCommentService.insertSelective(productComment);
 
+        businessMessage.setMsg("评论成功");
         businessMessage.setSuccess(true);
         return businessMessage;
     }
