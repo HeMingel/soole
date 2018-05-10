@@ -1282,7 +1282,6 @@ public class CmOrderService {
                         if (StringUtils.isNotBlank(str)) {
                             message.setData(str);
                             message.setSuccess(true);
-                            message.setMsg("支付成功");
                         }
                     }
                 } else {
@@ -1327,7 +1326,6 @@ public class CmOrderService {
                         if (map.size() > 0) {
                             message.setData(map);
                             message.setSuccess(true);
-                            message.setMsg("支付成功");
                         }
                     }
                 }
