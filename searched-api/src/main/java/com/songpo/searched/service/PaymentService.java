@@ -76,6 +76,7 @@ public class PaymentService {
                 if (StringUtils.isNotBlank(result)) {
                     // 支付回调参数
                     Map<String, String> resParams = WXPayUtil.xmlToMap(result);
+                    log.debug("微信回调参数: {}", resParams);
                     // 验签
                     if (payService.wxpay.isPayResultNotifySignatureValid(resParams)) {
                         // 签名正确
@@ -113,7 +114,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String aliPayNotify(HttpServletRequest request) {
-        log.debug("阿里支付通知参数:","request = [" + request + "]");
+        log.debug("阿里支付通知参数:{}","request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
         //获取支付宝POST过来反馈信息
@@ -133,6 +134,7 @@ public class PaymentService {
             }
             params.put(name, valueStr);
         }
+        log.debug("支付宝回调通知参数: {}", params);
         //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
         // TODO 处理系统订单状态等业务逻辑
         try {
