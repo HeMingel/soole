@@ -361,7 +361,11 @@ public class CmOrderService {
                         setDeductTotalPulse(finalPulse);
                     }});
                 }
-                message.setData(slOrder.getId());
+                Map<String, String> map = new HashMap<>();
+                map.put("order_num", slOrder.getId());
+                map.put("total_amount", String.valueOf(money));
+                map.put("deduct_total_pulse", String.valueOf(pulse));
+                message.setData(map);
             } else {
                 log.error("收货地址不存在");
                 message.setMsg("收货地址不存在");
@@ -744,7 +748,7 @@ public class CmOrderService {
         slOrder.setGroupMaster(groupMaster);
         // 订单类型
 //        slOrder.setType(type);
-        // 如果是拼团订单 TODO 改成支付完成后处理拼团状态
+        // 如果是拼团订单
 //        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
 //            // 查询该订单号的所有订单 && 支付成功状态
 //            int count2 = this.orderService.selectCount(new SlOrder() {{
@@ -780,6 +784,8 @@ public class CmOrderService {
             slOrder.setConsigneename(slUserAddress.getName());
             // 收货人的联系方式
             slOrder.setConsigneephone(slUserAddress.getPhone());
+            // 了豆价格
+            slOrder.setDeductTotalPulse(repository.getSilver());
             // 插入订单表
             orderService.insertSelective(slOrder);
             // 订单加入redis 有效时间为24小时
@@ -887,7 +893,11 @@ public class CmOrderService {
             }}, example1);
             message.setMsg("订单生成成功");
             message.setSuccess(true);
-            message.setData(slOrder.getId());
+            Map<String, String> map = new HashMap<>();
+            map.put("order_num", slOrder.getId());
+            map.put("total_amount", money.toString());
+            map.put("deduct_total_pulse", repository.getSilver().toString());
+            message.setData(map);
         } else {
             message.setMsg("用户地址不存在");
             return message;
@@ -1268,15 +1278,20 @@ public class CmOrderService {
                 if (orderDetails.size() > 0) {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
-                        str = this.aliPayService.appPay("15d", String.valueOf(order.getTotalAmount()), "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                        str = this.aliPayService.appPay("15d", /*String.valueOf(order.getTotalAmount())*/"0.01", "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                         if (StringUtils.isNotBlank(str)) {
                             message.setData(str);
                             message.setSuccess(true);
-                            message.setMsg("支付成功");
                         }
                     }
+                } else {
+                    message.setMsg("订单出错");
                 }
+            } else {
+                message.setMsg("订单不存在");
             }
+        } else {
+            message.setMsg("请登录");
         }
         return message;
     }
@@ -1306,24 +1321,11 @@ public class CmOrderService {
                 if (orderDetails.size() > 0) {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
-                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", String.valueOf(order.getTotalAmount().doubleValue() * 100), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                        String money = String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue());
+                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                         if (map.size() > 0) {
                             message.setData(map);
-//                            Example example = new Example(SlOrder.class);
-//                            example.createCriteria()
-//                                    .andEqualTo("id", orderId)
-//                                    .andEqualTo("paymentState", 2)
-//                                    .andEqualTo("userId", user.getId());
-//                            orderService.updateByExampleSelective(new SlOrder() {{
-//                                // 改成已支付
-//                                setPaymentState(1);
-//                            }}, example);
-//                            ProcessOrders processOrders = new ProcessOrders();
-//                            for (SlOrderDetail detail : orderDetails) {
-//                                processOrders.processOrders(order, user, detail.getActivityProductId());
-//                            }
                             message.setSuccess(true);
-                            message.setMsg("支付成功");
                         }
                     }
                 }
@@ -1342,6 +1344,7 @@ public class CmOrderService {
         Boolean flag = false;
         int count = 0;
         if (order.getDeductTotalPulse() > 0) {
+
             if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
                 if (user.getSilver() > order.getDeductTotalPulse()) {
                     int pulse = user.getSilver() - order.getDeductTotalPulse();

@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -34,6 +34,9 @@ public class PaymentService {
     private final WxPayService payService;
 
     private final AliPayService aliPayService;
+
+    @Autowired
+    private ProcessOrders processOrders;
 
     @Autowired
     public PaymentService(WxPayService payService, AliPayService aliPayService) {
@@ -62,6 +65,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String wxPayNotify(HttpServletRequest request) {
+        log.debug("微信支付通知参数:","request = [" + request + "]");
         String retStr = wxPayNotifyProcess("FAIL", "处理通知失败");
         try (InputStream is = request.getInputStream()) {
             // 读取支付回调参数
@@ -71,12 +75,17 @@ public class PaymentService {
                 if (StringUtils.isNotBlank(result)) {
                     // 支付回调参数
                     Map<String, String> resParams = WXPayUtil.xmlToMap(result);
+                    log.debug("微信回调参数: {}", resParams);
+                    log.debug("微信验签结果: {}", payService.wxpay.isPayResultNotifySignatureValid(resParams));
                     // 验签
                     if (payService.wxpay.isPayResultNotifySignatureValid(resParams)) {
                         // 签名正确
                         // 进行处理。
                         // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
-
+                        String orderNum = resParams.get("out_trade_no");
+                        if (null != orderNum) {
+                            processOrders.processOrders(orderNum,1);
+                        }
                         // 处理订单支付通知成功逻辑
 
                         // 通知微信服务器处理支付通知成功
@@ -105,41 +114,41 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String aliPayNotify(HttpServletRequest request) {
+        log.debug("阿里支付通知参数:{}","request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
         //获取支付宝POST过来反馈信息
-        Map<String, String> params = new HashMap<>();
-        Map<String, String[]> requestParams = request.getParameterMap();
-        for (String name : requestParams.keySet()) {
-            String[] values = requestParams.get(name);
+        Map<String, String> maps = new HashMap<String, String>();
+        Map requestParams = request.getParameterMap();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
                 valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
-            //乱码解决，这段代码在出现乱码时使用。
-            try {
-                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                log.error("解析参数失败，{}", e);
-            }
-            params.put(name, valueStr);
+            // 乱码解决，这段代码在出现乱码时使用。
+//                 valueStr = new String(valueStr.getBytes("ISO-8859-1"),"utf-8");
+            maps.put(name, valueStr);
         }
+        log.debug("支付宝回调通知参数: {}", maps);
         //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
+        // TODO 处理系统订单状态等业务逻辑
         try {
+            log.debug("支付宝验签类型: {}",aliPayService.getSignType());
             // 执行验签
-            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicKey(), "UTF_8", aliPayService.getSignType());
-
+            boolean flag = AlipaySignature.rsaCheckV1(maps, aliPayService.getAlipayPublicKey(), "UTF-8", aliPayService.getSignType());
+            log.debug("支付宝执行验签结果: {}",flag);
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
-                // TODO 处理系统订单状态等业务逻辑
-//                String orderNum = request.getParameter("out_trade_no");
-//                if (null != orderNum) {
-//                    ProcessOrders orders = new ProcessOrders();
-//                    orders.processOrders(orderNum);
-//                }
+                String orderNum = maps.get("out_trade_no");
+                if (null != orderNum) {
+                    processOrders.processOrders(orderNum,2);
+                }
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";
             }
+
         } catch (AlipayApiException e) {
             log.error("支付宝支付通知验签失败，{}", e);
         }

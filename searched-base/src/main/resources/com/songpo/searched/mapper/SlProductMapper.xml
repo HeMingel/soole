@@ -7,6 +7,7 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="product_number" jdbcType="INTEGER" property="productNumber"/>
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
@@ -29,8 +30,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, image_url, introduction, product_type_id, comment_num, sales_volume, shop_id, 
-    sales_mode_id, creator, create_time, pro_check_time, recommend, postage, sold_out, 
-    detail, antistop, reason, remark
+      id, name, product_number, image_url, introduction, product_type_id, comment_num,
+      sales_volume, shop_id, sales_mode_id, creator, create_time, pro_check_time, recommend,
+      postage, sold_out, detail, antistop, reason, remark
   </sql>
 </mapper>

@@ -139,7 +139,7 @@ public class FileService {
     }
 
     /**
-     * 上传文件，并返回图片URL和图片的宽度和高度
+     * 上传文件，并返回图片URL、图片名称和图片的宽度和高度
      *
      * @param type 文件类型，例如用于头像、商品等
      * @param file 文件
@@ -147,6 +147,7 @@ public class FileService {
      */
     public JSONObject newUpload(String type, MultipartFile file) {
         JSONObject data = new JSONObject();
+        data.put("fileName", "");
         data.put("fileUrl", "");
         data.put("width", 0);
         data.put("height", 0);
@@ -233,6 +234,7 @@ public class FileService {
                     fileUrl = domain + "/" + uploadFile.getTargetName();
                 }
             }
+            data.replace("fileName", uploadFile.getTargetName());
         } catch (IOException e) {
             log.error("上传文件失败，来源文件：{}，目标文件：{}，{}", file.getOriginalFilename(), fullPath, e);
         }

@@ -92,7 +92,8 @@ class AliPayService {
      * @param returnUrl 用户取消支付后跳转的地址
      * @param notifyUrl 支付宝服务器主动通知商户服务器里指定的页面
      * @param charset 编码格式 UTF-8 GBK
-     * @param alipayPublicKey 支付宝公钥
+     * @param alipayPublicKey 支付宝应用公钥
+     * @param alipayPublicPayKey 支付宝支付公钥
      * @param signType 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
      * @return 响应信息
      */

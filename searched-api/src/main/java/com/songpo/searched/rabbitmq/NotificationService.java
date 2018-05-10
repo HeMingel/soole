@@ -112,7 +112,7 @@ public class NotificationService {
         checkChannelName(channelName);
 
         // 发送广播消息
-        this.messagingTemplate.convertAndSend("topic_globalMessage", content);
+        this.messagingTemplate.convertAndSend(channelName, content);
     }
 
     /**

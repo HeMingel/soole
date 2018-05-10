@@ -12,7 +12,6 @@
     <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
     <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
-    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="payment_channel" jdbcType="INTEGER" property="paymentChannel" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
@@ -27,13 +26,15 @@
     <result column="spell_group_status" jdbcType="INTEGER" property="spellGroupStatus" />
     <result column="group_master" jdbcType="VARCHAR" property="groupMaster" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
+      <result column="type" jdbcType="INTEGER" property="type"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, serial_number, user_id, total_amount, deduct_total_pulse, fee, payment_state, 
-    type, payment_channel, remark, create_time, pay_time, status, consigneeName, consigneePhone, 
-    province, city, county, detailed, spell_group_status, group_master, activity_product_id
+      id, serial_number, user_id, total_amount, deduct_total_pulse, fee, payment_state,
+      payment_channel, remark, create_time, pay_time, status, consigneeName, consigneePhone,
+      province, city, county, detailed, spell_group_status, group_master, activity_product_id,
+      type
   </sql>
 </mapper>

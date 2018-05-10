@@ -250,10 +250,10 @@ public class CmOrderController {
             @ApiImplicitParam(name = "returnsDetailId", value = "预售返现记录表", paramType = "form", required = true)
     })
     @PostMapping("presell-premises")
-    public BusinessMessage presellPremises(String returnsDetailId,String orderId) {
+    public BusinessMessage presellPremises(String returnsDetailId, String orderId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.presellPremises(returnsDetailId,orderId);
+            message = this.cmOrderService.presellPremises(returnsDetailId, orderId);
             message.setMsg(message.getMsg());
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {
@@ -272,7 +272,7 @@ public class CmOrderController {
      */
     @RequestMapping("/searchExpress")
     public BusinessMessage SearchExpress(Integer emsId, String expressCode) {
-        return this.cmOrderService.searchExpress(emsId,expressCode);
+        return this.cmOrderService.searchExpress(emsId, expressCode);
     }
 
     /**
@@ -300,6 +300,33 @@ public class CmOrderController {
         }
         return message;
     }
+
+    /**
+     * 微信App预下单
+     *
+     * @param orderId 订单编号
+     * @return 预下单信息
+     */
+    @GetMapping("wechat-app-pay")
+    public BusinessMessage<Map> wechatAppPayGet(HttpServletRequest req, String orderId) {
+        return wechatAppPayPost(req, orderId);
+    }
+
+    @PostMapping("wechat-app-pay")
+    public BusinessMessage<Map> wechatAppPayPost(HttpServletRequest req, String orderId) {
+        log.debug("微信App下单，productName = {}", orderId);
+        BusinessMessage<Map> message = new BusinessMessage<>();
+        try {
+            message = this.cmOrderService.wechatAppPay(req, orderId);
+            message.setData(message.getData());
+            message.setSuccess(message.getSuccess());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("微信App下单失败，{}", e);
+        }
+        return message;
+    }
+
 
     ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
 

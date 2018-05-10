@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -47,11 +47,6 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "payment_state")
     private Integer paymentState;
-
-    /**
-     * 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
-     */
-    private Integer type;
 
     /**
      * 1：微信支付
@@ -132,6 +127,11 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "activity_product_id")
     private String activityProductId;
+
+    /**
+     * (暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
@@ -259,24 +259,6 @@ public class SlOrder implements Serializable {
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
-    }
-
-    /**
-     * 获取1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
-     *
-     * @return type - 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
-     */
-    public Integer getType() {
-        return type;
-    }
-
-    /**
-     * 设置1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
-     *
-     * @param type 1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
-     */
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     /**
@@ -539,6 +521,24 @@ public class SlOrder implements Serializable {
         this.activityProductId = activityProductId == null ? null : activityProductId.trim();
     }
 
+    /**
+     * 获取(暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     *
+     * @return type - (暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * 设置(暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     *
+     * @param type (暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
+     */
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -552,7 +552,6 @@ public class SlOrder implements Serializable {
         sb.append(", deductTotalPulse=").append(deductTotalPulse);
         sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);
-        sb.append(", type=").append(type);
         sb.append(", paymentChannel=").append(paymentChannel);
         sb.append(", remark=").append(remark);
         sb.append(", createTime=").append(createTime);
@@ -567,6 +566,7 @@ public class SlOrder implements Serializable {
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
         sb.append(", activityProductId=").append(activityProductId);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

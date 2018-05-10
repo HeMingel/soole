@@ -8,6 +8,7 @@
         spr.product_name productName,
         spr.product_detail_group_name groupName,
         sp.image_url goodImageUrl,
+        sp.id productId,
         sod.quantity counts,
         so.payment_state paymentState,
         sod.shipping_state shippingState,

@@ -60,6 +60,7 @@ class AlipayController(val alipayService: AliPayService) {
             notifyUrl: String?,
             charset: String,
             alipayPublicKey: String,
+            alipayPublicPayKey: String,
             signType: String
     ): BusinessMessage<Void> {
         log.debug {
