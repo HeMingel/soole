@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -116,34 +117,49 @@ public class PaymentService {
         log.debug("阿里支付通知参数:{}","request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
+//        //获取支付宝POST过来反馈信息
+//        Map<String, String> params = new HashMap<>();
+//        Map<String, String[]> requestParams = request.getParameterMap();
+//        for (String name : requestParams.keySet()) {
+//            String[] values = requestParams.get(name);
+//            String valueStr = "";
+//            for (int i = 0; i < values.length; i++) {
+//                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+//            }
+//            //乱码解决，这段代码在出现乱码时使用。
+//            try {
+//                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+//            } catch (UnsupportedEncodingException e) {
+//                log.error("解析参数失败，{}", e);
+//            }
+//            params.put(name, valueStr);
+//        }
         //获取支付宝POST过来反馈信息
-        Map<String, String> params = new HashMap<>();
-        Map<String, String[]> requestParams = request.getParameterMap();
-        for (String name : requestParams.keySet()) {
-            String[] values = requestParams.get(name);
+        Map<String, String> maps = new HashMap<String, String>();
+        Map requestParams = request.getParameterMap();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
                 valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
-            //乱码解决，这段代码在出现乱码时使用。
-            try {
-                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                log.error("解析参数失败，{}", e);
-            }
-            params.put(name, valueStr);
+            // 乱码解决，这段代码在出现乱码时使用。
+//                 valueStr = new String(valueStr.getBytes("ISO-8859-1"),"utf-8");
+            maps.put(name, valueStr);
         }
-        log.debug("支付宝回调通知参数: {}", params);
+        log.debug("支付宝回调通知参数: {}", maps);
         //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
         // TODO 处理系统订单状态等业务逻辑
         try {
             log.debug("支付宝公钥: {}",aliPayService.getAlipayPublicPayKey());
+            log.debug("支付宝验签类型: {}",aliPayService.getSignType());
             // 执行验签
-            boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicPayKey(), "UTF-8", aliPayService.getSignType());
+            boolean flag = AlipaySignature.rsaCheckV1(maps, aliPayService.getAlipayPublicPayKey(), "UTF-8", aliPayService.getSignType());
             log.debug("支付宝执行验签结果: {}",flag);
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
-                String orderNum = params.get("out_trade_no");
+                String orderNum = maps.get("out_trade_no");
                 if (null != orderNum) {
                     processOrders.processOrders(orderNum,1);
                 }
