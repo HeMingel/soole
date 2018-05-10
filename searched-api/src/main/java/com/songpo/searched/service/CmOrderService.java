@@ -1312,7 +1312,8 @@ public class CmOrderService {
                 if (orderDetails.size() > 0) {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
-                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", String.valueOf(order.getTotalAmount().doubleValue() * 100), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                        String money = String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue());
+                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", money, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                         if (map.size() > 0) {
                             message.setData(map);
                             message.setSuccess(true);

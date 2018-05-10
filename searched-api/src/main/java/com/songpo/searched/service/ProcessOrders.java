@@ -45,7 +45,7 @@ public class ProcessOrders {
      * @return
      */
     @Transactional
-    public void processOrders(String orderId) {
+    public void processOrders(String orderId,int payType) {
         String dete = null;
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
             setId(orderId);
@@ -61,8 +61,8 @@ public class ProcessOrders {
                 orderService.updateByExampleSelective(new SlOrder() {{
                     // 改成已支付
                     setPaymentState(1);
-                    // 支付宝支付类型
-                    setPaymentChannel(2);
+                    // 支付类型
+                    setPaymentChannel(payType);
                     // 支付时间
                     setPayTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 }}, example);

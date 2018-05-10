@@ -207,7 +207,7 @@ class WxPayService(val config: WxPayConfigProperties) {
      * @param attach 附加数据	    否 	String(127) 	深圳分店 	附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
      * @param out_trade_no 商户订单号	是 	String(32) 	20150806125346 	商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。详见商户订单号
      * @param fee_type    货币类型 	否 	String(16) 	CNY 	符合ISO 4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型
-     * @param total_fee    总金额 	是 	Int 	888 	订单总金额，单位为分，详见支付金额
+     * @param total_fee    总金额 	是 	String 	888 	订单总金额，单位为分，详见支付金额
      * @param spbill_create_ip    终端IP 	是 	String(16) 	123.12.12.123 	用户端实际ip
      * @param time_start    交易起始时间 	否 	String(14) 	20091225091010 	订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
      * @param time_expire    交易结束时间 	否 	String(14) 	20091227091010 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则 注意：最短失效时间间隔必须大于5分钟
