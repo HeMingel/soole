@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -155,7 +154,7 @@ public class PaymentService {
             log.debug("支付宝公钥: {}",aliPayService.getAlipayPublicPayKey());
             log.debug("支付宝验签类型: {}",aliPayService.getSignType());
             // 执行验签
-            boolean flag = AlipaySignature.rsaCheckV1(maps, aliPayService.getAlipayPublicPayKey(), "UTF-8", aliPayService.getSignType());
+            boolean flag = AlipaySignature.rsaCheckV1(maps, aliPayService.getAlipayPublicKey(), "UTF-8", aliPayService.getSignType());
             log.debug("支付宝执行验签结果: {}",flag);
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
