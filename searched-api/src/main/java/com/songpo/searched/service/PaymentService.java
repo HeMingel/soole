@@ -151,7 +151,6 @@ public class PaymentService {
         } catch (AlipayApiException e) {
             log.error("支付宝支付通知验签失败，{}", e);
         }
-
         return result;
     }
 }
