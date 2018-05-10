@@ -137,6 +137,7 @@ public class PaymentService {
         //切记alipayPublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
         // TODO 处理系统订单状态等业务逻辑
         try {
+            log.debug("支付宝公钥: {}",aliPayService.getAlipayPublicPayKey());
             // 执行验签
             boolean flag = AlipaySignature.rsaCheckV1(params, aliPayService.getAlipayPublicPayKey(), "UTF_8", aliPayService.getSignType());
             log.debug("支付宝执行验签结果: {}",flag);
