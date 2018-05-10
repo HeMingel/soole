@@ -66,6 +66,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String wxPayNotify(HttpServletRequest request) {
+        log.debug("request = [" + request + "]");
         String retStr = wxPayNotifyProcess("FAIL", "处理通知失败");
         try (InputStream is = request.getInputStream()) {
             // 读取支付回调参数
@@ -112,6 +113,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String aliPayNotify(HttpServletRequest request) {
+        log.debug("request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
         //获取支付宝POST过来反馈信息
