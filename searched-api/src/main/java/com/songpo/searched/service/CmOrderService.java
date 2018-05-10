@@ -363,8 +363,8 @@ public class CmOrderService {
                 }
                 Map<String, String> map = new HashMap<>();
                 map.put("order_num", slOrder.getId());
-                map.put("total_amount", slOrder.getTotalAmount().toString());
-                map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
+                map.put("total_amount", String.valueOf(money));
+                map.put("deduct_total_pulse", String.valueOf(pulse));
                 message.setData(slOrder.getId());
             } else {
                 log.error("收货地址不存在");
@@ -784,6 +784,8 @@ public class CmOrderService {
             slOrder.setConsigneename(slUserAddress.getName());
             // 收货人的联系方式
             slOrder.setConsigneephone(slUserAddress.getPhone());
+            // 了豆价格
+            slOrder.setDeductTotalPulse(repository.getSilver());
             // 插入订单表
             orderService.insertSelective(slOrder);
             // 订单加入redis 有效时间为24小时
@@ -893,8 +895,8 @@ public class CmOrderService {
             message.setSuccess(true);
             Map<String, String> map = new HashMap<>();
             map.put("order_num", slOrder.getId());
-            map.put("total_amount", slOrder.getTotalAmount().toString());
-            map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
+            map.put("total_amount", money.toString());
+            map.put("deduct_total_pulse", repository.getSilver().toString());
             message.setData(slOrder.getId());
         } else {
             message.setMsg("用户地址不存在");
