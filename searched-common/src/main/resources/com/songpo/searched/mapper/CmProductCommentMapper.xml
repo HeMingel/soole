@@ -12,6 +12,7 @@
         u.avatar,
         s.`name` AS shopName,
         pc.status,
+        pc.isImage,
         pc.create_time
         FROM
         sl_product_comment pc
