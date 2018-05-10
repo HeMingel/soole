@@ -112,7 +112,7 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String aliPayNotify(HttpServletRequest request) {
-        log.debug("阿里支付通知参数:{0}", "request = [" + request + "]");
+        log.debug("阿里支付通知参数:{}", "request = [" + request + "]");
         // 返回给支付宝的通知
         String result = "fail";
         //获取支付宝POST过来反馈信息
