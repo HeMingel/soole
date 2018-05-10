@@ -234,7 +234,7 @@ public class FileService {
                     fileUrl = domain + "/" + uploadFile.getTargetName();
                 }
             }
-            data.replace("filePath", uploadFile.getTargetName());
+            data.replace("fileName", uploadFile.getTargetName());
         } catch (IOException e) {
             log.error("上传文件失败，来源文件：{}，目标文件：{}，{}", file.getOriginalFilename(), fullPath, e);
         }
