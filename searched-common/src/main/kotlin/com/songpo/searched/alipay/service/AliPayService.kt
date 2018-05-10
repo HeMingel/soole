@@ -52,16 +52,10 @@ class AliPayService {
     var privateKey: String = ""
 
     /**
-     * 支付宝应用公钥
+     * 支付宝公钥
      */
     @Value(value = "\${sp.pay.alipay.alipay-public-key}")
     var alipayPublicKey: String = ""
-
-    /**
-     * 支付宝应用公钥
-     */
-    @Value(value = "\${sp.pay.alipay.alipay-pay-public-key}")
-    var alipayPublicPayKey: String = ""
 
     /**
      * 支付通知地址
