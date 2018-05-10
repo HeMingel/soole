@@ -1278,7 +1278,7 @@ public class CmOrderService {
                 if (orderDetails.size() > 0) {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
-                        str = this.aliPayService.appPay("15d", String.valueOf(order.getTotalAmount()), "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                        str = this.aliPayService.appPay("15d", /*String.valueOf(order.getTotalAmount())*/"0.01", "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                         if (StringUtils.isNotBlank(str)) {
                             message.setData(str);
                             message.setSuccess(true);
@@ -1322,7 +1322,7 @@ public class CmOrderService {
                     Boolean f = checkTheOrder(order, user);
                     if (f) {
                         String money = String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue());
-                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", money, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                         if (map.size() > 0) {
                             message.setData(map);
                             message.setSuccess(true);
