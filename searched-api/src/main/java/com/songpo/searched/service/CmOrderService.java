@@ -365,7 +365,7 @@ public class CmOrderService {
                 map.put("order_num", slOrder.getId());
                 map.put("total_amount", String.valueOf(money));
                 map.put("deduct_total_pulse", String.valueOf(pulse));
-                message.setData(slOrder.getId());
+                message.setData(map);
             } else {
                 log.error("收货地址不存在");
                 message.setMsg("收货地址不存在");
@@ -897,7 +897,7 @@ public class CmOrderService {
             map.put("order_num", slOrder.getId());
             map.put("total_amount", money.toString());
             map.put("deduct_total_pulse", repository.getSilver().toString());
-            message.setData(slOrder.getId());
+            message.setData(map);
         } else {
             message.setMsg("用户地址不存在");
             return message;
