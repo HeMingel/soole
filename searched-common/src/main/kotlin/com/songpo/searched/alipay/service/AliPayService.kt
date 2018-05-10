@@ -112,7 +112,6 @@ class AliPayService {
                    notifyUrl: String?,
                    charset: String,
                    alipayPublicKey: String,
-                   alipayPublicPayKey: String,
                    signType: String) {
         this.serverUrl = serverUrl
         this.appId = appId
@@ -123,7 +122,6 @@ class AliPayService {
         this.notifyUrl = notifyUrl
         this.charset = charset
         this.alipayPublicKey = alipayPublicKey
-        this.alipayPublicPayKey = alipayPublicPayKey
         this.signType = signType
     }
 
