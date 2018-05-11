@@ -9,9 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class MemberValidator extends ValidatorHandler<SlMember> {
     private static final Logger logger = LoggerFactory.getLogger(MemberValidator.class);
 
@@ -50,7 +47,7 @@ public class MemberValidator extends ValidatorHandler<SlMember> {
         // 校验是否存在，如果不存在，则进行初始化工作
         if (flag) {
             try {
-                t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//                t.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } catch (Exception e) {
                 logger.error("校验失败：{}", e);
 

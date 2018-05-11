@@ -443,9 +443,11 @@ public class CmProductService {
                 if (slProduct != null){
                     businessMessage.setData(slProduct.getDetail());
                     businessMessage.setSuccess(true);
+                }else {
+                    businessMessage.setMsg("查询未找到");
                 }
             }else {
-                businessMessage.setMsg("请传入正确参数");
+                businessMessage.setMsg("商品Id为空");
             }
         }catch (Exception e){
             log.error("查询图文详情异常",e);

@@ -3,6 +3,7 @@ package com.songpo.searched.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -142,7 +143,13 @@ public class SlUser implements Serializable {
      * 创建时间
      */
     @Column(name = "create_time")
-    private String createTime;
+    private Date createTime;
+
+    /**
+     * 最后更新时间
+     */
+    @Column(name = "update_time")
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -597,7 +604,7 @@ public class SlUser implements Serializable {
      *
      * @return create_time - 创建时间
      */
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
@@ -606,8 +613,26 @@ public class SlUser implements Serializable {
      *
      * @param createTime 创建时间
      */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return update_time - 最后更新时间
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * 设置最后更新时间
+     *
+     * @param updateTime 最后更新时间
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -642,6 +667,7 @@ public class SlUser implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
