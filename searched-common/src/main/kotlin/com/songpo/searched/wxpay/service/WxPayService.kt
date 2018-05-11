@@ -294,6 +294,7 @@ class WxPayService(val config: WxPayConfigProperties) {
 
             // 对数据进行签名
             resultData["sign"] = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+            resultData["notifyUrl"] = config.notifyUrl
 
             return resultData
         }
