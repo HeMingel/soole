@@ -51,7 +51,6 @@ public class SlOrder implements Serializable {
     /**
      * 1：微信支付
 2：支付宝支付
-3：厦门银行支付
      */
     @Column(name = "payment_channel")
     private Integer paymentChannel;
@@ -264,11 +263,9 @@ public class SlOrder implements Serializable {
     /**
      * 获取1：微信支付
 2：支付宝支付
-3：厦门银行支付
      *
      * @return payment_channel - 1：微信支付
 2：支付宝支付
-3：厦门银行支付
      */
     public Integer getPaymentChannel() {
         return paymentChannel;
@@ -277,11 +274,9 @@ public class SlOrder implements Serializable {
     /**
      * 设置1：微信支付
 2：支付宝支付
-3：厦门银行支付
      *
      * @param paymentChannel 1：微信支付
 2：支付宝支付
-3：厦门银行支付
      */
     public void setPaymentChannel(Integer paymentChannel) {
         this.paymentChannel = paymentChannel;

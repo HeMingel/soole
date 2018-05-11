@@ -430,6 +430,31 @@ public class CmProductService {
     }
 
     /**
+     * 查询商品图文详情
+     * @param goodsId 商品Id
+     * @return 图文详情
+     */
+    public BusinessMessage<String> selectGoodsText(String goodsId){
+        BusinessMessage<String> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(false);
+        try{
+            if(!"".equals(goodsId)){
+                SlProduct slProduct = this.slProductMapper.selectByPrimaryKey(goodsId);
+                if (slProduct != null){
+                    businessMessage.setData(slProduct.getDetail());
+                    businessMessage.setSuccess(true);
+                }
+            }else {
+                businessMessage.setMsg("请传入正确参数");
+            }
+        }catch (Exception e){
+            log.error("查询图文详情异常",e);
+            businessMessage.setMsg("查询图文详情异常"+e);
+        }
+        return businessMessage;
+    }
+
+    /**
      * 热门推荐商品 四个 全部是普通商品
      * step.1 后台推送的情况下显示后台推送,不足是系统自推补足4个
      * step2 系统自推根据商品分类查询 销量最高的4个
