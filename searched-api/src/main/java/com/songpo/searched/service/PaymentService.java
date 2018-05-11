@@ -67,41 +67,54 @@ public class PaymentService {
     public String wxPayNotify(HttpServletRequest request) {
         log.debug("微信支付通知参数:{}", "request = [" + request + "]");
         String retStr = wxPayNotifyProcess("FAIL", "处理通知失败");
+        log.info("微信支付通知retStr is:{}", retStr);
         try (InputStream is = request.getInputStream()) {
-            System.out.println(is);
+            log.debug("微信支付通知1");
             // 读取支付回调参数
             byte[] bytes = IOUtils.readFully(is, request.getContentLength());
+            log.debug("微信支付通知2");
             if (bytes.length > 0) {
+                log.debug("微信支付通知3");
                 String result = new String(bytes, StandardCharsets.UTF_8);
+                log.debug("微信支付通知4");
                 if (StringUtils.isNotBlank(result)) {
+                    log.debug("微信支付通知5");
                     // 支付回调参数
                     Map<String, String> resParams = WXPayUtil.xmlToMap(result);
-                    log.debug("微信回调参数: {}", resParams);
-                    log.debug("微信验签结果: {}", payService.wxpay.isPayResultNotifySignatureValid(resParams));
+                    log.debug("微信支付通知6");
+                    log.debug("微信支付通知回调参数: {}", resParams);
+                    log.debug("微信支付通知验签结果: {}", payService.wxpay.isPayResultNotifySignatureValid(resParams));
                     // 验签
                     if (payService.wxpay.isPayResultNotifySignatureValid(resParams)) {
+                        log.debug("微信支付通知7");
                         // 签名正确
                         // 进行处理。
                         // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
                         String orderNum = resParams.get("out_trade_no");
+                        log.debug("orderNum is:{}", orderNum);
                         if (null != orderNum) {
                             processOrders.processOrders(orderNum,1);
                         }
                         // 处理订单支付通知成功逻辑
 
                         // 通知微信服务器处理支付通知成功
+                        log.debug("微信支付通知8");
                         retStr = wxPayNotifyProcess("SUCCESS", "OK");
                     } else {
+                        log.debug("微信支付通知9");
                         // 签名错误，如果数据里没有sign字段，也认为是签名错误
 //                        retStr = wxPayNotifyProcess("FAIL", "通知支付金额与订单金额不符");
                     }
                 }
             } else {
+                log.debug("微信支付通知10");
                 retStr = wxPayNotifyProcess("FAIL", "支付通知参数为空");
             }
         } catch (Exception e) {
+            log.debug("微信支付通知11");
             log.error("响应微信支付回调信息失败，{}", e);
         }
+        log.debug("微信支付通知12");
         return retStr;
     }
 
