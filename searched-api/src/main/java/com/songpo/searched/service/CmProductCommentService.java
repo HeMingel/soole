@@ -34,6 +34,8 @@ public class CmProductCommentService {
     @Autowired
     private ProductCommentImageService productCommentImageService;
     @Autowired
+    private OrderDetailService orderDetailService;
+    @Autowired
     private FileService fileService;
 
     @Autowired
@@ -102,13 +104,13 @@ public class CmProductCommentService {
     /**
      * 新增商品评论
      *
-     * @param productId productId
-     * @param content   评论内容
-     * @param status    评论状态:1好2中3差
-     * @param imageList 评论图片
+     * @param orderDetailId 评论的订单明细ID
+     * @param content       评论内容
+     * @param status        评论状态:1好2中3差
+     * @param imageList     评论图片
      */
-    public BusinessMessage insertGoodsComments(String productId, String content, Integer status, List<MultipartFile> imageList) {
-        log.debug("评论 商品Id:{},评论好中差:{},图片数量:{}", productId, status, imageList.size());
+    public BusinessMessage insertGoodsComments(String orderDetailId, String content, Integer status, List<MultipartFile> imageList) {
+        log.debug("评论 订单明细ID:{},评论好中差:{},图片数量:{}", orderDetailId, status, imageList.size());
         BusinessMessage businessMessage = new BusinessMessage();
         SlUser slUser = loginUserService.getCurrentLoginUser();
         if (slUser == null || StringUtils.isBlank(slUser.getId())) {
@@ -116,53 +118,76 @@ public class CmProductCommentService {
             businessMessage.setMsg("获取当前登录用户信息失败");
             return businessMessage;
         }
-        SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
-            setId(productId);
-        }});
-        if (slProduct == null || StringUtils.isBlank(slProduct.getId())) {
-            log.debug("商品不存在");
-            businessMessage.setMsg("商品不存在");
+        SlOrderDetail orderDetail = this.orderDetailService.selectByPrimaryKey(orderDetailId);
+        if (orderDetail == null || StringUtils.isBlank(orderDetail.getId())) {
+            log.debug("要评论的订单不存在");
+            businessMessage.setMsg("要评论的订单不存在");
             return businessMessage;
         }
-        /******************* 处理评论 *************************/
-        SlProductComment productComment = new SlProductComment();
-        // 评论id
-        productComment.setId(UUID.randomUUID().toString());
-        productComment.setProductId(productId);
-        productComment.setCommentatorId(slUser.getId());
-        productComment.setContent(content);
-        productComment.setStatus(status);
-        productComment.setIsimage(0);
-        if (imageList != null && imageList.size() > 0) {
-            productComment.setIsimage(1);
+        if (orderDetail.getShippingState() < 5) {
+            log.debug("订单未完成，无法评价");
+            businessMessage.setMsg("订单未完成，无法评价");
+            return businessMessage;
+        } else if (orderDetail.getShippingState() == 6) {
+            log.debug("订单已评价，无需继续评价");
+            businessMessage.setMsg("订单已评价，无需继续评价");
+            return businessMessage;
+        } else if (orderDetail.getShippingState() == 7) {
+            log.debug("订单已申请售后，无法评价");
+            businessMessage.setMsg("订单已申请售后，无法评价");
+            return businessMessage;
         }
-        productComment.setCreator(slUser.getUsername().toString());
-        productComment.setModifier(productComment.getCreator());
-        productComment.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        productComment.setModificationTime(productComment.getCreateTime());
+        if (StringUtils.isBlank(orderDetail.getProductId())) {
+            log.debug("要评论的订单信息错误，找不到商品ID");
+            businessMessage.setMsg("要评论的订单信息错误，找不到商品ID");
+            return businessMessage;
+        }
 
-        /*********************** 处理评论图片 ****************************/
-        if (imageList != null && imageList.size() > 0) {
-            SlProductCommentImage commentImage;
-            for (MultipartFile file : imageList) {
-                if (!IMAGE_TYPE_ARRAY.contains(file.getContentType())) {
-                    log.debug("图片格式错误");
-                    businessMessage.setMsg("图片格式错误");
-                    return businessMessage;
-                }
-                JSONObject jsonObject = fileService.newUpload(null, file);
-                if (jsonObject != null && StringUtils.isNotBlank(jsonObject.getString("fileName"))) {
-                    commentImage = new SlProductCommentImage();
-                    commentImage.setId(UUID.randomUUID().toString());
-                    commentImage.setProductCommentId(productComment.getId());
-                    commentImage.setImageUrl(jsonObject.getString("fileName"));
+        SlProduct product = this.productService.selectByPrimaryKey(orderDetail.getProductId());
+        /****** 商品存在，继续评论，商品不存在也不需要报错 *****/
+        if (product != null && StringUtils.isNotBlank(product.getId())) {
+            /******************* 处理评论 *************************/
+            SlProductComment productComment = new SlProductComment();
+            // 评论id
+            productComment.setId(UUID.randomUUID().toString());
+            productComment.setProductId(orderDetail.getProductId());
+            productComment.setCommentatorId(slUser.getId());
+            productComment.setContent(content);
+            productComment.setStatus(status);
+            productComment.setIsimage(0);
+            if (imageList != null && imageList.size() > 0) {
+                productComment.setIsimage(1);
+            }
+            productComment.setCreator(slUser.getUsername().toString());
+            productComment.setModifier(productComment.getCreator());
+            productComment.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            productComment.setModificationTime(productComment.getCreateTime());
 
-                    productCommentImageService.insertSelective(commentImage);
+            /*********************** 处理评论图片 ****************************/
+            if (imageList != null && imageList.size() > 0) {
+                SlProductCommentImage commentImage;
+                for (MultipartFile file : imageList) {
+                    if (!IMAGE_TYPE_ARRAY.contains(file.getContentType())) {
+                        log.debug("图片格式错误");
+                        businessMessage.setMsg("图片格式错误");
+                        return businessMessage;
+                    }
+                    JSONObject jsonObject = fileService.newUpload(null, file);
+                    if (jsonObject != null && StringUtils.isNotBlank(jsonObject.getString("fileName"))) {
+                        commentImage = new SlProductCommentImage();
+                        commentImage.setId(UUID.randomUUID().toString());
+                        commentImage.setProductCommentId(productComment.getId());
+                        commentImage.setImageUrl(jsonObject.getString("fileName"));
+
+                        productCommentImageService.insertSelective(commentImage);
+                    }
                 }
             }
+            //评论入库
+            productCommentService.insertSelective(productComment);
         }
-        //评论入库
-        productCommentService.insertSelective(productComment);
+        orderDetail.setShippingState(6);
+        orderDetailService.updateByPrimaryKeySelective(orderDetail);
 
         businessMessage.setMsg("评论成功");
         businessMessage.setSuccess(true);

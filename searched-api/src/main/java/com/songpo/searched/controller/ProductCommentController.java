@@ -40,14 +40,14 @@ public class ProductCommentController {
 
     @ApiOperation(value = "新增商品评论")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "productId", value = "商品ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "orderDetailId", value = "评论的订单明细ID", paramType = "form", required = true),
             @ApiImplicitParam(name = "content", value = "评论内容", paramType = "form", required = true),
             @ApiImplicitParam(name = "status", value = "评论状态:1好2中3差", paramType = "form", required = true),
             @ApiImplicitParam(name = "imageList", value = "评论图片", paramType = "form"),
     })
     @PostMapping("add")
-    public BusinessMessage insertGoodsComments(String productId, String content, Integer status, List<MultipartFile> imageList) {
-        return productCommentService.insertGoodsComments(productId, content, status, imageList);
+    public BusinessMessage insertGoodsComments(String orderDetailId, String content, Integer status, List<MultipartFile> imageList) {
+        return productCommentService.insertGoodsComments(orderDetailId, content, status, imageList);
     }
 
 
