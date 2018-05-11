@@ -189,10 +189,10 @@ public class ProductController {
 
     @ApiOperation(value = "根据商品Id查询图文详情")
     @ApiImplicitParam(name = "goodsId",value = "商品Id",paramType = "form",required = true)
-    @GetMapping("goods-detail")
-    public BusinessMessage<String> goodsDetail(String goodsId){
+    @GetMapping("goods-text")
+    public BusinessMessage<String> goodsText(String goodsId){
         log.debug("商品图文详情,商品id:{}",goodsId);
-        return this.productService.selectGoodsDetail(goodsId);
+        return this.productService.selectGoodsText(goodsId);
     }
 
     @ApiOperation(value = "热品推荐")

@@ -434,7 +434,7 @@ public class CmProductService {
      * @param goodsId 商品Id
      * @return 图文详情
      */
-    public BusinessMessage<String> selectGoodsDetail(String goodsId){
+    public BusinessMessage<String> selectGoodsText(String goodsId){
         BusinessMessage<String> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try{
