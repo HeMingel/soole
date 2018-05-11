@@ -660,7 +660,11 @@ public class SystemController {
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
                 } else {
-                    if (StringUtils.isNotBlank(user.getPhone())) {
+                    SlUser phoneUser = this.userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
+//                    if (StringUtils.isNotBlank(user.getPhone())) {
+                    if (phoneUser != null && phoneUser.getId() != user.getId()) {
                         message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
                     } else {
                         // 设置手机号码
@@ -733,7 +737,11 @@ public class SystemController {
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
                 } else {
-                    if (StringUtils.isNotBlank(user.getPhone())) {
+                    SlUser phoneUser = this.userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
+//                    if (StringUtils.isNotBlank(user.getPhone())) {
+                    if (phoneUser != null && phoneUser.getId() != user.getId()) {
                         message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
                     } else {
                         // 设置手机号码
