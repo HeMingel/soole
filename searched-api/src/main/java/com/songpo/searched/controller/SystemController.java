@@ -208,7 +208,6 @@ public class SystemController {
             message.setMsg("短信验证码为空");
         } else {
             String cacheCode = smsVerifyCodeCache.get(phone);
-            cacheCode = "6780";
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
