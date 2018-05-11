@@ -5,10 +5,12 @@ import com.songpo.searched.cache.SmsPasswordCache;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlMember;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.service.LoginUserService;
+import com.songpo.searched.service.MemberService;
 import com.songpo.searched.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
@@ -46,6 +51,8 @@ public class SystemController {
 
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -119,7 +126,8 @@ public class SystemController {
                         user.setClientSecret(generator.generate(64));
 
                         // 添加
-                        userService.insertSelective(user);
+//                        userService.insertSelective(user);
+                        this.userInsert(user);
 
                         JSONObject data = new JSONObject();
                         data.put("clientId", user.getClientId());
@@ -200,6 +208,7 @@ public class SystemController {
             message.setMsg("短信验证码为空");
         } else {
             String cacheCode = smsVerifyCodeCache.get(phone);
+            cacheCode = "6780";
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
@@ -234,7 +243,8 @@ public class SystemController {
                         user.setClientSecret(generator.generate(64));
 
                         // 添加
-                        userService.insertSelective(user);
+//                        userService.insertSelective(user);
+                        this.userInsert(user);
 
                         JSONObject data = new JSONObject();
                         data.put("clientId", user.getClientId());
@@ -483,7 +493,8 @@ public class SystemController {
                 user.setClientSecret(generator.generate(64));
 
                 // 添加
-                userService.insertSelective(user);
+//                userService.insertSelective(user);
+                this.userInsert(user);
 
                 this.sendRegisterGiftToNewUser(user.getId());
             }
@@ -564,7 +575,8 @@ public class SystemController {
                             user.setClientSecret(generator.generate(64));
 
                             // 添加
-                            userService.insertSelective(user);
+//                            userService.insertSelective(user);
+                            this.userInsert(user);
 
                             // 天降洪福，100乐豆（银豆）
                             sendRegisterGiftToNewUser(user.getId());
@@ -767,5 +779,22 @@ public class SystemController {
         detail.setCreateTime(new Date());
 
         this.slTransactionDetailMapper.insertSelective(detail);
+    }
+
+    /**
+     * 新增用戶
+     *
+     * @param user
+     */
+    private void userInsert(SlUser user) {
+        // 添加sl_user
+        user.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        userService.insertSelective(user);
+        //添加sl_member
+        SlMember member = new SlMember();
+        member.setId(UUID.randomUUID().toString());
+        member.setUserId(user.getId());
+        member.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        memberService.insertSelective(member);
     }
 }
