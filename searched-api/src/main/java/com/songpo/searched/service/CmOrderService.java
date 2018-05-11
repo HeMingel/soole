@@ -451,11 +451,11 @@ public class CmOrderService {
      * 取消订单/确定收货
      *
      * @param state
-     * @param id
+     * @param orderId
      * @return
      */
-    public void cancelAnOrder(String id, String state) {
-        log.debug("orderId = [" + id + "]");
+    public void cancelAnOrder(String orderId, String state) {
+        log.debug("orderId = [" + orderId + "]");
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
@@ -463,14 +463,14 @@ public class CmOrderService {
                     case 102:
                         Example example = new Example(SlOrder.class);
                         example.createCriteria()
-                                .andEqualTo("id", id)
+                                .andEqualTo("id", orderId)
                                 .andEqualTo("userId", user.getId());
                         orderService.updateByExampleSelective(new SlOrder() {{
                             //取消订单
                             setPaymentState(102);
                         }}, example);
                         List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
-                            setProductId(id);
+                            setOrderId(orderId);
                         }});
                         for (SlOrderDetail detail : detailList) {
                             SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
@@ -488,7 +488,7 @@ public class CmOrderService {
                     case 5:
                         Example example1 = new Example(SlOrderDetail.class);
                         example1.createCriteria()
-                                .andEqualTo("id", id)
+                                .andEqualTo("id", orderId)
                                 .andEqualTo("creator", user.getId());
                         orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                             //确认订单未评价
