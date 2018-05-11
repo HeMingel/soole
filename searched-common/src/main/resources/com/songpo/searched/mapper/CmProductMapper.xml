@@ -75,7 +75,8 @@
                 p.sales_volume ${sortBySale},
             </if>
             <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
-                s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC
+                <bind name="pAddress" value="'%' + addressNow + '%'"/>
+                s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC,s.address like #{pAddress}
             </if>
         </trim>
     </select>
