@@ -444,7 +444,7 @@ public class CmProductService {
                     businessMessage.setData(slProduct.getDetail());
                     businessMessage.setSuccess(true);
                 }else {
-                    businessMessage.setMsg("请传入正确参数");
+                    businessMessage.setMsg("查询未找到");
                 }
             }else {
                 businessMessage.setMsg("商品Id为空");
