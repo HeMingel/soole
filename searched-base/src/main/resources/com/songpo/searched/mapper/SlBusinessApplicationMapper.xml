@@ -28,16 +28,16 @@
     <result column="business_check_time" jdbcType="VARCHAR" property="businessCheckTime" />
     <result column="deny_because" jdbcType="VARCHAR" property="denyBecause" />
     <result column="status" jdbcType="INTEGER" property="status" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, user_id, product_type_id, province, city, country, town, street, other_address,
-      type, real_name, company_name, phone, id_card_number, id_card_front_image_url, id_card_back_image_url,
-      id_card_hand_image_url, business_check_state, business_image_url, business_create_time,
-      business_check_time, deny_because, status, created_at, updated_at
+    id, user_id, product_type_id, province, city, country, town, street, other_address, 
+    type, real_name, company_name, phone, id_card_number, id_card_front_image_url, id_card_back_image_url, 
+    id_card_hand_image_url, business_check_state, business_image_url, business_create_time, 
+    business_check_time, deny_because, status, created_at, updated_at
   </sql>
 </mapper>

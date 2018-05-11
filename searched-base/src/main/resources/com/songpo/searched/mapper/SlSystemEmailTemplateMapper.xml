@@ -9,8 +9,8 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="var" jdbcType="VARCHAR" property="var" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlSystemEmailTemplate">
     <!--
@@ -22,7 +22,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, var, title, created_at, updated_at
+    id, name, var, title, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

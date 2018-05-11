@@ -40,19 +40,19 @@
     <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, order_id, serial_number, shop_id, repository_id, product_id, product_name, product_image_url,
-      product_detail_group_name, shipping_state, quantity, price, deduct_total_silver,
-      deduct_total_gold, confirm_receipt_time, discount, creator, create_time, modifier,
-      modification_time, post_fee, buyer_message, shipping_time, ems_id, ship_number, group_people,
-      presell_shipments_days, return_cash_money, place_order_return_pulse, rewards_money,
-      share_of_people_id, activity_product_id, return_cash_pulse, rebate_pulse, type, created_at,
-      updated_at
+    id, order_id, serial_number, shop_id, repository_id, product_id, product_name, product_image_url, 
+    product_detail_group_name, shipping_state, quantity, price, deduct_total_silver, 
+    deduct_total_gold, confirm_receipt_time, discount, creator, create_time, modifier, 
+    modification_time, post_fee, buyer_message, shipping_time, ems_id, ship_number, group_people, 
+    presell_shipments_days, return_cash_money, place_order_return_pulse, rewards_money, 
+    share_of_people_id, activity_product_id, return_cash_pulse, rebate_pulse, type, created_at, 
+    updated_at
   </sql>
 </mapper>

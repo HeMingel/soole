@@ -11,13 +11,13 @@
     <result column="use_gold" jdbcType="BIT" property="useGold" />
     <result column="use_silver" jdbcType="BIT" property="useSilver" />
     <result column="use_money" jdbcType="BIT" property="useMoney" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, remark, use_gold, use_silver, use_money, created_at, updated_at
+    id, name, remark, use_gold, use_silver, use_money, created_at, updated_at
   </sql>
 </mapper>

@@ -7,8 +7,8 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAdminGroup">
     <!--
@@ -20,7 +20,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, created_at, updated_at
+    id, name, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

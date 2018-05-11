@@ -10,13 +10,13 @@
     <result column="area_code" jdbcType="BIGINT" property="areaCode" />
     <result column="province_code" jdbcType="BIGINT" property="provinceCode" />
     <result column="city_code" jdbcType="BIGINT" property="cityCode" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      code, name, area_code, province_code, city_code, created_at, updated_at
+    code, name, area_code, province_code, city_code, created_at, updated_at
   </sql>
 </mapper>

@@ -24,8 +24,8 @@
     <result column="delete_source" jdbcType="BIT" property="deleteSource" />
     <result column="watermark" jdbcType="BIT" property="watermark" />
     <result column="is_system" jdbcType="BIT" property="isSystem" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlFileClass">
     <!--
@@ -37,9 +37,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, var, type, home_show, admin_show, myorder, suffix, size, home_upload, home_login,
-      mimetype, is_thumb, thumb_type, width, height, delete_source, watermark, is_system,
-      created_at, updated_at
+    id, name, var, type, home_show, admin_show, myorder, suffix, size, home_upload, home_login, 
+    mimetype, is_thumb, thumb_type, width, height, delete_source, watermark, is_system, 
+    created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

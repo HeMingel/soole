@@ -7,21 +7,32 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
     <result column="reference_url" jdbcType="VARCHAR" property="referenceUrl" />
     <result column="add_time" jdbcType="VARCHAR" property="addTime" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlArticle">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, title, content, image_url, read_count, praise_count, reference_url, add_time,
-      type, created_at, updated_at
+    id, title, image_url, read_count, praise_count, reference_url, add_time, type, created_at, 
+    updated_at
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    content
   </sql>
 </mapper>

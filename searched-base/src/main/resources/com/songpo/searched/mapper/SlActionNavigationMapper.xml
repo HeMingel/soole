@@ -20,14 +20,14 @@
     <result column="action_type" jdbcType="INTEGER" property="actionType" />
     <result column="action_sort" jdbcType="INTEGER" property="actionSort" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, title, description, image_url, url, cmd_android, cmd_ios, type_id, serial_number,
-      size, position, cmd_parameter, action_type, action_sort, type, created_at, updated_at
+    id, title, description, image_url, url, cmd_android, cmd_ios, type_id, serial_number, 
+    size, position, cmd_parameter, action_type, action_sort, type, created_at, updated_at
   </sql>
 </mapper>

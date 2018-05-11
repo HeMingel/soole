@@ -10,7 +10,7 @@
     <result column="recommended_phone" jdbcType="VARCHAR" property="recommendedPhone" />
     <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
 </mapper>

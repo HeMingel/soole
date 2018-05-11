@@ -15,14 +15,14 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, product_id, commentator_id, content, status, isImage, create_time, creator, modifier,
-      modification_time, created_at, updated_at
+    id, product_id, commentator_id, content, status, isImage, create_time, creator, modifier, 
+    modification_time, created_at, updated_at
   </sql>
 </mapper>

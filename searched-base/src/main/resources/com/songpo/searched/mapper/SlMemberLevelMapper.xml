@@ -11,13 +11,13 @@
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="maximum" jdbcType="INTEGER" property="maximum" />
     <result column="descriptional" jdbcType="VARCHAR" property="descriptional" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, level_number, name, image_url, maximum, descriptional, created_at, updated_at
+    id, level_number, name, image_url, maximum, descriptional, created_at, updated_at
   </sql>
 </mapper>

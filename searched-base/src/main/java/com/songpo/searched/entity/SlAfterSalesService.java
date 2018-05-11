@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_after_sales_service")
 public class SlAfterSalesService implements Serializable {

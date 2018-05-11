@@ -10,13 +10,13 @@
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="c_order" jdbcType="INTEGER" property="cOrder" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, name, parent_id, image_url, c_order, created_at, updated_at
+    id, name, parent_id, image_url, c_order, created_at, updated_at
   </sql>
 </mapper>

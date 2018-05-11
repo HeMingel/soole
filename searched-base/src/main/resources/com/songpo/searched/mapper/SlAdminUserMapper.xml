@@ -20,14 +20,14 @@
     <result column="section_id" jdbcType="SMALLINT" property="sectionId" />
     <result column="checked" jdbcType="BIT" property="checked" />
     <result column="login_total" jdbcType="INTEGER" property="loginTotal" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, username, password, email, phone, qq, login_ip, login_time, last_ip, last_time,
-      create_time, group_id, section_id, checked, login_total, created_at, updated_at
+    id, username, password, email, phone, qq, login_ip, login_time, last_ip, last_time, 
+    create_time, group_id, section_id, checked, login_total, created_at, updated_at
   </sql>
 </mapper>

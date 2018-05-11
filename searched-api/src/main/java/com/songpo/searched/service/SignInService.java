@@ -174,6 +174,10 @@ public class SignInService {
             message.setSuccess(true);
             message.setMsg("当前签到信息为空");
             object.put("todaySign", 0);
+            //当前用户的银豆数量
+            object.put("silver", user.getSilver());
+            //当前用户的金豆数量
+            object.put("coin", user.getCoin());
             message.setData(object);
         }
         return message;

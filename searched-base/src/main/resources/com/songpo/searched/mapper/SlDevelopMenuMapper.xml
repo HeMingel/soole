@@ -19,14 +19,14 @@
     <result column="pattern" jdbcType="VARCHAR" property="pattern" />
     <result column="higher_up" jdbcType="VARCHAR" property="higherUp" />
     <result column="no_child" jdbcType="BIT" property="noChild" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, classname, classvar, parent, top, icon, isdefault, myorder, isshow, params, isclose,
-      pattern, higher_up, no_child, created_at, updated_at
+    id, classname, classvar, parent, top, icon, isdefault, myorder, isshow, params, isclose, 
+    pattern, higher_up, no_child, created_at, updated_at
   </sql>
 </mapper>

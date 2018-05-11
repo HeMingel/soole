@@ -13,14 +13,14 @@
     <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="width" jdbcType="INTEGER" property="width" />
     <result column="height" jdbcType="INTEGER" property="height" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, source_name, target_name, content_type, size, path, width, height, created_at,
-      updated_at
+    id, source_name, target_name, content_type, size, path, width, height, created_at, 
+    updated_at
   </sql>
 </mapper>

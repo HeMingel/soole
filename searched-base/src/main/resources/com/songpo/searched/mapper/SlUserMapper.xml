@@ -30,15 +30,15 @@
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
-      birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver,
-      money, client_id, client_secret, open_id, type, status, created_at, updated_at
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
+    birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
+    money, client_id, client_secret, open_id, type, status, created_at, updated_at
   </sql>
 </mapper>

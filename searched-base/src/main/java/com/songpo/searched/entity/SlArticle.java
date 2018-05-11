@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_article")
 public class SlArticle implements Serializable {
@@ -17,11 +17,6 @@ public class SlArticle implements Serializable {
      * 标题
      */
     private String title;
-
-    /**
-     * 内容
-     */
-    private String content;
 
     /**
      * 图片
@@ -70,6 +65,11 @@ public class SlArticle implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    /**
+     * 内容
+     */
+    private String content;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -106,24 +106,6 @@ public class SlArticle implements Serializable {
      */
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
-    }
-
-    /**
-     * 获取内容
-     *
-     * @return content - 内容
-     */
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     * 设置内容
-     *
-     * @param content 内容
-     */
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
     }
 
     /**
@@ -270,6 +252,24 @@ public class SlArticle implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * 获取内容
+     *
+     * @return content - 内容
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置内容
+     *
+     * @param content 内容
+     */
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -278,7 +278,6 @@ public class SlArticle implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
-        sb.append(", content=").append(content);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", readCount=").append(readCount);
         sb.append(", praiseCount=").append(praiseCount);
@@ -287,6 +286,7 @@ public class SlArticle implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", content=").append(content);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

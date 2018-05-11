@@ -9,13 +9,13 @@
     <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="day" jdbcType="VARCHAR" property="day" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, shop_id, user_id, day, created_at, updated_at
+    id, shop_id, user_id, day, created_at, updated_at
   </sql>
 </mapper>

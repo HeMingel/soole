@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_after_sale_service_voucher_image")
 public class SlAfterSaleServiceVoucherImage implements Serializable {

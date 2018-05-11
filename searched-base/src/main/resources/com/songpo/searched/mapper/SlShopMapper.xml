@@ -24,15 +24,15 @@
     <result column="rating" jdbcType="DOUBLE" property="rating" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="shop_type" jdbcType="INTEGER" property="shopType" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, business_application_id, owner_id, product_type_id, quota_id, name, description,
-      image_url, logo_url, address, longitude, latitude, total_sales, money, coin, silver,
-      rating, phone, shop_type, created_at, updated_at
+    id, business_application_id, owner_id, product_type_id, quota_id, name, description, 
+    image_url, logo_url, address, longitude, latitude, total_sales, money, coin, silver, 
+    rating, phone, shop_type, created_at, updated_at
   </sql>
 </mapper>

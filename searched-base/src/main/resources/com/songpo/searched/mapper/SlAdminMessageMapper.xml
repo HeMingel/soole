@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlAdminMessageMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlAdminMessage">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="am_title" jdbcType="VARCHAR" property="amTitle"/>
-        <result column="am_user_type" jdbcType="BIT" property="amUserType"/>
-        <result column="am_msg_type" jdbcType="TINYINT" property="amMsgType"/>
-        <result column="am_time" jdbcType="VARCHAR" property="amTime"/>
-        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
-    </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAdminMessage">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <result column="am_content" jdbcType="LONGVARCHAR" property="amContent"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        id, am_title, am_user_type, am_msg_type, am_time, created_at, updated_at
-    </sql>
-    <sql id="Blob_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        am_content
-    </sql>
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlAdminMessage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="am_title" jdbcType="VARCHAR" property="amTitle" />
+    <result column="am_user_type" jdbcType="BIT" property="amUserType" />
+    <result column="am_msg_type" jdbcType="TINYINT" property="amMsgType" />
+    <result column="am_time" jdbcType="VARCHAR" property="amTime" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAdminMessage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="am_content" jdbcType="LONGVARCHAR" property="amContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, am_title, am_user_type, am_msg_type, am_time, created_at, updated_at
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    am_content
+  </sql>
 </mapper>

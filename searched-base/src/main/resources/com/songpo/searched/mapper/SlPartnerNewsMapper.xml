@@ -11,14 +11,14 @@
     <result column="partner_phone" jdbcType="VARCHAR" property="partnerPhone" />
     <result column="partner_addr" jdbcType="VARCHAR" property="partnerAddr" />
     <result column="partner_order" jdbcType="INTEGER" property="partnerOrder" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, top_store_id, partner_name, partner_phone, partner_addr, partner_order, created_at,
-      updated_at
+    id, top_store_id, partner_name, partner_phone, partner_addr, partner_order, created_at, 
+    updated_at
   </sql>
 </mapper>

@@ -16,8 +16,8 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAfterSalesService">
     <!--
@@ -29,8 +29,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, order_detail_id, type, reason, money, product_id, user_id, shop_id, creator,
-      create_time, audit_status, created_at, updated_at
+    id, order_detail_id, type, reason, money, product_id, user_id, shop_id, creator, 
+    create_time, audit_status, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

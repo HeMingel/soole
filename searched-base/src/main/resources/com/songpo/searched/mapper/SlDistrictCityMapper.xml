@@ -8,13 +8,13 @@
     <id column="code" jdbcType="BIGINT" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="province_code" jdbcType="BIGINT" property="provinceCode" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      code, name, province_code, created_at, updated_at
+    code, name, province_code, created_at, updated_at
   </sql>
 </mapper>

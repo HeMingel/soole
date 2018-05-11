@@ -11,13 +11,13 @@
     <result column="friend_nickname" jdbcType="VARCHAR" property="friendNickname" />
     <result column="friend_status" jdbcType="BIT" property="friendStatus" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
-      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
-      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, user_id, friend_id, friend_nickname, friend_status, add_time, created_at, updated_at
+    id, user_id, friend_id, friend_nickname, friend_status, add_time, created_at, updated_at
   </sql>
 </mapper>

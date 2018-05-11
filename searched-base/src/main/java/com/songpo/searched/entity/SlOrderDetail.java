@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -209,11 +209,11 @@ public class SlOrderDetail implements Serializable {
 
     /**
      * 1：（普通商品）普通订单 
-     2：（人气拼团）拼团订单
-     3 : （云易购物）预售订单
-     4 : （助力购物）助力购
-     5 : （广告赠送）消费奖励
-     6 : （优惠购物）豆赚
+2：（人气拼团）拼团订单 
+3 : （云易购物）预售订单 
+4 : （助力购物）助力购 
+5 : （广告赠送）消费奖励 
+6 : （优惠购物）豆赚
      */
     private Integer type;
 
@@ -845,18 +845,18 @@ public class SlOrderDetail implements Serializable {
 
     /**
      * 获取1：（普通商品）普通订单 
-     2：（人气拼团）拼团订单
-     3 : （云易购物）预售订单
-     4 : （助力购物）助力购
-     5 : （广告赠送）消费奖励
-     6 : （优惠购物）豆赚
+2：（人气拼团）拼团订单 
+3 : （云易购物）预售订单 
+4 : （助力购物）助力购 
+5 : （广告赠送）消费奖励 
+6 : （优惠购物）豆赚
      *
      * @return type - 1：（普通商品）普通订单 
-    2：（人气拼团）拼团订单
-    3 : （云易购物）预售订单
-    4 : （助力购物）助力购
-    5 : （广告赠送）消费奖励
-    6 : （优惠购物）豆赚
+2：（人气拼团）拼团订单 
+3 : （云易购物）预售订单 
+4 : （助力购物）助力购 
+5 : （广告赠送）消费奖励 
+6 : （优惠购物）豆赚
      */
     public Integer getType() {
         return type;
@@ -864,18 +864,18 @@ public class SlOrderDetail implements Serializable {
 
     /**
      * 设置1：（普通商品）普通订单 
-     2：（人气拼团）拼团订单
-     3 : （云易购物）预售订单
-     4 : （助力购物）助力购
-     5 : （广告赠送）消费奖励
-     6 : （优惠购物）豆赚
+2：（人气拼团）拼团订单 
+3 : （云易购物）预售订单 
+4 : （助力购物）助力购 
+5 : （广告赠送）消费奖励 
+6 : （优惠购物）豆赚
      *
      * @param type 1：（普通商品）普通订单 
-    2：（人气拼团）拼团订单
-    3 : （云易购物）预售订单
-    4 : （助力购物）助力购
-    5 : （广告赠送）消费奖励
-    6 : （优惠购物）豆赚
+2：（人气拼团）拼团订单 
+3 : （云易购物）预售订单 
+4 : （助力购物）助力购 
+5 : （广告赠送）消费奖励 
+6 : （优惠购物）豆赚
      */
     public void setType(Integer type) {
         this.type = type;
