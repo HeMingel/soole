@@ -398,6 +398,24 @@ public class CmOrderService {
                 }
                 // 设置分页参数
                 PageHelper.startPage(pageNum, pageSize);
+                // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓以下按订单查询组合显示↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+//                Example example = new Example(SlOrder.class);
+//                Example.Criteria criteria = example.createCriteria();
+//                criteria.andEqualTo("userId", user.getId());
+//                if (status != null) {
+//                    criteria.andEqualTo("paymentState", status);
+//                }
+//                List<SlOrder> orders = this.orderService.selectByExample(example);
+//                List<Map<String, List<SlOrderDetail>>> list = new ArrayList<>();
+//                Map<String, List<SlOrderDetail>> map = new HashMap<>();
+//                for (SlOrder order : orders) {
+//                    List<SlOrderDetail> orderDetails = this.orderDetailService.select(new SlOrderDetail() {{
+//                        setSerialNumber(order.getSerialNumber());
+//                    }});
+//                    map.put(order.getSerialNumber(), orderDetails);
+//                    list.add(map);
+//                }
+                // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑一下按订单查询组合显示↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId(), status);
                 for (Map map : list) {
                     Object type = map.get("type");
@@ -1240,19 +1258,19 @@ public class CmOrderService {
         return message;
     }
 
-    public Map<String, String> wechatAppPayTest(HttpServletRequest req, String productName) {
-        return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
-    }
-
-    public String alipayAppPayTest(String productName) {
-        int suffix = new Random().nextInt(3);
-        return this.aliPayService.appPay("", "0.0" + suffix, "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-    }
-
-    public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
-        int suffix = new Random().nextInt(3);
-        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.0" + suffix, null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
-    }
+//    public Map<String, String> wechatAppPayTest(HttpServletRequest req, String productName) {
+//        return wxPayService.unifiedOrderByApp(null, productName, null, null, OrderNumGeneration.generateOrderId(), "", "1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+//    }
+//
+//    public String alipayAppPayTest(String productName) {
+//        int suffix = new Random().nextInt(3);
+//        return this.aliPayService.appPay("", "0.0" + suffix, "", "", productName, productName, OrderNumGeneration.generateOrderId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+//    }
+//
+//    public AlipayTradeWapPayResponse alipayH5PayTest(String productName) {
+//        int suffix = new Random().nextInt(3);
+//        return this.aliPayService.wapPay(productName, productName, OrderNumGeneration.generateOrderId(), null, null, "0.0" + suffix, null, null, null, null, "", "", null, null, null, null, null, null, null, null, null, null, null, null);
+//    }
 
     /**
      * 支付宝支付
@@ -1284,6 +1302,8 @@ public class CmOrderService {
                             message.setData(str);
                             message.setSuccess(true);
                         }
+                    } else {
+                        message.setMsg("扣除了豆失败");
                     }
                 } else {
                     message.setMsg("订单出错");
@@ -1329,6 +1349,8 @@ public class CmOrderService {
                             message.setData(map);
                             message.setSuccess(true);
                         }
+                    } else {
+                        message.setMsg("扣除了豆失败");
                     }
                 } else {
                     message.setMsg("订单出错");
@@ -1352,7 +1374,6 @@ public class CmOrderService {
         Boolean flag = false;
         int count = 0;
         if (order.getDeductTotalPulse() > 0) {
-
             if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
                 if (user.getSilver() > order.getDeductTotalPulse()) {
                     int pulse = user.getSilver() - order.getDeductTotalPulse();
@@ -1382,5 +1403,46 @@ public class CmOrderService {
             flag = true;
         }
         return flag;
+    }
+
+    /**
+     * 纯了豆支付
+     *
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage<Map> onlyPulsePay(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (null != user) {
+            SlOrder order = orderService.selectOne(new SlOrder() {{
+                setId(orderId);
+                setUserId(user.getId());
+                setPaymentState(2);
+            }});
+            if (null != order) {
+                List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
+                    setOrderId(orderId);
+                    setCreator(user.getId());
+                }});
+                if (orderDetails.size() > 0) {
+                    Boolean f = checkTheOrder(order, user);
+                    if (f) {
+                        message.setMsg("扣除了豆成功");
+                        message.setSuccess(true);
+                    } else {
+                        message.setMsg("扣除了豆失败");
+                    }
+                } else {
+                    message.setMsg("订单出错");
+                }
+            } else {
+                message.setMsg("订单已失效或不存在");
+            }
+        } else {
+            message.setMsg("请登录");
+        }
+        return message;
     }
 }

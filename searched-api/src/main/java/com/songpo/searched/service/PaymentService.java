@@ -65,10 +65,9 @@ public class PaymentService {
      * @return 处理支付通知结果
      */
     public String wxPayNotify(HttpServletRequest request) {
-        log.debug("微信支付通知参数:{}", "request = [" + request + "]");
+        log.debug("微信支付通知参数 {}", "request = [" + request.getParameterMap() + "]");
         String retStr = wxPayNotifyProcess("FAIL", "处理通知失败");
         try (InputStream is = request.getInputStream()) {
-            System.out.println(is);
             // 读取支付回调参数
             byte[] bytes = IOUtils.readFully(is, request.getContentLength());
             if (bytes.length > 0) {
