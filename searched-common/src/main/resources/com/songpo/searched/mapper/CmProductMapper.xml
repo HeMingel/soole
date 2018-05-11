@@ -38,7 +38,7 @@
                     and p.product_type_id = #{goodsTypeId}
                 </if>
                 <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==1 ">
-                    and pt.parentId = #{goodsTypeId}
+                    and pt.parent_id = #{goodsTypeId}
                 </if>
 
                 <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->

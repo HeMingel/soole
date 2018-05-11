@@ -58,7 +58,7 @@ public class CmProductService {
      * @param salesModeId  销售模式唯一标识符
      * @param activityId  活动Id
      * @param goodsTypeId 商品分类Id
-     * @param goodsTypeStatus 商品分类标识
+     * @param goodsTypeStatus 商品分类标识 1:一级分类 2:二级分类
      * @param longitudeMin 最小经度
      * @param longitudeMax 最大经度
      * @param latitudeMin  最小维度
