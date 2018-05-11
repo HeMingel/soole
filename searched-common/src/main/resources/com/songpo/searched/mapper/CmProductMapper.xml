@@ -6,7 +6,6 @@
 
     <select id="selectBySalesMode" resultType="map">
         SELECT
-          p.id as product_id,
           p.name,
           p.image_url,
           p.`sales_mode_id`,
@@ -60,7 +59,7 @@
                 </if>
                 <if test="addressNow!=''and addressNow !=null">
                     <bind name="pAddress" value="'%' + addressNow + '%'"/>
-                    AND s.address like #{shopAddress}
+                    AND s.address like #{pAddress}
                 </if>
             </where>
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
