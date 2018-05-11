@@ -11,12 +11,13 @@
       <result column="exp" jdbcType="INTEGER" property="exp"/>
     <result column="is_push" jdbcType="BIT" property="isPush" />
       <result column="creater" jdbcType="VARCHAR" property="creater"/>
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, user_id, level, exp, is_push, creater, create_time
+      id, user_id, level, exp, is_push, creater, create_time, update_time
   </sql>
 </mapper>
