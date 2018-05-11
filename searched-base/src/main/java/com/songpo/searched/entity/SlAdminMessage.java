@@ -5,38 +5,44 @@ import java.io.Serializable;
 
 @Table(name = "sl_admin_message")
 public class SlAdminMessage implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 自增ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 消息标题
      */
     @Column(name = "am_title")
     private String amTitle;
+
     /**
      * 针对用户类型1代理商 2店铺
      */
     @Column(name = "am_user_type")
     private Boolean amUserType;
+
     /**
      * 消息类型 1客服消息 2平台公告  3活动公告  4系统通知
      */
     @Column(name = "am_msg_type")
     private Byte amMsgType;
+
     /**
      * 消息发布时间
      */
     @Column(name = "am_time")
     private String amTime;
+
     /**
      * 消息内容
      */
     @Column(name = "am_content")
     private String amContent;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取自增ID
