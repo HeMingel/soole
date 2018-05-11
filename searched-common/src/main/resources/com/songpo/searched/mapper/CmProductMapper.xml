@@ -125,10 +125,10 @@
         ORDER BY p.sales_volume ASC
     </if>
     <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
-            ORDER BY ap.reference_price DESC
+            ORDER BY ap.price DESC
         </if>
         <if test="screenGoods != null and screenGoods !='' and screenGoods == 4">
-            ORDER BY ap.reference_price ASC
+            ORDER BY ap.price ASC
         </if>
 
     </select>
