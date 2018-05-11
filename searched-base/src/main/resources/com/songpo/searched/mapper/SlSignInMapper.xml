@@ -10,11 +10,13 @@
     <result column="sign_time" jdbcType="VARCHAR" property="signTime" />
     <result column="sign_num" jdbcType="INTEGER" property="signNum" />
     <result column="award_silver" jdbcType="INTEGER" property="awardSilver" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, sign_time, sign_num, award_silver
+      id, user_id, sign_time, sign_num, award_silver, created_at, updated_at
   </sql>
 </mapper>

@@ -8,11 +8,13 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="quota_number" jdbcType="INTEGER" property="quotaNumber" />
     <result column="quota_time" jdbcType="VARCHAR" property="quotaTime" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, quota_number, quota_time
+      id, quota_number, quota_time, created_at, updated_at
   </sql>
 </mapper>

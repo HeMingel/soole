@@ -10,6 +10,8 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="inter" jdbcType="VARCHAR" property="inter" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlEms">
     <!--
@@ -21,7 +23,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, code, type, inter
+      id, name, code, type, inter, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

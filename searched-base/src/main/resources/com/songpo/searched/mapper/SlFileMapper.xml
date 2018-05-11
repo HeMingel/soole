@@ -18,12 +18,14 @@
     <result column="userid" jdbcType="INTEGER" property="userid" />
     <result column="is_admin" jdbcType="BIT" property="isAdmin" />
     <result column="classify" jdbcType="VARCHAR" property="classify" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, size, floder, mimetype, extension, source_name, mark_type, mark_value, 
-    hash, userid, is_admin, classify
+      id, name, size, floder, mimetype, extension, source_name, mark_type, mark_value,
+      hash, userid, is_admin, classify, created_at, updated_at
   </sql>
 </mapper>

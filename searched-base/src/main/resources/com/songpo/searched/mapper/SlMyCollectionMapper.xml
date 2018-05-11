@@ -9,11 +9,13 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="collection_id" jdbcType="VARCHAR" property="collectionId" />
     <result column="type" jdbcType="TINYINT" property="type" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, collection_id, type
+      id, user_id, collection_id, type, created_at, updated_at
   </sql>
 </mapper>

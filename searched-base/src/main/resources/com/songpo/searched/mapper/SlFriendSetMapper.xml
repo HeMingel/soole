@@ -9,11 +9,13 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="add_status" jdbcType="BIT" property="addStatus" />
     <result column="ry_token" jdbcType="VARCHAR" property="ryToken" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, add_status, ry_token
+      id, user_id, add_status, ry_token, created_at, updated_at
   </sql>
 </mapper>

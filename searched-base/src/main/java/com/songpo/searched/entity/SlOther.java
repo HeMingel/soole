@@ -1,7 +1,8 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Table(name = "sl_other")
 public class SlOther implements Serializable {
@@ -24,6 +25,18 @@ public class SlOther implements Serializable {
      */
     @Column(name = "is_system")
     private Boolean isSystem;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    /**
+     * 最后更新时间
+     */
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     private String content;
 
@@ -98,6 +111,42 @@ public class SlOther implements Serializable {
     }
 
     /**
+     * 获取创建时间
+     *
+     * @return created_at - 创建时间
+     */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createdAt 创建时间
+     */
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return updated_at - 最后更新时间
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * 设置最后更新时间
+     *
+     * @param updatedAt 最后更新时间
+     */
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
      * @return content
      */
     public String getContent() {
@@ -121,6 +170,8 @@ public class SlOther implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", isSystem=").append(isSystem);
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", content=").append(content);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

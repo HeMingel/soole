@@ -9,11 +9,13 @@
     <result column="transaction_id" jdbcType="VARCHAR" property="transactionId" />
     <result column="bean" jdbcType="INTEGER" property="bean" />
     <result column="type" jdbcType="BIT" property="type" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, transaction_id, bean, type
+      id, transaction_id, bean, type, created_at, updated_at
   </sql>
 </mapper>

@@ -16,11 +16,14 @@
     <result column="code" jdbcType="CHAR" property="code" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <result column="order_num" jdbcType="TINYINT" property="orderNum" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, parent_id, initial, initials, pinyin, extra, suffix, code, area_code, order_num
+      id, name, parent_id, initial, initials, pinyin, extra, suffix, code, area_code, order_num,
+      created_at, updated_at
   </sql>
 </mapper>

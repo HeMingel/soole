@@ -14,12 +14,14 @@
     <result column="reference_url" jdbcType="VARCHAR" property="referenceUrl" />
     <result column="add_time" jdbcType="VARCHAR" property="addTime" />
     <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, content, image_url, read_count, praise_count, reference_url, add_time, 
-    type
+      id, title, content, image_url, read_count, praise_count, reference_url, add_time,
+      type, created_at, updated_at
   </sql>
 </mapper>

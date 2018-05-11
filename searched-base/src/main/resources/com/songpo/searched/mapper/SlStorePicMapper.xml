@@ -9,11 +9,13 @@
     <result column="sp_top_store_id" jdbcType="VARCHAR" property="spTopStoreId" />
     <result column="top_store_pic" jdbcType="VARCHAR" property="topStorePic" />
     <result column="store_class" jdbcType="TINYINT" property="storeClass" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, sp_top_store_id, top_store_pic, store_class
+      id, sp_top_store_id, top_store_pic, store_class, created_at, updated_at
   </sql>
 </mapper>

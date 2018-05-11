@@ -10,11 +10,13 @@
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
     <result column="count" jdbcType="INTEGER" property="count" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, product_id, sales_mode_id, count
+      id, shop_id, product_id, sales_mode_id, count, created_at, updated_at
   </sql>
 </mapper>

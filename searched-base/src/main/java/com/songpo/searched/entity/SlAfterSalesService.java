@@ -1,8 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "sl_after_sales_service")
 public class SlAfterSalesService implements Serializable {
@@ -68,6 +69,18 @@ public class SlAfterSalesService implements Serializable {
      */
     @Column(name = "audit_status")
     private Integer auditStatus;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    /**
+     * 最后更新时间
+     */
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     /**
      * 申请说明
@@ -275,6 +288,42 @@ public class SlAfterSalesService implements Serializable {
     }
 
     /**
+     * 获取创建时间
+     *
+     * @return created_at - 创建时间
+     */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createdAt 创建时间
+     */
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return updated_at - 最后更新时间
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * 设置最后更新时间
+     *
+     * @param updatedAt 最后更新时间
+     */
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
      * 获取申请说明
      *
      * @return remark - 申请说明
@@ -309,6 +358,8 @@ public class SlAfterSalesService implements Serializable {
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
         sb.append(", auditStatus=").append(auditStatus);
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

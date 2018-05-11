@@ -10,6 +10,8 @@
         <result column="am_user_type" jdbcType="BIT" property="amUserType"/>
         <result column="am_msg_type" jdbcType="TINYINT" property="amMsgType"/>
         <result column="am_time" jdbcType="VARCHAR" property="amTime"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAdminMessage">
         <!--
@@ -21,7 +23,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, am_title, am_user_type, am_msg_type, am_time
+        id, am_title, am_user_type, am_msg_type, am_time, created_at, updated_at
     </sql>
     <sql id="Blob_Column_List">
         <!--

@@ -8,6 +8,8 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlAgreement">
     <!--
@@ -19,7 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, create_time
+      id, title, create_time, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

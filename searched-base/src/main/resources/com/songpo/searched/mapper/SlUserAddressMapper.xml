@@ -16,12 +16,14 @@
     <result column="longitude" jdbcType="VARCHAR" property="longitude" />
     <result column="latitude" jdbcType="VARCHAR" property="latitude" />
     <result column="is_default" jdbcType="BIT" property="isDefault" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, name, phone, province, city, county, detailed, longitude, latitude, 
-    is_default
+      id, user_id, name, phone, province, city, county, detailed, longitude, latitude,
+      is_default, created_at, updated_at
   </sql>
 </mapper>

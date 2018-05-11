@@ -10,11 +10,13 @@
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="voucher" jdbcType="VARCHAR" property="voucher" />
     <result column="record_time" jdbcType="VARCHAR" property="recordTime" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, mobile, voucher, record_time
+      id, user_id, mobile, voucher, record_time, created_at, updated_at
   </sql>
 </mapper>

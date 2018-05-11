@@ -10,6 +10,8 @@
     <result column="app_secret" jdbcType="VARCHAR" property="appSecret" />
     <result column="var" jdbcType="VARCHAR" property="var" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlSystemConnector">
     <!--
@@ -21,7 +23,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, app_id, app_secret, var, name
+      id, app_id, app_secret, var, name, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

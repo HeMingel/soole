@@ -8,11 +8,13 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="after_sales_service_id" jdbcType="VARCHAR" property="afterSalesServiceId" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, after_sales_service_id, image_url
+      id, after_sales_service_id, image_url, created_at, updated_at
   </sql>
 </mapper>

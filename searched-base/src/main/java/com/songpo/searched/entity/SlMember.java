@@ -43,14 +43,14 @@ public class SlMember implements Serializable {
     /**
      * 创建时间
      */
-    @Column(name = "create_time")
-    private Date createTime;
+    @Column(name = "created_at")
+    private Date createdAt;
 
     /**
      * 最后更新时间
      */
-    @Column(name = "update_time")
-    private Date updateTime;
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
 
@@ -165,37 +165,37 @@ public class SlMember implements Serializable {
     /**
      * 获取创建时间
      *
-     * @return create_time - 创建时间
+     * @return created_at - 创建时间
      */
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     /**
      * 设置创建时间
      *
-     * @param createTime 创建时间
+     * @param createdAt 创建时间
      */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     /**
      * 获取最后更新时间
      *
-     * @return update_time - 最后更新时间
+     * @return updated_at - 最后更新时间
      */
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     /**
      * 设置最后更新时间
      *
-     * @param updateTime 最后更新时间
+     * @param updatedAt 最后更新时间
      */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -210,8 +210,8 @@ public class SlMember implements Serializable {
         sb.append(", exp=").append(exp);
         sb.append(", isPush=").append(isPush);
         sb.append(", creater=").append(creater);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

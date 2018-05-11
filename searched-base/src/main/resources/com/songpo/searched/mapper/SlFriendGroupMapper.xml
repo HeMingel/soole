@@ -13,11 +13,14 @@
     <result column="qr_code_image" jdbcType="VARCHAR" property="qrCodeImage" />
     <result column="status" jdbcType="BIT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, owner_id, name, avatar, notice, qr_code_image, status, create_time
+      id, owner_id, name, avatar, notice, qr_code_image, status, create_time, created_at,
+      updated_at
   </sql>
 </mapper>

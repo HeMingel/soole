@@ -9,11 +9,13 @@
     <result column="pp_partner_id" jdbcType="VARCHAR" property="ppPartnerId" />
     <result column="partner_pic" jdbcType="VARCHAR" property="partnerPic" />
     <result column="partner_class" jdbcType="TINYINT" property="partnerClass" />
+      <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+      <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, pp_partner_id, partner_pic, partner_class
+      id, pp_partner_id, partner_pic, partner_class, created_at, updated_at
   </sql>
 </mapper>

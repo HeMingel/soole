@@ -1,7 +1,10 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "sl_district_village")
 public class SlDistrictVillage implements Serializable {
@@ -21,6 +24,18 @@ public class SlDistrictVillage implements Serializable {
 
     @Column(name = "area_code")
     private Long areaCode;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    /**
+     * 最后更新时间
+     */
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
 
@@ -108,6 +123,42 @@ public class SlDistrictVillage implements Serializable {
         this.areaCode = areaCode;
     }
 
+    /**
+     * 获取创建时间
+     *
+     * @return created_at - 创建时间
+     */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createdAt 创建时间
+     */
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return updated_at - 最后更新时间
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * 设置最后更新时间
+     *
+     * @param updatedAt 最后更新时间
+     */
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -120,6 +171,8 @@ public class SlDistrictVillage implements Serializable {
         sb.append(", provinceCode=").append(provinceCode);
         sb.append(", cityCode=").append(cityCode);
         sb.append(", areaCode=").append(areaCode);
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
