@@ -186,6 +186,15 @@ public class ProductController {
         return this.productService.goodsNormalSpecification(id, activityId);
     }
 
+
+    @ApiOperation(value = "根据商品Id查询图文详情")
+    @ApiImplicitParam(name = "goodsId",value = "商品Id",paramType = "form",required = true)
+    @GetMapping("goods-Detail")
+    public BusinessMessage<String> goodsDetail(String goodsId){
+        log.debug("商品图文详情,商品id:{}",goodsId);
+        return this.productService.selectGoodsDetail(goodsId);
+    }
+
     @ApiOperation(value = "热品推荐")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id", value = "商品ID", paramType = "form", required = true)
