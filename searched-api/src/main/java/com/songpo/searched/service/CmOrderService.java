@@ -1269,6 +1269,7 @@ public class CmOrderService {
             SlOrder order = orderService.selectOne(new SlOrder() {{
                 setId(orderId);
                 setUserId(user.getId());
+                setPaymentState(2);
             }});
             if (null != order) {
                 List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
@@ -1288,7 +1289,7 @@ public class CmOrderService {
                     message.setMsg("订单出错");
                 }
             } else {
-                message.setMsg("订单不存在");
+                message.setMsg("订单失效或不存在");
             }
         } else {
             message.setMsg("请登录");
@@ -1312,6 +1313,7 @@ public class CmOrderService {
             SlOrder order = orderService.selectOne(new SlOrder() {{
                 setId(orderId);
                 setUserId(user.getId());
+                setPaymentState(2);
             }});
             if (null != order) {
                 List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
@@ -1328,8 +1330,14 @@ public class CmOrderService {
                             message.setSuccess(true);
                         }
                     }
+                } else {
+                    message.setMsg("订单出错");
                 }
+            } else {
+                message.setMsg("订单已失效或不存在");
             }
+        } else {
+            message.setMsg("请登录");
         }
         return message;
     }
