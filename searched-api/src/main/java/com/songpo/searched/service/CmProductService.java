@@ -130,8 +130,6 @@ public class CmProductService {
                 List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.getList().get(i).get("product_id").toString());
                 if (avatarList.size()>0){
                     map.getList().get(i).put("avatarList",avatarList);
-                }else {
-                    map.getList().get(i).put("avatarList","");
                 }
             }
             return new PageInfo<>(list);
