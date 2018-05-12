@@ -51,6 +51,7 @@ public class ProductController {
      * @param addressNow   当前地址
      * @param longitudeNow 当前经度
      * @param latitudeNow  当前纬度
+     * @param synthesize 综合排序 (销量+评论数量)
      * @return 商品分页列表
      */
     @ApiOperation(value = "根据销售模式,活动id查询商品列表,经纬度排序,商品价格,评分,销量排序")
@@ -73,6 +74,7 @@ public class ProductController {
             @ApiImplicitParam(name = "addressNow", value = "当前地址", paramType = "form"),
             @ApiImplicitParam(name = "longitudeNow", value = "当前经度", paramType = "form"),
             @ApiImplicitParam(name = "latitudeNow", value = "当前纬度", paramType = "form"),
+            @ApiImplicitParam(name = " synthesize",value = "综合排序参数值 1 按照销量+评论数量排序 ",paramType = "form")
     })
     @GetMapping("by-sales-mode")
     public BusinessMessage<PageInfo<Map<String, Object>>> selectBySalesMode(String name,
@@ -93,15 +95,17 @@ public class ProductController {
                                                                             String sortBySale,
                                                                             String addressNow,
                                                                             Double longitudeNow,
-                                                                            Double latitudeNow) {
+                                                                            Double latitudeNow,
+                                                                            Integer synthesize) {
         log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，商品分类唯一标识符：{}，商品分类标识(一级二级):{},最小经度：{}，最大经度：{}，最小维度：{}，" +
                         "最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，" +
-                        "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{}", name, salesModeId, activityId, goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
-                latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow);
+                        "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{},综合排序:{}", name, salesModeId, activityId, goodsTypeId, longitudeMin, longitudeMax, latitudeMin,
+                latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow,synthesize);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
+        message.setSuccess(false);
         try {
             PageInfo data = this.productService.selectBySalesMode(name, salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin,
-                    latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow);
+                    latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow,synthesize);
 
             message.setData(data);
             message.setSuccess(true);

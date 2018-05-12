@@ -34,6 +34,7 @@ public interface CmProductMapper{
      * @param addressNow 智能排序 当前地址 缺一不可
      * @param longitudeNow 智能排序 当前经度 缺一不可
      * @param latitudeNow 智能排序 当前纬度 缺一不可
+     * @param synthesize 综合排序 (销量+评论数量)
      * @return 商品集合
      */
     List<Map<String, Object>> selectBySalesMode(@Param("name") String name,
@@ -52,7 +53,8 @@ public interface CmProductMapper{
                                                 @Param("sortBySale") String sortBySale,
                                                 @Param("addressNow") String addressNow,
                                                 @Param("longitudeNow")Double longitudeNow,
-                                                @Param("latitudeNow")Double latitudeNow);
+                                                @Param("latitudeNow")Double latitudeNow,
+                                                @Param("synthesize")Integer synthesize);
 
     /**
      * 根据活动唯一标识符查询商品列表

@@ -70,6 +70,7 @@ public class CmProductService {
      * @param pageNum      页码
      * @param pageSize     容量
      * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param synthesize 综合排序 (销量+评论数量)
      * @return 商品分页列表
      */
     public PageInfo selectBySalesMode(String name,
@@ -90,7 +91,8 @@ public class CmProductService {
                                       String sortBySale,
                                       String addressNow,
                                       Double longitudeNow,
-                                      Double latitudeNow) {
+                                      Double latitudeNow,
+                                      Integer synthesize) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -119,7 +121,7 @@ public class CmProductService {
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow,synthesize);
 
         if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
             List<Object> goodsList = new ArrayList<>();
