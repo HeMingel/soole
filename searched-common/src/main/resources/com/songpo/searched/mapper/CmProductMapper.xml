@@ -6,7 +6,6 @@
 
     <select id="selectBySalesMode" resultType="map">
         SELECT
-          p.id as product_id,
           p.name,
           p.image_url,
           p.`sales_mode_id`,
@@ -58,9 +57,9 @@
                 <if test="null != priceMin and null != priceMax">
                     AND ap.price BETWEEN #{priceMin} AND #{priceMax}
                 </if>
-                <if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">
-                    <bind name="shopAddress" value="'%' + addressNow + '%'"/>
-                    AND s.address like #{shopAddress}
+                <if test="addressNow!=''and addressNow !=null">
+                    <bind name="pAddress" value="'%' + addressNow + '%'"/>
+                    AND s.address like #{pAddress}
                 </if>
             </where>
         <!-- 动态拼接排序规则，自动取出多余的逗号 -->
@@ -74,13 +73,14 @@
             <if test="sortBySale != ''">
                 p.sales_volume ${sortBySale},
             </if>
-            <if test="addressNow!=''and addressNow !=null ">
+            <if test="addressNow!=''and addressNow !=null  ">
                 <bind name="pAddress" value="'%' + addressNow + '%'"/>
                 s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC
             </if>
         </trim>
     </select>
-    <!--77行射击到排序 经纬度-->
+    <!--77行涉及到排序 经纬度-->
+    <!--<if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">-->
     <!--<if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">-->
 
 
