@@ -309,7 +309,10 @@ public class CmProductService {
                         }
                         data.put("groupList", groupList);
                     } else {
-                        data.put("groupList", null);
+                        Map<String,String> groupMaster = new HashMap();
+                        groupMaster.put("avatar","");
+                        groupMaster.put("nick_name","");
+                        data.put("groupList", groupMaster);
                     }
                 }
 
