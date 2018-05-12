@@ -1412,7 +1412,7 @@ public class CmOrderService {
      * @return
      */
     @Transactional
-    public BusinessMessage<Map> onlyPulsePay(String orderId) {
+    public BusinessMessage onlyPulsePay(String orderId) {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
