@@ -336,7 +336,7 @@ public class CmOrderController {
     @PostMapping("only-pulse-pay")
     public BusinessMessage onlyPulsePay(String orderId) {
         log.debug("纯了豆下单，orderId = {}", orderId);
-        BusinessMessage<Map> message = new BusinessMessage<>();
+        BusinessMessage message = new BusinessMessage<>();
         try {
             message = this.cmOrderService.onlyPulsePay(orderId);
             message.setData(message.getData());
