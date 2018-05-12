@@ -92,7 +92,7 @@ public class CmProductService {
                                       String addressNow,
                                       Double longitudeNow,
                                       Double latitudeNow,
-                                      Integer synthesize) {
+                                      String synthesize) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }

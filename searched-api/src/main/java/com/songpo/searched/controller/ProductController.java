@@ -96,7 +96,7 @@ public class ProductController {
                                                                             String addressNow,
                                                                             Double longitudeNow,
                                                                             Double latitudeNow,
-                                                                            Integer synthesize) {
+                                                                            String synthesize) {
         log.debug("分页查询商品，名称：{}，销售模式唯一标识符：{}，商品分类唯一标识符：{}，商品分类标识(一级二级):{},最小经度：{}，最大经度：{}，最小维度：{}，" +
                         "最大维度：{}，按商品价格排序规则：{}，按店铺评分排序规则：{}，价格区间最小值：{}，价格区间最大值：{}，页码：{}，" +
                         "容量：{},销售数量排序:{},用户当前位置:{},当前经度:{},当前纬度:{},综合排序:{}", name, salesModeId, activityId, goodsTypeId, longitudeMin, longitudeMax, latitudeMin,

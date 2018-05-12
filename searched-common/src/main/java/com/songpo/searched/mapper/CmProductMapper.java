@@ -54,7 +54,7 @@ public interface CmProductMapper{
                                                 @Param("addressNow") String addressNow,
                                                 @Param("longitudeNow")Double longitudeNow,
                                                 @Param("latitudeNow")Double latitudeNow,
-                                                @Param("synthesize")Integer synthesize);
+                                                @Param("synthesize")String synthesize);
 
     /**
      * 根据活动唯一标识符查询商品列表
