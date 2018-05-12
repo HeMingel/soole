@@ -186,7 +186,15 @@ public class CmProductCommentService {
             //评论入库
             productCommentService.insertSelective(productComment);
         }
+        //更新商品评论数量
+        product.setCommentNum(product.getCommentNum() + 1);
+        product.setCreatedAt(null);
+        product.setUpdatedAt(null);
+        productService.updateByPrimaryKeySelective(product);
+        //更新订单状态
         orderDetail.setShippingState(6);
+        orderDetail.setCreatedAt(null);
+        orderDetail.setUpdatedAt(null);
         orderDetailService.updateByPrimaryKeySelective(orderDetail);
 
         businessMessage.setMsg("评论成功");
