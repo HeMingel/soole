@@ -155,8 +155,8 @@ public class CmOrderController {
         log.debug("orderId = [" + orderId + "]");
         BusinessMessage message = new BusinessMessage();
         try {
-            this.cmOrderService.cancelAnOrder(orderId, state);
-            message.setSuccess(true);
+            message = this.cmOrderService.cancelAnOrder(orderId, state);
+            message.setSuccess(message.getSuccess());
             message.setMsg("取消成功");
         } catch (Exception e) {
             e.printStackTrace();

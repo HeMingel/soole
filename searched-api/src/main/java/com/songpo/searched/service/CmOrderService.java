@@ -472,53 +472,74 @@ public class CmOrderService {
      * @param orderId
      * @return
      */
-    public void cancelAnOrder(String orderId, String state) {
+    public BusinessMessage cancelAnOrder(String orderId, String state) {
         log.debug("orderId = [" + orderId + "]");
+        BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
                 switch (Integer.parseInt(state)) {
                     case 102:
-                        Example example = new Example(SlOrder.class);
-                        example.createCriteria()
-                                .andEqualTo("id", orderId)
-                                .andEqualTo("userId", user.getId());
-                        orderService.updateByExampleSelective(new SlOrder() {{
-                            //取消订单
-                            setPaymentState(102);
-                        }}, example);
-                        List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
-                            setOrderId(orderId);
+                        Boolean e = this.orderService.exist(new SlOrder() {{
+                            setId(orderId);
                         }});
-                        for (SlOrderDetail detail : detailList) {
-                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                setId(detail.getRepositoryId());
+                        if (e) {
+                            Example example = new Example(SlOrder.class);
+                            example.createCriteria()
+                                    .andEqualTo("id", orderId)
+                                    .andEqualTo("userId", user.getId());
+                            orderService.updateByExampleSelective(new SlOrder() {{
+                                //取消订单
+                                setPaymentState(102);
+                            }}, example);
+                            List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                                setOrderId(orderId);
                             }});
-                            // 把订单中的商品数量加到商品库存中去
-                            this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
-                                setId(repository.getId());
-                                setCount(repository.getCount() + detail.getQuantity());
-                            }});
-                            //更新redids
-                            this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                            for (SlOrderDetail detail : detailList) {
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                    setId(detail.getRepositoryId());
+                                }});
+                                // 把订单中的商品数量加到商品库存中去
+                                this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                                    setId(repository.getId());
+                                    setCount(repository.getCount() + detail.getQuantity());
+                                }});
+                                //更新redids
+                                this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                            }
+                            message.setSuccess(true);
+                            message.setMsg("取消成功");
+                        } else {
+                            message.setMsg("订单不存在");
                         }
                         break;
                     case 5:
-                        Example example1 = new Example(SlOrderDetail.class);
-                        example1.createCriteria()
-                                .andEqualTo("id", orderId)
-                                .andEqualTo("creator", user.getId());
-                        orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
-                            //确认订单未评价
-                            setShippingState(5);
-                            //确认收货时间
-                            setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                        }}, example1);
+                        Boolean ex = this.orderDetailService.exist(new SlOrderDetail() {{
+                            setId(orderId);
+                        }});
+                        if (ex) {
+                            Example example1 = new Example(SlOrderDetail.class);
+                            example1.createCriteria()
+                                    .andEqualTo("id", orderId)
+                                    .andEqualTo("creator", user.getId());
+                            orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                                //确认订单未评价
+                                setShippingState(5);
+                                //确认收货时间
+                                setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                            }}, example1);
+                            message.setMsg("确认收货成功");
+                            message.setSuccess(true);
+                        } else {
+                            message.setMsg("该商品不存在");
+                        }
+                        break;
                 }
             }
         } catch (Exception e) {
             log.error("操作失败");
         }
+        return message;
     }
 
     /**
