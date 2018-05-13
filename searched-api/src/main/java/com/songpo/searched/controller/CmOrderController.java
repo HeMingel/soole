@@ -90,13 +90,14 @@ public class CmOrderController {
             @ApiImplicitParam(name = "serialNumber", value = "订单编号", paramType = "form"),
             @ApiImplicitParam(name = "groupMaster", value = "开团团长", paramType = "form"),
             @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form"),
-            @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form")
+            @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
+            @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form")
     })
     @PostMapping("purchase-immediately")
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId,int spellGroupType) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId,spellGroupType);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
