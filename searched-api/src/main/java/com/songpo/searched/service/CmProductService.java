@@ -336,7 +336,7 @@ public class CmProductService {
                 List<Object> goodsRepositoryList = new ArrayList<>();
                 if (goodsActivityList.size() > 0) {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
                         goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
                         goodsRepositoryList.add(goodsRepository);
                     }
@@ -414,7 +414,7 @@ public class CmProductService {
                 List<Object> goodsRepositoryList = new ArrayList<>();
                 if (goodsActivityList.size() > 0) {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
                         goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
                         goodsRepositoryList.add(goodsRepository);
                     }

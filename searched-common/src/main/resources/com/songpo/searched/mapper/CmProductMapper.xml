@@ -252,7 +252,7 @@
               ON apr.`serial_number` = ap.`activity_product_repository_serial_number`
               LEFT JOIN sl_product p
               ON ap.`product_id` = p.`id`
-              WHERE pr.`id`  = #{repositoryId}
+              WHERE pr.`id`  = #{repositoryId} and ap.activity_id =#{activityId}
     </select>
 
     <!-- 查询预售商品列表 -->
