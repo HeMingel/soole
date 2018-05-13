@@ -122,17 +122,17 @@ public class CmProductService {
         PageHelper.startPage(pageNum, pageSize);
         // 执行查询
         List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow,synthesize);
-
         if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
-            List<Object> goodsList = new ArrayList<>();
-            for(Map<String,Object> map:list ){
-                //关联order_detail 表的 product_id
+            PageInfo<Map<String,Object>> map = new PageInfo<>(list);
+
+            for(int i =0;i<map.getList().size();i++){
                 Map<String,Object> avatarMap = new HashMap<>();
-                List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("product_id").toString());
-                map.put("avatarList",avatarList);
-                goodsList.add(map);
+                List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.getList().get(i).get("product_id").toString());
+                if (avatarList.size()>0){
+                    map.getList().get(i).put("avatarList",avatarList);
+                }
             }
-            return new PageInfo<>(goodsList);
+            return new PageInfo<>(list);
         }else {
             return new PageInfo<>(list);
         }
