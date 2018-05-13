@@ -64,7 +64,7 @@ public class CmOrderController {
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             message.setMsg("添加订单失败");
-            log.error("新增订单失败", e);
+            log.error("新增订单失败 {}", e);
         }
         return message;
     }
@@ -103,7 +103,7 @@ public class CmOrderController {
             message.setSuccess(true);
         } catch (Exception e) {
             message.setMsg("添加订单失败");
-            log.error("新增订单失败", e);
+            log.error("新增订单失败 {}", e);
         }
         return message;
     }
@@ -160,7 +160,7 @@ public class CmOrderController {
             message.setMsg("取消成功");
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("取消失败", e);
+            log.debug("取消失败 {}", e);
         }
         return message;
     }
@@ -186,7 +186,7 @@ public class CmOrderController {
             message.setMsg("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("删除失败", e);
+            log.debug("删除失败 {}", e);
         }
         return message;
     }
@@ -211,7 +211,7 @@ public class CmOrderController {
             message.setMsg("查询成功");
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("查询失败", e);
+            log.debug("查询失败 {}", e);
         }
         return message;
     }
@@ -233,7 +233,7 @@ public class CmOrderController {
             message = this.cmOrderService.remindingTheShipments(orderId);
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("提醒失败", e);
+            log.debug("提醒失败 {}", e);
         }
         return message;
     }
@@ -259,7 +259,7 @@ public class CmOrderController {
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("确认失败", e);
+            log.debug("确认失败 {}", e);
         }
         return message;
     }
