@@ -460,7 +460,7 @@ public class CmOrderService {
                 message.setMsg("查询成功");
             }
         } catch (Exception e) {
-            log.error("查询失败", e);
+            log.error("查询失败 {}", e);
         }
         return message;
     }
@@ -537,7 +537,7 @@ public class CmOrderService {
                 }
             }
         } catch (Exception e) {
-            log.error("操作失败");
+            log.error("操作失败 {}",e);
         }
         return message;
     }
@@ -587,6 +587,7 @@ public class CmOrderService {
      * @param quantity
      * @return
      */
+    @Transactional
     public BusinessMessage purchaseAddOrder(HttpServletRequest request,
                                             HttpServletResponse response,
                                             String repositoryId,
@@ -979,7 +980,7 @@ public class CmOrderService {
             }
 
         } catch (Exception e) {
-            log.error("删除失败", e);
+            log.error("删除失败 {}", e);
         }
     }
 
@@ -1109,7 +1110,7 @@ public class CmOrderService {
                 log.error("用户不存在");
             }
         } catch (Exception e) {
-            log.error("查询失败", e);
+            log.error("查询失败 {}", e);
         }
         return message;
     }
@@ -1160,7 +1161,7 @@ public class CmOrderService {
                 }
             }
         } catch (Exception e) {
-            log.error("提醒失败", e);
+            log.error("提醒失败 {}", e);
         }
         return message;
     }
@@ -1218,7 +1219,7 @@ public class CmOrderService {
                 message.setMsg("该订单不存在");
             }
         } catch (Exception e) {
-            log.error("预售订单确认收货失败", e);
+            log.error("预售订单确认收货失败 {}", e);
         }
         return message;
     }
@@ -1276,7 +1277,7 @@ public class CmOrderService {
                             message.setSuccess(true);
                         }
                     } catch (Exception e) {
-                        log.error("快递信息查询失败", e);
+                        log.error("快递信息查询失败 {}", e);
                         e.printStackTrace();
                     }
                 } else {
