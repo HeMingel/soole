@@ -1,4 +1,5 @@
 package com.songpo.searched.service;
+
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -35,6 +37,8 @@ public class ProcessOrders {
     private UserCache userCache;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private ProductService productService;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -45,7 +49,7 @@ public class ProcessOrders {
      * @return
      */
     @Transactional
-    public void processOrders(String orderNum,int payType) {
+    public void processOrders(String orderNum, int payType) {
         String dete = null;
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
             setSerialNumber(orderNum);
@@ -82,6 +86,15 @@ public class ProcessOrders {
                     // 加上了奖励了豆数量
                     if (detail.getPlaceOrderReturnPulse() > 0) {
                         pulse += detail.getPlaceOrderReturnPulse();
+                    }
+                    SlProduct product = this.productService.selectOne(new SlProduct() {{
+                        setId(detail.getProductId());
+                    }});
+                    if (null != product) {
+                        productService.updateByPrimaryKeySelective(new SlProduct() {{
+                            setId(product.getId());
+                            setSalesVolume(product.getSalesVolume() + 1);
+                        }});
                     }
                 }
                 int silver = user.getSilver() + pulse;

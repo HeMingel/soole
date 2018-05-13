@@ -460,7 +460,7 @@ public class CmOrderService {
                 message.setMsg("查询成功");
             }
         } catch (Exception e) {
-            log.error("查询失败", e);
+            log.error("查询失败 {}", e);
         }
         return message;
     }
@@ -472,53 +472,74 @@ public class CmOrderService {
      * @param orderId
      * @return
      */
-    public void cancelAnOrder(String orderId, String state) {
+    public BusinessMessage cancelAnOrder(String orderId, String state) {
         log.debug("orderId = [" + orderId + "]");
+        BusinessMessage message = new BusinessMessage();
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
                 switch (Integer.parseInt(state)) {
                     case 102:
-                        Example example = new Example(SlOrder.class);
-                        example.createCriteria()
-                                .andEqualTo("id", orderId)
-                                .andEqualTo("userId", user.getId());
-                        orderService.updateByExampleSelective(new SlOrder() {{
-                            //取消订单
-                            setPaymentState(102);
-                        }}, example);
-                        List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
-                            setOrderId(orderId);
+                        Boolean e = this.orderService.exist(new SlOrder() {{
+                            setId(orderId);
                         }});
-                        for (SlOrderDetail detail : detailList) {
-                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                                setId(detail.getRepositoryId());
+                        if (e) {
+                            Example example = new Example(SlOrder.class);
+                            example.createCriteria()
+                                    .andEqualTo("id", orderId)
+                                    .andEqualTo("userId", user.getId());
+                            orderService.updateByExampleSelective(new SlOrder() {{
+                                //取消订单
+                                setPaymentState(102);
+                            }}, example);
+                            List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                                setOrderId(orderId);
                             }});
-                            // 把订单中的商品数量加到商品库存中去
-                            this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
-                                setId(repository.getId());
-                                setCount(repository.getCount() + detail.getQuantity());
-                            }});
-                            //更新redids
-                            this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                            for (SlOrderDetail detail : detailList) {
+                                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                                    setId(detail.getRepositoryId());
+                                }});
+                                // 把订单中的商品数量加到商品库存中去
+                                this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                                    setId(repository.getId());
+                                    setCount(repository.getCount() + detail.getQuantity());
+                                }});
+                                //更新redids
+                                this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                            }
+                            message.setSuccess(true);
+                            message.setMsg("取消成功");
+                        } else {
+                            message.setMsg("订单不存在");
                         }
                         break;
                     case 5:
-                        Example example1 = new Example(SlOrderDetail.class);
-                        example1.createCriteria()
-                                .andEqualTo("id", orderId)
-                                .andEqualTo("creator", user.getId());
-                        orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
-                            //确认订单未评价
-                            setShippingState(5);
-                            //确认收货时间
-                            setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                        }}, example1);
+                        Boolean ex = this.orderDetailService.exist(new SlOrderDetail() {{
+                            setId(orderId);
+                        }});
+                        if (ex) {
+                            Example example1 = new Example(SlOrderDetail.class);
+                            example1.createCriteria()
+                                    .andEqualTo("id", orderId)
+                                    .andEqualTo("creator", user.getId());
+                            orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                                //确认订单未评价
+                                setShippingState(5);
+                                //确认收货时间
+                                setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                            }}, example1);
+                            message.setMsg("确认收货成功");
+                            message.setSuccess(true);
+                        } else {
+                            message.setMsg("该商品不存在");
+                        }
+                        break;
                 }
             }
         } catch (Exception e) {
-            log.error("操作失败");
+            log.error("操作失败 {}",e);
         }
+        return message;
     }
 
     /**
@@ -566,6 +587,7 @@ public class CmOrderService {
      * @param quantity
      * @return
      */
+    @Transactional
     public BusinessMessage purchaseAddOrder(HttpServletRequest request,
                                             HttpServletResponse response,
                                             String repositoryId,
@@ -575,7 +597,8 @@ public class CmOrderService {
                                             String groupMaster,
                                             String shippingAddressId,
                                             String buyerMessage,
-                                            String activityProductId) {
+                                            String activityProductId,
+                                            int spellGroupType) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
         BusinessMessage message = new BusinessMessage();
 
@@ -657,7 +680,7 @@ public class CmOrderService {
                                             //如果不存在的话
                                             if (f.equals(false)) {
                                                 //TODO ======= 是团员的话 =======
-                                                message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage);
+                                                message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
                                             } else {
                                                 message.setMsg("您已参加过该团,请勿重复参加");
                                                 return message;
@@ -670,36 +693,36 @@ public class CmOrderService {
                                         //TODO ==== 如果是他自己开的团 ======
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
                                     }
                                 }
                                 //TODO ====== 如果是预售模式 ======
                                 else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage);
+                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1);
                                 }
                                 //TODO ====== 如果是助力购 ======
                                 else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage);
+                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1);
                                 }
                                 //TODO ====== 消费返利 ======
                                 else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage);
+                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1);
                                     // TODO ====== 豆赚 ======
                                 } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage);
+                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1);
                                     // TODO ====== 普通商品 ======
                                 } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage);
+                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1);
                                 }
                             } else {
                                 log.debug("当前规格的商品,库存不足");
@@ -749,7 +772,8 @@ public class CmOrderService {
                                             String shareOfPeopleId,
                                             SlProduct slProduct,
                                             int type,
-                                            String buyerMessage) {
+                                            String buyerMessage,
+                                            int spellGroupType) {
         BusinessMessage message = new BusinessMessage();
         SlOrder slOrder = new SlOrder();
         // 订单id
@@ -780,7 +804,13 @@ public class CmOrderService {
 //            }
 //        }
         // 该商品的规格价格 * 加入购物车中的数量 = 该用户本次加入商品的价格
-        Double d = repository.getPrice().doubleValue() * quantity;
+        double price = 0.00;
+        if (spellGroupType == 1) {
+            price = repository.getPrice().doubleValue();
+        } else {
+            price = repository.getPersonalPrice().doubleValue();
+        }
+        Double d = price * quantity;
         BigDecimal money = new BigDecimal(d.toString());
         // 订单总价
         slOrder.setTotalAmount(money);
@@ -823,7 +853,11 @@ public class CmOrderService {
                 // 商品数量
                 setQuantity(quantity);
                 // 单个商品价格
-                setPrice(repository.getPrice());
+                if (spellGroupType == 1) {
+                    setPrice(repository.getPrice());
+                } else {
+                    setPrice(repository.getPersonalPrice());
+                }
                 // 商品ID
                 setProductId(slProduct.getId());
                 // 店铺唯一标识
@@ -946,7 +980,7 @@ public class CmOrderService {
             }
 
         } catch (Exception e) {
-            log.error("删除失败", e);
+            log.error("删除失败 {}", e);
         }
     }
 
@@ -1076,7 +1110,7 @@ public class CmOrderService {
                 log.error("用户不存在");
             }
         } catch (Exception e) {
-            log.error("查询失败", e);
+            log.error("查询失败 {}", e);
         }
         return message;
     }
@@ -1127,7 +1161,7 @@ public class CmOrderService {
                 }
             }
         } catch (Exception e) {
-            log.error("提醒失败", e);
+            log.error("提醒失败 {}", e);
         }
         return message;
     }
@@ -1185,7 +1219,7 @@ public class CmOrderService {
                 message.setMsg("该订单不存在");
             }
         } catch (Exception e) {
-            log.error("预售订单确认收货失败", e);
+            log.error("预售订单确认收货失败 {}", e);
         }
         return message;
     }
@@ -1243,7 +1277,7 @@ public class CmOrderService {
                             message.setSuccess(true);
                         }
                     } catch (Exception e) {
-                        log.error("快递信息查询失败", e);
+                        log.error("快递信息查询失败 {}", e);
                         e.printStackTrace();
                     }
                 } else {
