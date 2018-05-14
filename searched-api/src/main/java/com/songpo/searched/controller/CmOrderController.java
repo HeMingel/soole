@@ -283,14 +283,14 @@ public class CmOrderController {
      * @return 预下单信息
      */
     @GetMapping("alipay-app-pay")
-    public BusinessMessage<String> alipayAppPayGet(String orderId) {
+    public BusinessMessage<Map> alipayAppPayGet(String orderId) {
         return alipayAppPayPost(orderId);
     }
 
     @PostMapping("alipay-app-pay")
-    public BusinessMessage<String> alipayAppPayPost(String orderId) {
+    public BusinessMessage<Map> alipayAppPayPost(String orderId) {
         log.debug("支付宝App下单，productName = {}", orderId);
-        BusinessMessage<String> message = new BusinessMessage<>();
+        BusinessMessage<Map> message = new BusinessMessage<>();
         try {
             message = this.cmOrderService.alipayAppPay(orderId);
             message.setData(message.getData());

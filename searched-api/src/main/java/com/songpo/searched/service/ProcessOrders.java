@@ -129,6 +129,9 @@ public class ProcessOrders {
                                         // 改成拼团成功
                                         setSpellGroupStatus(2);
                                     }}, e);
+                                    orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                                        setShippingState(3);
+                                    }}, e);
                                 } else {
                                     orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                         setId(order.getId());
