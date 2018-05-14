@@ -456,7 +456,10 @@ public class CmOrderService {
             SlUser user = this.loginUserService.getCurrentLoginUser();
             Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
-                if (orderInfo.get("activityProductId").equals(ActivityConstant.NO_ACTIVITY)) {
+                SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                    setId(orderInfo.get("activityProductId").toString());
+                }});
+                if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                     orderInfo.put("join", false);
                 } else {
                     orderInfo.put("join", true);
