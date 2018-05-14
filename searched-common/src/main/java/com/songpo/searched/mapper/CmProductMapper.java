@@ -129,7 +129,7 @@ public interface CmProductMapper{
      * @param repositoryId 商品库存Id
      * @return 商品库存
      */
-    Map<String,Object> goodsRepository(String repositoryId);
+    Map<String,Object> goodsRepository(@Param("repositoryId")String repositoryId,@Param("activityId") String activityId);
     /**
      * 查询拼团商品列表
      *

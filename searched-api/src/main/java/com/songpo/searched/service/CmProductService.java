@@ -302,7 +302,8 @@ public class CmProductService {
                         List<Object> groupList = new ArrayList<>();
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
-                            Map<String, Object> groupMaster = this.mapper.findGroupPeople(orderList.get(i).get("group_master").toString());
+                            String groupId= orderList.get(i).get("group_master").toString();
+                            Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
                             groupMapper.put("groupMaster", groupMaster);
                             groupMapper.put("order", orderList.get(i));
                             groupList.add(groupMapper);
@@ -336,7 +337,7 @@ public class CmProductService {
                 List<Object> goodsRepositoryList = new ArrayList<>();
                 if (goodsActivityList.size() > 0) {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
                         goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
                         goodsRepositoryList.add(goodsRepository);
                     }
@@ -414,7 +415,7 @@ public class CmProductService {
                 List<Object> goodsRepositoryList = new ArrayList<>();
                 if (goodsActivityList.size() > 0) {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString());
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
                         goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
                         goodsRepositoryList.add(goodsRepository);
                     }
