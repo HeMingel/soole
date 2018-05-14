@@ -88,13 +88,13 @@ public class AfterSalesService {
     public BusinessMessage selectAfterSales() {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        JSONObject object = new JSONObject();
         List<JSONObject> dataList = new ArrayList<>();
         List<SlAfterSalesService> list = this.slAfterSalesServiceMapper.select(new SlAfterSalesService() {{
             setUserId(user.getId());
         }});
         if (list.size() > 0) {
             for (SlAfterSalesService service : list) {
+                JSONObject object = new JSONObject();
                 SlOrderDetail slOrderDetail = this.slOrderDetailMapper.selectOne(new SlOrderDetail() {{
                     setId(service.getOrderDetailId());
                 }});
