@@ -879,6 +879,8 @@ public class CmOrderService {
                 setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
                 // 下单时的商品名称
                 setProductName(slProduct.getName());
+                // 商品所需了豆
+                setDeductTotalSilver(repository.getSilver());
                 // 下单时的商品图片
                 setProductImageUrl(slProduct.getImageUrl());
                 // 添加买家留言
