@@ -1416,6 +1416,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage<Map> checkTheOrder(String orderId, SlUser user) {
+        log.debug("orderId = [" + orderId + "], user = [" + user + "]");
         BusinessMessage<Map> message = new BusinessMessage();
         int count = 0;
         if (null != user) {
