@@ -421,16 +421,16 @@ public class CmOrderService {
 //                    map.put(order.getSerialNumber(), orderDetails);
 //                    list.add(map);
 //                }
-                // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑一下按订单查询组合显示↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+                // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑一下按订单查询组合显示↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
                 List<Map<String, Object>> list = this.cmOrderMapper.findList(user.getId(), status);
-                for (Map map : list) {
-                    Object type = map.get("type");
-                    Object serialNumber = map.get("serialNumber");
-                    if (type.equals(2)) {//拼团订单
-                        // 拼团订单筛选参与会员头像
-                        map.put("userAvatarList", this.cmOrderMapper.findUserAvatar(serialNumber));
-                    }
-                }
+//                for (Map map : list) {
+//                    Object type = map.get("type");
+//                    Object serialNumber = map.get("serialNumber");
+//                    if (type.equals(2)) {//拼团订单
+//                        // 拼团订单筛选参与会员头像
+//                        map.put("userAvatarList", this.cmOrderMapper.findUserAvatar(serialNumber));
+//                    }
+//                }
                 message.setMsg("查询成功");
                 message.setSuccess(true);
                 message.setData(new PageInfo<>(list));
