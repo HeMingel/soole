@@ -85,6 +85,12 @@ public class CmOrderService {
     private UserService userService;
     @Autowired
     private UserCache userCache;
+    @Autowired
+    private SlTransactionDetailMapper transactionDetailMapper;
+    @Autowired
+    private ShopService shopService;
+    @Autowired
+    private ProcessOrders processOrders;
 
     /**
      * 多商品下单
@@ -216,7 +222,7 @@ public class CmOrderService {
                                                     // 商品规格名称
                                                     setProductDetailGroupName(repository.getProductDetailGroupName());
                                                     // 活动id
-                                                    setActivityProductId(slActivityProduct.getActivityId());
+                                                    setActivityProductId(slActivityProduct.getId());
                                                     // 商品ID
                                                     setProductId(repository.getProductId());
                                                     // 店铺唯一标识
@@ -537,7 +543,7 @@ public class CmOrderService {
                 }
             }
         } catch (Exception e) {
-            log.error("操作失败 {}",e);
+            log.error("操作失败 {}", e);
         }
         return message;
     }
@@ -865,7 +871,7 @@ public class CmOrderService {
                 // 店铺仓库ID
                 setRepositoryId(repository.getId());
                 // 活动id
-                setActivityProductId(activityProduct.getActivityId());
+                setActivityProductId(activityProduct.getId());
                 // 返了豆数量只限纯金钱模式
                 setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
                 // 下单时的商品名称
@@ -1012,11 +1018,11 @@ public class CmOrderService {
                         if (returnsDetail.getReturnedStatus() == 2) {
                             SlOrder order = this.orderService.selectOne(new SlOrder() {{
                                 setId(returnsDetail.getOrderId());
-                                //预售
-                                setType(3);
                             }});
                             SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                                 setOrderId(order.getId());
+                                //预售
+                                setType(3);
                             }});
                             Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
                             Map<String, Object> map = new HashMap<>();
@@ -1058,11 +1064,11 @@ public class CmOrderService {
                     } else {
                         SlOrder order = this.orderService.selectOne(new SlOrder() {{
                             setId(returnsDetail.getOrderId());
-                            //预售
-                            setType(3);
                         }});
                         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                             setOrderId(order.getId());
+                            //预售
+                            setType(3);
                         }});
                         Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
                         Map<String, Object> map = new HashMap<>();
@@ -1127,11 +1133,11 @@ public class CmOrderService {
             if (null != user) {
                 int count = this.orderService.selectCount(new SlOrder() {{
                     setId(orderId);
-                    setType(3);
                 }});
                 if (count == 1) {
                     SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                         setOrderId(orderId);
+                        setType(3);
                     }});
                     if (null != detail) {
                         List<SlMessage> list = this.messageMapper.select(new SlMessage() {{
@@ -1313,37 +1319,38 @@ public class CmOrderService {
      * @return
      */
     @Transactional
-    public BusinessMessage<String> alipayAppPay(String orderId) {
-        BusinessMessage message = new BusinessMessage();
+    public BusinessMessage<Map> alipayAppPay(String orderId) {
+        BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        String str = null;
+        Map<String, String> map = new HashMap<>();
         if (null != user) {
-            SlOrder order = orderService.selectOne(new SlOrder() {{
-                setId(orderId);
-                setUserId(user.getId());
-                setPaymentState(2);
-            }});
-            if (null != order) {
-                List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
-                    setOrderId(orderId);
-                    setCreator(user.getId());
-                }});
-                if (orderDetails.size() > 0) {
-                    Boolean f = checkTheOrder(order, user);
-                    if (f) {
-                        str = this.aliPayService.appPay("15d", /*String.valueOf(order.getTotalAmount())*/"0.01", "", "", null, "搜了购物支付 - " + order.getSerialNumber(), order.getSerialNumber(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-                        if (StringUtils.isNotBlank(str)) {
-                            message.setData(str);
-                            message.setSuccess(true);
-                        }
-                    } else {
-                        message.setMsg("扣除了豆失败");
-                    }
-                } else {
-                    message.setMsg("订单出错");
+            message = checkTheOrder(orderId, user);
+            if (message.getSuccess() == true) {
+                String money = message.getData().get("money").toString();
+                String serialNumber = message.getData().get("serialNumber").toString();
+                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, serialNumber, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                if (StringUtils.isNotBlank(str)) {
+                    message.setData(null);
+                    map.put("alipay", str);
+                    message.setData(map);
+                    message.setSuccess(true);
+                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                        // 目标id
+                        setTargetId(user.getId());
+                        // 订单id
+                        setOrderId(orderId);
+                        // 购物类型
+                        setType(200);
+                        // 扣除金额(支付宝支付)
+                        setMoney(new BigDecimal(money));
+                        // 钱
+                        setDealType(3);
+                        // 支出
+                        setTransactionType(1);
+                    }});
                 }
             } else {
-                message.setMsg("订单失效或不存在");
+                return message;
             }
         } else {
             message.setMsg("请登录");
@@ -1360,9 +1367,52 @@ public class CmOrderService {
      */
     @Transactional
     public BusinessMessage<Map> wechatAppPay(HttpServletRequest req, String orderId) {
-        BusinessMessage message = new BusinessMessage();
+        BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         Map<String, String> map = new HashMap<>();
+        if (null != user) {
+            message = checkTheOrder(orderId, user);
+            if (message.getSuccess() == true) {
+                String money = message.getData().get("money").toString();
+                String serialNumber = message.getData().get("serialNumber").toString();
+                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, serialNumber, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                if (map.size() > 0) {
+                    message.setData(null);
+                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                        // 目标id
+                        setTargetId(user.getId());
+                        // 订单id
+                        setOrderId(orderId);
+                        // 购物类型
+                        setType(200);
+                        // 扣除金额(微信支付)
+                        setMoney(new BigDecimal(money));
+                        // 钱
+                        setDealType(3);
+                        // 支出
+                        setTransactionType(1);
+                    }});
+                    message.setData(map);
+                    message.setSuccess(true);
+                }
+            } else {
+                return message;
+            }
+        } else {
+            message.setMsg("请登录");
+        }
+        return message;
+    }
+
+    /**
+     * 校验扣除了豆
+     *
+     * @param orderId
+     * @return
+     */
+    public BusinessMessage<Map> checkTheOrder(String orderId, SlUser user) {
+        BusinessMessage<Map> message = new BusinessMessage();
+        int count = 0;
         if (null != user) {
             SlOrder order = orderService.selectOne(new SlOrder() {{
                 setId(orderId);
@@ -1375,17 +1425,99 @@ public class CmOrderService {
                     setCreator(user.getId());
                 }});
                 if (orderDetails.size() > 0) {
-                    Boolean f = checkTheOrder(order, user);
-                    if (f) {
-                        String money = String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue());
-                        map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + order.getSerialNumber(), null, null, order.getSerialNumber(), "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
-                        if (map.size() > 0) {
-                            message.setData(map);
-                            message.setSuccess(true);
+                    if (order.getDeductTotalPulse() > 0) {
+                        if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
+                            if (user.getSilver() > order.getDeductTotalPulse()) {
+                                int pulse = user.getSilver() - order.getDeductTotalPulse();
+                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                                    setId(user.getId());
+                                    setSilver(pulse);
+                                }});
+                                user.setSilver(pulse);
+                                userCache.put(user.getClientId(), user);
+                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                    // 目标id
+                                    setTargetId(user.getId());
+                                    // 订单id
+                                    setOrderId(order.getId());
+                                    // 购物类型
+                                    setType(200);
+                                    // 扣除银豆数量
+                                    setSilver(order.getDeductTotalPulse());
+                                    // 银豆
+                                    setDealType(6);
+                                    // 支出
+                                    setTransactionType(1);
+                                }});
+                            } else {
+                                int p = order.getDeductTotalPulse() - user.getSilver();
+                                int c = user.getCoin() - p;
+                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                                    setId(user.getId());
+                                    setCoin(c);
+                                    setSilver(0);
+                                }});
+                                user.setSilver(0);
+                                user.setCoin(c);
+                                userCache.put(user.getClientId(), user);
+                                // 银豆记录
+                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                    // 目标id
+                                    setTargetId(user.getId());
+                                    // 订单id
+                                    setOrderId(order.getId());
+                                    // 购物类型
+                                    setType(200);
+                                    // 扣除银豆数量
+                                    setSilver(user.getSilver());
+                                    // 银豆
+                                    setDealType(6);
+                                    // 支出
+                                    setTransactionType(1);
+                                }});
+                                // 金豆记录
+                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                    // 目标id
+                                    setTargetId(user.getId());
+                                    // 订单id
+                                    setOrderId(order.getId());
+                                    // 购物类型
+                                    setType(200);
+                                    // 扣除金豆数量
+                                    setCoin(p);
+                                    // 金豆
+                                    setDealType(5);
+                                    // 支出
+                                    setTransactionType(1);
+                                }});
+                            }
+                            // 给店铺老板加上金豆
+                            for (SlOrderDetail detail : orderDetails) {
+                                SlShop shop = this.shopService.selectOne(new SlShop() {{
+                                    setId(detail.getShopId());
+                                }});
+                                if (null != shop) {
+                                    SlUser user1 = this.userService.selectOne(new SlUser() {{
+                                        setId(shop.getOwnerId());
+                                    }});
+                                    if (null != user1) {
+                                        user1.setCoin(user1.getCoin() + detail.getDeductTotalSilver());
+                                    }
+                                }
+                            }
+                        } else {
+                            message.setMsg("当前用户了豆数量不足");
                         }
-                    } else {
-                        message.setMsg("扣除了豆失败");
+                    } else if (order.getDeductTotalPulse() == 0) {
+                        message.setSuccess(true);
                     }
+                    if (count == 1) {
+                        message.setSuccess(true);
+                    }
+                    Map<String, String> map = new HashMap<>();
+                    map.put("money", String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue()));
+                    map.put("serialNumber", order.getSerialNumber());
+                    message.setData(map);
                 } else {
                     message.setMsg("订单出错");
                 }
@@ -1399,83 +1531,18 @@ public class CmOrderService {
     }
 
     /**
-     * 校验扣除了豆
-     *
-     * @param order
-     * @return
-     */
-    public Boolean checkTheOrder(SlOrder order, SlUser user) {
-        Boolean flag = false;
-        int count = 0;
-        if (order.getDeductTotalPulse() > 0) {
-            if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
-                if (user.getSilver() > order.getDeductTotalPulse()) {
-                    int pulse = user.getSilver() - order.getDeductTotalPulse();
-                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
-                        setId(user.getId());
-                        setSilver(pulse);
-                    }});
-                    user.setSilver(pulse);
-                    userCache.put(user.getClientId(), user);
-                } else {
-                    int p = order.getDeductTotalPulse() - user.getSilver();
-                    int c = user.getCoin() - p;
-                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
-                        setId(user.getId());
-                        setCoin(c);
-                        setSilver(0);
-                    }});
-                    user.setSilver(0);
-                    user.setCoin(c);
-                    userCache.put(user.getClientId(), user);
-                }
-            }
-        } else if (order.getDeductTotalPulse() == 0) {
-            flag = true;
-        }
-        if (count == 1) {
-            flag = true;
-        }
-        return flag;
-    }
-
-    /**
      * 纯了豆支付
      *
      * @param orderId
      * @return
      */
     @Transactional
-    public BusinessMessage onlyPulsePay(String orderId) {
-        BusinessMessage message = new BusinessMessage();
+    public BusinessMessage<Map> onlyPulsePay(String orderId) {
+        BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        if (null != user) {
-            SlOrder order = orderService.selectOne(new SlOrder() {{
-                setId(orderId);
-                setUserId(user.getId());
-                setPaymentState(2);
-            }});
-            if (null != order) {
-                List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
-                    setOrderId(orderId);
-                    setCreator(user.getId());
-                }});
-                if (orderDetails.size() > 0) {
-                    Boolean f = checkTheOrder(order, user);
-                    if (f) {
-                        message.setMsg("扣除了豆成功");
-                        message.setSuccess(true);
-                    } else {
-                        message.setMsg("扣除了豆失败");
-                    }
-                } else {
-                    message.setMsg("订单出错");
-                }
-            } else {
-                message.setMsg("订单已失效或不存在");
-            }
-        } else {
-            message.setMsg("请登录");
+        message = checkTheOrder(orderId, user);
+        if (message.getSuccess() == true) {
+            processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
         }
         return message;
     }
