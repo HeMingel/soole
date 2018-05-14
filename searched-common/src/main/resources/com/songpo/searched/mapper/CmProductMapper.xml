@@ -302,6 +302,7 @@
     </select>
     <!--搜索拼团订单-->
     <select id="selectGroupOrder" parameterType="String" resultType="Map">
+
         SELECT
           COUNT(od.serial_number) AS already_people,
           od.group_people AS need_people,
@@ -311,11 +312,14 @@
           sl_order_detail od
           LEFT JOIN sl_order o
             ON od.`serial_number` = o.`serial_number`
-        WHERE od.`activity_product_id` = #{activityId}
+            LEFT JOIN sl_activity_product ap
+            ON od.`activity_product_id` = ap.`id`
+        WHERE ap.`activity_id` =  #{activityId}
           AND od.`product_id` = #{goodsId}
           AND o.payment_state = 1
           AND o.spell_group_status = 1
         GROUP BY o.serial_number
+
     </select>
     <!--后台推荐商品-->
     <select id="backStageGoods" resultType="Map" parameterType="String">
