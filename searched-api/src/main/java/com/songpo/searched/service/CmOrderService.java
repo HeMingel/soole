@@ -879,6 +879,8 @@ public class CmOrderService {
                 setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
                 // 下单时的商品名称
                 setProductName(slProduct.getName());
+                // 商品所需了豆
+                setDeductTotalSilver(repository.getSilver());
                 // 下单时的商品图片
                 setProductImageUrl(slProduct.getImageUrl());
                 // 添加买家留言
@@ -1414,6 +1416,7 @@ public class CmOrderService {
      * @return
      */
     public BusinessMessage<Map> checkTheOrder(String orderId, SlUser user) {
+        log.debug("orderId = [" + orderId + "], user = [" + user + "]");
         BusinessMessage<Map> message = new BusinessMessage();
         int count = 0;
         if (null != user) {
