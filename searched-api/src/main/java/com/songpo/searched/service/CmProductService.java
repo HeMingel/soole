@@ -302,7 +302,8 @@ public class CmProductService {
                         List<Object> groupList = new ArrayList<>();
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
-                            Map<String, Object> groupMaster = this.mapper.findGroupPeople(orderList.get(i).get("group_master").toString());
+                            String groupId= orderList.get(i).get("group_master").toString();
+                            Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
                             groupMapper.put("groupMaster", groupMaster);
                             groupMapper.put("order", orderList.get(i));
                             groupList.add(groupMapper);

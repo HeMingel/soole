@@ -297,24 +297,25 @@
         SELECT
          u.avatar,u.nick_name
         FROM sl_user u
-        where u.id = {userId}
+        where u.id = #{userId}
 
     </select>
     <!--搜索拼团订单-->
     <select id="selectGroupOrder" parameterType="String" resultType="Map">
         SELECT
-          o.serial_number AS order_num,o.group_master,ap.people_num AS need_people,COUNT(o.serial_number) AS already_people
+          COUNT(od.serial_number) AS already_people,
+          od.group_people AS need_people,
+          od.`serial_number` AS order_num,
+          o.`group_master`
         FROM
-          sl_product p
-          LEFT JOIN sl_activity_product ap
-          ON p.id = ap.product_id
+          sl_order_detail od
           LEFT JOIN sl_order o
-          ON ap.id = o.activity_product_id
-          WHERE ap.`activity_id` = #{activityId}
-          AND p.id = #{goodsId}
-          AND o.payment_state =2
+            ON od.`serial_number` = o.`serial_number`
+        WHERE od.`activity_product_id` = #{activityId}
+          AND od.`product_id` = #{goodsId}
+          AND o.payment_state = 1
           AND o.spell_group_status = 1
-           GROUP BY o.serial_number
+        GROUP BY o.serial_number
     </select>
     <!--后台推荐商品-->
     <select id="backStageGoods" resultType="Map" parameterType="String">
