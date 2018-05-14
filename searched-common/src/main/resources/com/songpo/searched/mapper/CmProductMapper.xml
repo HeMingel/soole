@@ -8,6 +8,8 @@
         SELECT
           p.name,
           p.image_url,
+          p.comment_num,
+          p.sales_volume,
           p.`sales_mode_id`,
           p.`introduction`,
           pt.name product_type_name,
