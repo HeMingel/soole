@@ -303,6 +303,7 @@ public class CmProductService {
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
                             String groupId= orderList.get(i).get("group_master").toString();
+
                             Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
                             groupMapper.put("groupMaster", groupMaster);
                             groupMapper.put("order", orderList.get(i));
@@ -310,10 +311,15 @@ public class CmProductService {
                         }
                         data.put("groupList", groupList);
                     } else {
+                        List <Object> list = new ArrayList<>();
                         Map<String,String> groupMaster = new HashMap();
                         groupMaster.put("avatar","");
                         groupMaster.put("nick_name","");
-                        data.put("groupList", groupMaster);
+                        list.add(groupMaster);
+                        Map<String,String> order = new HashMap();
+                        list.add(order);
+
+                        data.put("groupList", list);
                     }
                 }
 
