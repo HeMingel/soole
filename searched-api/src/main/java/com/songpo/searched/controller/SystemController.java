@@ -584,6 +584,8 @@ public class SystemController {
                     }
 
                     JSONObject data = new JSONObject();
+                    //用户ID
+                    data.put("userId",user.getId());
                     data.put("clientId", user.getClientId());
                     data.put("clientSecret", user.getClientSecret());
                     // 用户真实姓名
