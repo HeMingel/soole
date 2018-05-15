@@ -6,7 +6,7 @@ import com.songpo.searched.typehandler.MessageChannelTypeEnum;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,10 +109,8 @@ public class NotificationService {
         // 如果频道不存在，则进行创建
         String channelName = env.getProperty("spring.rabbitmq.channelname");
 
-        checkChannelName(channelName);
-
         // 发送广播消息
-        this.messagingTemplate.convertAndSend(channelName, content);
+        this.messagingTemplate.convertAndSend(channelName, "test", content);
     }
 
     /**
@@ -123,7 +121,7 @@ public class NotificationService {
     private void checkChannelName(String channelName) {
         if (!channelCache.hasKey(channelName)) {
             try {
-                rabbitAdmin.declareExchange(new TopicExchange(channelName));
+                rabbitAdmin.declareQueue(new Queue(channelName));
             } catch (Exception e) {
                 log.debug("频道[{}]已存在", channelName);
             }

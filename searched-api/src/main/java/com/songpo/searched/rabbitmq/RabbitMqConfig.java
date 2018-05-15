@@ -1,8 +1,10 @@
 package com.songpo.searched.rabbitmq;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitMqConfig {
+
+    @Value("${spring.rabbitmq.channelname}")
+    private String topicGlobalMessage;
 
     @Bean
     public RabbitAdmin rabbitAdmin(CachingConnectionFactory factory) {
@@ -38,5 +43,14 @@ public class RabbitMqConfig {
         return new Queue("queue_com.songpo.seached:order:disabled");
     }
 
+    /**
+     * 全局消息交换机
+     *
+     * @return
+     */
+    @Bean
+    public TopicExchange globalTopicExchange() {
+        return new TopicExchange(topicGlobalMessage);
+    }
 
 }
