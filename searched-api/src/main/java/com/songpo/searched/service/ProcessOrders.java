@@ -1,5 +1,6 @@
 package com.songpo.searched.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
@@ -208,9 +209,14 @@ public class ProcessOrders {
                     }
                 }
                 for (SlOrderDetail detail : details) {
-                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
+                    JSONObject object = new JSONObject();
+                    object.put("avatar", user.getAvatar());
+                    object.put("nickName", user.getNickName());
+                    object.put("productName", detail.getProductName());
+                    object.put("productId", detail.getProductId());
+//                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
                     //系统通知
-                    notificationService.sendGlobalMessage(context, MessageTypeEnum.SYSTEM);
+                    notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
                 }
             }
         }
