@@ -132,7 +132,7 @@ public class ProcessOrders {
                                     orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                                         setShippingState(3);
                                     }}, e);
-                                } else {
+                                } else if (count + 1 < detail.getGroupPeople()) {
                                     orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                         setId(order.getId());
                                         // 拼团中
