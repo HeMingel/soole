@@ -29,7 +29,7 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
-    <result column="pay_time_stamp" jdbcType="TIMESTAMP" property="payTimeStamp" />
+    <result column="pay_time_stamp" jdbcType="BIGINT" property="payTimeStamp" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--

@@ -149,7 +149,7 @@ public class SlOrder implements Serializable {
      * 支付时间戳
      */
     @Column(name = "pay_time_stamp")
-    private Date payTimeStamp;
+    private Long payTimeStamp;
 
     private static final long serialVersionUID = 1L;
 
@@ -594,7 +594,7 @@ public class SlOrder implements Serializable {
      *
      * @return pay_time_stamp - 支付时间戳
      */
-    public Date getPayTimeStamp() {
+    public Long getPayTimeStamp() {
         return payTimeStamp;
     }
 
@@ -603,7 +603,7 @@ public class SlOrder implements Serializable {
      *
      * @param payTimeStamp 支付时间戳
      */
-    public void setPayTimeStamp(Date payTimeStamp) {
+    public void setPayTimeStamp(Long payTimeStamp) {
         this.payTimeStamp = payTimeStamp;
     }
 

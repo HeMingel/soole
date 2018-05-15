@@ -74,8 +74,7 @@ public class ProcessOrders {
                     // 支付时间
                     setPayTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                     // 支付时间戳
-                    Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-                    setPayTimeStamp(timestamp);
+                    setPayTimeStamp(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
                 }}, example);
                 Example example1 = new Example(SlOrderDetail.class);
                 example1.createCriteria()
