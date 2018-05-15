@@ -1548,7 +1548,6 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         message = checkTheOrder(orderId, user);
         if (message.getSuccess() == true) {
-            message.setData(null);
             message.setMsg("了豆支付成功");
             processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
         }
