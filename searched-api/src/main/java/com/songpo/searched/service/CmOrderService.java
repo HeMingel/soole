@@ -1548,6 +1548,7 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         message = checkTheOrder(orderId, user);
         if (message.getSuccess() == true) {
+            message.setData(null);
             processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
         }
         return message;
