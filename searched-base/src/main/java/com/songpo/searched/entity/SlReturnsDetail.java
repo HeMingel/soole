@@ -15,6 +15,12 @@ public class SlReturnsDetail implements Serializable {
     private String id;
 
     /**
+     * 订单id
+     */
+    @Column(name = "order_id")
+    private String orderId;
+
+    /**
      * 预售、消费返利 返现记录表id
      */
     @Column(name = "presell_returned_record_id")
@@ -49,12 +55,6 @@ public class SlReturnsDetail implements Serializable {
      */
     @Column(name = "return_money")
     private BigDecimal returnMoney;
-
-    /**
-     * 订单id
-     */
-    @Column(name = "order_id")
-    private String orderId;
 
     /**
      * 是否确认收货(true:确认 false:否)
@@ -103,6 +103,24 @@ public class SlReturnsDetail implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取订单id
+     *
+     * @return order_id - 订单id
+     */
+    public String getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * 设置订单id
+     *
+     * @param orderId 订单id
+     */
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
     }
 
     /**
@@ -214,24 +232,6 @@ public class SlReturnsDetail implements Serializable {
     }
 
     /**
-     * 获取订单id
-     *
-     * @return order_id - 订单id
-     */
-    public String getOrderId() {
-        return orderId;
-    }
-
-    /**
-     * 设置订单id
-     *
-     * @param orderId 订单id
-     */
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
-    }
-
-    /**
      * 获取是否确认收货(true:确认 false:否)
      *
      * @return confirm_receipt - 是否确认收货(true:确认 false:否)
@@ -328,13 +328,13 @@ public class SlReturnsDetail implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", orderId=").append(orderId);
         sb.append(", presellReturnedRecordId=").append(presellReturnedRecordId);
         sb.append(", userId=").append(userId);
         sb.append(", returnedStatus=").append(returnedStatus);
         sb.append(", createTime=").append(createTime);
         sb.append(", returnTime=").append(returnTime);
         sb.append(", returnMoney=").append(returnMoney);
-        sb.append(", orderId=").append(orderId);
         sb.append(", confirmReceipt=").append(confirmReceipt);
         sb.append(", completed=").append(completed);
         sb.append(", numberOfPeriods=").append(numberOfPeriods);

@@ -8,13 +8,17 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
     <result column="card_number" jdbcType="BIGINT" property="cardNumber" />
     <result column="cardholder" jdbcType="VARCHAR" property="cardholder" />
     <result column="cardholder_phone" jdbcType="VARCHAR" property="cardholderPhone" />
+    <result column="cardholder_identity_card" jdbcType="VARCHAR" property="cardholderIdentityCard" />
     <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
     <result column="affiliated_bank" jdbcType="VARCHAR" property="affiliatedBank" />
+    <result column="card_type" jdbcType="TINYINT" property="cardType" />
     <result column="is_default" jdbcType="BIT" property="isDefault" />
     <result column="bank_list_id" jdbcType="VARCHAR" property="bankListId" />
+    <result column="agree_no" jdbcType="VARCHAR" property="agreeNo" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -22,7 +26,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, bank_name, card_number, cardholder, cardholder_phone, opening_bank, 
-    affiliated_bank, is_default, bank_list_id, created_at, updated_at
+    id, user_id, bank_name, bank_code, card_number, cardholder, cardholder_phone, cardholder_identity_card, 
+    opening_bank, affiliated_bank, card_type, is_default, bank_list_id, agree_no, created_at, 
+    updated_at
   </sql>
 </mapper>

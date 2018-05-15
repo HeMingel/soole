@@ -1,5 +1,6 @@
 package com.songpo.searched.service;
 
+import com.alibaba.druid.sql.visitor.functions.Now;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -70,6 +73,9 @@ public class ProcessOrders {
                     setPaymentChannel(payType);
                     // 支付时间
                     setPayTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    // 支付时间戳
+                    Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+                    setPayTimeStamp(timestamp);
                 }}, example);
                 Example example1 = new Example(SlOrderDetail.class);
                 example1.createCriteria()

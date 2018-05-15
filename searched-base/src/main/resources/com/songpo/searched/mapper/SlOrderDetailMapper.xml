@@ -18,13 +18,9 @@
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="deduct_total_silver" jdbcType="INTEGER" property="deductTotalSilver" />
-    <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
     <result column="confirm_receipt_time" jdbcType="VARCHAR" property="confirmReceiptTime" />
-    <result column="discount" jdbcType="INTEGER" property="discount" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
     <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
     <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
@@ -37,11 +33,15 @@
     <result column="rewards_money" jdbcType="DECIMAL" property="rewardsMoney" />
     <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
-    <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
-    <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
+    <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
+    <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -49,10 +49,9 @@
     -->
     id, order_id, serial_number, shop_id, repository_id, product_id, product_name, product_image_url, 
     product_detail_group_name, shipping_state, quantity, price, deduct_total_silver, 
-    deduct_total_gold, confirm_receipt_time, discount, creator, create_time, modifier, 
-    modification_time, post_fee, buyer_message, shipping_time, ems_id, ship_number, group_people, 
-    presell_shipments_days, return_cash_money, place_order_return_pulse, rewards_money, 
-    share_of_people_id, activity_product_id, return_cash_pulse, rebate_pulse, type, created_at, 
-    updated_at
+    confirm_receipt_time, creator, create_time, post_fee, buyer_message, shipping_time, 
+    ems_id, ship_number, group_people, presell_shipments_days, return_cash_money, place_order_return_pulse, 
+    rewards_money, share_of_people_id, activity_product_id, type, modifier, modification_time, 
+    created_at, updated_at, discount, rebate_pulse, return_cash_pulse, deduct_total_gold
   </sql>
 </mapper>

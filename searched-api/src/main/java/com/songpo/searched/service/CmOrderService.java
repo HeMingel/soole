@@ -484,15 +484,16 @@ public class CmOrderService {
     public BusinessMessage cancelAnOrder(String orderId, String state) {
         log.debug("orderId = [" + orderId + "]");
         BusinessMessage message = new BusinessMessage();
+        int p = 0;
         try {
             SlUser user = loginUserService.getCurrentLoginUser();
             if (null != user) {
                 switch (Integer.parseInt(state)) {
                     case 102:
-                        Boolean e = this.orderService.exist(new SlOrder() {{
+                        SlOrder order = orderService.selectOne(new SlOrder() {{
                             setId(orderId);
                         }});
-                        if (e) {
+                        if (null != order) {
                             Example example = new Example(SlOrder.class);
                             example.createCriteria()
                                     .andEqualTo("id", orderId)
@@ -505,6 +506,7 @@ public class CmOrderService {
                                 setOrderId(orderId);
                             }});
                             for (SlOrderDetail detail : detailList) {
+                                p += detail.getPlaceOrderReturnPulse();
                                 SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
                                     setId(detail.getRepositoryId());
                                 }});
@@ -516,6 +518,13 @@ public class CmOrderService {
                                 //更新redids
                                 this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
                             }
+                            int si = user.getSilver() + order.getDeductTotalPulse() - p;
+                            userService.updateByPrimaryKeySelective(new SlUser() {{
+                                setId(user.getId());
+                                setSilver(si);
+                            }});
+                            user.setSilver(si);
+                            userCache.put(user.getClientId(), user);
                             message.setSuccess(true);
                             message.setMsg("取消成功");
                         } else {
@@ -558,31 +567,49 @@ public class CmOrderService {
      */
     public void processOrderDisabled(String key) {
         log.debug("订单失效，标识：{}", key);
+        int p = 0;
         if (!StringUtils.isEmpty(key)) {
             // 商品标识
             String orderId = key.substring(key.lastIndexOf(":") + 1);
             if (!StringUtils.isEmpty(orderId)) {
-                orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                SlOrder order = this.orderService.selectOne(new SlOrder() {{
                     setId(orderId);
-                    setPaymentState(101);
                 }});
-                // 查询该订单id关联的所有商品明细
-                List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
-                    setOrderId(key);
-                }});
-                for (SlOrderDetail slOrderDetail : detailList) {
-                    SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
-                        setId(slOrderDetail.getRepositoryId());
+                if (null != order) {
+                    orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                        setId(orderId);
+                        setPaymentState(101);
                     }});
-                    //把该订单下的数量加回去
-                    int count = repository.getCount() + slOrderDetail.getQuantity();
-                    productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
-                        setId(repository.getId());
-                        setCount(count);
+                    // 查询该订单id关联的所有商品明细
+                    List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                        setOrderId(key);
                     }});
-                    //更新redids
-                    this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                    for (SlOrderDetail slOrderDetail : detailList) {
+                        p += slOrderDetail.getPlaceOrderReturnPulse();
+                        SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                            setId(slOrderDetail.getRepositoryId());
+                        }});
+                        //把该订单下的数量加回去
+                        int count = repository.getCount() + slOrderDetail.getQuantity();
+                        productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                            setId(repository.getId());
+                            setCount(count);
+                        }});
+                        //更新redids
+                        this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                    }
+                    SlUser user = this.userService.selectByPrimaryKey(order.getUserId());
+                    if (null != user) {
+                        int si = user.getSilver() + order.getDeductTotalPulse() - p;
+                        userService.updateByPrimaryKeySelective(new SlUser() {{
+                            setId(user.getId());
+                            setSilver(si);
+                        }});
+                        user.setSilver(si);
+                        userCache.put(user.getClientId(), user);
+                    }
                 }
+
             }
         }
     }

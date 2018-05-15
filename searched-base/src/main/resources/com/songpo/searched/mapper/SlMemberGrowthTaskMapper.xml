@@ -10,6 +10,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="descriptional" jdbcType="VARCHAR" property="descriptional" />
+    <result column="award_exp" jdbcType="INTEGER" property="awardExp" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -17,6 +18,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, content, image_url, descriptional, created_at, updated_at
+    id, title, content, image_url, descriptional, award_exp, created_at, updated_at
   </sql>
 </mapper>

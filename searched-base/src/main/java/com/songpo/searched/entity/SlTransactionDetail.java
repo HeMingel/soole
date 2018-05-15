@@ -56,7 +56,7 @@ public class SlTransactionDetail implements Serializable {
     private Integer silver;
 
     /**
-     * 交易货币类型 1.账户余额 2.略 3.钱（暂时没用） 4.钱+豆 5.金豆 6.银豆
+     * 交易货币类型 1.账户余额 2.略（未使用） 3.钱  4.钱+豆（未使用） 5.金豆 6.银豆
      */
     @Column(name = "deal_type")
     private Integer dealType;
@@ -246,18 +246,18 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取交易货币类型 1.账户余额 2.略 3.钱（暂时没用） 4.钱+豆 5.金豆 6.银豆
+     * 获取交易货币类型 1.账户余额 2.略（未使用） 3.钱  4.钱+豆（未使用） 5.金豆 6.银豆
      *
-     * @return deal_type - 交易货币类型 1.账户余额 2.略 3.钱（暂时没用） 4.钱+豆 5.金豆 6.银豆
+     * @return deal_type - 交易货币类型 1.账户余额 2.略（未使用） 3.钱  4.钱+豆（未使用） 5.金豆 6.银豆
      */
     public Integer getDealType() {
         return dealType;
     }
 
     /**
-     * 设置交易货币类型 1.账户余额 2.略 3.钱（暂时没用） 4.钱+豆 5.金豆 6.银豆
+     * 设置交易货币类型 1.账户余额 2.略（未使用） 3.钱  4.钱+豆（未使用） 5.金豆 6.银豆
      *
-     * @param dealType 交易货币类型 1.账户余额 2.略 3.钱（暂时没用） 4.钱+豆 5.金豆 6.银豆
+     * @param dealType 交易货币类型 1.账户余额 2.略（未使用） 3.钱  4.钱+豆（未使用） 5.金豆 6.银豆
      */
     public void setDealType(Integer dealType) {
         this.dealType = dealType;

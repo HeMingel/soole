@@ -77,7 +77,7 @@ public class SlProductRepository implements Serializable {
     private Boolean ship;
 
     /**
-     * 了豆价格(暂时先消费银币不足时扣除金币)
+     * 了豆价格(暂时先消费银币不足时扣除金豆)
      */
     private Integer silver;
 
@@ -397,18 +397,18 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
-     * 获取了豆价格(暂时先消费银币不足时扣除金币)
+     * 获取了豆价格(暂时先消费银币不足时扣除金豆)
      *
-     * @return silver - 了豆价格(暂时先消费银币不足时扣除金币)
+     * @return silver - 了豆价格(暂时先消费银币不足时扣除金豆)
      */
     public Integer getSilver() {
         return silver;
     }
 
     /**
-     * 设置了豆价格(暂时先消费银币不足时扣除金币)
+     * 设置了豆价格(暂时先消费银币不足时扣除金豆)
      *
-     * @param silver 了豆价格(暂时先消费银币不足时扣除金币)
+     * @param silver 了豆价格(暂时先消费银币不足时扣除金豆)
      */
     public void setSilver(Integer silver) {
         this.silver = silver;

@@ -32,6 +32,12 @@ public class SlMemberGrowthTask implements Serializable {
     private String descriptional;
 
     /**
+     * 奖励搜了值
+     */
+    @Column(name = "award_exp")
+    private Integer awardExp;
+
+    /**
      * 创建时间
      */
     @Column(name = "created_at")
@@ -132,6 +138,24 @@ public class SlMemberGrowthTask implements Serializable {
     }
 
     /**
+     * 获取奖励搜了值
+     *
+     * @return award_exp - 奖励搜了值
+     */
+    public Integer getAwardExp() {
+        return awardExp;
+    }
+
+    /**
+     * 设置奖励搜了值
+     *
+     * @param awardExp 奖励搜了值
+     */
+    public void setAwardExp(Integer awardExp) {
+        this.awardExp = awardExp;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return created_at - 创建时间
@@ -178,6 +202,7 @@ public class SlMemberGrowthTask implements Serializable {
         sb.append(", content=").append(content);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", descriptional=").append(descriptional);
+        sb.append(", awardExp=").append(awardExp);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

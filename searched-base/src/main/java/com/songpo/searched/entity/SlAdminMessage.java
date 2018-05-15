@@ -20,7 +20,7 @@ public class SlAdminMessage implements Serializable {
     private String amTitle;
 
     /**
-     * 针对用户类型1代理商 2店铺
+     * 针对用户类型1代理商 2店铺 3代理商和店铺
      */
     @Column(name = "am_user_type")
     private Boolean amUserType;
@@ -94,18 +94,18 @@ public class SlAdminMessage implements Serializable {
     }
 
     /**
-     * 获取针对用户类型1代理商 2店铺
+     * 获取针对用户类型1代理商 2店铺 3代理商和店铺
      *
-     * @return am_user_type - 针对用户类型1代理商 2店铺
+     * @return am_user_type - 针对用户类型1代理商 2店铺 3代理商和店铺
      */
     public Boolean getAmUserType() {
         return amUserType;
     }
 
     /**
-     * 设置针对用户类型1代理商 2店铺
+     * 设置针对用户类型1代理商 2店铺 3代理商和店铺
      *
-     * @param amUserType 针对用户类型1代理商 2店铺
+     * @param amUserType 针对用户类型1代理商 2店铺 3代理商和店铺
      */
     public void setAmUserType(Boolean amUserType) {
         this.amUserType = amUserType;

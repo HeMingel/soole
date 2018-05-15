@@ -6,13 +6,13 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="presell_returned_record_id" jdbcType="VARCHAR" property="presellReturnedRecordId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="returned_status" jdbcType="INTEGER" property="returnedStatus" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="return_time" jdbcType="VARCHAR" property="returnTime" />
     <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
-    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="confirm_receipt" jdbcType="BIT" property="confirmReceipt" />
     <result column="completed" jdbcType="BIT" property="completed" />
     <result column="number_of_periods" jdbcType="INTEGER" property="numberOfPeriods" />
@@ -23,8 +23,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, presell_returned_record_id, user_id, returned_status, create_time, return_time, 
-    return_money, order_id, confirm_receipt, completed, number_of_periods, created_at, 
+    id, order_id, presell_returned_record_id, user_id, returned_status, create_time, 
+    return_time, return_money, confirm_receipt, completed, number_of_periods, created_at, 
     updated_at
   </sql>
 </mapper>

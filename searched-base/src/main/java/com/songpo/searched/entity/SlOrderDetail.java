@@ -79,27 +79,16 @@ public class SlOrderDetail implements Serializable {
     private BigDecimal price;
 
     /**
-     * 单个商品扣除的银豆数量
+     * 单个商品扣除的了豆数量
      */
     @Column(name = "deduct_total_silver")
     private Integer deductTotalSilver;
-
-    /**
-     * 单个商品扣除的金豆数量
-     */
-    @Column(name = "deduct_total_gold")
-    private Integer deductTotalGold;
 
     /**
      * 确认收货时间
      */
     @Column(name = "confirm_receipt_time")
     private String confirmReceiptTime;
-
-    /**
-     * 折扣
-     */
-    private Integer discount;
 
     /**
      * 创建人
@@ -111,17 +100,6 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "create_time")
     private String createTime;
-
-    /**
-     * 修改人
-     */
-    private String modifier;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "modification_time")
-    private String modificationTime;
 
     /**
      * 快递费
@@ -178,7 +156,7 @@ public class SlOrderDetail implements Serializable {
     private Integer placeOrderReturnPulse;
 
     /**
-     * 奖励金额
+     * 奖励金额(分享奖励金额)
      */
     @Column(name = "rewards_money")
     private BigDecimal rewardsMoney;
@@ -196,18 +174,6 @@ public class SlOrderDetail implements Serializable {
     private String activityProductId;
 
     /**
-     * (暂未使用)返了豆数量(限推荐奖励活动)
-     */
-    @Column(name = "return_cash_pulse")
-    private Integer returnCashPulse;
-
-    /**
-     * (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    @Column(name = "rebate_pulse")
-    private Integer rebatePulse;
-
-    /**
      * 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
@@ -218,16 +184,50 @@ public class SlOrderDetail implements Serializable {
     private Integer type;
 
     /**
-     * 创建时间
+     * (暂未使用)修改人
+     */
+    private String modifier;
+
+    /**
+     * (暂未使用)修改时间
+     */
+    @Column(name = "modification_time")
+    private String modificationTime;
+
+    /**
+     * (暂未使用)创建时间
      */
     @Column(name = "created_at")
     private Date createdAt;
 
     /**
-     * 最后更新时间
+     * (暂未使用)最后更新时间
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /**
+     * (暂未使用)折扣
+     */
+    private Integer discount;
+
+    /**
+     * (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    @Column(name = "rebate_pulse")
+    private Integer rebatePulse;
+
+    /**
+     * (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    @Column(name = "return_cash_pulse")
+    private Integer returnCashPulse;
+
+    /**
+     * (暂未使用)单个商品扣除的金豆数量
+     */
+    @Column(name = "deduct_total_gold")
+    private Integer deductTotalGold;
 
     private static final long serialVersionUID = 1L;
 
@@ -448,39 +448,21 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取单个商品扣除的银豆数量
+     * 获取单个商品扣除的了豆数量
      *
-     * @return deduct_total_silver - 单个商品扣除的银豆数量
+     * @return deduct_total_silver - 单个商品扣除的了豆数量
      */
     public Integer getDeductTotalSilver() {
         return deductTotalSilver;
     }
 
     /**
-     * 设置单个商品扣除的银豆数量
+     * 设置单个商品扣除的了豆数量
      *
-     * @param deductTotalSilver 单个商品扣除的银豆数量
+     * @param deductTotalSilver 单个商品扣除的了豆数量
      */
     public void setDeductTotalSilver(Integer deductTotalSilver) {
         this.deductTotalSilver = deductTotalSilver;
-    }
-
-    /**
-     * 获取单个商品扣除的金豆数量
-     *
-     * @return deduct_total_gold - 单个商品扣除的金豆数量
-     */
-    public Integer getDeductTotalGold() {
-        return deductTotalGold;
-    }
-
-    /**
-     * 设置单个商品扣除的金豆数量
-     *
-     * @param deductTotalGold 单个商品扣除的金豆数量
-     */
-    public void setDeductTotalGold(Integer deductTotalGold) {
-        this.deductTotalGold = deductTotalGold;
     }
 
     /**
@@ -499,24 +481,6 @@ public class SlOrderDetail implements Serializable {
      */
     public void setConfirmReceiptTime(String confirmReceiptTime) {
         this.confirmReceiptTime = confirmReceiptTime == null ? null : confirmReceiptTime.trim();
-    }
-
-    /**
-     * 获取折扣
-     *
-     * @return discount - 折扣
-     */
-    public Integer getDiscount() {
-        return discount;
-    }
-
-    /**
-     * 设置折扣
-     *
-     * @param discount 折扣
-     */
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
     }
 
     /**
@@ -553,42 +517,6 @@ public class SlOrderDetail implements Serializable {
      */
     public void setCreateTime(String createTime) {
         this.createTime = createTime == null ? null : createTime.trim();
-    }
-
-    /**
-     * 获取修改人
-     *
-     * @return modifier - 修改人
-     */
-    public String getModifier() {
-        return modifier;
-    }
-
-    /**
-     * 设置修改人
-     *
-     * @param modifier 修改人
-     */
-    public void setModifier(String modifier) {
-        this.modifier = modifier == null ? null : modifier.trim();
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return modification_time - 修改时间
-     */
-    public String getModificationTime() {
-        return modificationTime;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param modificationTime 修改时间
-     */
-    public void setModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
     }
 
     /**
@@ -754,18 +682,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取奖励金额
+     * 获取奖励金额(分享奖励金额)
      *
-     * @return rewards_money - 奖励金额
+     * @return rewards_money - 奖励金额(分享奖励金额)
      */
     public BigDecimal getRewardsMoney() {
         return rewardsMoney;
     }
 
     /**
-     * 设置奖励金额
+     * 设置奖励金额(分享奖励金额)
      *
-     * @param rewardsMoney 奖励金额
+     * @param rewardsMoney 奖励金额(分享奖励金额)
      */
     public void setRewardsMoney(BigDecimal rewardsMoney) {
         this.rewardsMoney = rewardsMoney;
@@ -808,42 +736,6 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取(暂未使用)返了豆数量(限推荐奖励活动)
-     *
-     * @return return_cash_pulse - (暂未使用)返了豆数量(限推荐奖励活动)
-     */
-    public Integer getReturnCashPulse() {
-        return returnCashPulse;
-    }
-
-    /**
-     * 设置(暂未使用)返了豆数量(限推荐奖励活动)
-     *
-     * @param returnCashPulse (暂未使用)返了豆数量(限推荐奖励活动)
-     */
-    public void setReturnCashPulse(Integer returnCashPulse) {
-        this.returnCashPulse = returnCashPulse;
-    }
-
-    /**
-     * 获取(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @return rebate_pulse - (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public Integer getRebatePulse() {
-        return rebatePulse;
-    }
-
-    /**
-     * 设置(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
-     *
-     * @param rebatePulse (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
-     */
-    public void setRebatePulse(Integer rebatePulse) {
-        this.rebatePulse = rebatePulse;
-    }
-
-    /**
      * 获取1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
@@ -882,39 +774,147 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取创建时间
+     * 获取(暂未使用)修改人
      *
-     * @return created_at - 创建时间
+     * @return modifier - (暂未使用)修改人
+     */
+    public String getModifier() {
+        return modifier;
+    }
+
+    /**
+     * 设置(暂未使用)修改人
+     *
+     * @param modifier (暂未使用)修改人
+     */
+    public void setModifier(String modifier) {
+        this.modifier = modifier == null ? null : modifier.trim();
+    }
+
+    /**
+     * 获取(暂未使用)修改时间
+     *
+     * @return modification_time - (暂未使用)修改时间
+     */
+    public String getModificationTime() {
+        return modificationTime;
+    }
+
+    /**
+     * 设置(暂未使用)修改时间
+     *
+     * @param modificationTime (暂未使用)修改时间
+     */
+    public void setModificationTime(String modificationTime) {
+        this.modificationTime = modificationTime == null ? null : modificationTime.trim();
+    }
+
+    /**
+     * 获取(暂未使用)创建时间
+     *
+     * @return created_at - (暂未使用)创建时间
      */
     public Date getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * 设置创建时间
+     * 设置(暂未使用)创建时间
      *
-     * @param createdAt 创建时间
+     * @param createdAt (暂未使用)创建时间
      */
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
     /**
-     * 获取最后更新时间
+     * 获取(暂未使用)最后更新时间
      *
-     * @return updated_at - 最后更新时间
+     * @return updated_at - (暂未使用)最后更新时间
      */
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
     /**
-     * 设置最后更新时间
+     * 设置(暂未使用)最后更新时间
      *
-     * @param updatedAt 最后更新时间
+     * @param updatedAt (暂未使用)最后更新时间
      */
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    /**
+     * 获取(暂未使用)折扣
+     *
+     * @return discount - (暂未使用)折扣
+     */
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    /**
+     * 设置(暂未使用)折扣
+     *
+     * @param discount (暂未使用)折扣
+     */
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
+    }
+
+    /**
+     * 获取(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @return rebate_pulse - (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public Integer getRebatePulse() {
+        return rebatePulse;
+    }
+
+    /**
+     * 设置(暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     *
+     * @param rebatePulse (暂未使用)奖励了豆数量(仅限推荐奖励活动模式)
+     */
+    public void setRebatePulse(Integer rebatePulse) {
+        this.rebatePulse = rebatePulse;
+    }
+
+    /**
+     * 获取(暂未使用)返了豆数量(限推荐奖励活动)
+     *
+     * @return return_cash_pulse - (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    public Integer getReturnCashPulse() {
+        return returnCashPulse;
+    }
+
+    /**
+     * 设置(暂未使用)返了豆数量(限推荐奖励活动)
+     *
+     * @param returnCashPulse (暂未使用)返了豆数量(限推荐奖励活动)
+     */
+    public void setReturnCashPulse(Integer returnCashPulse) {
+        this.returnCashPulse = returnCashPulse;
+    }
+
+    /**
+     * 获取(暂未使用)单个商品扣除的金豆数量
+     *
+     * @return deduct_total_gold - (暂未使用)单个商品扣除的金豆数量
+     */
+    public Integer getDeductTotalGold() {
+        return deductTotalGold;
+    }
+
+    /**
+     * 设置(暂未使用)单个商品扣除的金豆数量
+     *
+     * @param deductTotalGold (暂未使用)单个商品扣除的金豆数量
+     */
+    public void setDeductTotalGold(Integer deductTotalGold) {
+        this.deductTotalGold = deductTotalGold;
     }
 
     @Override
@@ -936,13 +936,9 @@ public class SlOrderDetail implements Serializable {
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", deductTotalSilver=").append(deductTotalSilver);
-        sb.append(", deductTotalGold=").append(deductTotalGold);
         sb.append(", confirmReceiptTime=").append(confirmReceiptTime);
-        sb.append(", discount=").append(discount);
         sb.append(", creator=").append(creator);
         sb.append(", createTime=").append(createTime);
-        sb.append(", modifier=").append(modifier);
-        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", postFee=").append(postFee);
         sb.append(", buyerMessage=").append(buyerMessage);
         sb.append(", shippingTime=").append(shippingTime);
@@ -955,11 +951,15 @@ public class SlOrderDetail implements Serializable {
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", activityProductId=").append(activityProductId);
-        sb.append(", returnCashPulse=").append(returnCashPulse);
-        sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", type=").append(type);
+        sb.append(", modifier=").append(modifier);
+        sb.append(", modificationTime=").append(modificationTime);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", discount=").append(discount);
+        sb.append(", rebatePulse=").append(rebatePulse);
+        sb.append(", returnCashPulse=").append(returnCashPulse);
+        sb.append(", deductTotalGold=").append(deductTotalGold);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

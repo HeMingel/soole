@@ -100,11 +100,6 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
-     * 商品详情（存放商品的图文和详情图片 h5展示）
-     */
-    private String detail;
-
-    /**
      * （暂未使用）关键词
      */
     private String antistop;
@@ -130,6 +125,11 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /**
+     * 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    private String detail;
 
     private static final long serialVersionUID = 1L;
 
@@ -422,24 +422,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取商品详情（存放商品的图文和详情图片 h5展示）
-     *
-     * @return detail - 商品详情（存放商品的图文和详情图片 h5展示）
-     */
-    public String getDetail() {
-        return detail;
-    }
-
-    /**
-     * 设置商品详情（存放商品的图文和详情图片 h5展示）
-     *
-     * @param detail 商品详情（存放商品的图文和详情图片 h5展示）
-     */
-    public void setDetail(String detail) {
-        this.detail = detail == null ? null : detail.trim();
-    }
-
-    /**
      * 获取（暂未使用）关键词
      *
      * @return antistop - （暂未使用）关键词
@@ -529,6 +511,24 @@ public class SlProduct implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * 获取商品详情（存放商品的图文和详情图片 h5展示）
+     *
+     * @return detail - 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    public String getDetail() {
+        return detail;
+    }
+
+    /**
+     * 设置商品详情（存放商品的图文和详情图片 h5展示）
+     *
+     * @param detail 商品详情（存放商品的图文和详情图片 h5展示）
+     */
+    public void setDetail(String detail) {
+        this.detail = detail == null ? null : detail.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -551,12 +551,12 @@ public class SlProduct implements Serializable {
         sb.append(", recommend=").append(recommend);
         sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
-        sb.append(", detail=").append(detail);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);
         sb.append(", remark=").append(remark);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

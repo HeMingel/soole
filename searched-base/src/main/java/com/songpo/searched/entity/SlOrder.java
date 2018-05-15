@@ -39,11 +39,6 @@ public class SlOrder implements Serializable {
     private Integer deductTotalPulse;
 
     /**
-     * 手续费
-     */
-    private BigDecimal fee;
-
-    /**
      * 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      */
     @Column(name = "payment_state")
@@ -51,21 +46,10 @@ public class SlOrder implements Serializable {
 
     /**
      * 1：微信支付
-2：支付宝支付
+2：支付宝支付 3：了豆支付
      */
     @Column(name = "payment_channel")
     private Integer paymentChannel;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time")
-    private String createTime;
 
     /**
      * 支付时间
@@ -123,10 +107,33 @@ public class SlOrder implements Serializable {
     private String groupMaster;
 
     /**
-     * 商品活动id
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    private String createTime;
+
+    /**
+     * 最后更新时间
+     */
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    /**
+     * (暂未使用)商品活动id
      */
     @Column(name = "activity_product_id")
     private String activityProductId;
+
+    /**
+     * (暂未使用)创建时间
+     */
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    /**
+     * (暂未使用)备注
+     */
+    private String remark;
 
     /**
      * (暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
@@ -134,16 +141,15 @@ public class SlOrder implements Serializable {
     private Integer type;
 
     /**
-     * 创建时间
+     * (暂未使用)手续费
      */
-    @Column(name = "created_at")
-    private Date createdAt;
+    private BigDecimal fee;
 
     /**
-     * 最后更新时间
+     * 支付时间戳
      */
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Column(name = "pay_time_stamp")
+    private Date payTimeStamp;
 
     private static final long serialVersionUID = 1L;
 
@@ -238,24 +244,6 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取手续费
-     *
-     * @return fee - 手续费
-     */
-    public BigDecimal getFee() {
-        return fee;
-    }
-
-    /**
-     * 设置手续费
-     *
-     * @param fee 手续费
-     */
-    public void setFee(BigDecimal fee) {
-        this.fee = fee;
-    }
-
-    /**
      * 获取2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
      *
      * @return payment_state - 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
@@ -275,10 +263,10 @@ public class SlOrder implements Serializable {
 
     /**
      * 获取1：微信支付
-2：支付宝支付
+2：支付宝支付 3：了豆支付
      *
      * @return payment_channel - 1：微信支付
-2：支付宝支付
+2：支付宝支付 3：了豆支付
      */
     public Integer getPaymentChannel() {
         return paymentChannel;
@@ -286,49 +274,13 @@ public class SlOrder implements Serializable {
 
     /**
      * 设置1：微信支付
-2：支付宝支付
+2：支付宝支付 3：了豆支付
      *
      * @param paymentChannel 1：微信支付
-2：支付宝支付
+2：支付宝支付 3：了豆支付
      */
     public void setPaymentChannel(Integer paymentChannel) {
         this.paymentChannel = paymentChannel;
-    }
-
-    /**
-     * 获取备注
-     *
-     * @return remark - 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置备注
-     *
-     * @param remark 备注
-     */
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return create_time - 创建时间
-     */
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime == null ? null : createTime.trim();
     }
 
     /**
@@ -512,21 +464,93 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取商品活动id
+     * 获取创建时间
      *
-     * @return activity_product_id - 商品活动id
+     * @return create_time - 创建时间
+     */
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    /**
+     * 获取最后更新时间
+     *
+     * @return updated_at - 最后更新时间
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * 设置最后更新时间
+     *
+     * @param updatedAt 最后更新时间
+     */
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
+     * 获取(暂未使用)商品活动id
+     *
+     * @return activity_product_id - (暂未使用)商品活动id
      */
     public String getActivityProductId() {
         return activityProductId;
     }
 
     /**
-     * 设置商品活动id
+     * 设置(暂未使用)商品活动id
      *
-     * @param activityProductId 商品活动id
+     * @param activityProductId (暂未使用)商品活动id
      */
     public void setActivityProductId(String activityProductId) {
         this.activityProductId = activityProductId == null ? null : activityProductId.trim();
+    }
+
+    /**
+     * 获取(暂未使用)创建时间
+     *
+     * @return created_at - (暂未使用)创建时间
+     */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * 设置(暂未使用)创建时间
+     *
+     * @param createdAt (暂未使用)创建时间
+     */
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * 获取(暂未使用)备注
+     *
+     * @return remark - (暂未使用)备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置(暂未使用)备注
+     *
+     * @param remark (暂未使用)备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     /**
@@ -548,39 +572,39 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取创建时间
+     * 获取(暂未使用)手续费
      *
-     * @return created_at - 创建时间
+     * @return fee - (暂未使用)手续费
      */
-    public Date getCreatedAt() {
-        return createdAt;
+    public BigDecimal getFee() {
+        return fee;
     }
 
     /**
-     * 设置创建时间
+     * 设置(暂未使用)手续费
      *
-     * @param createdAt 创建时间
+     * @param fee (暂未使用)手续费
      */
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
     }
 
     /**
-     * 获取最后更新时间
+     * 获取支付时间戳
      *
-     * @return updated_at - 最后更新时间
+     * @return pay_time_stamp - 支付时间戳
      */
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getPayTimeStamp() {
+        return payTimeStamp;
     }
 
     /**
-     * 设置最后更新时间
+     * 设置支付时间戳
      *
-     * @param updatedAt 最后更新时间
+     * @param payTimeStamp 支付时间戳
      */
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setPayTimeStamp(Date payTimeStamp) {
+        this.payTimeStamp = payTimeStamp;
     }
 
     @Override
@@ -594,11 +618,8 @@ public class SlOrder implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", totalAmount=").append(totalAmount);
         sb.append(", deductTotalPulse=").append(deductTotalPulse);
-        sb.append(", fee=").append(fee);
         sb.append(", paymentState=").append(paymentState);
         sb.append(", paymentChannel=").append(paymentChannel);
-        sb.append(", remark=").append(remark);
-        sb.append(", createTime=").append(createTime);
         sb.append(", payTime=").append(payTime);
         sb.append(", status=").append(status);
         sb.append(", consigneename=").append(consigneename);
@@ -609,10 +630,14 @@ public class SlOrder implements Serializable {
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
-        sb.append(", activityProductId=").append(activityProductId);
-        sb.append(", type=").append(type);
-        sb.append(", createdAt=").append(createdAt);
+        sb.append(", createTime=").append(createTime);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", activityProductId=").append(activityProductId);
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", remark=").append(remark);
+        sb.append(", type=").append(type);
+        sb.append(", fee=").append(fee);
+        sb.append(", payTimeStamp=").append(payTimeStamp);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

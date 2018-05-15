@@ -23,6 +23,12 @@ public class SlMemberBankcard implements Serializable {
     private String bankName;
 
     /**
+     * 银行简码
+     */
+    @Column(name = "bank_code")
+    private String bankCode;
+
+    /**
      * 银行卡号
      */
     @Column(name = "card_number")
@@ -40,6 +46,12 @@ public class SlMemberBankcard implements Serializable {
     private String cardholderPhone;
 
     /**
+     * 持卡人身份证号
+     */
+    @Column(name = "cardholder_identity_card")
+    private String cardholderIdentityCard;
+
+    /**
      * 开户行名称
      */
     @Column(name = "opening_bank")
@@ -52,6 +64,12 @@ public class SlMemberBankcard implements Serializable {
     private String affiliatedBank;
 
     /**
+     * 卡类标识:1-储蓄卡；2-信用卡
+     */
+    @Column(name = "card_type")
+    private Byte cardType;
+
+    /**
      * 1.该卡为默认卡  2.该卡不是默认卡
      */
     @Column(name = "is_default")
@@ -62,6 +80,12 @@ public class SlMemberBankcard implements Serializable {
      */
     @Column(name = "bank_list_id")
     private String bankListId;
+
+    /**
+     * 银行签约号，有签约号可以不必传银行卡号等信息下单
+     */
+    @Column(name = "agree_no")
+    private String agreeNo;
 
     /**
      * 创建时间
@@ -128,6 +152,24 @@ public class SlMemberBankcard implements Serializable {
     }
 
     /**
+     * 获取银行简码
+     *
+     * @return bank_code - 银行简码
+     */
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    /**
+     * 设置银行简码
+     *
+     * @param bankCode 银行简码
+     */
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode == null ? null : bankCode.trim();
+    }
+
+    /**
      * 获取银行卡号
      *
      * @return card_number - 银行卡号
@@ -182,6 +224,24 @@ public class SlMemberBankcard implements Serializable {
     }
 
     /**
+     * 获取持卡人身份证号
+     *
+     * @return cardholder_identity_card - 持卡人身份证号
+     */
+    public String getCardholderIdentityCard() {
+        return cardholderIdentityCard;
+    }
+
+    /**
+     * 设置持卡人身份证号
+     *
+     * @param cardholderIdentityCard 持卡人身份证号
+     */
+    public void setCardholderIdentityCard(String cardholderIdentityCard) {
+        this.cardholderIdentityCard = cardholderIdentityCard == null ? null : cardholderIdentityCard.trim();
+    }
+
+    /**
      * 获取开户行名称
      *
      * @return opening_bank - 开户行名称
@@ -218,6 +278,24 @@ public class SlMemberBankcard implements Serializable {
     }
 
     /**
+     * 获取卡类标识:1-储蓄卡；2-信用卡
+     *
+     * @return card_type - 卡类标识:1-储蓄卡；2-信用卡
+     */
+    public Byte getCardType() {
+        return cardType;
+    }
+
+    /**
+     * 设置卡类标识:1-储蓄卡；2-信用卡
+     *
+     * @param cardType 卡类标识:1-储蓄卡；2-信用卡
+     */
+    public void setCardType(Byte cardType) {
+        this.cardType = cardType;
+    }
+
+    /**
      * 获取1.该卡为默认卡  2.该卡不是默认卡
      *
      * @return is_default - 1.该卡为默认卡  2.该卡不是默认卡
@@ -251,6 +329,24 @@ public class SlMemberBankcard implements Serializable {
      */
     public void setBankListId(String bankListId) {
         this.bankListId = bankListId == null ? null : bankListId.trim();
+    }
+
+    /**
+     * 获取银行签约号，有签约号可以不必传银行卡号等信息下单
+     *
+     * @return agree_no - 银行签约号，有签约号可以不必传银行卡号等信息下单
+     */
+    public String getAgreeNo() {
+        return agreeNo;
+    }
+
+    /**
+     * 设置银行签约号，有签约号可以不必传银行卡号等信息下单
+     *
+     * @param agreeNo 银行签约号，有签约号可以不必传银行卡号等信息下单
+     */
+    public void setAgreeNo(String agreeNo) {
+        this.agreeNo = agreeNo == null ? null : agreeNo.trim();
     }
 
     /**
@@ -298,13 +394,17 @@ public class SlMemberBankcard implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", bankName=").append(bankName);
+        sb.append(", bankCode=").append(bankCode);
         sb.append(", cardNumber=").append(cardNumber);
         sb.append(", cardholder=").append(cardholder);
         sb.append(", cardholderPhone=").append(cardholderPhone);
+        sb.append(", cardholderIdentityCard=").append(cardholderIdentityCard);
         sb.append(", openingBank=").append(openingBank);
         sb.append(", affiliatedBank=").append(affiliatedBank);
+        sb.append(", cardType=").append(cardType);
         sb.append(", isDefault=").append(isDefault);
         sb.append(", bankListId=").append(bankListId);
+        sb.append(", agreeNo=").append(agreeNo);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

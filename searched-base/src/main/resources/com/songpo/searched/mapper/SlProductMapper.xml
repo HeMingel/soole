@@ -21,12 +21,17 @@
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
     <result column="postage" jdbcType="DECIMAL" property="postage" />
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
-    <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="antistop" jdbcType="VARCHAR" property="antistop" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlProduct">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -34,6 +39,12 @@
     -->
     id, name, product_number, image_url, introduction, product_type_id, comment_num, 
     sales_volume, shop_id, sales_mode_id, creator, create_time, pro_check_time, recommend, 
-    postage, sold_out, detail, antistop, reason, remark, created_at, updated_at
+    postage, sold_out, antistop, reason, remark, created_at, updated_at
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    detail
   </sql>
 </mapper>
