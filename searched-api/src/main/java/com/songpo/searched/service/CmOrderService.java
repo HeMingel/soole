@@ -1547,8 +1547,10 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         message = checkTheOrder(orderId, user);
-        if (message.getSuccess() == true) {
-            processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
+        if (Integer.valueOf(message.getData().get("money").toString()) == 0) {
+            if (message.getSuccess() == true) {
+                processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
+            }
         }
         return message;
     }
