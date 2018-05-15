@@ -128,6 +128,7 @@ public class SystemController {
                         this.userInsert(user);
 
                         JSONObject data = new JSONObject();
+                        data.put("userId",user.getId());
                         data.put("clientId", user.getClientId());
                         data.put("clientSecret", user.getClientSecret());
                         // 用户真实姓名
@@ -289,6 +290,7 @@ public class SystemController {
             SlUser user = this.loginUserService.getCurrentLoginUser();
             if (null != user) {
                 message.setSuccess(true);
+                data.put("userId",user.getId());
                 // 用户真实姓名
                 data.put("realname", user.getName());
                 // 用户昵称
@@ -500,6 +502,7 @@ public class SystemController {
             this.userCache.put(openId, user);
 
             JSONObject data = new JSONObject();
+            data.put("userId",user.getId());
             data.put("clientId", user.getClientId());
             data.put("clientSecret", user.getClientSecret());
             // 用户真实姓名
