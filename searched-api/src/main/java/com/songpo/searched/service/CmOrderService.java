@@ -842,7 +842,7 @@ public class CmOrderService {
             // 收货人的联系方式
             slOrder.setConsigneephone(slUserAddress.getPhone());
             // 了豆价格
-            slOrder.setDeductTotalPulse(repository.getSilver());
+            slOrder.setDeductTotalPulse(repository.getSilver() * quantity);
             // 插入订单表
             orderService.insertSelective(slOrder);
             // 订单加入redis 有效时间为24小时
@@ -959,7 +959,7 @@ public class CmOrderService {
             Map<String, String> map = new HashMap<>();
             map.put("order_num", slOrder.getId());
             map.put("total_amount", money.toString());
-            map.put("deduct_total_pulse", repository.getSilver().toString());
+            map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
             message.setData(map);
         } else {
             message.setMsg("用户地址不存在");
