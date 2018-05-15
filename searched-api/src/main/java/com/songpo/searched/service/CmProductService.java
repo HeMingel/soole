@@ -54,23 +54,23 @@ public class CmProductService {
     /**
      * 根据活动唯一标识符分页查询商品列表
      *
-     * @param name         商品名称
-     * @param salesModeId  销售模式唯一标识符
-     * @param activityId  活动Id
-     * @param goodsTypeId 商品分类Id
+     * @param name            商品名称
+     * @param salesModeId     销售模式唯一标识符
+     * @param activityId      活动Id
+     * @param goodsTypeId     商品分类Id
      * @param goodsTypeStatus 商品分类标识 1:一级分类 2:二级分类
-     * @param longitudeMin 最小经度
-     * @param longitudeMax 最大经度
-     * @param latitudeMin  最小维度
-     * @param latitudeMax  最大维度
-     * @param sortByPrice  按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序
-     * @param sortByRating 按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
-     * @param priceMin     价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
-     * @param priceMax     价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
-     * @param pageNum      页码
-     * @param pageSize     容量
-     * @param sortBySale  根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
-     * @param synthesize 综合排序 (销量+评论数量)
+     * @param longitudeMin    最小经度
+     * @param longitudeMax    最大经度
+     * @param latitudeMin     最小维度
+     * @param latitudeMax     最大维度
+     * @param sortByPrice     按商品价格排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param sortByRating    按店铺评分排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param priceMin        价格区间最小值，默认为空。如果只有最小值，则选择大于等于此价格
+     * @param priceMax        价格区间最大值，默认为空。如果只有最大值，则选择小于等于此价格
+     * @param pageNum         页码
+     * @param pageSize        容量
+     * @param sortBySale      根据销售数量排序规则，取值 desc、asc、空，默认为空则不进行排序
+     * @param synthesize      综合排序 (销量+评论数量)
      * @return 商品分页列表
      */
     public PageInfo selectBySalesMode(String name,
@@ -114,26 +114,26 @@ public class CmProductService {
             sortByRating = StringUtils.trimToEmpty(sortByRating);
         }
         //过滤销售数量排序中的非法字符
-        if(!StringUtils.containsAny(sortBySale, orderStrArray)){
+        if (!StringUtils.containsAny(sortBySale, orderStrArray)) {
             sortBySale = StringUtils.trimToEmpty(sortBySale);
         }
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId,activityId,goodsTypeId,goodsTypeStatus,longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax,sortBySale,addressNow,longitudeNow,latitudeNow,synthesize);
-        if(salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP ){
-            PageInfo<Map<String,Object>> map = new PageInfo<>(list);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, sortBySale, addressNow, longitudeNow, latitudeNow, synthesize);
+        if (salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP) {
+            PageInfo<Map<String, Object>> map = new PageInfo<>(list);
 
-            for(int i =0;i<map.getList().size();i++){
-                Map<String,Object> avatarMap = new HashMap<>();
-                List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.getList().get(i).get("product_id").toString());
-                if (avatarList.size()>0){
-                    map.getList().get(i).put("avatarList",avatarList);
+            for (int i = 0; i < map.getList().size(); i++) {
+                Map<String, Object> avatarMap = new HashMap<>();
+                List<Map<String, Object>> avatarList = this.mapper.selectGroupAvatar(map.getList().get(i).get("product_id").toString());
+                if (avatarList.size() > 0) {
+                    map.getList().get(i).put("avatarList", avatarList);
                 }
             }
             return new PageInfo<>(list);
-        }else {
+        } else {
             return new PageInfo<>(list);
         }
     }
@@ -158,11 +158,11 @@ public class CmProductService {
 
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
-        if(!actionId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)){
+        if (!actionId.equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
             // 执行查询
             List<SlProduct> list = this.mapper.selectByAction(actionId);
             return new PageInfo<>(list);
-        }else {
+        } else {
             List<SlProduct> list = this.mapper.selectByAction(actionId);
             return new PageInfo<>(list);
         }
@@ -174,11 +174,11 @@ public class CmProductService {
     /**
      * 根据分类查询商品  +  商品筛选  + 根据商品名称
      *
-     * @param goodsTypeId  商品分类ID sl_product.product_type_id
-     * @param name 商品名称
-     * @param screenType 筛选类型
-     * @param page       商品当前页
-     * @param size       每页容量
+     * @param goodsTypeId 商品分类ID sl_product.product_type_id
+     * @param name        商品名称
+     * @param screenType  筛选类型
+     * @param page        商品当前页
+     * @param size        每页容量
      * @return 商品列表
      */
     public BusinessMessage screenGoods(String goodsTypeId, String name, Integer screenType, Integer saleMode, Integer page, Integer size) {
@@ -193,21 +193,21 @@ public class CmProductService {
 
                 if (list.size() > 0) {
                     //如果是拼团商品
-                    if(saleMode!= null && saleMode == SalesModeConstant.SALES_MODE_GROUP){
+                    if (saleMode != null && saleMode == SalesModeConstant.SALES_MODE_GROUP) {
                         List<Object> goodsList = new ArrayList<>();
-                        for(Map<String,Object> map:list ){
+                        for (Map<String, Object> map : list) {
 
                             //关联order_detail 表的 product_id
-                            Map<String,Object> avatarMap = new HashMap<>();
+                            Map<String, Object> avatarMap = new HashMap<>();
 
-                            List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
-                            map.put("avatarList",avatarList);
+                            List<Map<String, Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
+                            map.put("avatarList", avatarList);
                             goodsList.add(avatarMap);
                         }
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);
                         businessMessage.setData(new PageInfo<>(goodsList));
-                    }else{
+                    } else {
                         businessMessage.setMsg("查询成功");
                         businessMessage.setSuccess(true);
                         businessMessage.setData(new PageInfo<>(list));
@@ -229,30 +229,31 @@ public class CmProductService {
     }
 
     /**
-     *  根据商品名称查询商品
+     * 根据商品名称查询商品
+     *
      * @param goodsName 商品名称
-     * @param page 页码
-     * @param size 容量
+     * @param page      页码
+     * @param size      容量
      * @return 商品列表
      */
-    public BusinessMessage selectByName(String goodsName,Integer page, Integer size){
-        log.debug("查询商品 商品名称,{}",goodsName);
+    public BusinessMessage selectByName(String goodsName, Integer page, Integer size) {
+        log.debug("查询商品 商品名称,{}", goodsName);
         BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
             PageHelper.startPage(page == null || page == 0 ? 1 : page, size == null ? 10 : size);
-            String name = '%'+goodsName+'%';
-            List<Map<String,Object>> list = this.mapper.selectByName(name);
-            if(list.size()>0){
+            String name = '%' + goodsName + '%';
+            List<Map<String, Object>> list = this.mapper.selectByName(name);
+            if (list.size() > 0) {
                 businessMessage.setMsg("查询成功");
                 businessMessage.setSuccess(true);
                 businessMessage.setData(new PageInfo<>(list));
-            }else {
+            } else {
                 businessMessage.setMsg("查询无数据");
                 businessMessage.setSuccess(true);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             businessMessage.setMsg("查询异常");
             log.error("查询商品异常", e);
         }
@@ -267,7 +268,7 @@ public class CmProductService {
      * @param activityId 活动Id
      * @return 商品详情列表
      */
-    public BusinessMessage goodsDetail(String goodsId, String activityId,String userId) {
+    public BusinessMessage goodsDetail(String goodsId, String activityId, String userId) {
         JSONObject data = new JSONObject();
         log.debug("查询 商品Id:{},活动Id:{}", goodsId, activityId);
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
@@ -284,11 +285,11 @@ public class CmProductService {
                 List<Map<String, Object>> mapComments = this.cmProductCommentMapper.goodsComments(goodsId, 1);
                 if (mapComments.size() > 0) {
                     //查询商品评论数量
-                    List<Map<String,Object>> commentsNum = this.cmProductCommentMapper.goodsCommentsNum(goodsId);
+                    List<Map<String, Object>> commentsNum = this.cmProductCommentMapper.goodsCommentsNum(goodsId);
                     //查询商品评论图片 简版
-                    List<Map<String,Object>> commentsimage= this.cmProductCommentMapper.commentImages(goodsId);
-                    data.put("commentsImage",commentsimage);
-                    data.put("productCommentsNum",commentsNum);
+                    List<Map<String, Object>> commentsimage = this.cmProductCommentMapper.commentImages(goodsId);
+                    data.put("commentsImage", commentsimage);
+                    data.put("productCommentsNum", commentsNum);
                     data.put("productComments", mapComments);
                 }
                 //   查询拼团信息
@@ -297,12 +298,24 @@ public class CmProductService {
                 if (Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP) {
                     //未拼成订单集合
                     List<Map<String, Object>> orderList = this.mapper.selectGroupOrder(activityId, goodsId);
-                    if (orderList.size() > 0) {
+                    /** 去除已经拼单完成的数据 **/
+                    if (orderList != null && orderList.size() > 0) {
+                        List<Map<String, Object>> removeOrderList = new ArrayList<>();
+                        for (Map<String, Object> map : orderList) {
+                            if (map.get("already_people").equals(map.get("need_people"))) {
+                                removeOrderList.add(map);
+                            }
+                        }
+                        if (removeOrderList.size() > 0) {
+                            orderList.removeAll(removeOrderList);
+                        }
+                    }
+                    if (orderList != null && orderList.size() > 0) {
                         //遍历订单集合 查询首发人
                         List<Object> groupList = new ArrayList<>();
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
-                            String groupId= orderList.get(i).get("group_master").toString();
+                            String groupId = orderList.get(i).get("group_master").toString();
 
                             Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
                             groupMapper.put("groupMaster", groupMaster);
@@ -311,30 +324,30 @@ public class CmProductService {
                         }
                         data.put("groupList", groupList);
                     } else {
-                        List <Object> list = new ArrayList<>();
-                        Map<String,String> groupMaster = new HashMap();
-                        groupMaster.put("avatar","");
-                        groupMaster.put("nick_name","");
+                        List<Object> list = new ArrayList<>();
+                        Map<String, String> groupMaster = new HashMap();
+                        groupMaster.put("avatar", "");
+                        groupMaster.put("nick_name", "");
                         list.add(groupMaster);
-                        Map<String,String> order = new HashMap();
+                        Map<String, String> order = new HashMap();
                         list.add(order);
 
                         data.put("groupList", list);
                     }
                 }
 
-                if (userId != null){
+                if (userId != null) {
                     //如果用户id 不为空,查询 是否收藏了该商品
-                    byte type=2;
-                    List<SlMyCollection> slMyCollections = this.slMyCollectionMapper.select(new SlMyCollection(){{
+                    byte type = 2;
+                    List<SlMyCollection> slMyCollections = this.slMyCollectionMapper.select(new SlMyCollection() {{
                         setUserId(userId);
                         setCollectionId(goodsId);
                         setType(type);
                     }});
-                    if (slMyCollections.size() > 0){
-                    data.put("isCollection",true);
-                    }else {
-                        data.put("isCollection",false);
+                    if (slMyCollections.size() > 0) {
+                        data.put("isCollection", true);
+                    } else {
+                        data.put("isCollection", false);
                     }
                 }
                 //查询商品规格
@@ -343,19 +356,18 @@ public class CmProductService {
                 List<Object> goodsRepositoryList = new ArrayList<>();
                 if (goodsActivityList.size() > 0) {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
-                        goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
+                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(), activityId);
+                        goodsRepository.put("restrict_count", goodsActivityList.get(i).get("restrict_count"));
                         goodsRepositoryList.add(goodsRepository);
                     }
                     businessMessage.setData(goodsRepositoryList);
-                    data.put("goodsRepositoryList",goodsRepositoryList);
-
+                    data.put("goodsRepositoryList", goodsRepositoryList);
                 }
 
                 //查询客服信息(店铺主人的 id username 昵称 头像)
                 //根据商铺ID
-                Map<String,String> customer = this.mapper.selectCustomerService(goodsBaseInfo.get("shop_id").toString());
-                data.put("custmerService",customer);
+                Map<String, String> customer = this.mapper.selectCustomerService(goodsBaseInfo.get("shop_id").toString());
+                data.put("custmerService", customer);
                 businessMessage.setMsg("查询完毕");
                 businessMessage.setSuccess(true);
                 businessMessage.setData(data);
@@ -369,42 +381,44 @@ public class CmProductService {
 
     /**
      * 查询预售商品周期
+     *
      * @param goodsId 商品ID
      * @return 预售商品周期表
      */
-    public BusinessMessage selectGoodsCycle(String goodsId){
+    public BusinessMessage selectGoodsCycle(String goodsId) {
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(true);
         try {
             // 1.预售模式2.消费返利模式
             String type = "1";
 
-            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.select(new SlPresellReturnedRecord(){{
+            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.select(new SlPresellReturnedRecord() {{
                 setProductId(goodsId);
                 setType(type);
             }});
-            if(slPresellReturnedRecordList.size() >0){
+            if (slPresellReturnedRecordList.size() > 0) {
                 double totalMoney = 0;
-                int totalDays  = 0;
-                for (SlPresellReturnedRecord sl: slPresellReturnedRecordList) {
+                int totalDays = 0;
+                for (SlPresellReturnedRecord sl : slPresellReturnedRecordList) {
                     totalMoney += sl.getReturnedMoney().doubleValue();
-                    totalDays +=  sl.getReturnedNumber();
+                    totalDays += sl.getReturnedNumber();
                 }
-                Map<String,Object> map = new HashMap<>();
-                map.put("presellReturnedRecordList",slPresellReturnedRecordList);
-                map.put("totalMoney",totalMoney);
-                map.put("totalDays",totalDays);
+                Map<String, Object> map = new HashMap<>();
+                map.put("presellReturnedRecordList", slPresellReturnedRecordList);
+                map.put("totalMoney", totalMoney);
+                map.put("totalDays", totalDays);
                 businessMessage.setSuccess(true);
                 businessMessage.setData(map);
                 businessMessage.setMsg("查询成功");
             }
 
-        }catch (Exception e){
-            log.error("查询异常",e);
+        } catch (Exception e) {
+            log.error("查询异常", e);
             businessMessage.setMsg("查询异常");
         }
         return businessMessage;
     }
+
     /**
      * 根据商品Id 查询商品规格
      *
@@ -416,22 +430,22 @@ public class CmProductService {
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
-                //商品活动
-                List<Map<String, Object>> goodsActivityList = this.mapper.goodsActivityList(id, activityId);
-                List<Object> goodsRepositoryList = new ArrayList<>();
-                if (goodsActivityList.size() > 0) {
-                    for (int i = 0; i < goodsActivityList.size(); i++) {
-                        Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(),activityId);
-                        goodsRepository.put("restrict_count",goodsActivityList.get(i).get("restrict_count"));
-                        goodsRepositoryList.add(goodsRepository);
-                    }
-                    businessMessage.setSuccess(true);
-                    businessMessage.setData(goodsRepositoryList);
-                    businessMessage.setMsg("查询成功");
-                } else {
-                    businessMessage.setSuccess(true);
-                    businessMessage.setMsg("查询无数据");
+            //商品活动
+            List<Map<String, Object>> goodsActivityList = this.mapper.goodsActivityList(id, activityId);
+            List<Object> goodsRepositoryList = new ArrayList<>();
+            if (goodsActivityList.size() > 0) {
+                for (int i = 0; i < goodsActivityList.size(); i++) {
+                    Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(), activityId);
+                    goodsRepository.put("restrict_count", goodsActivityList.get(i).get("restrict_count"));
+                    goodsRepositoryList.add(goodsRepository);
                 }
+                businessMessage.setSuccess(true);
+                businessMessage.setData(goodsRepositoryList);
+                businessMessage.setMsg("查询成功");
+            } else {
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("查询无数据");
+            }
 
 
         } catch (Exception e) {
@@ -443,27 +457,28 @@ public class CmProductService {
 
     /**
      * 查询商品图文详情
+     *
      * @param goodsId 商品Id
      * @return 图文详情
      */
-    public BusinessMessage<String> selectGoodsText(String goodsId){
+    public BusinessMessage<String> selectGoodsText(String goodsId) {
         BusinessMessage<String> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
-        try{
-            if(!"".equals(goodsId)){
+        try {
+            if (!"".equals(goodsId)) {
                 SlProduct slProduct = this.slProductMapper.selectByPrimaryKey(goodsId);
-                if (slProduct != null){
+                if (slProduct != null) {
                     businessMessage.setData(slProduct.getDetail());
                     businessMessage.setSuccess(true);
-                }else {
+                } else {
                     businessMessage.setMsg("查询未找到");
                 }
-            }else {
+            } else {
                 businessMessage.setMsg("商品Id为空");
             }
-        }catch (Exception e){
-            log.error("查询图文详情异常",e);
-            businessMessage.setMsg("查询图文详情异常"+e);
+        } catch (Exception e) {
+            log.error("查询图文详情异常", e);
+            businessMessage.setMsg("查询图文详情异常" + e);
         }
         return businessMessage;
     }
@@ -480,8 +495,8 @@ public class CmProductService {
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
         try {
-        //如果商品id 不是空 按照规则查  ,商品id 如果是空的话搜索所有的推荐商品
-            if(!"".equals(id)){
+            //如果商品id 不是空 按照规则查  ,商品id 如果是空的话搜索所有的推荐商品
+            if (!"".equals(id)) {
                 //查询后台推送推荐商品
                 List<Map<String, Object>> backStageGoods = this.mapper.backStageGoods(id, ActivityConstant.NO_ACTIVITY);
                 int goodsSize = 4;
@@ -515,7 +530,7 @@ public class CmProductService {
                         businessMessage.setSuccess(true);
                     }
                 }
-            }else{
+            } else {
                 // 获取推荐商品列表
                 List<SlProduct> productList = this.slProductMapper.select(new SlProduct() {{
                     setRecommend(ProductEnum.PRODUCT_RECOMMEND_ENABLE.getValue());
@@ -531,9 +546,9 @@ public class CmProductService {
     }
 
 
-
     /**
      * 处理秒杀商品限时结束事件
+     *
      * @param key Redis返回的key
      */
     public void processProductUndercarriage(String key) {
