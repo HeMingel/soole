@@ -108,9 +108,10 @@ public class NotificationService {
 
         // 如果频道不存在，则进行创建
         String channelName = env.getProperty("spring.rabbitmq.channelname");
+        String routingKey = env.getProperty("spring.rabbitmq.routingkey");
 
         // 发送广播消息
-        this.messagingTemplate.convertAndSend(channelName, "test", content);
+        this.messagingTemplate.convertAndSend(channelName, routingKey, content);
     }
 
     /**
@@ -122,11 +123,10 @@ public class NotificationService {
         if (!channelCache.hasKey(channelName)) {
             try {
                 rabbitAdmin.declareQueue(new Queue(channelName));
+                channelCache.put(channelName, channelName);
             } catch (Exception e) {
                 log.debug("频道[{}]已存在", channelName);
             }
-        } else {
-            channelCache.put(channelName, channelName);
         }
     }
 
