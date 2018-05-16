@@ -204,7 +204,6 @@ public class ProductController {
     })
     @GetMapping("/hotGoods")
     public BusinessMessage hotGoods(String id) {
-        log.debug("微信测试，先来这里试试");
         return this.productService.hotGoods(id);
     }
 
