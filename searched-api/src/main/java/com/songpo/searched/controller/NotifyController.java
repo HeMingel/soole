@@ -36,6 +36,7 @@ public class NotifyController {
      */
     @PostMapping("wxpay-notify")
     public String wxPayNotify(HttpServletRequest request) {
+        log.debug("微信支付通知接口开始调用");
         return this.paymentService.wxPayNotify(request);
     }
 
