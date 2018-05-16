@@ -1435,6 +1435,7 @@ public class CmOrderService {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                log.debug("微信预下单返回数据：{}", map);
                 if (map.size() > 0) {
                     message.setData(null);
                     transactionDetailMapper.insertSelective(new SlTransactionDetail() {{

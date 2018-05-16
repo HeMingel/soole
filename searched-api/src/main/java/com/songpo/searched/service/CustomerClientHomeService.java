@@ -108,7 +108,7 @@ public class CustomerClientHomeService {
         // 获取活动列表
         Example actionExample = new Example(SlActionNavigation.class);
         actionExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTION.getValue());
-        actionExample.setOrderByClause("action_sort asc");
+        actionExample.setOrderByClause("serial_number asc");
         List<SlActionNavigation> actionList = this.actionNavigationService.selectByExample(actionExample);
         data.put("actions", actionList);
 
