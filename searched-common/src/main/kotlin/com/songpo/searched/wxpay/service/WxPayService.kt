@@ -1,5 +1,6 @@
 package com.songpo.searched.wxpay.service
 
+import com.alibaba.fastjson.JSON
 import com.github.wxpay.sdk.WXPay
 import com.github.wxpay.sdk.WXPayConfig
 import com.github.wxpay.sdk.WXPayUtil
@@ -294,6 +295,7 @@ class WxPayService(val config: WxPayConfigProperties) {
 
             // 对数据进行签名
             resultData["sign"] = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+            resultData["wxData"] = JSON.toJSONString(data)
 
             return resultData
         }
