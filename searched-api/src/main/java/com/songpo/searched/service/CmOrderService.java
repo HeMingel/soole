@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -371,6 +372,12 @@ public class CmOrderService {
                 map.put("total_amount", String.valueOf(money));
                 map.put("deduct_total_pulse", String.valueOf(pulse));
                 message.setData(map);
+                if (user.getSilver() + user.getCoin() < pulse) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    message.setData("");
+                    message.setMsg("当前用户了豆数量不足");
+                    message.setSuccess(false);
+                }
             } else {
                 log.error("收货地址不存在");
                 message.setMsg("收货地址不存在");
@@ -924,7 +931,7 @@ public class CmOrderService {
                 setProductDetailGroupName(repository.getProductDetailGroupName());
                 if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
                     if (!groupMaster.equals(userId)) {
-                        SlOrderDetail detail = orderDetailService.selectOne(new SlOrderDetail(){{
+                        SlOrderDetail detail = orderDetailService.selectOne(new SlOrderDetail() {{
                             setCreator(groupMaster);
                             setSerialNumber(serialNumber);
                         }});
@@ -1000,6 +1007,13 @@ public class CmOrderService {
             map.put("total_amount", money.toString());
             map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
             message.setData(map);
+            SlUser user = loginUserService.getCurrentLoginUser();
+            if (user.getSilver() + user.getCoin() < slOrder.getDeductTotalPulse()) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                message.setData("");
+                message.setMsg("当前用户了豆数量不足");
+                message.setSuccess(false);
+            }
         } else {
             message.setMsg("用户地址不存在");
             return message;
@@ -1372,28 +1386,28 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-//                processOrders.processOrders(orderId, 2);
-                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-                if (StringUtils.isNotBlank(str)) {
-                    message.setData(null);
-                    map.put("alipay", str);
-                    message.setData(map);
-                    message.setSuccess(true);
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额(支付宝支付)
-                        setMoney(new BigDecimal(money));
-                        // 钱
-                        setDealType(3);
-                        // 支出
-                        setTransactionType(1);
-                    }});
-                }
+                processOrders.processOrders(orderId, 2);
+//                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+//                if (StringUtils.isNotBlank(str)) {
+//                    message.setData(null);
+//                    map.put("alipay", str);
+//                    message.setData(map);
+//                    message.setSuccess(true);
+//                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+//                        // 目标id
+//                        setTargetId(user.getId());
+//                        // 订单id
+//                        setOrderId(orderId);
+//                        // 购物类型
+//                        setType(200);
+//                        // 扣除金额(支付宝支付)
+//                        setMoney(new BigDecimal(money));
+//                        // 钱
+//                        setDealType(3);
+//                        // 支出
+//                        setTransactionType(1);
+//                    }});
+//                }
             } else {
                 return message;
             }
@@ -1472,8 +1486,8 @@ public class CmOrderService {
                 }});
                 if (orderDetails.size() > 0) {
                     if (order.getDeductTotalPulse() > 0) {
-                        if ((user.getSilver() + user.getCoin()) > order.getDeductTotalPulse()) {
-                            if (user.getSilver() > order.getDeductTotalPulse()) {
+                        if ((user.getSilver() + user.getCoin()) >= order.getDeductTotalPulse()) {
+                            if (user.getSilver() >= order.getDeductTotalPulse()) {
                                 int pulse = user.getSilver() - order.getDeductTotalPulse();
                                 count = userService.updateByPrimaryKeySelective(new SlUser() {{
                                     setId(user.getId());
@@ -1555,7 +1569,25 @@ public class CmOrderService {
                             message.setMsg("当前用户了豆数量不足");
                         }
                     } else if (order.getDeductTotalPulse() == 0) {
-                        message.setSuccess(true);
+                        SlOrderDetail detail = orderDetails.get(0);
+                        SlProduct product = productService.selectOne(new SlProduct() {{
+                            setId(detail.getProductId());
+                        }});
+                        if (null != product) {
+                            if (product.getSalesModeId().equals(SalesModeConstant.SALES_MODE_GROUP)) {
+                                int c = this.orderService.selectCount(new SlOrder() {{
+                                    setSerialNumber(order.getSerialNumber());
+                                    setPaymentState(1);
+                                }});
+                                if (c == detail.getGroupPeople()) {
+                                    message.setMsg("该拼团已结束");
+                                } else {
+                                    message.setSuccess(true);
+                                }
+                            } else {
+                                message.setSuccess(true);
+                            }
+                        }
                     }
                     if (count == 1) {
                         message.setSuccess(true);
