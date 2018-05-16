@@ -316,7 +316,6 @@ public class CmProductService {
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
                             String groupId = orderList.get(i).get("group_master").toString();
-
                             Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
                             groupMapper.put("groupMaster", groupMaster);
                             groupMapper.put("order", orderList.get(i));
@@ -334,6 +333,25 @@ public class CmProductService {
 
                         data.put("groupList", list);
                     }
+                }else{
+                    Map<String, Object>  map = new HashMap<>(16);
+                    List<Map<String,Object>> alreadyOrderMap = this.mapper.alreadyOrder(activityId, goodsId);
+                    if(alreadyOrderMap.size()>0){
+                        for(int i = 0 ;i < alreadyOrderMap.size();i++){
+                            if(alreadyOrderMap.get(i).containsKey("user_id")){
+                                Map<String,Object> userInfo = this.mapper.findGroupPeople(alreadyOrderMap.get(i).get("user_id").toString());
+                                if (userInfo != null){
+                                    //放入user信息,头像昵称
+                                    alreadyOrderMap.get(i).put("userInfo",userInfo);
+                                }
+                            }else {
+                              Map<String,Object> userInfo = new HashMap<>();
+                              userInfo.put("avatar","");
+                              userInfo.put("nick_name","");
+                              alreadyOrderMap.get(i).put("userInfo",userInfo); }
+                        }
+                    }
+
                 }
 
                 if (userId != null) {

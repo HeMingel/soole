@@ -169,6 +169,14 @@ public interface CmProductMapper{
     List<Map<String,Object>> selectGroupOrder(@Param("activityId")String activityId,@Param("goodsId")String goodsId);
 
     /**
+     * 查询该活动商品已经购买成功的订单
+     * @param activityId
+     * @param goodsId
+     * @return
+     */
+    List<Map<String,Object>> alreadyOrder(@Param("activityId")String activityId,@Param("goodsId")String goodsId);
+
+    /**
      * 后台推荐产品
      * @param goodsId 商品Id
      *                @param activityId 活动id
