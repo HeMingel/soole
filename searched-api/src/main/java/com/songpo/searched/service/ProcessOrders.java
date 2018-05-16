@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.visitor.functions.Now;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.CmOrderMapper;
 import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
 import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.rabbitmq.NotificationService;
@@ -43,20 +44,22 @@ public class ProcessOrders {
     private NotificationService notificationService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CmOrderMapper cmOrderMapper;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
     /**
      * 支付后订单处理
      *
-     * @param orderNum
+     * @param orderId
      * @return
      */
     @Transactional
-    public void processOrders(String orderNum, int payType) {
+    public void processOrders(String orderId, int payType) {
         String dete = null;
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
-            setSerialNumber(orderNum);
+            setId(orderId);
         }});
         if (null != order) {
             SlUser user = userService.selectByPrimaryKey(order.getUserId());
@@ -118,18 +121,13 @@ public class ProcessOrders {
                             // 如果这个订单的拼团人不等于该用户
                             if (!order.getGroupMaster().equals(user.getId())) {
                                 // 查询已支付的该拼团的订单数量
-                                int count = this.orderService.selectCount(new SlOrder() {{
-                                    //该订单号的拼团
-                                    setSerialNumber(order.getSerialNumber());
-                                    //拼团
-                                    setType(2);
-                                    //已支付
-                                    setPaymentState(1);
-                                }});
+                                int count = this.cmOrderMapper.groupOrdersByUser(order.getSerialNumber());
                                 // 如果拼团人数够了
-                                if (count + 1 == detail.getGroupPeople()) {
+                                if (count == detail.getGroupPeople()) {
                                     Example e = new Example(SlOrder.class);
-                                    e.createCriteria().andEqualTo("serialNumber", order.getSerialNumber());
+                                    e.createCriteria()
+                                            .andEqualTo("serialNumber", order.getSerialNumber())
+                                            .andEqualTo("paymentState", 1);
                                     // 把该订单号的所有拼团状态改成成功状态
                                     orderService.updateByExampleSelective(new SlOrder() {{
                                         // 改成拼团成功

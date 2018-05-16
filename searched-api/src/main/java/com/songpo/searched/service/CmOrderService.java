@@ -919,8 +919,18 @@ public class CmOrderService {
                 // 商品规格名称
                 setProductDetailGroupName(repository.getProductDetailGroupName());
                 if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
-                    // 拼团所需人数
-                    setGroupPeople(activityProduct.getPeopleNum());
+                    if (!groupMaster.equals(userId)) {
+                        Example example = new Example(SlOrderDetail.class);
+                        example.createCriteria()
+                                .andEqualTo("serialNumber", serialNumber);
+                        example.setOrderByClause("createdAt ASC");
+                        List<SlOrderDetail> orderDetails = orderDetailService.selectByExample(example);
+                        SlOrderDetail detail = orderDetails.get(0);
+                        setGroupPeople(detail.getGroupPeople());
+                    } else {
+                        // 拼团所需人数
+                        setGroupPeople(activityProduct.getPeopleNum());
+                    }
                 }
                 //TODO 分享奖励
                 // 如果是分享奖励的情况下
@@ -1360,27 +1370,28 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, serialNumber, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-                if (StringUtils.isNotBlank(str)) {
-                    message.setData(null);
-                    map.put("alipay", str);
-                    message.setData(map);
-                    message.setSuccess(true);
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额(支付宝支付)
-                        setMoney(new BigDecimal(money));
-                        // 钱
-                        setDealType(3);
-                        // 支出
-                        setTransactionType(1);
-                    }});
-                }
+                processOrders.processOrders(orderId, 2);
+//                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+//                if (StringUtils.isNotBlank(str)) {
+//                    message.setData(null);
+//                    map.put("alipay", str);
+//                    message.setData(map);
+//                    message.setSuccess(true);
+//                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+//                        // 目标id
+//                        setTargetId(user.getId());
+//                        // 订单id
+//                        setOrderId(orderId);
+//                        // 购物类型
+//                        setType(200);
+//                        // 扣除金额(支付宝支付)
+//                        setMoney(new BigDecimal(money));
+//                        // 钱
+//                        setDealType(3);
+//                        // 支出
+//                        setTransactionType(1);
+//                    }});
+//                }
             } else {
                 return message;
             }
@@ -1407,7 +1418,7 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, serialNumber, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                 if (map.size() > 0) {
                     message.setData(null);
                     transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
