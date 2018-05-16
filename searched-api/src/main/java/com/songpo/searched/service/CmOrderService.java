@@ -2,7 +2,6 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.alipay.service.AliPayService;
@@ -110,7 +109,7 @@ public class CmOrderService {
         if (null != user) {
             SlOrder slOrder = new SlOrder();
             String orderNum = OrderNumGeneration.getOrderIdByUUId();// 生成订单编号
-            slOrder.setId(UUID.randomUUID().toString());
+            slOrder.setId(formatUUID32());
             slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             slOrder.setSerialNumber(orderNum);// 订单编号
             slOrder.setUserId(user.getId());// 用户Id
@@ -205,7 +204,7 @@ public class CmOrderService {
                                                 }
 //                                                SlProductRepository finalRepository = repository;
                                                 orderDetailService.insertSelective(new SlOrderDetail() {{
-                                                    setId(UUID.randomUUID().toString());
+                                                    setId(formatUUID32());
                                                     setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                                                     // 拼团订单去这个属性判断是哪个人的
                                                     setCreator(slOrder.getUserId());
@@ -818,7 +817,7 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         SlOrder slOrder = new SlOrder();
         // 订单id
-        slOrder.setId(UUID.randomUUID().toString());
+        slOrder.setId(formatUUID32());
         // 创建时间
         slOrder.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         // 用户Id
@@ -884,7 +883,7 @@ public class CmOrderService {
 //            SlProduct finalSlProduct = slProduct;
             orderDetailService.insertSelective(new SlOrderDetail() {{
                 // 订单明细id
-                setId(UUID.randomUUID().toString());
+                setId(formatUUID32());
                 // 订单明细创建时间
                 setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 // 用户id
@@ -1594,5 +1593,16 @@ public class CmOrderService {
             }
         }
         return message;
+    }
+
+    /**
+     * 生成订单ID，32位长度
+     *
+     * @return
+     */
+    private String formatUUID32() {
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.replace("-", "");
+        return uuid;
     }
 }
