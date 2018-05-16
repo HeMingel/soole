@@ -313,7 +313,7 @@
         FROM
           sl_order_detail od
           LEFT JOIN sl_order o
-            ON od.`serial_number` = o.`serial_number`
+            ON od.`order_id` = o.`id`
             LEFT JOIN sl_activity_product ap
             ON od.`activity_product_id` = ap.`id`
         WHERE ap.`activity_id` =  #{activityId}
@@ -321,6 +321,29 @@
           AND o.payment_state = 1
           AND o.spell_group_status = 1
         GROUP BY o.serial_number
+
+    </select>
+
+    <!--查询该活动商品购买成功的订单-->
+    <select id="alreadyOrder" resultType="Map" parameterType="string">
+        SELECT
+          od.product_name,
+          od.`price`,
+          od.deduct_total_silver AS peas,
+          od.`created_at`,
+          o.`user_id`
+        FROM
+          sl_order o
+          LEFT JOIN sl_order_detail od
+            ON od.`serial_number` = o.`serial_number`
+          LEFT JOIN sl_activity_product ap
+            ON od.`activity_product_id` = ap.`id`
+        WHERE
+          ap.`activity_id` = #{activityId}
+          AND od.`product_id` = #{goodsId}
+          AND o.payment_state = 1
+          AND o.spell_group_status = 1
+
 
     </select>
     <!--后台推荐商品-->
