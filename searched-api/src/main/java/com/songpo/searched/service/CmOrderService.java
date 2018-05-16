@@ -456,13 +456,18 @@ public class CmOrderService {
             SlUser user = this.loginUserService.getCurrentLoginUser();
             Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
-                SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
-                    setId(orderInfo.get("activityProductId").toString());
-                }});
-                if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
-                    orderInfo.put("join", false);
+                if (StringUtils.isNotBlank(orderInfo.get("activityProductId").toString())) {
+                    SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                        setId(orderInfo.get("activityProductId").toString());
+                    }});
+                    if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                        orderInfo.put("join", false);
+                    } else {
+                        orderInfo.put("join", true);
+                    }
                 } else {
-                    orderInfo.put("join", true);
+                    message.setMsg("数据出错");
+                    return message;
                 }
                 message.setData(orderInfo);
                 message.setSuccess(true);
