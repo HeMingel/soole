@@ -133,9 +133,13 @@ public class ProcessOrders {
                                         // 改成拼团成功
                                         setSpellGroupStatus(2);
                                     }}, e);
+                                    Example example2 = new Example(SlOrderDetail.class);
+                                    example2.createCriteria()
+                                            .andEqualTo("serialNumber", order.getSerialNumber())
+                                            .andEqualTo("creator", user.getId());
                                     orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                                         setShippingState(3);
-                                    }}, e);
+                                    }}, example2);
                                 } else if (count + 1 < detail.getGroupPeople()) {
                                     orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                         setId(order.getId());
