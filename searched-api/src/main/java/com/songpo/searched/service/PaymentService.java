@@ -90,10 +90,10 @@ public class PaymentService {
                         // 签名正确
                         // 进行处理。
                         // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
-                        String orderNum = resParams.get("out_trade_no");
-                        log.debug("orderNum is:{}", orderNum);
-                        if (null != orderNum) {
-                            processOrders.processOrders(orderNum,1);
+                        String orderId = resParams.get("out_trade_no");
+                        log.debug("orderId is:{}", orderId);
+                        if (null != orderId) {
+                            processOrders.processOrders(orderId,1);
                         }
                         // 处理订单支付通知成功逻辑
 
@@ -155,9 +155,9 @@ public class PaymentService {
             log.debug("支付宝执行验签结果: {}",flag);
             // 如果验签成功，则开始处理跟订单相关的业务，否则不进行处理，等待下一次通知回调
             if (flag) {
-                String orderNum = maps.get("out_trade_no");
-                if (null != orderNum) {
-                    processOrders.processOrders(orderNum,2);
+                String orderId = maps.get("out_trade_no");
+                if (null != orderId) {
+                    processOrders.processOrders(orderId,2);
                 }
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";

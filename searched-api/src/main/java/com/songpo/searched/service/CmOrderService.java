@@ -456,13 +456,18 @@ public class CmOrderService {
             SlUser user = this.loginUserService.getCurrentLoginUser();
             Map<String, Object> orderInfo = this.cmOrderMapper.selectMyOrderInfo(user.getId(), id);
             if (null != orderInfo) {
-                SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
-                    setId(orderInfo.get("activityProductId").toString());
-                }});
-                if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
-                    orderInfo.put("join", false);
+                if (StringUtils.isNotBlank(orderInfo.get("activityProductId").toString())) {
+                    SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
+                        setId(orderInfo.get("activityProductId").toString());
+                    }});
+                    if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                        orderInfo.put("join", false);
+                    } else {
+                        orderInfo.put("join", true);
+                    }
                 } else {
-                    orderInfo.put("join", true);
+                    message.setMsg("数据出错");
+                    return message;
                 }
                 message.setData(orderInfo);
                 message.setSuccess(true);
@@ -703,7 +708,7 @@ public class CmOrderService {
                                     if (!StringUtils.isEmpty(serialNumber) && !StringUtils.isEmpty(groupMaster)) {
                                         //查询这个团主的订单是否存在
                                         int count1 = this.orderService.selectCount(new SlOrder() {{
-                                            setGroupMaster(groupMaster);
+                                            setUserId(groupMaster);
                                             setSerialNumber(serialNumber);
                                         }});
                                         //如果存在 && 只有一条
@@ -919,8 +924,16 @@ public class CmOrderService {
                 // 商品规格名称
                 setProductDetailGroupName(repository.getProductDetailGroupName());
                 if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
-                    // 拼团所需人数
-                    setGroupPeople(activityProduct.getPeopleNum());
+                    if (!groupMaster.equals(userId)) {
+                        SlOrderDetail detail = orderDetailService.selectOne(new SlOrderDetail(){{
+                            setCreator(groupMaster);
+                            setSerialNumber(serialNumber);
+                        }});
+                        setGroupPeople(detail.getGroupPeople());
+                    } else {
+                        // 拼团所需人数
+                        setGroupPeople(activityProduct.getPeopleNum());
+                    }
                 }
                 //TODO 分享奖励
                 // 如果是分享奖励的情况下
@@ -1360,27 +1373,28 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, serialNumber, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-                if (StringUtils.isNotBlank(str)) {
-                    message.setData(null);
-                    map.put("alipay", str);
-                    message.setData(map);
-                    message.setSuccess(true);
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额(支付宝支付)
-                        setMoney(new BigDecimal(money));
-                        // 钱
-                        setDealType(3);
-                        // 支出
-                        setTransactionType(1);
-                    }});
-                }
+                processOrders.processOrders(orderId, 2);
+//                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+//                if (StringUtils.isNotBlank(str)) {
+//                    message.setData(null);
+//                    map.put("alipay", str);
+//                    message.setData(map);
+//                    message.setSuccess(true);
+//                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+//                        // 目标id
+//                        setTargetId(user.getId());
+//                        // 订单id
+//                        setOrderId(orderId);
+//                        // 购物类型
+//                        setType(200);
+//                        // 扣除金额(支付宝支付)
+//                        setMoney(new BigDecimal(money));
+//                        // 钱
+//                        setDealType(3);
+//                        // 支出
+//                        setTransactionType(1);
+//                    }});
+//                }
             } else {
                 return message;
             }
@@ -1407,7 +1421,7 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, serialNumber, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                 if (map.size() > 0) {
                     message.setData(null);
                     transactionDetailMapper.insertSelective(new SlTransactionDetail() {{

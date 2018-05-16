@@ -101,22 +101,22 @@
     </select>
 
     <!--<select id="findActivityProduct" resultType="java.util.Map">-->
-        <!--select-->
-        <!--ifnull(sap.count,'') counts,-->
-        <!--ifnull(sap.people_num,'') peopleNum,-->
-        <!--sap.id activityProductId,-->
-        <!--ifnull(sap.begin_time,'') beginTime,-->
-        <!--ifnull(sap.end_time,'') endTime,-->
-        <!--ifnull(sap.orders_num,'')ordersNum,-->
-        <!--ifnull(sap.surplus_product_count,'') surplusProductCount-->
-        <!--from sl_activity_product sap-->
-        <!--LEFT JOIN sl_activity sa ON sap.activity_id = sa.id-->
-        <!--WHERE-->
-        <!--sap.product_id = #{productId}-->
-        <!--and-->
-        <!--now() &lt; sap.end_time-->
-        <!--order by sap.begin_time DESC-->
-        <!--limit 1-->
+    <!--select-->
+    <!--ifnull(sap.count,'') counts,-->
+    <!--ifnull(sap.people_num,'') peopleNum,-->
+    <!--sap.id activityProductId,-->
+    <!--ifnull(sap.begin_time,'') beginTime,-->
+    <!--ifnull(sap.end_time,'') endTime,-->
+    <!--ifnull(sap.orders_num,'')ordersNum,-->
+    <!--ifnull(sap.surplus_product_count,'') surplusProductCount-->
+    <!--from sl_activity_product sap-->
+    <!--LEFT JOIN sl_activity sa ON sap.activity_id = sa.id-->
+    <!--WHERE-->
+    <!--sap.product_id = #{productId}-->
+    <!--and-->
+    <!--now() &lt; sap.end_time-->
+    <!--order by sap.begin_time DESC-->
+    <!--limit 1-->
     <!--</select>-->
     <select id="selectOrdersCount" resultType="java.lang.Integer">
         select
@@ -130,24 +130,21 @@
         and sod.activity_product_id = #{activityProductId}
     </select>
     <!--<select id="findProductsRepositoryId" resultType="java.lang.String">-->
-        <!--SELECT sapr.`product_repository_id`-->
-        <!--FROM sl_activity_product_repository sapr-->
-        <!--LEFT JOIN sl_activity_product sap ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`-->
-        <!--LEFT JOIN sl_product sp ON sap.`serial_number` = sp.`activity_product_serial_number`-->
-        <!--WHERE-->
-        <!--sp.`id` = #{productId}-->
-        <!--AND sap.`activity_id` = #{activityId};-->
+    <!--SELECT sapr.`product_repository_id`-->
+    <!--FROM sl_activity_product_repository sapr-->
+    <!--LEFT JOIN sl_activity_product sap ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`-->
+    <!--LEFT JOIN sl_product sp ON sap.`serial_number` = sp.`activity_product_serial_number`-->
+    <!--WHERE-->
+    <!--sp.`id` = #{productId}-->
+    <!--AND sap.`activity_id` = #{activityId};-->
     <!--</select>-->
 
-    <!--<select id="groupOrdersByUser" resultType="java.lang.Integer">-->
-        <!--SELECT IFNULL(SUM(sod.`quantity`),0) FROM sl_order_detail sod-->
-        <!--LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`-->
-        <!--WHERE-->
-        <!--so.type = '2' AND sod.`product_id` = #{productId}-->
-        <!--and so.payment_state &lt; 100 AND sod.activity_product_id = #{activityId}-->
-        <!--and sod.creator = #{userId}-->
-        <!--AND so.`user_id` = #{userId}-->
-    <!--</select>-->
+    <select id="groupOrdersByUser" resultType="java.lang.Integer">
+        SELECT count(*) FROM sl_order_detail sod
+        LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`
+        WHERE
+        sod.type = '2' and so.payment_state = 1 AND so.serial_number = #{serialNumber}
+    </select>
     <select id="selectActivityProductByRepositoryId"
             resultType="com.songpo.searched.entity.SlActivityProduct">
         SELECT
