@@ -14,7 +14,7 @@ public interface CmOrderMapper {
 
     List<Map<String, Object>> findList(@Param("userId") String userId, @Param("status") Integer status);
 
-    List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
+//    List<String> findUserAvatar(@Param("serialNumber") Object serialNumber);
 
     Map<String, Object> selectMyOrderInfo(@Param("userId") String userId, @Param("id") String id);
 
@@ -28,7 +28,7 @@ public interface CmOrderMapper {
 
     SlActivityProduct selectActivityProductByRepositoryId(@Param("repositoryId") String repositoryId, @Param("activityProductId") String activityProductId);
 
-    Map<String,Object> selectShopUserName(String shopId);
+    Map<String,Object> selectShopUserName(@Param("shopId")String shopId);
 
     List<SlReturnsDetail> selectReturnsDetail(@Param("status")Integer status, @Param("userId")String userId);
 }
