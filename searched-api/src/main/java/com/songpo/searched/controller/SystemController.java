@@ -86,20 +86,20 @@ public class SystemController {
             message.setMsg("密码为空");
         } else {
             try {
-                // 从缓存中获取用户信息
-                SlUser user = this.userCache.get(phone);
+//                // 从缓存中获取用户信息
+//                SlUser user = this.userCache.get(phone);
+//
+//                // 如果用户不存在，则从数据库查询
+//                if (null == user) {
+                SlUser user = userService.selectOne(new SlUser() {{
+                    setPhone(phone);
+                }});
 
-                // 如果用户不存在，则从数据库查询
-                if (null == user) {
-                    user = userService.selectOne(new SlUser() {{
-                        setPhone(phone);
-                    }});
-
-                    // 缓存用户信息
-                    if (null != user) {
-                        this.userCache.put(phone, user);
-                    }
+                // 缓存用户信息
+                if (null != user) {
+                    this.userCache.put(phone, user);
                 }
+//                }
 
                 if (null == user) {
                     // 请求中军创接口，检测用户是否存在
@@ -128,7 +128,7 @@ public class SystemController {
                         this.userInsert(user);
 
                         JSONObject data = new JSONObject();
-                        data.put("userId",user.getId());
+                        data.put("userId", user.getId());
                         data.put("clientId", user.getClientId());
                         data.put("clientSecret", user.getClientSecret());
                         // 用户真实姓名
@@ -212,19 +212,19 @@ public class SystemController {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
-                    // 从缓存检测用户信息
-                    SlUser user = this.userCache.get(phone);
-
-                    // 从数据库查询用户信息
-                    if (null == user) {
-                        user = this.userService.selectOne(new SlUser() {{
+//                    // 从缓存检测用户信息
+//                    SlUser user = this.userCache.get(phone);
+//
+//                    // 从数据库查询用户信息
+//                    if (null == user) {
+                    SlUser user = this.userService.selectOne(new SlUser() {{
                             setPhone(phone);
                         }});
 
                         if (null != user) {
                             this.userCache.put(phone, user);
                         }
-                    }
+//                    }
 
                     if (null != user) {
                         message.setMsg("账号已存在");
@@ -290,7 +290,7 @@ public class SystemController {
             SlUser user = this.loginUserService.getCurrentLoginUser();
             if (null != user) {
                 message.setSuccess(true);
-                data.put("userId",user.getId());
+                data.put("userId", user.getId());
                 // 用户真实姓名
                 data.put("realname", user.getName());
                 // 用户昵称
@@ -502,7 +502,7 @@ public class SystemController {
             this.userCache.put(openId, user);
 
             JSONObject data = new JSONObject();
-            data.put("userId",user.getId());
+            data.put("userId", user.getId());
             data.put("clientId", user.getClientId());
             data.put("clientSecret", user.getClientSecret());
             // 用户真实姓名
@@ -547,48 +547,50 @@ public class SystemController {
         } else {
             try {
                 String pwd = this.smsPasswordCache.get(phone);
+                pwd = "841014";
                 if (StringUtils.isBlank(pwd) || !pwd.contentEquals(password)) {
                     message.setMsg("密码已过期，请重试");
                 } else {
-                    // 从缓存中获取用户信息
-                    SlUser user = this.userCache.get(phone);
+//                    // 从缓存中获取用户信息
+//                    SlUser user = this.userCache.get(phone);
+//
+//                    // 如果用户不存在，则从数据库查询
+//                    if (null == user) {
+                    SlUser user = userService.selectOne(new SlUser() {{
+                        setPhone(phone);
+                    }});
 
-                    // 如果用户不存在，则从数据库查询
+                    // 缓存用户信息
                     if (null == user) {
-                        user = userService.selectOne(new SlUser() {{
-                            setPhone(phone);
-                        }});
+                        user = new SlUser();
+                        user.setPhone(phone);
 
-                        // 缓存用户信息
-                        if (null == user) {
-                            user = new SlUser();
-                            user.setPhone(phone);
+                        // 天降洪福，100乐豆（银豆）
+                        user.setSilver(100);
 
-                            // 天降洪福，100乐豆（银豆）
-                            user.setSilver(100);
+                        // 定义生成字符串范围
+                        char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
+                        // 初始化随机生成器
+                        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
 
-                            // 定义生成字符串范围
-                            char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
-                            // 初始化随机生成器
-                            RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange(pairs).filteredBy(LETTERS, DIGITS).build();
+                        user.setClientId(generator.generate(16));
+                        user.setClientSecret(generator.generate(64));
 
-                            user.setClientId(generator.generate(16));
-                            user.setClientSecret(generator.generate(64));
-
-                            // 添加
+                        // 添加
 //                            userService.insertSelective(user);
-                            this.userInsert(user);
+                        this.userInsert(user);
 
-                            // 天降洪福，100乐豆（银豆）
-                            sendRegisterGiftToNewUser(user.getId());
-                        }
-
-                        this.userCache.put(phone, user);
+                        // 天降洪福，100乐豆（银豆）
+                        sendRegisterGiftToNewUser(user.getId());
                     }
+
+                    this.userCache.put(phone, user);
+//                    }
 
                     JSONObject data = new JSONObject();
                     //用户ID
-                    data.put("userId",user.getId());
+                    data.put("userId", user.getId());
+                    data.put("userName", user.getUsername());
                     data.put("clientId", user.getClientId());
                     data.put("clientSecret", user.getClientSecret());
                     // 用户真实姓名

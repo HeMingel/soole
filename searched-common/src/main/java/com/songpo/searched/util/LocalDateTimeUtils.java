@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 public class LocalDateTimeUtils {
@@ -90,6 +91,20 @@ public class LocalDateTimeUtils {
                 .withMinute(59)
                 .withSecond(59)
                 .withNano(999999999);
+    }
+
+    /**
+     * 增加小时
+     *
+     * @param date 时间
+     * @param hour 要增加的小时，可以为负数
+     * @return
+     */
+    public static Date addHour(Date date, int hour) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, hour);//当前时间减去一年，即一年前的时间
+        return calendar.getTime();
     }
 
 }

@@ -8,24 +8,22 @@ import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlSignInMapper;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.OrderDetailService;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+import com.songpo.searched.service.OrderService;
+import com.songpo.searched.service.ProcessOrders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class CommonConfig {
@@ -40,6 +38,15 @@ public class CommonConfig {
     private SlReturnsDetailMapper returnsDetailMapper;
     @Autowired
     private OrderDetailService orderDetailService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private ProcessOrders processOrders;
+//    @Autowired
+//    private WXPay wxPay;
+
+    @Autowired
+    private Environment env;
 
     @Scheduled(cron = "0 0 0  * * ? ")   //每10秒执行一次
     public void aTask() {
@@ -187,4 +194,58 @@ public class CommonConfig {
             }
         }
     }
+
+    /**
+     * 更新微信支付订单支付状态
+     * 定时执行方法，调用微信订单查询接口，查询订单支付状态，并处理系统订单
+     * 来源 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_2&index=4
+     */
+//    @Scheduled(cron = "0/10 * *  * * ? ")
+//    void updateWXPayStatus() {
+//        List<SlOrder> orderList = orderService.select(new SlOrder() {{
+//            setPaymentState(2);
+//            setStatus(1);
+//        }});
+//        //移除不需要的订单
+//        if (orderList != null && orderList.size() > 0) {
+//            List<SlOrder> removeOrderList = new ArrayList<>();
+//            for (SlOrder order : orderList) {
+//                //比较大小，总金额为0的过滤
+//                if (order.getTotalAmount().compareTo(new BigDecimal("0")) <= 0) {
+//                    removeOrderList.add(order);
+//                } else {
+//                    //只需要一个小时内的订单
+//                    Date compareDate = LocalDateTimeUtils.addHour(new Date(), 1);
+//                    if (order.getCreatedAt().before(compareDate)) {
+//                        removeOrderList.add(order);
+//                    }
+//                }
+//            }
+//            if (removeOrderList.size() > 0) {
+//                orderList.removeAll(removeOrderList);
+//            }
+//        }
+//        if (orderList != null && orderList.size() > 0) {
+//            for (SlOrder order : orderList) {
+//                if (order != null && StringUtils.isNotBlank(order.getId())) {
+//                    //生成微信请求参数
+//                    Map<String, String> reqData = new HashMap<>();
+//                    reqData.put("appid", env.getProperty("sp.pay.wxpay.appId"));
+//                    reqData.put("mch_id", env.getProperty("sp.pay.wxpay.mchId"));
+//                    reqData.put("out_trade_no", order.getId());
+//                    //请求微信订单查询接口并处理订单数据
+//                    try {
+////                        Map<String, String> result = wxPay.orderQuery(reqData);
+////                        if (result != null && result.get("return_code").equals("SUCCESS") && result.get("trade_state").equals("SUCCESS")) {
+////                            processOrders.processOrders(order.getId(), 1);
+////                        }
+//                    } catch (Exception e) {
+//                        log.error("更新订单" + order.getId() + "支付状态失败", e);
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
+//        Map<String, String> reqData = new HashMap<>();
+//    }
 }
