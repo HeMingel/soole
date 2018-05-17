@@ -101,7 +101,7 @@ public class CustomerClientHomeService {
         // 获取入口列表
         Example gatewayExample = new Example(SlActionNavigation.class);
         gatewayExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_GATEWAY.getValue());
-        gatewayExample.setOrderByClause("action_sort asc");
+        gatewayExample.setOrderByClause("serial_number asc");
         List<SlActionNavigation> gatewayList = this.actionNavigationService.selectByExample(gatewayExample);
         data.put("gateways", gatewayList);
 
@@ -150,9 +150,13 @@ public class CustomerClientHomeService {
         data.put("searchedHeadLines", searchedHeadLinesArticleList);
 
         // 搜了故事
-        List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{
-            setType(ArticleTypeEnum.SEARCHED_STORY.getValue());
-        }});
+        Example articleExample = new Example(SlArticle.class);
+        articleExample.createCriteria().andEqualTo("artSort",ArticleTypeEnum.SEARCHED_STORY.getValue());
+        articleExample.setOrderByClause("art_sort desc");
+        List<SlArticle> searchedStoryArticleList = this.slArticleMapper.selectByExample(articleExample);
+        //List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{
+        //    setType(ArticleTypeEnum.SEARCHED_STORY.getValue());
+        //}});
         data.put("searchedStoryArticles", searchedStoryArticleList);
 
         // 金牌顾问

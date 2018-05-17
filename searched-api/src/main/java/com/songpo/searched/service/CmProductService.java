@@ -325,15 +325,13 @@ public class CmProductService {
                     } else {
                         List<Object> list = new ArrayList<>();
                         Map<String, String> groupMaster = new HashMap();
-                        groupMaster.put("avatar", "");
-                        groupMaster.put("nick_name", "");
                         list.add(groupMaster);
                         Map<String, String> order = new HashMap();
                         list.add(order);
-
                         data.put("groupList", list);
                     }
                 }else{
+                    //非拼团商品
                     Map<String, Object>  map = new HashMap<>(16);
                     List<Map<String,Object>> alreadyOrderMap = this.mapper.alreadyOrder(activityId, goodsId);
                     if(alreadyOrderMap.size()>0){
@@ -346,8 +344,7 @@ public class CmProductService {
                                 }
                             }else {
                               Map<String,Object> userInfo = new HashMap<>();
-                              userInfo.put("avatar","");
-                              userInfo.put("nick_name","");
+
                               alreadyOrderMap.get(i).put("userInfo",userInfo); }
                         }
                     }
