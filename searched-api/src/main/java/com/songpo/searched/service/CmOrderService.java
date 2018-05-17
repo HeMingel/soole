@@ -1189,9 +1189,9 @@ public class CmOrderService {
                             }});
                             if (null != product) {
                                 SlActivityProduct activityProduct = this.activityProductMapper.selectByPrimaryKey(detail.getActivityProductId());
-                                map.put("shopName", shop.get("shopName"));
-                                map.put("productName", detail.getProductName());
-                                map.put("goodImageUrl", detail.getProductImageUrl());
+                                map.put("shop_name", shop.get("shopName"));
+                                map.put("product_name", detail.getProductName());
+                                map.put("product_image_url", detail.getProductImageUrl());
                                 map.put("productId", detail.getProductId());
                                 map.put("counts", detail.getQuantity());
                                 map.put("paymentState", order.getPaymentState());
@@ -1203,9 +1203,9 @@ public class CmOrderService {
                                 map.put("orderId", order.getId());
                                 map.put("orderDetailId", detail.getId());
                                 map.put("type", detail.getType());
-                                map.put("serialNumber", detail.getSerialNumber());
-                                map.put("totalAmount", order.getTotalAmount());
-                                map.put("deductTotalPulse", order.getDeductTotalPulse());
+                                map.put("serial_number", detail.getSerialNumber());
+                                map.put("total_amount", order.getTotalAmount());
+                                map.put("deduct_total_pulse", order.getDeductTotalPulse());
                                 map.put("activityId", activityProduct.getActivityId());
                                 mapList.add(map);
                             }
