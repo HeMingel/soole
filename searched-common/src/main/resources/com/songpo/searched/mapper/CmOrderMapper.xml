@@ -92,7 +92,7 @@
         so.payment_state paymentState,
         sod.shipping_state shippingState,
         sod.ems_id emsId,
-        sod.ship_number shipNumber
+        sod.ship_number shipNumber,
         sa.id activityId,
         sp.sales_mode_id salesModeId
         from sl_order so
