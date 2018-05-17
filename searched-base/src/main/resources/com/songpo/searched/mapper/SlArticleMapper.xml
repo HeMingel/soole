@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="art_sort" jdbcType="INTEGER" property="artSort"/>
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
@@ -26,8 +27,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, image_url, read_count, praise_count, reference_url, add_time, type, created_at, 
-    updated_at
+      id, art_sort, title, image_url, read_count, praise_count, reference_url, add_time,
+      type, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

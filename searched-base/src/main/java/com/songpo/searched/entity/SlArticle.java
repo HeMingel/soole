@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_article")
 public class SlArticle implements Serializable {
@@ -12,6 +12,12 @@ public class SlArticle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 文章排序（越大越靠前）
+     */
+    @Column(name = "art_sort")
+    private Integer artSort;
 
     /**
      * 标题
@@ -88,6 +94,24 @@ public class SlArticle implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取文章排序（越大越靠前）
+     *
+     * @return art_sort - 文章排序（越大越靠前）
+     */
+    public Integer getArtSort() {
+        return artSort;
+    }
+
+    /**
+     * 设置文章排序（越大越靠前）
+     *
+     * @param artSort 文章排序（越大越靠前）
+     */
+    public void setArtSort(Integer artSort) {
+        this.artSort = artSort;
     }
 
     /**
@@ -277,6 +301,7 @@ public class SlArticle implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", artSort=").append(artSort);
         sb.append(", title=").append(title);
         sb.append(", imageUrl=").append(imageUrl);
         sb.append(", readCount=").append(readCount);
