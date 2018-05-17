@@ -1076,9 +1076,56 @@ public class CmOrderService {
                 PageHelper.startPage(pageNum, pageSize);
                 List<SlReturnsDetail> list = this.cmOrderMapper.selectReturnsDetail(status, user.getId());
                 List<Map<String, Object>> mapList = new ArrayList<>();
-                for (SlReturnsDetail returnsDetail : list) {
-                    if (null != status && status == 2) {
-                        if (returnsDetail.getReturnedStatus() == 2) {
+                if (list.size() != 0) {
+                    for (SlReturnsDetail returnsDetail : list) {
+                        if (null != status && status == 2) {
+                            if (returnsDetail.getReturnedStatus() == 2) {
+                                SlOrder order = this.orderService.selectOne(new SlOrder() {{
+                                    setId(returnsDetail.getOrderId());
+                                }});
+                                SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                                    setOrderId(order.getId());
+                                    //预售
+                                    setType(3);
+                                }});
+                                Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("returnsDetailId", returnsDetail.getId());
+                                // 店铺的账号
+                                map.put("owner", shop.get("userName"));
+                                // 店铺的名字
+                                map.put("shop_name", shop.get("shopName"));
+                                // 订单编号
+                                map.put("serial_number", order.getSerialNumber());
+                                // 商品标题
+                                map.put("product_name", detail.getProductName());
+                                // 商品图片
+                                map.put("product_image_url", detail.getProductImageUrl());
+                                // 预售订单单价
+                                map.put("price", detail.getPrice());
+                                // 订单合计价格
+                                map.put("total_amount", order.getTotalAmount());
+                                // 预售订单总了豆
+                                map.put("deduct_total_pulse", detail.getDeductTotalSilver());
+                                // 预售订单商品数量
+                                map.put("quantity", detail.getQuantity());
+                                // 预售商品邮费
+                                map.put("post_fee", detail.getPostFee());
+                                // 该订单的返钱状态
+                                map.put("status", returnsDetail.getReturnedStatus());
+                                // 订单id
+                                map.put("orderId", order.getId());
+                                // 商品明细id
+                                map.put("orderDetailId", detail.getId());
+                                DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                LocalDateTime time = LocalDateTime.now();
+                                LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
+                                Duration duration = Duration.between(time, ldt);
+                                // 返现时间差
+                                map.put("shipments_days", duration.toDays());
+                                mapList.add(map);
+                            }
+                        } else {
                             SlOrder order = this.orderService.selectOne(new SlOrder() {{
                                 setId(returnsDetail.getOrderId());
                             }});
@@ -1124,51 +1171,45 @@ public class CmOrderService {
                             map.put("shipments_days", duration.toDays());
                             mapList.add(map);
                         }
-                    } else {
-                        SlOrder order = this.orderService.selectOne(new SlOrder() {{
-                            setId(returnsDetail.getOrderId());
-                        }});
-                        SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-                            setOrderId(order.getId());
-                            //预售
-                            setType(3);
-                        }});
-                        Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("returnsDetailId", returnsDetail.getId());
-                        // 店铺的账号
-                        map.put("owner", shop.get("userName"));
-                        // 店铺的名字
-                        map.put("shop_name", shop.get("shopName"));
-                        // 订单编号
-                        map.put("serial_number", order.getSerialNumber());
-                        // 商品标题
-                        map.put("product_name", detail.getProductName());
-                        // 商品图片
-                        map.put("product_image_url", detail.getProductImageUrl());
-                        // 预售订单单价
-                        map.put("price", detail.getPrice());
-                        // 订单合计价格
-                        map.put("total_amount", order.getTotalAmount());
-                        // 预售订单总了豆
-                        map.put("deduct_total_pulse", detail.getDeductTotalSilver());
-                        // 预售订单商品数量
-                        map.put("quantity", detail.getQuantity());
-                        // 预售商品邮费
-                        map.put("post_fee", detail.getPostFee());
-                        // 该订单的返钱状态
-                        map.put("status", returnsDetail.getReturnedStatus());
-                        // 订单id
-                        map.put("orderId", order.getId());
-                        // 商品明细id
-                        map.put("orderDetailId", detail.getId());
-                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime time = LocalDateTime.now();
-                        LocalDateTime ldt = LocalDateTime.parse(returnsDetail.getReturnTime(), df);
-                        Duration duration = Duration.between(time, ldt);
-                        // 返现时间差
-                        map.put("shipments_days", duration.toDays());
-                        mapList.add(map);
+                    }
+                }
+                List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                    setType(3);
+                    setCreator(user.getId());
+                    setShippingState(0);
+                }});
+                if (detailList.size() > 0) {
+                    for (SlOrderDetail detail : detailList) {
+                        SlOrder order = orderService.selectByPrimaryKey(detail.getOrderId());
+                        if (order != null) {
+                            Map<String, Object> map = new HashMap<>();
+                            Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
+                            SlProduct product = this.productService.selectOne(new SlProduct() {{
+                                setId(detail.getProductId());
+                            }});
+                            if (null != product) {
+                                SlActivityProduct activityProduct = this.activityProductMapper.selectByPrimaryKey(detail.getActivityProductId());
+                                map.put("shopName", shop.get("shopName"));
+                                map.put("productName", detail.getProductName());
+                                map.put("goodImageUrl", detail.getProductImageUrl());
+                                map.put("productId", detail.getProductId());
+                                map.put("counts", detail.getQuantity());
+                                map.put("paymentState", order.getPaymentState());
+                                map.put("price", detail.getPrice());
+                                map.put("pulse", detail.getDeductTotalSilver());
+                                map.put("postFee", detail.getPostFee());
+                                map.put("shopImageUrl", shop.get("image_url"));
+                                map.put("salesModeId", product.getSalesModeId());
+                                map.put("orderId", order.getId());
+                                map.put("orderDetailId", detail.getId());
+                                map.put("type", detail.getType());
+                                map.put("serialNumber", detail.getSerialNumber());
+                                map.put("totalAmount", order.getTotalAmount());
+                                map.put("deductTotalPulse", order.getDeductTotalPulse());
+                                map.put("activityId", activityProduct.getActivityId());
+                                mapList.add(map);
+                            }
+                        }
                     }
                 }
                 message.setMsg("查询成功");
