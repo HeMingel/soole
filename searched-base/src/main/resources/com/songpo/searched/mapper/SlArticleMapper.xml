@@ -27,7 +27,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, art_sort, title, image_url, read_count, praise_count, reference_url, add_time, 
+    id, art_sort, title, image_url, read_count, praise_count, reference_url, add_time,
     type, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
