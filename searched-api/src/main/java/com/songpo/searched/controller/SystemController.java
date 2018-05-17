@@ -547,7 +547,6 @@ public class SystemController {
         } else {
             try {
                 String pwd = this.smsPasswordCache.get(phone);
-                pwd = "841014";
                 if (StringUtils.isBlank(pwd) || !pwd.contentEquals(password)) {
                     message.setMsg("密码已过期，请重试");
                 } else {
