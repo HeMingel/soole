@@ -151,7 +151,7 @@ public class CustomerClientHomeService {
 
         // 搜了故事
         Example articleExample = new Example(SlArticle.class);
-        articleExample.createCriteria().andEqualTo("artSort",ArticleTypeEnum.SEARCHED_STORY.getValue());
+        articleExample.createCriteria().andEqualTo("type",ArticleTypeEnum.SEARCHED_STORY.getValue());
         articleExample.setOrderByClause("art_sort desc");
         List<SlArticle> searchedStoryArticleList = this.slArticleMapper.selectByExample(articleExample);
         //List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{
