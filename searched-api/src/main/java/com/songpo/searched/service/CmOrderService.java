@@ -1346,13 +1346,15 @@ public class CmOrderService {
     public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>(false);
         SlUser user = loginUserService.getCurrentLoginUser();
-        SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+        List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
             // 物流单号唯一
             setShipNumber(expressCode);
+            setCreator(user.getId());
         }});
         //存在这个订单
-        if (detail != null) {
+        if (detailList.size() > 0) {
             if (null != user) {
+                SlOrderDetail detail = detailList.get(0);
                 SlEms ems = emsMapper.selectOne(new SlEms() {{
                     setId(emsId);
                 }});
