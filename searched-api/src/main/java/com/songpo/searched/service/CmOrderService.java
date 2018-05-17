@@ -1627,7 +1627,7 @@ public class CmOrderService {
         message = checkTheOrder(orderId, user);
         if (Integer.valueOf(message.getData().get("money").toString()) == 0) {
             if (message.getSuccess() == true) {
-                processOrders.processOrders(message.getData().get("serialNumber").toString(), 3);
+                processOrders.processOrders(orderId, 3);
             }
         }
         return message;
