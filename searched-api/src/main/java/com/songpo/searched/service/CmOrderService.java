@@ -1193,11 +1193,11 @@ public class CmOrderService {
                                 map.put("product_name", detail.getProductName());
                                 map.put("product_image_url", detail.getProductImageUrl());
                                 map.put("productId", detail.getProductId());
-                                map.put("counts", detail.getQuantity());
+                                map.put("quantity", detail.getQuantity());
                                 map.put("paymentState", order.getPaymentState());
                                 map.put("price", detail.getPrice());
                                 map.put("pulse", detail.getDeductTotalSilver());
-                                map.put("postFee", detail.getPostFee());
+                                map.put("post_fee", detail.getPostFee());
                                 map.put("shopImageUrl", shop.get("image_url"));
                                 map.put("salesModeId", product.getSalesModeId());
                                 map.put("orderId", order.getId());
