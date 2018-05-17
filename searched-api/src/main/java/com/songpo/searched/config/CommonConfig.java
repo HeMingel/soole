@@ -8,6 +8,7 @@ import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlSignInMapper;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.OrderDetailService;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CommonConfig {
@@ -36,11 +41,17 @@ public class CommonConfig {
     @Autowired
     private OrderDetailService orderDetailService;
 
+    @Scheduled(cron = "0 0 0  * * ? ")   //每10秒执行一次
+    public void aTask() {
+        updSignState();
+        updOrderPreSaleState();
+        updOrderConfirmReceipt();
+        updReturnsDetailOrderPreSaleState();
+    }
 
     /**
      * 定时更新签到天数
      */
-    @Scheduled(cron = "0 0 0 * * ?")
     void updSignState() {
         try {
             Example example = new Example(SlSignIn.class);
@@ -63,7 +74,6 @@ public class CommonConfig {
     /**
      * 更新用户预售返现状态
      */
-    @Scheduled(cron = "0 0 0 * * ?")
     void updOrderPreSaleState() {
         LocalTime localTime = LocalTime.now();
         localTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -94,7 +104,6 @@ public class CommonConfig {
     /**
      * 7天自动确认收货(普通商品)
      */
-    @Scheduled(cron = "0 0 0 * * ?")
     void updOrderConfirmReceipt() {
         LocalTime localTime = LocalTime.now();
         localTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -141,7 +150,6 @@ public class CommonConfig {
     /**
      * 预售订单确认收货(商家发货3天,自动确认收货)
      */
-    @Scheduled(cron = "0 0 0 * * ?")
     void updReturnsDetailOrderPreSaleState() {
         Example e = new Example(SlReturnsDetail.class);
         e.setOrderByClause("return_time ASC");
