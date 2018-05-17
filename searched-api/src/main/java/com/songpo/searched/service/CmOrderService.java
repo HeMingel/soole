@@ -1173,41 +1173,43 @@ public class CmOrderService {
                         }
                     }
                 }
-                List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
-                    setType(3);
-                    setCreator(user.getId());
-                    setShippingState(0);
-                }});
-                if (detailList.size() > 0) {
-                    for (SlOrderDetail detail : detailList) {
-                        SlOrder order = orderService.selectByPrimaryKey(detail.getOrderId());
-                        if (order != null) {
-                            Map<String, Object> map = new HashMap<>();
-                            Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
-                            SlProduct product = this.productService.selectOne(new SlProduct() {{
-                                setId(detail.getProductId());
-                            }});
-                            if (null != product) {
-                                SlActivityProduct activityProduct = this.activityProductMapper.selectByPrimaryKey(detail.getActivityProductId());
-                                map.put("shop_name", shop.get("shopName"));
-                                map.put("product_name", detail.getProductName());
-                                map.put("product_image_url", detail.getProductImageUrl());
-                                map.put("productId", detail.getProductId());
-                                map.put("quantity", detail.getQuantity());
-                                map.put("paymentState", order.getPaymentState());
-                                map.put("price", detail.getPrice());
-                                map.put("pulse", detail.getDeductTotalSilver());
-                                map.put("post_fee", detail.getPostFee());
-                                map.put("shopImageUrl", shop.get("image_url"));
-                                map.put("salesModeId", product.getSalesModeId());
-                                map.put("orderId", order.getId());
-                                map.put("orderDetailId", detail.getId());
-                                map.put("type", detail.getType());
-                                map.put("serial_number", detail.getSerialNumber());
-                                map.put("total_amount", order.getTotalAmount());
-                                map.put("deduct_total_pulse", order.getDeductTotalPulse());
-                                map.put("activityId", activityProduct.getActivityId());
-                                mapList.add(map);
+                if (status == null) {
+                    List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
+                        setType(3);
+                        setCreator(user.getId());
+                        setShippingState(0);
+                    }});
+                    if (detailList.size() > 0) {
+                        for (SlOrderDetail detail : detailList) {
+                            SlOrder order = orderService.selectByPrimaryKey(detail.getOrderId());
+                            if (order != null) {
+                                Map<String, Object> map = new HashMap<>();
+                                Map<String, Object> shop = this.cmOrderMapper.selectShopUserName(detail.getShopId());
+                                SlProduct product = this.productService.selectOne(new SlProduct() {{
+                                    setId(detail.getProductId());
+                                }});
+                                if (null != product) {
+                                    SlActivityProduct activityProduct = this.activityProductMapper.selectByPrimaryKey(detail.getActivityProductId());
+                                    map.put("shop_name", shop.get("shopName"));
+                                    map.put("product_name", detail.getProductName());
+                                    map.put("product_image_url", detail.getProductImageUrl());
+                                    map.put("productId", detail.getProductId());
+                                    map.put("quantity", detail.getQuantity());
+                                    map.put("paymentState", order.getPaymentState());
+                                    map.put("price", detail.getPrice());
+                                    map.put("pulse", detail.getDeductTotalSilver());
+                                    map.put("post_fee", detail.getPostFee());
+                                    map.put("shopImageUrl", shop.get("image_url"));
+                                    map.put("salesModeId", product.getSalesModeId());
+                                    map.put("orderId", order.getId());
+                                    map.put("orderDetailId", detail.getId());
+                                    map.put("type", detail.getType());
+                                    map.put("serial_number", detail.getSerialNumber());
+                                    map.put("total_amount", order.getTotalAmount());
+                                    map.put("deduct_total_pulse", order.getDeductTotalPulse());
+                                    map.put("activityId", activityProduct.getActivityId());
+                                    mapList.add(map);
+                                }
                             }
                         }
                     }
