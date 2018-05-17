@@ -93,10 +93,12 @@
         sod.shipping_state shippingState,
         sod.ems_id emsId,
         sod.ship_number shipNumber
-        sa.id activityId
+        sa.id activityId,
+        sp.sales_mode_id salesModeId
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
+        left join sl_product sp on sp.id = sap.product_id
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
         left join sl_shop ss on ss.id = sod.shop_id
         left join sl_user su on su.id = ss.owner_id
