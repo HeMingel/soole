@@ -167,12 +167,14 @@ public class ShoppingCartService {
                                         deleteMyShoppingCart(str);
                                     }
                                 } else {
-                                    message.setMsg("活动商品不存在");
-                                    return message;
+                                    // 加入购物车中的商品如果查不到的话就把这个规格id删除掉
+                                    String[] str = new String[]{sc.getRepositoryId()};
+                                    deleteMyShoppingCart(str);
                                 }
                             } else {
-                                message.setMsg("商品不存在");
-                                return message;
+                                // 加入购物车中的商品如果查不到的话就把这个规格id删除掉
+                                String[] str = new String[]{sc.getRepositoryId()};
+                                deleteMyShoppingCart(str);
                             }
                         } else {
                             // 加入购物车中的商品如果查不到的话就把这个规格id删除掉

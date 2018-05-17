@@ -27,13 +27,15 @@
         sod.buyer_message buyerMessage,
         ss.phone shopPhone,
         sod.ems_id emsId,
-        sod.ship_number shipNumber
+        sod.ship_number shipNumber,
+        sap.activity_id activityId
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
         LEFT JOIN sl_shop ss ON sod.shop_id = ss.id
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
+        left JOIN sl_activity_product sap on sap.product_id = sp.id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
         and sod.type in (1,4,5,6)
         and so.payment_state != 101
@@ -90,10 +92,14 @@
         so.payment_state paymentState,
         sod.shipping_state shippingState,
         sod.ems_id emsId,
-        sod.ship_number shipNumber
+        sod.ship_number shipNumber,
+        sod.deduct_total_silver pulse,
+        sa.id activityId,
+        sp.sales_mode_id salesModeId
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
+        left join sl_product sp on sp.id = sap.product_id
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
         left join sl_shop ss on ss.id = sod.shop_id
         left join sl_user su on su.id = ss.owner_id

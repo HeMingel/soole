@@ -3,7 +3,6 @@ package com.songpo.searched.controller;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
-import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
 import com.songpo.searched.service.CmProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
