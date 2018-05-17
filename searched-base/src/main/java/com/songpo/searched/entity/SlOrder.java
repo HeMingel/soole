@@ -58,6 +58,12 @@ public class SlOrder implements Serializable {
     private String payTime;
 
     /**
+     * 支付时间戳
+     */
+    @Column(name = "pay_time_stamp")
+    private Long payTimeStamp;
+
+    /**
      * 记录状态 1:正常 0:删除
      */
     private Integer status;
@@ -144,12 +150,6 @@ public class SlOrder implements Serializable {
      * (暂未使用)手续费
      */
     private BigDecimal fee;
-
-    /**
-     * 支付时间戳
-     */
-    @Column(name = "pay_time_stamp")
-    private Long payTimeStamp;
 
     private static final long serialVersionUID = 1L;
 
@@ -299,6 +299,24 @@ public class SlOrder implements Serializable {
      */
     public void setPayTime(String payTime) {
         this.payTime = payTime == null ? null : payTime.trim();
+    }
+
+    /**
+     * 获取支付时间戳
+     *
+     * @return pay_time_stamp - 支付时间戳
+     */
+    public Long getPayTimeStamp() {
+        return payTimeStamp;
+    }
+
+    /**
+     * 设置支付时间戳
+     *
+     * @param payTimeStamp 支付时间戳
+     */
+    public void setPayTimeStamp(Long payTimeStamp) {
+        this.payTimeStamp = payTimeStamp;
     }
 
     /**
@@ -589,24 +607,6 @@ public class SlOrder implements Serializable {
         this.fee = fee;
     }
 
-    /**
-     * 获取支付时间戳
-     *
-     * @return pay_time_stamp - 支付时间戳
-     */
-    public Long getPayTimeStamp() {
-        return payTimeStamp;
-    }
-
-    /**
-     * 设置支付时间戳
-     *
-     * @param payTimeStamp 支付时间戳
-     */
-    public void setPayTimeStamp(Long payTimeStamp) {
-        this.payTimeStamp = payTimeStamp;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -621,6 +621,7 @@ public class SlOrder implements Serializable {
         sb.append(", paymentState=").append(paymentState);
         sb.append(", paymentChannel=").append(paymentChannel);
         sb.append(", payTime=").append(payTime);
+        sb.append(", payTimeStamp=").append(payTimeStamp);
         sb.append(", status=").append(status);
         sb.append(", consigneename=").append(consigneename);
         sb.append(", consigneephone=").append(consigneephone);
@@ -637,7 +638,6 @@ public class SlOrder implements Serializable {
         sb.append(", remark=").append(remark);
         sb.append(", type=").append(type);
         sb.append(", fee=").append(fee);
-        sb.append(", payTimeStamp=").append(payTimeStamp);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

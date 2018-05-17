@@ -26,8 +26,7 @@ public class SlMyCollection implements Serializable {
     private String collectionId;
 
     /**
-     * 1：收藏的为店铺
-                                      2：收藏的为商品
+     * 1：收藏的为店铺  2：收藏的为商品
      */
     private Byte type;
 
@@ -100,22 +99,18 @@ public class SlMyCollection implements Serializable {
     }
 
     /**
-     * 获取1：收藏的为店铺
-                                      2：收藏的为商品
+     * 获取1：收藏的为店铺  2：收藏的为商品
      *
-     * @return type - 1：收藏的为店铺
-                                      2：收藏的为商品
+     * @return type - 1：收藏的为店铺  2：收藏的为商品
      */
     public Byte getType() {
         return type;
     }
 
     /**
-     * 设置1：收藏的为店铺
-                                      2：收藏的为商品
+     * 设置1：收藏的为店铺  2：收藏的为商品
      *
-     * @param type 1：收藏的为店铺
-                                      2：收藏的为商品
+     * @param type 1：收藏的为店铺  2：收藏的为商品
      */
     public void setType(Byte type) {
         this.type = type;

@@ -13,6 +13,7 @@
     <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
     <result column="payment_channel" jdbcType="INTEGER" property="paymentChannel" />
     <result column="pay_time" jdbcType="VARCHAR" property="payTime" />
+    <result column="pay_time_stamp" jdbcType="BIGINT" property="payTimeStamp" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="consigneeName" jdbcType="VARCHAR" property="consigneename" />
     <result column="consigneePhone" jdbcType="VARCHAR" property="consigneephone" />
@@ -29,15 +30,14 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
-    <result column="pay_time_stamp" jdbcType="BIGINT" property="payTimeStamp" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, serial_number, user_id, total_amount, deduct_total_pulse, payment_state, payment_channel, 
-    pay_time, status, consigneeName, consigneePhone, province, city, county, detailed, 
-    spell_group_status, group_master, create_time, updated_at, activity_product_id, created_at, 
-    remark, type, fee, pay_time_stamp
+    pay_time, pay_time_stamp, status, consigneeName, consigneePhone, province, city, 
+    county, detailed, spell_group_status, group_master, create_time, updated_at, activity_product_id, 
+    created_at, remark, type, fee
   </sql>
 </mapper>
