@@ -27,13 +27,15 @@
         sod.buyer_message buyerMessage,
         ss.phone shopPhone,
         sod.ems_id emsId,
-        sod.ship_number shipNumber
+        sod.ship_number shipNumber,
+        sap.activity_id activityId
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
         LEFT JOIN sl_shop ss ON sod.shop_id = ss.id
         LEFT JOIN sl_product_repository spr ON sod.repository_id = spr.id
         LEFT JOIN sl_sales_mode ssm ON ssm.id = sp.sales_mode_id
+        left JOIN sl_activity_product sap on sap.product_id = sp.id
         WHERE sod.creator = #{userId} and so.status = 1 AND so.user_id = #{userId}
         and sod.type in (1,4,5,6)
         and so.payment_state != 101
