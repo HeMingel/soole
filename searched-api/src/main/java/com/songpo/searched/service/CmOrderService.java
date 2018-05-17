@@ -1386,28 +1386,28 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                processOrders.processOrders(orderId, 2);
-//                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
-//                if (StringUtils.isNotBlank(str)) {
-//                    message.setData(null);
-//                    map.put("alipay", str);
-//                    message.setData(map);
-//                    message.setSuccess(true);
-//                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-//                        // 目标id
-//                        setTargetId(user.getId());
-//                        // 订单id
-//                        setOrderId(orderId);
-//                        // 购物类型
-//                        setType(200);
-//                        // 扣除金额(支付宝支付)
-//                        setMoney(new BigDecimal(money));
-//                        // 钱
-//                        setDealType(3);
-//                        // 支出
-//                        setTransactionType(1);
-//                    }});
-//                }
+//                processOrders.processOrders(orderId, 2);
+                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                if (StringUtils.isNotBlank(str)) {
+                    message.setData(null);
+                    map.put("alipay", str);
+                    message.setData(map);
+                    message.setSuccess(true);
+                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                        // 目标id
+                        setTargetId(user.getId());
+                        // 订单id
+                        setOrderId(orderId);
+                        // 购物类型
+                        setType(200);
+                        // 扣除金额(支付宝支付)
+                        setMoney(new BigDecimal(money));
+                        // 钱
+                        setDealType(3);
+                        // 支出
+                        setTransactionType(1);
+                    }});
+                }
             } else {
                 return message;
             }
