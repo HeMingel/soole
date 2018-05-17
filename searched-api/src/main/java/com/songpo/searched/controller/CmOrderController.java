@@ -157,7 +157,7 @@ public class CmOrderController {
         try {
             message = this.cmOrderService.cancelAnOrder(orderId, state);
             message.setSuccess(message.getSuccess());
-            message.setMsg("取消成功");
+            message.setMsg(message.getMsg());
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("取消失败 {}", e);
