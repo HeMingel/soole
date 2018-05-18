@@ -35,16 +35,12 @@ public class CommonConfig {
     @Autowired
     private SlSignInMapper slSignInMapper;
     @Autowired
-    private LoginUserService loginUserService;
-    @Autowired
     private SlReturnsDetailMapper returnsDetailMapper;
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
     private UserService userService;
-//    @Autowired
-//    private WXPay wxPay;
-
+    @Autowired
     private OrderService orderService;
     @Autowired
     private ProcessOrders processOrders;
@@ -210,7 +206,7 @@ public class CommonConfig {
      * 来源 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_2&index=4
      */
     @Scheduled(cron = "0/10 * *  * * ? ")
-    void updateWXPayStatus() {
+    void updateOrderPayStatus() {
         List<SlOrder> orderList = orderService.select(new SlOrder() {{
             setPaymentState(2);
             setStatus(1);

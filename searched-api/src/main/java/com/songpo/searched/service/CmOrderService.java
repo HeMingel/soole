@@ -1468,7 +1468,8 @@ public class CmOrderService {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
-                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", String.valueOf(mo), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                String total_fee = String.valueOf(Math.round(mo));
+                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", total_fee, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                 log.debug("微信预下单返回数据：{}", map);
                 if (map.size() > 0) {
                     message.setData(null);
@@ -1628,7 +1629,7 @@ public class CmOrderService {
                         message.setSuccess(true);
                     }
                     Map<String, String> map = new HashMap<>();
-                    map.put("money", String.valueOf(new Double(order.getTotalAmount().doubleValue() * 100).intValue()));
+                    map.put("money", order.getTotalAmount().toString());
                     map.put("serialNumber", order.getSerialNumber());
                     message.setData(map);
                 } else {
