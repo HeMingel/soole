@@ -16,10 +16,7 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
-import com.songpo.searched.util.ClientIPUtil;
-import com.songpo.searched.util.HttpRequest;
-import com.songpo.searched.util.MD5Util;
-import com.songpo.searched.util.OrderNumGeneration;
+import com.songpo.searched.util.*;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -1423,7 +1420,7 @@ public class CmOrderService {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
 //                processOrders.processOrders(orderId, 2);
-                String str = this.aliPayService.appPay("15d", "0.01", "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                 if (StringUtils.isNotBlank(str)) {
                     message.setData(null);
                     map.put("alipay", str);
@@ -1470,7 +1467,8 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", /*money*/"1", ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                double mo = Arith.mul(Double.parseDouble(money), 100);
+                map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", String.valueOf(mo), ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                 log.debug("微信预下单返回数据：{}", map);
                 if (map.size() > 0) {
                     message.setData(null);
