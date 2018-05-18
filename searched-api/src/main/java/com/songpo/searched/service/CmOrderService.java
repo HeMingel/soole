@@ -607,16 +607,6 @@ public class CmOrderService {
                         //更新redids
                         this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
                     }
-                    SlUser user = this.userService.selectByPrimaryKey(order.getUserId());
-                    if (null != user) {
-                        int si = user.getSilver() + order.getDeductTotalPulse() - p;
-                        userService.updateByPrimaryKeySelective(new SlUser() {{
-                            setId(user.getId());
-                            setSilver(si);
-                        }});
-                        user.setSilver(si);
-                        userCache.put(user.getClientId(), user);
-                    }
                 }
 
             }
