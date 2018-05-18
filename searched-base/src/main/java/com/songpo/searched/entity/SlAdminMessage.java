@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_admin_message")
 public class SlAdminMessage implements Serializable {
@@ -12,6 +12,12 @@ public class SlAdminMessage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    /**
+     * 发送对象用户ID
+     */
+    @Column(name = "am_user_id")
+    private String amUserId;
 
     /**
      * 消息标题
@@ -73,6 +79,24 @@ public class SlAdminMessage implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取发送对象用户ID
+     *
+     * @return am_user_id - 发送对象用户ID
+     */
+    public String getAmUserId() {
+        return amUserId;
+    }
+
+    /**
+     * 设置发送对象用户ID
+     *
+     * @param amUserId 发送对象用户ID
+     */
+    public void setAmUserId(String amUserId) {
+        this.amUserId = amUserId == null ? null : amUserId.trim();
     }
 
     /**
@@ -208,6 +232,7 @@ public class SlAdminMessage implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", amUserId=").append(amUserId);
         sb.append(", amTitle=").append(amTitle);
         sb.append(", amUserType=").append(amUserType);
         sb.append(", amMsgType=").append(amMsgType);
