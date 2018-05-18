@@ -121,7 +121,7 @@ public class ProcessOrders {
                             //预售订单
                             case 3:
                                 Example e = new Example(SlPresellReturnedRecord.class);
-                                e.setOrderByClause("numberOfPeriods ASC");
+                                e.setOrderByClause("number_of_periods ASC");
                                 e.createCriteria()
                                         .andEqualTo("type", 1)
                                         .andEqualTo("productRepositoryId", detail.getRepositoryId());
