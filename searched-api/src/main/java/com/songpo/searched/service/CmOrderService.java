@@ -534,13 +534,6 @@ public class CmOrderService {
                                 //更新redids
                                 this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
                             }
-                            int si = user.getSilver() + order.getDeductTotalPulse() - p;
-                            userService.updateByPrimaryKeySelective(new SlUser() {{
-                                setId(user.getId());
-                                setSilver(si);
-                            }});
-                            user.setSilver(si);
-                            userCache.put(user.getClientId(), user);
                             message.setSuccess(true);
                             message.setMsg("取消成功");
                         } else {
