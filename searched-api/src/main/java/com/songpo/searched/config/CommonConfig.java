@@ -11,7 +11,6 @@ import com.songpo.searched.service.OrderService;
 import com.songpo.searched.service.ProcessOrders;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.wxpay.service.WxPayService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,8 @@ import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -205,6 +201,7 @@ public class CommonConfig {
                 }
             }
         }
+    }
 
     /**
      * 处理未支付订单
