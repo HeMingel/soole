@@ -246,6 +246,5 @@ public class CommonConfig {
 //                }
 //            }
 //        }
-//        Map<String, String> reqData = new HashMap<>();
 //    }
 }

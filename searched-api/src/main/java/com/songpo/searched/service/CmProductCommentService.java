@@ -167,11 +167,6 @@ public class CmProductCommentService {
             if (imageList != null && imageList.size() > 0) {
                 SlProductCommentImage commentImage;
                 for (MultipartFile file : imageList) {
-                    if (!IMAGE_TYPE_ARRAY.contains(file.getContentType())) {
-                        log.debug("图片格式错误");
-                        businessMessage.setMsg("图片格式错误");
-                        return businessMessage;
-                    }
                     JSONObject jsonObject = fileService.newUpload(null, file);
                     if (jsonObject != null && StringUtils.isNotBlank(jsonObject.getString("fileName"))) {
                         commentImage = new SlProductCommentImage();
