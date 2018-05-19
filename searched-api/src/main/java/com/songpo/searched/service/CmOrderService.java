@@ -381,16 +381,16 @@ public class CmOrderService {
                         map.put("deduct_total_pulse", String.valueOf(pulse));
                         message.setData(map);
                     }
-                } else {
-                    log.error("收货地址不存在");
-                    message.setMsg("收货地址不存在");
-                    return message;
                 }
             } else {
-                log.error("用户不存在");
-                message.setMsg("用户不存在");
+                log.error("收货地址不存在");
+                message.setMsg("收货地址不存在");
                 return message;
             }
+        } else {
+            log.error("用户不存在");
+            message.setMsg("用户不存在");
+            return message;
         }
         return message;
     }
@@ -541,6 +541,11 @@ public class CmOrderService {
                                     //生成订单号
                                     String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                     message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1);
+                                }
+                                if (message.getSuccess() == false) {
+                                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                                    message.setData("");
+                                    return message;
                                 }
                             } else {
                                 log.debug("当前规格的商品,库存不足");
@@ -1004,7 +1009,6 @@ public class CmOrderService {
             message.setData(map);
             SlUser user = loginUserService.getCurrentLoginUser();
             if (user.getSilver() + user.getCoin() < slOrder.getDeductTotalPulse()) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 message.setData("");
                 message.setMsg("当前用户了豆数量不足");
                 message.setSuccess(false);
