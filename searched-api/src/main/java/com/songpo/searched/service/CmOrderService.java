@@ -214,6 +214,8 @@ public class CmOrderService {
                                                     setProductImageUrl(slProduct.getImageUrl());
                                                     // 订单ID
                                                     setOrderId(slOrder.getId());
+                                                    // 邮费
+                                                    setPostFee(slProduct.getPostage());
                                                     // 商品数量
                                                     setQuantity(quantity);
                                                     // 单个商品价格
@@ -847,6 +849,9 @@ public class CmOrderService {
         }
         Double d = price * quantity;
         BigDecimal money = new BigDecimal(d.toString());
+        if (slProduct.getPostage().doubleValue() > 0) {
+            money = BigDecimal.valueOf(Arith.add(money.doubleValue(), slProduct.getPostage().doubleValue()));
+        }
         // 订单总价
         slOrder.setTotalAmount(money);
         // 查询订单地址信息
@@ -887,6 +892,8 @@ public class CmOrderService {
                 setOrderId(slOrder.getId());
                 // 商品数量
                 setQuantity(quantity);
+                // 邮费
+                setPostFee(slProduct.getPostage());
                 // 单个商品价格
                 if (spellGroupType == 1) {
                     setPrice(repository.getPrice());
