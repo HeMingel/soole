@@ -55,7 +55,9 @@ public class CmOrderController {
             @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
     })
     @PostMapping("add")
-    public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId) {
+    public BusinessMessage addOrder(HttpServletRequest request,
+                                    String[] detail,
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId) {
         BusinessMessage message = new BusinessMessage();
         try {
             message = this.cmOrderService.addOrder(request, detail, shippingAddressId);
@@ -89,15 +91,25 @@ public class CmOrderController {
             @ApiImplicitParam(name = "shareOfPeopleId", value = "分享人id", paramType = "form"),
             @ApiImplicitParam(name = "serialNumber", value = "订单编号", paramType = "form"),
             @ApiImplicitParam(name = "groupMaster", value = "开团团长", paramType = "form"),
-            @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form"),
+            @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form", required = true),
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
-            @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form")
+            @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
+            @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true)
     })
     @PostMapping("purchase-immediately")
-    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response, String repositoryId, Integer quantity, String shareOfPeopleId, String serialNumber, String groupMaster, String shippingAddressId, String buyerMessage, String activityProductId,int spellGroupType) {
+    public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response,
+                                            @RequestParam(value = "repositoryId") String repositoryId,
+                                            @RequestParam(value = "quantity") Integer quantity,
+                                            String shareOfPeopleId,
+                                            String serialNumber,
+                                            String groupMaster,
+                                            @RequestParam(value = "shippingAddressId") String shippingAddressId,
+                                            String buyerMessage,
+                                            @RequestParam(value = "activityProductId") String activityProductId,
+                                            int spellGroupType) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId,spellGroupType);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType);
             message.setData(message.getData());
             message.setMsg(message.getMsg());
             message.setSuccess(true);
