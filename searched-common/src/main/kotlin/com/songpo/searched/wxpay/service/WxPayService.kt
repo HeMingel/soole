@@ -295,7 +295,8 @@ class WxPayService(val config: WxPayConfigProperties) {
             )
 
             // 对数据进行签名
-            resultData["sign"] = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+            val sign = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+            resultData["sign"] = sign.substring(0, sign.length - 1)
             log.debug {
                 "统一下单-APP，微信下单参数= [$data]"
             }
