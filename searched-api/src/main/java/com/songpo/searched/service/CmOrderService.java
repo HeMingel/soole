@@ -169,127 +169,129 @@ public class CmOrderService {
 //                                    SlProduct finalSlProduct = slProduct;
                                     //查询活动商品信息
                                     SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), activityProductId);
-                                    //如果是无活动就不需要校验时间是否符合
-                                    if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
-                                        //无活动就没有活动到期这一说
-                                        productCache.put(slProduct.getId(), slProduct);
-                                    } else {
-                                        // 算出失效时间 活动结束时间 - 当前时间
-                                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                        LocalDate ldt = LocalDate.parse(slActivityProduct.getEndTime(), df);
-                                        ZoneId zone = ZoneId.systemDefault();
-                                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
-                                        Date date = Date.from(instant);
-                                        // 把查询出来的商品信息放入redis中 插入失效时间
-                                        productCache.put(slProduct.getId(), slProduct);
-                                        productCache.expireAt(slProduct.getId(), date);
-                                    }
-                                    // 判断当前活动是否在有效期内
-                                    if (productCache.hasKey(slProduct.getId())) {
-                                        // 查询当前用户该商品的已生成订单的商品数量之和
-                                        int counts = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), slActivityProduct.getId());
-                                        //单用户购买限制数量 - 他已经下单的商品数量 >= 这次加入订单的数量
-                                        if (slActivityProduct.getRestrictCount() - counts >= quantity) {
-                                            //库存的数量 > 他这次加入订单的数量
-                                            if (repository.getCount() - quantity >= 0) {
-                                                // 钱相加 用于统计和添加到订单表扣除总钱里边
-                                                money += repository.getPrice().doubleValue() * quantity;
-                                                // 如果邮费不为空
-                                                if (slProduct.getPostage().doubleValue() > 0) {
-                                                    money = money + slProduct.getPostage().doubleValue();
-                                                }
-                                                // 了豆相加  用于统计和添加到订单表扣除了豆里边
-                                                if (repository.getSilver() > 0) {
-                                                    pulse += repository.getSilver() * quantity;
-                                                }
-//                                                SlProductRepository finalRepository = repository;
-                                                orderDetailService.insertSelective(new SlOrderDetail() {{
-                                                    setId(formatUUID32());
-                                                    setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                                                    // 拼团订单去这个属性判断是哪个人的
-                                                    setCreator(slOrder.getUserId());
-                                                    // 商品名称
-                                                    setProductName(slProduct.getName());
-                                                    // 商品图片
-                                                    setProductImageUrl(slProduct.getImageUrl());
-                                                    // 订单ID
-                                                    setOrderId(slOrder.getId());
-                                                    // 邮费
-                                                    setPostFee(slProduct.getPostage());
-                                                    // 商品数量
-                                                    setQuantity(quantity);
-                                                    // 单个商品价格
-                                                    setPrice(repository.getPrice());
-                                                    // 商品规格名称
-                                                    setProductDetailGroupName(repository.getProductDetailGroupName());
-                                                    // 活动id
-                                                    setActivityProductId(slActivityProduct.getId());
-                                                    // 商品ID
-                                                    setProductId(repository.getProductId());
-                                                    // 店铺唯一标识
-                                                    setShopId(repository.getShopId());
-                                                    // 店铺仓库ID
-                                                    setRepositoryId(repository.getId());
-                                                    // 扣除单个商品了豆数量
-                                                    setDeductTotalSilver(repository.getSilver());
-                                                    // 添加买家留言
-                                                    setBuyerMessage(buyerMessage);
-                                                    // 订单类型
-                                                    switch (Integer.valueOf(slProduct.getSalesModeId())) {
-                                                        //拼团
-                                                        case SalesModeConstant.SALES_MODE_GROUP:
-                                                            setType(2);
-                                                            break;
-                                                        case SalesModeConstant.SALES_MODE_PRESELL:
-                                                            setType(3);
-                                                            break;
-                                                        case SalesModeConstant.SALES_MODE_BEANS:
-                                                            setType(6);
-                                                            break;
-                                                        case SalesModeConstant.SALES_MODE_REBATE:
-                                                            setType(5);
-                                                            break;
-                                                        case SalesModeConstant.SALES_MODE_ONE:
-                                                            setType(4);
-                                                            break;
-                                                        case SalesModeConstant.SALES_MODE_NORMAL:
-                                                            setType(1);
-                                                            break;
+                                    if (null != slActivityProduct) {
+
+                                        //如果是无活动就不需要校验时间是否符合
+                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                                            //无活动就没有活动到期这一说
+                                            productCache.put(slProduct.getId(), slProduct);
+                                        } else {
+                                            // 算出失效时间 活动结束时间 - 当前时间
+                                            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                            LocalDate ldt = LocalDate.parse(slActivityProduct.getEndTime(), df);
+                                            ZoneId zone = ZoneId.systemDefault();
+                                            Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
+                                            Date date = Date.from(instant);
+                                            // 把查询出来的商品信息放入redis中 插入失效时间
+                                            productCache.put(slProduct.getId(), slProduct);
+                                            productCache.expireAt(slProduct.getId(), date);
+                                        }
+                                        // 判断当前活动是否在有效期内
+                                        if (productCache.hasKey(slProduct.getId())) {
+                                            // 查询当前用户该商品的已生成订单的商品数量之和
+                                            int counts = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), slActivityProduct.getId());
+                                            //单用户购买限制数量 - 他已经下单的商品数量 >= 这次加入订单的数量
+                                            if (slActivityProduct.getRestrictCount() - counts >= quantity) {
+                                                //库存的数量 > 他这次加入订单的数量
+                                                if (repository.getCount() - quantity >= 0) {
+                                                    // 钱相加 用于统计和添加到订单表扣除总钱里边
+                                                    money += repository.getPrice().doubleValue() * quantity;
+                                                    // 如果邮费不为空
+                                                    if (slProduct.getPostage().doubleValue() > 0) {
+                                                        money = money + slProduct.getPostage().doubleValue();
                                                     }
-                                                    // 订单编号
-                                                    setSerialNumber(orderNum);
-                                                    // TODO 消费奖励
-                                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
-                                                        if (repository.getReturnCashMoney().compareTo(new BigDecimal(0)) > 0) {
-                                                            // 消费返利金额
+                                                    // 了豆相加  用于统计和添加到订单表扣除了豆里边
+                                                    if (repository.getSilver() > 0) {
+                                                        pulse += repository.getSilver() * quantity;
+                                                    }
+//                                                SlProductRepository finalRepository = repository;
+                                                    orderDetailService.insertSelective(new SlOrderDetail() {{
+                                                        setId(formatUUID32());
+                                                        setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                                                        // 拼团订单去这个属性判断是哪个人的
+                                                        setCreator(slOrder.getUserId());
+                                                        // 商品名称
+                                                        setProductName(slProduct.getName());
+                                                        // 商品图片
+                                                        setProductImageUrl(slProduct.getImageUrl());
+                                                        // 订单ID
+                                                        setOrderId(slOrder.getId());
+                                                        // 邮费
+                                                        setPostFee(slProduct.getPostage());
+                                                        // 商品数量
+                                                        setQuantity(quantity);
+                                                        // 单个商品价格
+                                                        setPrice(repository.getPrice());
+                                                        // 商品规格名称
+                                                        setProductDetailGroupName(repository.getProductDetailGroupName());
+                                                        // 活动id
+                                                        setActivityProductId(slActivityProduct.getId());
+                                                        // 商品ID
+                                                        setProductId(repository.getProductId());
+                                                        // 店铺唯一标识
+                                                        setShopId(repository.getShopId());
+                                                        // 店铺仓库ID
+                                                        setRepositoryId(repository.getId());
+                                                        // 扣除单个商品了豆数量
+                                                        setDeductTotalSilver(repository.getSilver());
+                                                        // 添加买家留言
+                                                        setBuyerMessage(buyerMessage);
+                                                        // 订单类型
+                                                        switch (Integer.valueOf(slProduct.getSalesModeId())) {
+                                                            //拼团
+                                                            case SalesModeConstant.SALES_MODE_GROUP:
+                                                                setType(2);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_PRESELL:
+                                                                setType(3);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_BEANS:
+                                                                setType(6);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_REBATE:
+                                                                setType(5);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_ONE:
+                                                                setType(4);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_NORMAL:
+                                                                setType(1);
+                                                                break;
+                                                        }
+                                                        // 订单编号
+                                                        setSerialNumber(orderNum);
+                                                        // TODO 消费奖励
+                                                        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
+                                                            if (repository.getReturnCashMoney().compareTo(new BigDecimal(0)) > 0) {
+                                                                // 消费返利金额
+                                                                setReturnCashMoney(repository.getReturnCashMoney());
+                                                            }
+                                                        }
+                                                        // TODO 分享奖励
+                                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
+                                                            // 插入分享人id
+                                                            String shareOfPeopleId = cc.split("\\|")[4];
+                                                            setShareOfPeopleId(shareOfPeopleId);
+                                                            //分享奖励金额
                                                             setReturnCashMoney(repository.getReturnCashMoney());
                                                         }
-                                                    }
-                                                    // TODO 分享奖励
-                                                    if (slActivityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
-                                                        // 插入分享人id
-                                                        String shareOfPeopleId = cc.split("\\|")[4];
-                                                        setShareOfPeopleId(shareOfPeopleId);
-                                                        //分享奖励金额
-                                                        setReturnCashMoney(repository.getReturnCashMoney());
-                                                    }
-                                                    // 查询当前用户的支付订单
-                                                    Boolean flag = orderService.exist(new SlOrder() {{
-                                                        setUserId(user.getId());
-                                                        // 已支付
-                                                        setPaymentState(1);
+                                                        // 查询当前用户的支付订单
+                                                        Boolean flag = orderService.exist(new SlOrder() {{
+                                                            setUserId(user.getId());
+                                                            // 已支付
+                                                            setPaymentState(1);
+                                                        }});
+                                                        // TODO 新人专享
+                                                        //判断是否为首单
+                                                        if (flag.equals(false) && slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
+                                                            // 如果是第一单的情况下 需要加上 首单奖励
+                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() + repository.getFirstOrderPulse());
+                                                        } else {
+                                                            // 返了豆数量只限纯金钱模式
+                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
+                                                        }
                                                     }});
-                                                    // TODO 新人专享
-                                                    //判断是否为首单
-                                                    if (flag.equals(false) && slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
-                                                        // 如果是第一单的情况下 需要加上 首单奖励
-                                                        setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() + repository.getFirstOrderPulse());
-                                                    } else {
-                                                        // 返了豆数量只限纯金钱模式
-                                                        setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
-                                                    }
-                                                }});
-                                                //TODO 忘了这块是要表达什么 ?? 如果是新人专享活动的话
+                                                    //TODO 忘了这块是要表达什么 ?? 如果是新人专享活动的话
 //                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
 //                                            Example example1 = new Example(SlActivityProduct.class);
 //                                            example1.createCriteria()
@@ -303,50 +305,56 @@ public class CmOrderService {
 //                                                setCount(activityProductCount);
 //                                            }}, example1);
 //                                        } else {}
-                                                // 如果库存为0 的话就下架了
-                                                Example example = new Example(SlActivityProduct.class);
-                                                example.createCriteria()
-                                                        .andGreaterThan("count", 0)
-                                                        .andEqualTo("id", slActivityProduct.getId());
-                                                // 商品总库存 - 本次加入订单的数量
-                                                int activityProductCount = slActivityProduct.getCount() - quantity;
-                                                this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
-                                                    if (activityProductCount == 0) {
-                                                        setEnabled(false);
-                                                    }
-                                                    //活动总商品上架数量 - 本次购买的数量
-                                                    setCount(slActivityProduct.getCount() - quantity);
-                                                }}, example);
-                                                // 当前库存 - 本次该商品规格下单库存
-                                                repository.setCount(repository.getCount() - quantity);
-                                                // 更新redis中该商品规格的库存
-                                                repositoryCache.put(repository.getId(), repository);
-                                                Example example1 = new Example(SlProductRepository.class);
-                                                example1.createCriteria()
-                                                        // 比0大的库存
-                                                        .andGreaterThan("count", 0)
-                                                        .andEqualTo("id", repository.getId());
-                                                //更新数据库该商品规格的库存
-                                                this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
-                                                    setCount(repository.getCount() - quantity);
-                                                }}, example1);
-                                                message.setMsg("订单生成成功");
-                                                message.setSuccess(true);
+                                                    // 如果库存为0 的话就下架了
+                                                    Example example = new Example(SlActivityProduct.class);
+                                                    example.createCriteria()
+                                                            .andGreaterThan("count", 0)
+                                                            .andEqualTo("id", slActivityProduct.getId());
+                                                    // 商品总库存 - 本次加入订单的数量
+                                                    int activityProductCount = slActivityProduct.getCount() - quantity;
+                                                    this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
+                                                        if (activityProductCount == 0) {
+                                                            setEnabled(false);
+                                                        }
+                                                        //活动总商品上架数量 - 本次购买的数量
+                                                        setCount(slActivityProduct.getCount() - quantity);
+                                                    }}, example);
+                                                    // 当前库存 - 本次该商品规格下单库存
+                                                    repository.setCount(repository.getCount() - quantity);
+                                                    // 更新redis中该商品规格的库存
+                                                    repositoryCache.put(repository.getId(), repository);
+                                                    Example example1 = new Example(SlProductRepository.class);
+                                                    example1.createCriteria()
+                                                            // 比0大的库存
+                                                            .andGreaterThan("count", 0)
+                                                            .andEqualTo("id", repository.getId());
+                                                    //更新数据库该商品规格的库存
+                                                    this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
+                                                        setCount(repository.getCount() - quantity);
+                                                    }}, example1);
+                                                    message.setMsg("订单生成成功");
+                                                    message.setSuccess(true);
+                                                } else {
+                                                    log.error("当前库存不足");
+                                                    message.setMsg(slProduct.getName() + "当前库存不足");
+                                                    message.setSuccess(false);
+                                                    break outer;
+                                                }
                                             } else {
-                                                log.error("当前库存不足");
-                                                message.setMsg(slProduct.getName() + "当前库存不足");
+                                                log.error("已超过最大购买数量");
+                                                message.setMsg(slProduct.getName() + "已超过最大购买数量");
                                                 message.setSuccess(false);
                                                 break outer;
                                             }
                                         } else {
-                                            log.error("已超过最大购买数量");
-                                            message.setMsg(slProduct.getName() + "已超过最大购买数量");
+                                            log.error("活动商品时间错误");
+                                            message.setMsg(slProduct.getName() + "活动商品时间错误");
                                             message.setSuccess(false);
                                             break outer;
                                         }
                                     } else {
-                                        log.error("活动商品时间错误");
-                                        message.setMsg(slProduct.getName() + "活动商品时间错误");
+                                        log.error("商品已下架");
+                                        message.setMsg(slProduct.getName() + "商品已下架");
                                         message.setSuccess(false);
                                         break outer;
                                     }
@@ -455,111 +463,117 @@ public class CmOrderService {
                 if (null != slProduct) {
                     //查询活动商品信息
                     SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
-                    //如果是无活动就不需要校验时间是否符合
-                    if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
-                        //无活动就没有活动到期这一说
-                        productCache.put(slProduct.getId(), slProduct);
-                    } else {
-                        // 算出失效时间 活动结束时间 - 当前时间
-                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDate ldt = LocalDate.parse(activityProduct.getEndTime(), df);
-                        ZoneId zone = ZoneId.systemDefault();
-                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
-                        Date date = Date.from(instant);
-                        // 把查询出来的商品信息放入redis中 插入失效时间
-                        productCache.put(slProduct.getId(), slProduct);
-                        productCache.expireAt(slProduct.getId(), date);
-                    }
-                    // 判断当前活动是否在有效期内
-                    if (productCache.hasKey(slProduct.getId())) {
-                        // 此活动拼团商品当前用户的下单商品数量
-                        int count = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), activityProduct.getId());
-                        // 本次下单的商品数量 + 当前用户的该商品下单量 <= 商品限制购买单数
-                        if (quantity + count <= activityProduct.getRestrictCount()) {
-                            // 本规格下的库存 >= 本次下单的商品数量
-                            if (repository.getCount() >= quantity) {
-                                // TODO ====== 拼团订单 ======
-                                //8.如果销售模式是拼团订单的话
-                                if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
-                                    //8(1).如果是拼团订单的话 拼团订单不为空 && 开团团主不为空的情况下
-                                    if (!StringUtils.isEmpty(serialNumber) && !StringUtils.isEmpty(groupMaster)) {
-                                        //查询这个团主的订单是否存在
-                                        int count1 = this.orderService.selectCount(new SlOrder() {{
-                                            setUserId(groupMaster);
-                                            setSerialNumber(serialNumber);
-                                        }});
-                                        //如果存在 && 只有一条
-                                        if (count1 == 1) {
-                                            //查询当前用户是否参加过这次的团
-                                            Boolean f = this.orderService.exist(new SlOrder() {{
+                    if (null != activityProduct) {
+                        //如果是无活动就不需要校验时间是否符合
+                        if (activityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
+                            //无活动就没有活动到期这一说
+                            productCache.put(slProduct.getId(), slProduct);
+                        } else {
+                            // 算出失效时间 活动结束时间 - 当前时间
+                            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                            LocalDate ldt = LocalDate.parse(activityProduct.getEndTime(), df);
+                            ZoneId zone = ZoneId.systemDefault();
+                            Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
+                            Date date = Date.from(instant);
+                            // 把查询出来的商品信息放入redis中 插入失效时间
+                            productCache.put(slProduct.getId(), slProduct);
+                            productCache.expireAt(slProduct.getId(), date);
+                        }
+                        // 判断当前活动是否在有效期内
+                        if (productCache.hasKey(slProduct.getId())) {
+                            // 此活动拼团商品当前用户的下单商品数量
+                            int count = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), activityProduct.getId());
+                            // 本次下单的商品数量 + 当前用户的该商品下单量 <= 商品限制购买单数
+                            if (quantity + count <= activityProduct.getRestrictCount()) {
+                                // 本规格下的库存 >= 本次下单的商品数量
+                                if (repository.getCount() >= quantity) {
+                                    // TODO ====== 拼团订单 ======
+                                    //8.如果销售模式是拼团订单的话
+                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
+                                        //8(1).如果是拼团订单的话 拼团订单不为空 && 开团团主不为空的情况下
+                                        if (!StringUtils.isEmpty(serialNumber) && !StringUtils.isEmpty(groupMaster)) {
+                                            //查询这个团主的订单是否存在
+                                            int count1 = this.orderService.selectCount(new SlOrder() {{
+                                                setUserId(groupMaster);
                                                 setSerialNumber(serialNumber);
-                                                setUserId(user.getId());
                                             }});
-                                            //如果不存在的话
-                                            if (f.equals(false)) {
-                                                //TODO ======= 是团员的话 =======
-                                                message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                            //如果存在 && 只有一条
+                                            if (count1 == 1) {
+                                                //查询当前用户是否参加过这次的团
+                                                Boolean f = this.orderService.exist(new SlOrder() {{
+                                                    setSerialNumber(serialNumber);
+                                                    setUserId(user.getId());
+                                                }});
+                                                //如果不存在的话
+                                                if (f.equals(false)) {
+                                                    //TODO ======= 是团员的话 =======
+                                                    message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                                } else {
+                                                    message.setMsg("您已参加过该团,请勿重复参加");
+                                                    return message;
+                                                }
                                             } else {
-                                                message.setMsg("您已参加过该团,请勿重复参加");
+                                                message.setMsg("订单失效或不存在");
                                                 return message;
                                             }
                                         } else {
-                                            message.setMsg("订单失效或不存在");
-                                            return message;
+                                            //TODO ==== 如果是他自己开的团 ======
+                                            //生成订单号
+                                            String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
                                         }
-                                    } else {
-                                        //TODO ==== 如果是他自己开的团 ======
+                                    }
+                                    //TODO ====== 如果是预售模式 ======
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1);
                                     }
-                                }
-                                //TODO ====== 如果是预售模式 ======
-                                else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
-                                    //生成订单号
-                                    String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1);
-                                }
-                                //TODO ====== 如果是助力购 ======
-                                else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
-                                    //生成订单号
-                                    String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1);
-                                }
-                                //TODO ====== 消费返利 ======
-                                else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
-                                    //生成订单号
-                                    String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1);
-                                    // TODO ====== 豆赚 ======
-                                } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
-                                    //生成订单号
-                                    String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1);
-                                    // TODO ====== 普通商品 ======
-                                } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
-                                    //生成订单号
-                                    String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                    message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1);
-                                }
-                                if (message.getSuccess() == false) {
-                                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                                    message.setData("");
+                                    //TODO ====== 如果是助力购 ======
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1);
+                                    }
+                                    //TODO ====== 消费返利 ======
+                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1);
+                                        // TODO ====== 豆赚 ======
+                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1);
+                                        // TODO ====== 普通商品 ======
+                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1);
+                                    }
+                                    if (message.getSuccess() == false) {
+                                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                                        message.setData("");
+                                        return message;
+                                    }
+                                } else {
+                                    log.debug("当前规格的商品,库存不足");
+                                    message.setMsg("当前规格的商品,库存不足");
                                     return message;
                                 }
                             } else {
-                                log.debug("当前规格的商品,库存不足");
-                                message.setMsg("当前规格的商品,库存不足");
+                                log.debug("已超出该商品的下单商品数量");
+                                message.setMsg("已超出该商品的下单商品数量");
                                 return message;
                             }
                         } else {
-                            log.debug("已超出该商品的下单商品数量");
-                            message.setMsg("已超出该商品的下单商品数量");
+                            log.debug("活动商品时间错误");
+                            message.setMsg("活动商品时间错误");
                             return message;
                         }
                     } else {
-                        log.debug("活动商品时间错误");
-                        message.setMsg("活动商品时间错误");
+                        log.debug("商品已下架");
+                        message.setMsg("商品已下架");
                         return message;
                     }
                 } else {
