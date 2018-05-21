@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -196,6 +197,8 @@ public class ProcessOrders {
                         setMoney(new BigDecimal(order.getTotalAmount().toString()));
                         // 钱
                         setDealType(3);
+                        // 插入时间
+                        setCreateTime(new Date());
                         // 支出
                         setTransactionType(1);
                     }});

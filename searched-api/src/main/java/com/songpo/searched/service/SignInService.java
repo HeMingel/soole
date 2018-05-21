@@ -14,6 +14,8 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -125,6 +127,8 @@ public class SignInService {
                     setType(101);
                     // 奖励了豆数量
                     setSilver(finalSignIn.getAwardSilver());
+                    // 插入时间
+                    setCreateTime(new Date());
                     // 银豆
                     setDealType(6);
                     // 支出
