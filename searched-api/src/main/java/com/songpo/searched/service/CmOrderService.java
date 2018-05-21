@@ -170,7 +170,6 @@ public class CmOrderService {
                                     //查询活动商品信息
                                     SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), activityProductId);
                                     if (null != slActivityProduct) {
-
                                         //如果是无活动就不需要校验时间是否符合
                                         if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
                                             //无活动就没有活动到期这一说
@@ -730,8 +729,9 @@ public class CmOrderService {
                                     setId(repository.getId());
                                     setCount(repository.getCount() + detail.getQuantity());
                                 }});
-                                //更新redids
-                                this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                                repository.setCount(repository.getCount() + detail.getQuantity());
+                                //更新redis
+                                this.repositoryCache.put(repository.getId(), repository);
                             }
                             message.setSuccess(true);
                             message.setMsg("取消成功");
@@ -803,8 +803,9 @@ public class CmOrderService {
                             setId(repository.getId());
                             setCount(count);
                         }});
+                        repository.setCount(count);
                         //更新redids
-                        this.repositoryCache.put(repository.getId(), this.productRepositoryService.selectByPrimaryKey(repository.getId()));
+                        this.repositoryCache.put(repository.getId(), repository);
                     }
                 }
 
