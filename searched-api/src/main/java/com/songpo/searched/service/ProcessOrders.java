@@ -3,10 +3,7 @@ package com.songpo.searched.service;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.CmOrderMapper;
-import com.songpo.searched.mapper.SlActivityProductMapper;
-import com.songpo.searched.mapper.SlPresellReturnedRecordMapper;
-import com.songpo.searched.mapper.SlReturnsDetailMapper;
+import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.LocalDateTimeUtils;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -47,6 +45,8 @@ public class ProcessOrders {
     private CmOrderMapper cmOrderMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
+    @Autowired
+    private SlTransactionDetailMapper transactionDetailMapper;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -180,6 +180,21 @@ public class ProcessOrders {
                         //系统通知
                         notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
                     }
+                    // 加入明细表
+                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                        // 目标id
+                        setTargetId(user.getId());
+                        // 订单id
+                        setOrderId(orderId);
+                        // 购物类型
+                        setType(200);
+                        // 扣除金额
+                        setMoney(new BigDecimal(order.getTotalAmount().toString()));
+                        // 钱
+                        setDealType(3);
+                        // 支出
+                        setTransactionType(1);
+                    }});
                     int silver = user.getSilver() + pulse;
                     userService.updateByPrimaryKeySelective(new SlUser() {{
                         setId(user.getId());

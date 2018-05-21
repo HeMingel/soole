@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlSignIn;
+import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlSignInMapper;
+import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -28,6 +30,8 @@ public class SignInService {
     private UserService userService;
     @Autowired
     private UserCache userCache;
+    @Autowired
+    private SlTransactionDetailMapper transactionDetailMapper;
 
     public BusinessMessage addSignIn() {
         BusinessMessage message = new BusinessMessage();
@@ -112,6 +116,19 @@ public class SignInService {
                 userService.updateByPrimaryKeySelective(new SlUser() {{
                     setId(user.getId());
                     setSilver(silver);
+                }});
+                // 加入明细表
+                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                    // 目标id
+                    setTargetId(user.getId());
+                    // 购物类型(签到)
+                    setType(101);
+                    // 奖励了豆数量
+                    setSilver(finalSignIn.getAwardSilver());
+                    // 银豆
+                    setDealType(6);
+                    // 支出
+                    setTransactionType(2);
                 }});
             } else {
                 message.setMsg("签到信息错误");

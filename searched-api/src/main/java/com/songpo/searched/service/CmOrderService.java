@@ -1448,20 +1448,6 @@ public class CmOrderService {
                     map.put("alipay", str);
                     message.setData(map);
                     message.setSuccess(true);
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额(支付宝支付)
-                        setMoney(new BigDecimal(money));
-                        // 钱
-                        setDealType(3);
-                        // 支出
-                        setTransactionType(1);
-                    }});
                 }
             } else {
                 return message;
@@ -1495,20 +1481,6 @@ public class CmOrderService {
                 log.debug("微信预下单返回数据：{}", map);
                 if (map.size() > 0) {
                     message.setData(null);
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额(微信支付)
-                        setMoney(new BigDecimal(money));
-                        // 钱
-                        setDealType(3);
-                        // 支出
-                        setTransactionType(1);
-                    }});
                     message.setData(map);
                     message.setSuccess(true);
                 }
