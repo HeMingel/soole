@@ -328,7 +328,7 @@ public class CmOrderService {
                                                         .andEqualTo("id", repository.getId());
                                                 //更新数据库该商品规格的库存
                                                 this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
-                                                    setCount(repositoryCache.get(repository.getId()).getCount());
+                                                    setCount(repository.getCount() - quantity);
                                                 }}, example1);
                                                 message.setMsg("订单生成成功");
                                                 message.setSuccess(true);
