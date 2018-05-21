@@ -125,11 +125,13 @@ public class ShoppingCartService {
                         if (null != repository) {
                             SlProduct slProduct = this.productService.selectOne(new SlProduct() {{
                                 setId(repository.getProductId());
+                                setSoldOut(true);
                             }});
                             if (null != slProduct) {
                                 SlActivityProduct activityProduct = this.activityProductMapper.selectOne(new SlActivityProduct() {{
                                     setProductId(slProduct.getId());
                                     setActivityId(sc.getActivityId());
+                                    setEnabled(true);
                                 }});
                                 if (null != activityProduct) {
                                     if (true == activityProduct.getEnabled()) {
