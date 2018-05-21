@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.cache.OrderCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
@@ -47,6 +48,8 @@ public class ProcessOrders {
     private SlActivityProductMapper activityProductMapper;
     @Autowired
     private SlTransactionDetailMapper transactionDetailMapper;
+    @Autowired
+    private OrderCache orderCache;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -84,6 +87,7 @@ public class ProcessOrders {
                 List<SlOrderDetail> details = orderDetailService.select(new SlOrderDetail() {{
                     setOrderId(order.getId());
                 }});
+                orderCache.evict(orderId);
                 if (details.size() > 0) {
                     for (SlOrderDetail detail : details) {
                         Example example1 = new Example(SlOrderDetail.class);
