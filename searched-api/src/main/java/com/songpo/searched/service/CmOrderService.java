@@ -992,7 +992,7 @@ public class CmOrderService {
             repositoryCache.put(repository.getId(), repository);
             // 再更新数据库中的库存
             Example example1 = new Example(SlProductRepository.class);
-            example.createCriteria()
+            example1.createCriteria()
                     // 比0大的库存
                     .andGreaterThan("count", 0)
                     .andEqualTo("id", repository.getId());

@@ -108,7 +108,7 @@ public class SignInService {
                 SlSignIn finalSignIn = signIn;
                 int silver = user.getSilver() + finalSignIn.getAwardSilver();
                 user.setSilver(silver);
-                userCache.put(user.getClientId(),user);
+                userCache.put(user.getClientId(), user);
                 userService.updateByPrimaryKeySelective(new SlUser() {{
                     setId(user.getId());
                     setSilver(silver);
