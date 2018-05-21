@@ -992,13 +992,10 @@ public class CmOrderService {
             repositoryCache.put(repository.getId(), repository);
             // 再更新数据库中的库存
             Example example1 = new Example(SlProductRepository.class);
-            example1.createCriteria()
-                    // 比0大的库存
-                    .andGreaterThan("count", 0)
-                    .andEqualTo("id", repository.getId());
+            example1.createCriteria().andEqualTo("id", repository.getId()).andGreaterThan("count", 0);
             //更新数据库该商品规格的库存
             this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
-                setCount(repositoryCache.get(repository.getId()).getCount());
+                setCount(cou);
             }}, example1);
             message.setMsg("订单生成成功");
             message.setSuccess(true);
