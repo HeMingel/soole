@@ -8,6 +8,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlMember;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.CmUserMapper;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.MemberService;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -63,6 +65,9 @@ public class SystemController {
 
     @Autowired
     private SlTransactionDetailMapper slTransactionDetailMapper;
+
+    @Autowired
+    private CmUserMapper cmUserMapper;
 
     /**
      * 登录
@@ -218,12 +223,12 @@ public class SystemController {
 //                    // 从数据库查询用户信息
 //                    if (null == user) {
                     SlUser user = this.userService.selectOne(new SlUser() {{
-                            setPhone(phone);
-                        }});
+                        setPhone(phone);
+                    }});
 
-                        if (null != user) {
-                            this.userCache.put(phone, user);
-                        }
+                    if (null != user) {
+                        this.userCache.put(phone, user);
+                    }
 //                    }
 
                     if (null != user) {
@@ -460,18 +465,18 @@ public class SystemController {
         } else if (null == type) {
             message.setMsg("登录类型为空");
         } else {
-            // 从缓存检测用户信息
-            SlUser user = this.userCache.get(openId);
-            // 从数据库查询用户信息
-            if (null == user) {
-                user = this.userService.selectOne(new SlUser() {{
-                    setOpenId(openId);
-                }});
+//            // 从缓存检测用户信息
+//            SlUser user = this.userCache.get(openId);
+//            // 从数据库查询用户信息
+//            if (null == user) {
+            SlUser user = this.userService.selectOne(new SlUser() {{
+                setOpenId(openId);
+            }});
 
-                if (null != user) {
-                    this.userCache.put(openId, user);
-                }
+            if (null != user) {
+                this.userCache.put(openId, user);
             }
+//            }
 
             // 从数据库查询用户信息
             if (null == user) {
@@ -633,6 +638,7 @@ public class SystemController {
             @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true)
     })
     @PostMapping("bind-phone")
+    @Transactional
     public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId, String password) {
         log.debug("绑定手机号码，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
@@ -650,18 +656,18 @@ public class SystemController {
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
-                // 从缓存检测用户信息
-                SlUser user = this.userCache.get(openId);
-                // 从数据库查询用户信息
-                if (null == user) {
-                    user = this.userService.selectOne(new SlUser() {{
-                        setOpenId(openId);
-                    }});
+//                // 从缓存检测用户信息
+//                SlUser user = this.userCache.get(openId);
+//                // 从数据库查询用户信息
+//                if (null == user) {
+                SlUser user = this.userService.selectOne(new SlUser() {{
+                    setOpenId(openId);
+                }});
 
-                    if (null != user) {
-                        this.userCache.put(openId, user);
-                    }
+                if (null != user) {
+                    this.userCache.put(openId, user);
                 }
+//                }
 
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
@@ -669,26 +675,59 @@ public class SystemController {
                     SlUser phoneUser = this.userService.selectOne(new SlUser() {{
                         setPhone(phone);
                     }});
-//                    if (StringUtils.isNotBlank(user.getPhone())) {
-                    if (phoneUser != null && phoneUser.getId() != user.getId()) {
-                        message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
+                    /** 已经存在相同手机号的另一个用户，open合并到该账号，并删除openId账号 **/
+                    if (phoneUser != null && !phoneUser.getId().equals(user.getId())) {
+                        //删除原来的openId注册账号
+                        this.userDelete(user.getId());
+                        //数据合并
+                        phoneUser.setOpenId(openId);
+                        // 设置密码
+                        phoneUser.setPassword(passwordEncoder.encode(password));
+                        if (StringUtils.isBlank(phoneUser.getNickName())) {
+                            phoneUser.setNickName(user.getNickName());
+                        }
+                        if (StringUtils.isBlank(phoneUser.getAvatar())) {
+                            phoneUser.setAvatar(user.getAvatar());
+                        }
+                        phoneUser.setType(user.getType());
+                        // 更新
+                        userService.updateByPrimaryKeySelective(phoneUser);
+                        // 更新缓存
+                        this.userCache.put(openId, phoneUser);
                     } else {
-                        // 设置手机号码
+                        /********** 不存在相同手机号用户，更新用户信息 *********/
                         user.setPhone(phone);
                         // 设置密码
                         user.setPassword(passwordEncoder.encode(password));
-
                         // 更新
                         userService.updateByPrimaryKeySelective(user);
-
                         // 更新缓存
                         this.userCache.put(openId, user);
-
-                        // 清除验证码
-                        this.smsVerifyCodeCache.evict(phone);
-
-                        message.setSuccess(true);
                     }
+                    // 清除验证码
+                    this.smsVerifyCodeCache.evict(phone);
+
+                    message.setSuccess(true);
+
+//                    if (phoneUser != null && phoneUser.getId() != user.getId()) {
+//                        message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
+//                    } else {
+//                        // 设置手机号码
+//                        user.setPhone(phone);
+//                        // 设置密码
+//                        user.setPassword(passwordEncoder.encode(password));
+//
+//                        // 更新
+//                        userService.updateByPrimaryKeySelective(user);
+//
+//                        // 更新缓存
+//                        this.userCache.put(openId, user);
+//
+//                        // 清除验证码
+//                        this.smsVerifyCodeCache.evict(phone);
+//
+//                        message.setSuccess(true);
+//                    }
                 }
             }
         }
@@ -712,6 +751,7 @@ public class SystemController {
             @ApiImplicitParam(name = "openId", value = "第三方标识", paramType = "form", required = true)
     })
     @PostMapping("bind-phone-new")
+    @Transactional
     public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId) {
         log.debug("绑定手机号码，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
@@ -728,17 +768,17 @@ public class SystemController {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 // 从缓存检测用户信息
-                SlUser user = this.userCache.get(openId);
-                // 从数据库查询用户信息
-                if (null == user) {
-                    user = this.userService.selectOne(new SlUser() {{
-                        setOpenId(openId);
-                    }});
+//                SlUser user = this.userCache.get(openId);
+//                // 从数据库查询用户信息
+//                if (null == user) {
+                SlUser user = this.userService.selectOne(new SlUser() {{
+                    setOpenId(openId);
+                }});
 
-                    if (null != user) {
-                        this.userCache.put(openId, user);
-                    }
+                if (null != user) {
+                    this.userCache.put(openId, user);
                 }
+//                }
 
                 if (null == user) {
                     message.setMsg("用户信息不存在，请重试");
@@ -746,24 +786,35 @@ public class SystemController {
                     SlUser phoneUser = this.userService.selectOne(new SlUser() {{
                         setPhone(phone);
                     }});
-//                    if (StringUtils.isNotBlank(user.getPhone())) {
-                    if (phoneUser != null && phoneUser.getId() != user.getId()) {
-                        message.setMsg("手机号码已被绑定，请更换手机号码再次尝试");
+                    /** 已经存在相同手机号的另一个用户，open合并到该账号，并删除openId账号 **/
+                    if (phoneUser != null && !phoneUser.getId().equals(user.getId())) {
+                        //删除原来的openId注册账号
+                        this.userDelete(user.getId());
+                        //数据合并
+                        phoneUser.setOpenId(openId);
+                        if (StringUtils.isBlank(phoneUser.getNickName())) {
+                            phoneUser.setNickName(user.getNickName());
+                        }
+                        if (StringUtils.isBlank(phoneUser.getAvatar())) {
+                            phoneUser.setAvatar(user.getAvatar());
+                        }
+                        phoneUser.setType(user.getType());
+                        // 更新
+                        userService.updateByPrimaryKeySelective(phoneUser);
+                        // 更新缓存
+                        this.userCache.put(openId, phoneUser);
                     } else {
-                        // 设置手机号码
+                        /********** 不存在相同手机号用户，更新用户信息 *********/
                         user.setPhone(phone);
-
                         // 更新
                         userService.updateByPrimaryKeySelective(user);
-
                         // 更新缓存
                         this.userCache.put(openId, user);
-
-                        // 清除验证码
-                        this.smsVerifyCodeCache.evict(phone);
-
-                        message.setSuccess(true);
                     }
+                    // 清除验证码
+                    this.smsVerifyCodeCache.evict(phone);
+
+                    message.setSuccess(true);
                 }
             }
         }
@@ -799,6 +850,12 @@ public class SystemController {
      * @param user
      */
     private void userInsert(SlUser user) {
+        int maxUserName = cmUserMapper.selectMaxUserName();
+        maxUserName += 6;
+        if (String.valueOf(maxUserName).contains("4")) {
+            maxUserName = Integer.valueOf(String.valueOf(maxUserName).replaceAll("4", "5"));
+        }
+        user.setUsername(maxUserName);
         // 添加sl_user
         userService.insertSelective(user);
         //添加sl_member
@@ -806,5 +863,23 @@ public class SystemController {
         member.setId(UUID.randomUUID().toString());
         member.setUserId(user.getId());
         memberService.insertSelective(member);
+    }
+
+    /**
+     * 删除用户信息
+     * 需要删除的表：sl_user、sl_member、sl_transaction_detail
+     *
+     * @param userId
+     */
+    private void userDelete(String userId) {
+        userService.deleteByPrimaryKey(userId);
+
+        SlMember member = new SlMember();
+        member.setUserId(userId);
+        memberService.delete(member);
+
+        SlTransactionDetail detail = new SlTransactionDetail();
+        detail.setTargetId(userId);
+        slTransactionDetailMapper.delete(detail);
     }
 }
