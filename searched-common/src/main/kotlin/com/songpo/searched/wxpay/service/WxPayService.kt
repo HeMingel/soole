@@ -1,10 +1,10 @@
 package com.songpo.searched.wxpay.service
 
-import com.alibaba.fastjson.JSON
 import com.github.wxpay.sdk.WXPay
 import com.github.wxpay.sdk.WXPayConfig
 import com.github.wxpay.sdk.WXPayUtil
 import com.songpo.searched.wxpay.config.WxPayConfigProperties
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
@@ -17,6 +17,7 @@ import java.util.*
  */
 @Service
 class WxPayService(val config: WxPayConfigProperties) {
+    val log = KotlinLogging.logger {}
 
     lateinit var wxpay: WXPay
 
@@ -289,14 +290,17 @@ class WxPayService(val config: WxPayConfigProperties) {
                     Pair("partnerId", this.config.mchId),
                     Pair("prepayId", result["prepay_id"] ?: ""),
                     Pair("package", "Sign=WXPay"),
-                    Pair("nonceStr", result["nonce_str"] ?: ""),
+                    Pair("nonceStr", WXPayUtil.generateNonceStr()),
                     Pair("timeStamp", (Date().time / 1000).toString())
             )
 
             // 对数据进行签名
-            resultData["sign"] = WXPayUtil.generateSignature(resultData, this.config.apiKey)
-            resultData["wxData"] = JSON.toJSONString(data)
-
+            val sign = WXPayUtil.generateSignature(resultData, this.config.apiKey)
+            //特别low的处理，生成的sign无法使用，去掉最后一位字母可以使用
+            resultData["sign"] = sign.substring(0, sign.length - 1)
+            log.debug {
+                "统一下单-APP，微信下单参数= [$data]"
+            }
             return resultData
         }
         return result
