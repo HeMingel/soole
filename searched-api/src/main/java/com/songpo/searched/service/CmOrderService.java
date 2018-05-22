@@ -259,14 +259,14 @@ public class CmOrderService {
                                                         }
                                                         // 订单编号
                                                         setSerialNumber(orderNum);
-                                                        // TODO 消费奖励
+                                                        //  消费奖励
                                                         if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                                             if (repository.getReturnCashMoney().compareTo(new BigDecimal(0)) > 0) {
                                                                 // 消费返利金额
                                                                 setReturnCashMoney(repository.getReturnCashMoney());
                                                             }
                                                         }
-                                                        // TODO 分享奖励
+                                                        //  分享奖励
                                                         if (slActivityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
                                                             // 插入分享人id
                                                             String shareOfPeopleId = cc.split("\\|")[4];
@@ -280,7 +280,7 @@ public class CmOrderService {
                                                             // 已支付
                                                             setPaymentState(1);
                                                         }});
-                                                        // TODO 新人专享
+                                                        //  新人专享
                                                         //判断是否为首单
                                                         if (flag.equals(false) && slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
                                                             // 如果是第一单的情况下 需要加上 首单奖励
@@ -290,7 +290,7 @@ public class CmOrderService {
                                                             setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
                                                         }
                                                     }});
-                                                    //TODO 忘了这块是要表达什么 ?? 如果是新人专享活动的话
+                                                    // 忘了这块是要表达什么 ?? 如果是新人专享活动的话
 //                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
 //                                            Example example1 = new Example(SlActivityProduct.class);
 //                                            example1.createCriteria()
@@ -493,7 +493,7 @@ public class CmOrderService {
                             if (quantity + count <= activityProduct.getRestrictCount()) {
                                 // 本规格下的库存 >= 本次下单的商品数量
                                 if (repository.getCount() >= quantity) {
-                                    // TODO ====== 拼团订单 ======
+                                    //  ====== 拼团订单 ======
                                     //8.如果销售模式是拼团订单的话
                                     if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
                                         //8(1).如果是拼团订单的话 拼团订单不为空 && 开团团主不为空的情况下
@@ -512,7 +512,7 @@ public class CmOrderService {
                                                 }});
                                                 //如果不存在的话
                                                 if (f.equals(false)) {
-                                                    //TODO ======= 是团员的话 =======
+                                                    // ======= 是团员的话 =======
                                                     message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
                                                 } else {
                                                     message.setMsg("您已参加过该团,请勿重复参加");
@@ -523,35 +523,35 @@ public class CmOrderService {
                                                 return message;
                                             }
                                         } else {
-                                            //TODO ==== 如果是他自己开的团 ======
+                                            // ==== 如果是他自己开的团 ======
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                             message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
                                         }
                                     }
-                                    //TODO ====== 如果是预售模式 ======
+                                    // ====== 如果是预售模式 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1);
                                     }
-                                    //TODO ====== 如果是助力购 ======
+                                    // ====== 如果是助力购 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1);
                                     }
-                                    //TODO ====== 消费返利 ======
+                                    // ====== 消费返利 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1);
-                                        // TODO ====== 豆赚 ======
+                                        //  ====== 豆赚 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1);
-                                        // TODO ====== 普通商品 ======
+                                        //  ====== 普通商品 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
@@ -977,13 +977,13 @@ public class CmOrderService {
                         setGroupPeople(activityProduct.getPeopleNum());
                     }
                 }
-                //TODO 分享奖励
+                // 分享奖励
                 // 如果是分享奖励的情况下
                 if (activityProduct.getActivityId().equals(ActivityConstant.RECOMMEND_AWARDS_ACTIVITY)) {
                     // 插入分享人id
                     setShareOfPeopleId(shareOfPeopleId);
                 }
-                // TODO 新人奖励
+                //  新人奖励
                 // 查询当前用户是否为首单
                 Boolean flag = orderService.exist(new SlOrder() {{
                     setUserId(userId);
@@ -998,7 +998,7 @@ public class CmOrderService {
                     // 返了豆数量只限纯金钱模式
                     setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
                 }
-                //TODO 消费返利
+                // 消费返利
                 if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                     if (repository.getReturnCashMoney().doubleValue() > 0) {
                         // 消费返利金额
