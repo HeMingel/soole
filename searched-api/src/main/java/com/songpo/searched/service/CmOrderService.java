@@ -93,8 +93,8 @@ public class CmOrderService {
      * 多商品下单
      *
      * @param request
-     * @param detail
-     * @param shippingAddressId
+     * @param detail            商品1的规格id|商品1的商品数量|商品1买家留言|分享人id(如果是分享奖励的话)
+     * @param shippingAddressId 当前用户选择的收货地址id
      * @return
      */
     @Transactional
@@ -408,8 +408,15 @@ public class CmOrderService {
      *
      * @param request
      * @param response
-     * @param repositoryId
-     * @param quantity
+     * @param repositoryId      规格id
+     * @param quantity          数量
+     * @param shareOfPeopleId   分享人Id
+     * @param serialNumber      (如果是拼别人的团,要传开团的订单号)
+     * @param groupMaster       (如果是拼别人的团,要传开团人的Id)
+     * @param shippingAddressId 用户地址id
+     * @param buyerMessage      买家留言
+     * @param activityProductId 活动商品Id
+     * @param spellGroupType    1 : 普通活动价 2:个人价
      * @return
      */
     @Transactional
@@ -597,7 +604,9 @@ public class CmOrderService {
     /**
      * 查询我的订单列表
      *
-     * @param status
+     * @param status   订单状态
+     * @param pageNum
+     * @param pageSize
      * @return
      */
     public BusinessMessage findList(Integer status, Integer pageNum, Integer pageSize) {
@@ -691,8 +700,8 @@ public class CmOrderService {
     /**
      * 取消订单/确定收货
      *
-     * @param state
-     * @param orderId
+     * @param state   订单状态
+     * @param orderId 订单id
      * @return
      */
     public BusinessMessage cancelAnOrder(String orderId, String state) {
@@ -771,7 +780,7 @@ public class CmOrderService {
     /**
      * 处理订单失效
      *
-     * @param key
+     * @param key redis返回回来的订单id
      */
     public void processOrderDisabled(String key) {
         log.debug("订单失效，标识：{}", key);
@@ -817,6 +826,18 @@ public class CmOrderService {
     /**
      * 逻辑处理订单
      *
+     * @param userId            用户id
+     * @param serialNumber      订单编号
+     * @param activityProduct   活动商品
+     * @param groupMaster       拼团团主id
+     * @param shippingAddressId 收货地址id
+     * @param repository        规格
+     * @param quantity          商品数量
+     * @param shareOfPeopleId   分享人id
+     * @param slProduct         商品
+     * @param type              订单类型
+     * @param buyerMessage      买家留言
+     * @param spellGroupType    价格1 : 普通活动价 2:个人价(只用作拼团价)
      * @return
      */
     public BusinessMessage processingOrders(String userId,
@@ -1035,8 +1056,8 @@ public class CmOrderService {
     /**
      * 删除订单
      *
-     * @param detailId
-     * @param orderId
+     * @param detailId 订单明细id
+     * @param orderId  订单id
      */
     public void deleteOrder(String orderId, String detailId) {
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -1062,7 +1083,7 @@ public class CmOrderService {
     /**
      * 预售订单
      *
-     * @param status
+     * @param status  返现状态
      * @param pageNum
      * @param status
      * @return
@@ -1236,7 +1257,7 @@ public class CmOrderService {
     /**
      * 提醒发货
      *
-     * @param orderId
+     * @param orderId 订单id
      */
     public BusinessMessage remindingTheShipments(String orderId) {
         BusinessMessage message = new BusinessMessage();
@@ -1287,8 +1308,8 @@ public class CmOrderService {
     /**
      * 预售确认收货
      *
-     * @param returnsDetailId
-     * @param orderId
+     * @param returnsDetailId 返现明细id
+     * @param orderId         订单id
      */
     public BusinessMessage presellPremises(String returnsDetailId, String orderId) {
         BusinessMessage message = new BusinessMessage();
@@ -1345,8 +1366,8 @@ public class CmOrderService {
     /**
      * 快递100 接口
      *
-     * @param emsId
-     * @param expressCode
+     * @param emsId       快递ems表id
+     * @param expressCode 快递单号
      * @return
      */
     public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
@@ -1429,7 +1450,7 @@ public class CmOrderService {
     /**
      * 支付宝支付
      *
-     * @param orderId
+     * @param orderId 订单id
      * @return
      */
     @Transactional
@@ -1463,7 +1484,7 @@ public class CmOrderService {
      * 微信支付
      *
      * @param req
-     * @param orderId
+     * @param orderId 订单id
      * @return
      */
     @Transactional
@@ -1497,7 +1518,7 @@ public class CmOrderService {
     /**
      * 校验扣除了豆
      *
-     * @param orderId
+     * @param orderId 订单id
      * @return
      */
     public BusinessMessage<Map> checkTheOrder(String orderId, SlUser user) {
@@ -1642,7 +1663,7 @@ public class CmOrderService {
     /**
      * 纯了豆支付
      *
-     * @param orderId
+     * @param orderId 订单id
      * @return
      */
     @Transactional
