@@ -366,11 +366,6 @@ public class CmOrderService {
                             }
                         }
                     }
-                    if (user.getSilver() + user.getCoin() < pulse) {
-                        message.setData("");
-                        message.setMsg("当前用户了豆数量不足");
-                        message.setSuccess(false);
-                    }
                     if (message.getSuccess() == false) {
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     } else {
@@ -433,7 +428,6 @@ public class CmOrderService {
                                             int spellGroupType) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
         BusinessMessage message = new BusinessMessage();
-
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
 //                SlProductRepository repository = new SlProductRepository();
@@ -1040,12 +1034,6 @@ public class CmOrderService {
             map.put("total_amount", money.toString());
             map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
             message.setData(map);
-            SlUser user = loginUserService.getCurrentLoginUser();
-            if (user.getSilver() + user.getCoin() < slOrder.getDeductTotalPulse()) {
-                message.setData("");
-                message.setMsg("当前用户了豆数量不足");
-                message.setSuccess(false);
-            }
         } else {
             message.setMsg("用户地址不存在");
             return message;
@@ -1463,7 +1451,6 @@ public class CmOrderService {
             if (message.getSuccess() == true) {
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
-//                processOrders.processOrders(orderId, 2);
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                 if (StringUtils.isNotBlank(str)) {
                     message.setData(null);
