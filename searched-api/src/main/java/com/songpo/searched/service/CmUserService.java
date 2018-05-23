@@ -2,6 +2,7 @@ package com.songpo.searched.service;
 
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.entity.SlUser;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,7 +35,7 @@ public class CmUserService {
     public SlUser getByPhone(String phone) {
         // 检测账号是否存在，如果不存在，则创建用户
         SlUser user = this.userCache.get(phone);
-        if (null == user) {
+        if (null == user || StringUtils.isBlank(user.getId())) {
             user = this.userService.selectOne(new SlUser() {{
                 setPhone(phone);
             }});

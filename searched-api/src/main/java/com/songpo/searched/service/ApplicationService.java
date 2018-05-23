@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -45,6 +46,7 @@ public class ApplicationService {
      * @param idCardBack  身份证反面照片
      * @param idCardHand  手持身份证照片
      */
+    @Transactional
     public void createAgentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交代理商入驻申请， 代理商信息：{}", agent);
         // 上传身份证正面照片
@@ -96,6 +98,7 @@ public class ApplicationService {
      * @param idCardBack    身份证反面照片
      * @param idCardHand    手持身份证照片
      */
+    @Transactional
     public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，商户信息：{}", business);
         // 上传照片
@@ -126,7 +129,7 @@ public class ApplicationService {
         // 检测账号是否存在，如果不存在，则创建用户
         SlUser user = this.cmUserService.getByPhone(business.getPhone());
 
-        if (null == user) {
+        if (null == user || StringUtils.isBlank(user.getId())) {
             // 设置密码为身份证后6位
             String password = StringUtils.substring(business.getIdCardNumber(), business.getIdCardNumber().length() - 6, business.getIdCardNumber().length());
 
