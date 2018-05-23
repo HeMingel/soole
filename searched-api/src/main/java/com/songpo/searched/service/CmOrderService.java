@@ -1658,8 +1658,8 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         message = checkTheOrder(orderId, user);
-        if (Integer.valueOf(message.getData().get("money").toString()) == 0) {
-            if (message.getSuccess() == true) {
+        if (message.getSuccess() == true) {
+            if (message.getData().get("money").toString().equals("0.00")) {
                 processOrders.processOrders(orderId, 3);
             }
         }
