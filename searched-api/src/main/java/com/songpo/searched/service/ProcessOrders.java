@@ -185,23 +185,25 @@ public class ProcessOrders {
                         //系统通知
                         notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
                     }
-                    // 加入明细表
-                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                        // 目标id
-                        setTargetId(user.getId());
-                        // 订单id
-                        setOrderId(orderId);
-                        // 购物类型
-                        setType(200);
-                        // 扣除金额
-                        setMoney(new BigDecimal(order.getTotalAmount().toString()));
-                        // 钱
-                        setDealType(3);
-                        // 插入时间
-                        setCreateTime(new Date());
-                        // 支出
-                        setTransactionType(1);
-                    }});
+                    if (payType != 3) {
+                        // 加入明细表
+                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                            // 目标id
+                            setTargetId(user.getId());
+                            // 订单id
+                            setOrderId(orderId);
+                            // 购物类型
+                            setType(200);
+                            // 扣除金额
+                            setMoney(new BigDecimal(order.getTotalAmount().toString()));
+                            // 钱
+                            setDealType(3);
+                            // 插入时间
+                            setCreateTime(new Date());
+                            // 支出
+                            setTransactionType(1);
+                        }});
+                    }
                     int silver = user.getSilver() + pulse;
                     userService.updateByPrimaryKeySelective(new SlUser() {{
                         setId(user.getId());

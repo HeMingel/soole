@@ -1551,14 +1551,6 @@ public class CmOrderService {
                             } else {
                                 int p = order.getDeductTotalPulse() - user.getSilver();
                                 int c = user.getCoin() - p;
-                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
-                                    setId(user.getId());
-                                    setCoin(c);
-                                    setSilver(0);
-                                }});
-                                user.setSilver(0);
-                                user.setCoin(c);
-                                userCache.put(user.getClientId(), user);
                                 // 银豆记录
                                 transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
                                     // 目标id
@@ -1567,6 +1559,8 @@ public class CmOrderService {
                                     setOrderId(order.getId());
                                     // 购物类型
                                     setType(200);
+                                    // 创建时间
+                                    setCreateTime(new Date());
                                     // 扣除银豆数量
                                     setSilver(user.getSilver());
                                     // 银豆
@@ -1580,6 +1574,8 @@ public class CmOrderService {
                                     setTargetId(user.getId());
                                     // 订单id
                                     setOrderId(order.getId());
+                                    // 创建时间
+                                    setCreateTime(new Date());
                                     // 购物类型
                                     setType(200);
                                     // 扣除金豆数量
@@ -1589,6 +1585,14 @@ public class CmOrderService {
                                     // 支出
                                     setTransactionType(1);
                                 }});
+                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                                    setId(user.getId());
+                                    setCoin(c);
+                                    setSilver(0);
+                                }});
+                                user.setSilver(0);
+                                user.setCoin(c);
+                                userCache.put(user.getClientId(), user);
                             }
                             // 给店铺老板加上金豆
                             for (SlOrderDetail detail : orderDetails) {
