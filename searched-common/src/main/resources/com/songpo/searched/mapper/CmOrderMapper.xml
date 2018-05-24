@@ -9,7 +9,7 @@
         spr.product_detail_group_name groupName,
         sp.image_url goodImageUrl,
         sp.id productId,
-        sod.quantity counts,
+        sod.quantity quantity,
         so.payment_state paymentState,
         sod.shipping_state shippingState,
         sod.price price,
