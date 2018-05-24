@@ -1600,7 +1600,13 @@ public class CmOrderService {
                                         setId(shop.getOwnerId());
                                     }});
                                     if (null != user1) {
-                                        user1.setCoin(user1.getCoin() + detail.getDeductTotalSilver());
+                                        int p = user1.getCoin() + detail.getDeductTotalSilver();
+                                        user1.setCoin(p);
+                                        userCache.put(user1.getClientId(), user1);
+                                        userService.updateByPrimaryKeySelective(new SlUser() {{
+                                            setId(user1.getId());
+                                            setCoin(p);
+                                        }});
                                     }
                                 }
                             }
