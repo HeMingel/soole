@@ -284,10 +284,10 @@ public class CmOrderService {
                                                         //判断是否为首单
                                                         if (flag.equals(false) && slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
                                                             // 如果是第一单的情况下 需要加上 首单奖励
-                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() + repository.getFirstOrderPulse());
+                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity + repository.getFirstOrderPulse());
                                                         } else {
                                                             // 返了豆数量只限纯金钱模式
-                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
+                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity);
                                                         }
                                                     }});
                                                     // 忘了这块是要表达什么 ?? 如果是新人专享活动的话
@@ -987,10 +987,10 @@ public class CmOrderService {
                 // 是首单的情况 && 该商品活动是新人奖励
                 if (flag.equals(false) && activityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
                     // 如果是第一单的情况下 需要加上 首单奖励
-                    setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() + repository.getFirstOrderPulse());
+                    setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity + repository.getFirstOrderPulse());
                 } else {
                     // 返了豆数量只限纯金钱模式
-                    setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse());
+                    setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity);
                 }
                 // 消费返利
                 if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
