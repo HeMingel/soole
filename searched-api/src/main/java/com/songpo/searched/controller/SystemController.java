@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.UUID;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
@@ -120,6 +119,9 @@ public class SystemController {
                         user.setPhone(phone);
                         user.setPassword(passwordEncoder.encode(password));
 
+                        // 天降洪福，100乐豆（银豆）
+                        user.setSilver(100);
+
                         // 定义生成字符串范围
                         char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                         // 初始化随机生成器
@@ -131,6 +133,9 @@ public class SystemController {
                         // 添加
 //                        userService.insertSelective(user);
                         this.userInsert(user);
+
+                        // 天降洪福，100乐豆（银豆）
+                        sendRegisterGiftToNewUser(user.getId());
 
                         JSONObject data = new JSONObject();
                         data.put("userId", user.getId());
@@ -212,7 +217,6 @@ public class SystemController {
             message.setMsg("短信验证码为空");
         } else {
             String cacheCode = smsVerifyCodeCache.get(phone);
-            cacheCode = "6780";
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
@@ -238,6 +242,9 @@ public class SystemController {
                         user.setPhone(phone);
                         user.setPassword(passwordEncoder.encode(password));
 
+                        // 天降洪福，100乐豆（银豆）
+                        user.setSilver(100);
+
                         // 定义生成字符串范围
                         char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
                         // 初始化随机生成器
@@ -249,6 +256,9 @@ public class SystemController {
                         // 添加
 //                        userService.insertSelective(user);
                         this.userInsert(user);
+
+                        // 天降洪福，100乐豆（银豆）
+                        sendRegisterGiftToNewUser(user.getId());
 
                         JSONObject data = new JSONObject();
                         data.put("clientId", user.getClientId());
@@ -860,7 +870,6 @@ public class SystemController {
         userService.insertSelective(user);
         //添加sl_member
         SlMember member = new SlMember();
-        member.setId(UUID.randomUUID().toString());
         member.setUserId(user.getId());
         memberService.insertSelective(member);
     }
