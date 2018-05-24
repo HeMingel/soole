@@ -100,6 +100,11 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
+     * 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
+     */
+    private Boolean ship;
+
+    /**
      * （暂未使用）关键词
      */
     private String antistop;
@@ -422,6 +427,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
+     *
+     * @return ship - 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
+     */
+    public Boolean getShip() {
+        return ship;
+    }
+
+    /**
+     * 设置第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
+     *
+     * @param ship 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
+     */
+    public void setShip(Boolean ship) {
+        this.ship = ship;
+    }
+
+    /**
      * 获取（暂未使用）关键词
      *
      * @return antistop - （暂未使用）关键词
@@ -551,6 +574,7 @@ public class SlProduct implements Serializable {
         sb.append(", recommend=").append(recommend);
         sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
+        sb.append(", ship=").append(ship);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);
         sb.append(", remark=").append(remark);

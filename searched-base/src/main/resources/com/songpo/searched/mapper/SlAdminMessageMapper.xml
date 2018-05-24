@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-      <result column="am_user_id" jdbcType="VARCHAR" property="amUserId"/>
+    <result column="am_user_id" jdbcType="VARCHAR" property="amUserId" />
     <result column="am_title" jdbcType="VARCHAR" property="amTitle" />
     <result column="am_user_type" jdbcType="BIT" property="amUserType" />
     <result column="am_msg_type" jdbcType="TINYINT" property="amMsgType" />
@@ -24,7 +24,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, am_user_id, am_title, am_user_type, am_msg_type, am_time, created_at, updated_at
+    id, am_user_id, am_title, am_user_type, am_msg_type, am_time, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

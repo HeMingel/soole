@@ -73,6 +73,12 @@ public class SlCheckTopStore implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    /**
+     * 记录插入股东编号
+     */
+    @Column(name = "insert_key")
+    private String insertKey;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -273,6 +279,24 @@ public class SlCheckTopStore implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * 获取记录插入股东编号
+     *
+     * @return insert_key - 记录插入股东编号
+     */
+    public String getInsertKey() {
+        return insertKey;
+    }
+
+    /**
+     * 设置记录插入股东编号
+     *
+     * @param insertKey 记录插入股东编号
+     */
+    public void setInsertKey(String insertKey) {
+        this.insertKey = insertKey == null ? null : insertKey.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -290,6 +314,7 @@ public class SlCheckTopStore implements Serializable {
         sb.append(", checkBecause=").append(checkBecause);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", insertKey=").append(insertKey);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

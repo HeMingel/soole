@@ -16,12 +16,13 @@
     <result column="check_because" jdbcType="VARCHAR" property="checkBecause" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="insert_key" jdbcType="VARCHAR" property="insertKey" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, shop_id, quota_id, identy_front, identy_back, apply_time, check_time, check_status, 
-    check_because, created_at, updated_at
+    check_because, created_at, updated_at, insert_key
   </sql>
 </mapper>

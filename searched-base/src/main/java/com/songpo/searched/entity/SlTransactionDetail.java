@@ -12,13 +12,13 @@ public class SlTransactionDetail implements Serializable {
     private String id;
 
     /**
-     * 来源id，
+     * 对方id（转账使用）
      */
     @Column(name = "source_id")
     private String sourceId;
 
     /**
-     * 目标id
+     * 当前用户id
      */
     @Column(name = "target_id")
     private String targetId;
@@ -36,7 +36,7 @@ public class SlTransactionDetail implements Serializable {
     private String orderId;
 
     /**
-     * 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
+     * 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现  7.中军创券兑换银豆 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
     private Integer type;
 
@@ -102,36 +102,36 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取来源id，
+     * 获取对方id（转账使用）
      *
-     * @return source_id - 来源id，
+     * @return source_id - 对方id（转账使用）
      */
     public String getSourceId() {
         return sourceId;
     }
 
     /**
-     * 设置来源id，
+     * 设置对方id（转账使用）
      *
-     * @param sourceId 来源id，
+     * @param sourceId 对方id（转账使用）
      */
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId == null ? null : sourceId.trim();
     }
 
     /**
-     * 获取目标id
+     * 获取当前用户id
      *
-     * @return target_id - 目标id
+     * @return target_id - 当前用户id
      */
     public String getTargetId() {
         return targetId;
     }
 
     /**
-     * 设置目标id
+     * 设置当前用户id
      *
-     * @param targetId 目标id
+     * @param targetId 当前用户id
      */
     public void setTargetId(String targetId) {
         this.targetId = targetId == null ? null : targetId.trim();
@@ -174,18 +174,18 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
-     * 获取消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
+     * 获取消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现  7.中军创券兑换银豆 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      *
-     * @return type - 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
+     * @return type - 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现  7.中军创券兑换银豆 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
+     * 设置消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现  7.中军创券兑换银豆 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      *
-     * @param type 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现   （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
+     * @param type 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回 6.余额提现  7.中军创券兑换银豆 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单   （300-400：收益相关）
      */
     public void setType(Integer type) {
         this.type = type;

@@ -1541,6 +1541,8 @@ public class CmOrderService {
                                     setOrderId(order.getId());
                                     // 购物类型
                                     setType(200);
+                                    // 创建时间
+                                    setCreateTime(new Date());
                                     // 扣除银豆数量
                                     setSilver(order.getDeductTotalPulse());
                                     // 银豆

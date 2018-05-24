@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlSystemVersionMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlSystemVersion">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_name" jdbcType="VARCHAR" property="appName" />
+    <result column="server_version" jdbcType="VARCHAR" property="serverVersion" />
+    <result column="last_force" jdbcType="INTEGER" property="lastForce" />
+    <result column="update_url" jdbcType="VARCHAR" property="updateUrl" />
+    <result column="upgrade_info" jdbcType="VARCHAR" property="upgradeInfo" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, app_name, server_version, last_force, update_url, upgrade_info, updated_at, created_at
+  </sql>
+</mapper>
