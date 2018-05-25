@@ -1626,7 +1626,7 @@ public class CmOrderService {
                                             setCoin(detail.getDeductTotalSilver());
                                             // 金豆
                                             setDealType(5);
-                                            // 支出
+                                            // 收入
                                             setTransactionType(2);
                                         }});
                                     }
