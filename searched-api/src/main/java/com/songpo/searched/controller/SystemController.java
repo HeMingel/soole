@@ -482,10 +482,6 @@ public class SystemController {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setOpenId(openId);
             }});
-
-            if (null != user) {
-                this.userCache.put(openId, user);
-            }
 //            }
 
             // 从数据库查询用户信息
@@ -513,6 +509,9 @@ public class SystemController {
 
                 this.sendRegisterGiftToNewUser(user.getId());
             }
+            user.setLastLogin(new Date());
+            user.setLoginCount(user.getLoginCount() + 1);
+            userService.updateByPrimaryKeySelective(user);
 
             this.userCache.put(openId, user);
 
@@ -532,6 +531,7 @@ public class SystemController {
             data.put("email", user.getEmail());
             // 是否设置支付密码
             data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+            data.put("loginCount", user.getLoginCount());
 
             message.setData(data);
             message.setSuccess(true);
@@ -597,6 +597,9 @@ public class SystemController {
                         // 天降洪福，100乐豆（银豆）
                         sendRegisterGiftToNewUser(user.getId());
                     }
+                    user.setLastLogin(new Date());
+                    user.setLoginCount(user.getLoginCount() + 1);
+                    userService.updateByPrimaryKeySelective(user);
 
                     this.userCache.put(phone, user);
 //                    }
@@ -619,6 +622,7 @@ public class SystemController {
                     data.put("email", user.getEmail());
                     // 是否设置支付密码
                     data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+                    data.put("loginCount", user.getLoginCount());
 
                     message.setData(data);
                     message.setSuccess(true);
