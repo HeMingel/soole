@@ -85,7 +85,7 @@ public class SignInService {
 //判断用户签到时间是否是在今天凌晨之前
         if (flag) {
 //如果上次签到是昨天凌晨之前，说明没有连续签到
-            signIn.setAwardSilver(2);
+            signIn.setAwardSilver(1);
             signIn.setUserId(user.getId());
             signIn.setId(UUID.randomUUID().toString());
             if (flag1) {
@@ -101,9 +101,9 @@ public class SignInService {
                 int checkTimes = signIn.getSignNum();
                 checkTimes++;
                 if (checkTimes == 3) {
-                    signIn.setAwardSilver(signIn.getAwardSilver() + 3);
+                    signIn.setAwardSilver(signIn.getAwardSilver() + 1);
                 } else if (checkTimes == 7) {
-                    signIn.setAwardSilver(signIn.getAwardSilver() + 12);
+                    signIn.setAwardSilver(signIn.getAwardSilver() + 2);
                 }
                 //连续签到天数加1
                 signIn.setSignNum(checkTimes);
@@ -131,7 +131,7 @@ public class SignInService {
                     setCreateTime(new Date());
                     // 银豆
                     setDealType(6);
-                    // 支出
+                    // 收入
                     setTransactionType(2);
                 }});
             } else {
