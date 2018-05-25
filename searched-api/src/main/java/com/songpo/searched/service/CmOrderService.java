@@ -397,7 +397,6 @@ public class CmOrderService {
         return message;
     }
 
-
     /**
      * 单商品下单
      *
@@ -1612,6 +1611,23 @@ public class CmOrderService {
                                         userService.updateByPrimaryKeySelective(new SlUser() {{
                                             setId(user1.getId());
                                             setCoin(p);
+                                        }});
+                                        // 金豆记录
+                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                            // 目标id
+                                            setTargetId(user1.getId());
+                                            // 订单id
+                                            setOrderId(order.getId());
+                                            // 创建时间
+                                            setCreateTime(new Date());
+                                            // 购物类型店主收入
+                                            setType(300);
+                                            // 增加金豆数量
+                                            setCoin(detail.getDeductTotalSilver());
+                                            // 金豆
+                                            setDealType(5);
+                                            // 收入
+                                            setTransactionType(2);
                                         }});
                                     }
                                 }
