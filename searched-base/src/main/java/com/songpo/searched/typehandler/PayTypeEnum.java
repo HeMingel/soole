@@ -5,9 +5,11 @@ package com.songpo.searched.typehandler;
  */
 public enum PayTypeEnum implements BaseEnum {
 
-    WXPAY("微信支付", 1),
-    ALIPAY("支付宝支付", 2),
-    BANK_CARD_PAY("银行卡支付", 3);
+    WX_APP_PAY("微信App支付", 1),
+    WX_H5_PAY("微信H5支付", 2),
+    ALI_APP_PAY("支付宝App支付", 3),
+    ALI_H5_PAY("支付宝H5支付", 4),
+    BANK_CARD_PAY("银行卡支付", 5);
 
     private String label;
 
