@@ -49,18 +49,26 @@ public class LoginUserService {
             if (auth instanceof OAuth2Authentication) {
                 String clientId = ((OAuth2Authentication) auth).getOAuth2Request().getClientId();
                 if (StringUtils.isNotEmpty(clientId)) {
-                    // 从缓存检测用户信息
-                    user = this.cache.get(clientId);
+//                    // 从缓存检测用户信息
+//                    user = this.cache.get(clientId);
+//
+//                    // 从数据库查询用户信息
+//                    if (null == user) {
+//                        user = this.service.selectOne(new SlUser() {{
+//                            setClientId(clientId);
+//                        }});
+//
+//                        if (null != user) {
+//                            this.cache.put(clientId, user);
+//                        }
+//                    }
+                    /** redis数据和数据库数据不一致，直接从数据库查询数据 **/
+                    user = this.service.selectOne(new SlUser() {{
+                        setClientId(clientId);
+                    }});
 
-                    // 从数据库查询用户信息
-                    if (null == user) {
-                        user = this.service.selectOne(new SlUser() {{
-                            setClientId(clientId);
-                        }});
-
-                        if (null != user) {
-                            this.cache.put(clientId, user);
-                        }
+                    if (null != user) {
+                        this.cache.put(clientId, user);
                     }
                 }
             } else {

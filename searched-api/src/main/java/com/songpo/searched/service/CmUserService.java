@@ -48,14 +48,21 @@ public class CmUserService {
      */
     public SlUser getByPhone(String phone) {
         // 检测账号是否存在，如果不存在，则创建用户
-        SlUser user = this.userCache.get(phone);
+//        SlUser user = this.userCache.get(phone);
+//        if (null == user || StringUtils.isBlank(user.getId())) {
+//            user = this.userService.selectOne(new SlUser() {{
+//                setPhone(phone);
+//            }});
+//            if (null == user || StringUtils.isBlank(user.getId())) {
+//                this.userCache.put(phone, user);
+//            }
+//        }
+        /** redis数据和数据库数据不一致，直接从数据库查询数据 **/
+        SlUser user = this.userService.selectOne(new SlUser() {{
+            setPhone(phone);
+        }});
         if (null == user || StringUtils.isBlank(user.getId())) {
-            user = this.userService.selectOne(new SlUser() {{
-                setPhone(phone);
-            }});
-            if (null == user || StringUtils.isBlank(user.getId())) {
-                this.userCache.put(phone, user);
-            }
+            this.userCache.put(phone, user);
         }
 
         return user;
@@ -69,14 +76,21 @@ public class CmUserService {
      */
     public SlUser getByClientId(String clientId) {
         // 检测账号是否存在，如果不存在，则创建用户
-        SlUser user = this.userCache.get(clientId);
+//        SlUser user = this.userCache.get(clientId);
+//        if (null == user || StringUtils.isBlank(user.getId())) {
+//            user = this.userService.selectOne(new SlUser() {{
+//                setClientId(clientId);
+//            }});
+//            if (null == user || StringUtils.isBlank(user.getId())) {
+//                this.userCache.put(clientId, user);
+//            }
+//        }
+        /** redis数据和数据库数据不一致，直接从数据库查询数据 **/
+        SlUser user = this.userService.selectOne(new SlUser() {{
+            setClientId(clientId);
+        }});
         if (null == user || StringUtils.isBlank(user.getId())) {
-            user = this.userService.selectOne(new SlUser() {{
-                setClientId(clientId);
-            }});
-            if (null == user || StringUtils.isBlank(user.getId())) {
-                this.userCache.put(clientId, user);
-            }
+            this.userCache.put(clientId, user);
         }
 
         return user;
