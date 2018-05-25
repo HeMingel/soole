@@ -713,6 +713,7 @@ public class SystemController {
                         userService.updateByPrimaryKeySelective(user);
                         // 更新缓存
                         this.userCache.put(openId, user);
+                        this.userCache.put(phone, user);
                     }
                     // 清除验证码
                     this.smsVerifyCodeCache.evict(phone);
@@ -820,6 +821,7 @@ public class SystemController {
                         userService.updateByPrimaryKeySelective(user);
                         // 更新缓存
                         this.userCache.put(openId, user);
+                        this.userCache.put(phone, user);
                     }
                     // 清除验证码
                     this.smsVerifyCodeCache.evict(phone);
