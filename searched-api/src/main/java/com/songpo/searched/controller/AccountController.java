@@ -54,8 +54,6 @@ public class AccountController {
         log.debug("余额充值，money = {}，payType = {}，userId = {}", money, payType, user.getId());
         if (money <= 0) {
             message.setMsg("支付金额不能小于0元");
-        } else if (payType != 1 && payType != 2) {
-            message.setMsg("请选择支付方式");
         } else {
             try {
                 message = accountService.recharge(req, money, payType);
