@@ -562,7 +562,7 @@ public class SystemController {
             message.setMsg("密码为空");
         } else {
             try {
-                String pwd = this.smsPasswordCache.get(phone);
+                String pwd = this.smsVerifyCodeCache.get(phone);
                 if (StringUtils.isBlank(pwd) || !pwd.contentEquals(password)) {
                     message.setMsg("密码已过期，请重试");
                 } else {
