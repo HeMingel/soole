@@ -48,33 +48,40 @@ public class AfterSalesService {
     public void insertAfterSales(SlAfterSalesService slAfterSalesService, MultipartFile[] files) {
         log.debug("slAfterSalesService = [" + slAfterSalesService + "], files = [" + files + "]");
         SlUser slUser = loginUserService.getCurrentLoginUser();
+
         SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
             setId(slAfterSalesService.getOrderDetailId());
             setCreator(slUser.getId());
         }});
         if (null != detail) {
-            slAfterSalesService.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            slAfterSalesService.setUserId(slUser.getId());
-            slAfterSalesService.setMoney(detail.getPrice());
-            slAfterSalesService.setProductId(detail.getProductId());
-            slAfterSalesService.setCreator(slUser.getId());
-            slAfterSalesService.setId(UUID.randomUUID().toString());
-            slAfterSalesService.setShopId(detail.getShopId());
-            this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
-            orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
-                setId(detail.getId());
-                setShippingState(7);
+            SlAfterSalesService salesService = slAfterSalesServiceMapper.selectOne(new SlAfterSalesService() {{
+                setUserId(slUser.getId());
+                setOrderDetailId(detail.getId());
             }});
-        }
-        if (files.length <= 3 && files.length > 0) {
-            for (MultipartFile image : files) {
-                if (null != image && !image.isEmpty()) {
-                    String fileUrl = fileService.upload(null, image);
-                    slAfterSaleServiceVoucherImageMapper.insertSelective(new SlAfterSaleServiceVoucherImage() {{
-                        setAfterSalesServiceId(slAfterSalesService.getId());
-                        setId(UUID.randomUUID().toString());
-                        setImageUrl(fileUrl);
-                    }});
+            if (salesService == null) {
+                slAfterSalesService.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                slAfterSalesService.setUserId(slUser.getId());
+                slAfterSalesService.setMoney(detail.getPrice());
+                slAfterSalesService.setProductId(detail.getProductId());
+                slAfterSalesService.setCreator(slUser.getId());
+                slAfterSalesService.setId(UUID.randomUUID().toString());
+                slAfterSalesService.setShopId(detail.getShopId());
+                this.slAfterSalesServiceMapper.insertSelective(slAfterSalesService);
+                orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                    setId(detail.getId());
+                    setShippingState(7);
+                }});
+                if (files.length <= 3 && files.length > 0) {
+                    for (MultipartFile image : files) {
+                        if (null != image && !image.isEmpty()) {
+                            String fileUrl = fileService.upload(null, image);
+                            slAfterSaleServiceVoucherImageMapper.insertSelective(new SlAfterSaleServiceVoucherImage() {{
+                                setAfterSalesServiceId(slAfterSalesService.getId());
+                                setId(UUID.randomUUID().toString());
+                                setImageUrl(fileUrl);
+                            }});
+                        }
+                    }
                 }
             }
         }
