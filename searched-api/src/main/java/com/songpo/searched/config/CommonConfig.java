@@ -1,16 +1,18 @@
 package com.songpo.searched.config;
 
-import com.songpo.searched.entity.*;
+import com.songpo.searched.entity.SlOrder;
+import com.songpo.searched.entity.SlOrderDetail;
+import com.songpo.searched.entity.SlReturnsDetail;
+import com.songpo.searched.entity.SlSignIn;
 import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlSignInMapper;
-import com.songpo.searched.service.*;
-import org.apache.commons.lang3.StringUtils;
-import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.OrderDetailService;
 import com.songpo.searched.service.OrderService;
 import com.songpo.searched.service.ProcessOrders;
+import com.songpo.searched.service.UserService;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.wxpay.service.WxPayService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -225,7 +227,7 @@ public class CommonConfig {
                     payOverTimeOrderList.add(order);
                 } else {
                     //比较大小，总金额为0的过滤
-                    if (order.getTotalAmount().compareTo(new BigDecimal("0")) <= 0) {
+                    if (order.getTotalAmount().compareTo(new BigDecimal(0)) <= 0) {
                         removeOrderList.add(order);
                     }
                 }

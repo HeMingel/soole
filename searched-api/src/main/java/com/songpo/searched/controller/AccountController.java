@@ -12,12 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Map;
 
 @Api(description = "账户管理")
@@ -41,10 +39,10 @@ public class AccountController {
     @ApiOperation(value = "余额充值")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "money", value = "充值金额", paramType = "form", required = true),
-            @ApiImplicitParam(name = "payType", value = "支付方式：1-微信；2-支付宝；3-银行卡支付", paramType = "form", required = true)
+            @ApiImplicitParam(name = "payType", value = "支付方式：1-微信APP；2-微信H5；3-支付宝APP；4-支付宝H5；5-银行卡支付", paramType = "form", required = true)
     })
     @PostMapping("recharge")
-    public BusinessMessage<Map> recharge(HttpServletRequest req, double money, int payType) {
+    public BusinessMessage<Map> recharge(HttpServletRequest req, BigDecimal money, int payType) {
         BusinessMessage<Map> message = new BusinessMessage<>();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (user == null || StringUtils.isBlank(user.getId())) {
@@ -52,7 +50,7 @@ public class AccountController {
             return message;
         }
         log.debug("余额充值，money = {}，payType = {}，userId = {}", money, payType, user.getId());
-        if (money <= 0) {
+        if (money.compareTo(new BigDecimal(0)) <= 0) {
             message.setMsg("支付金额不能小于0元");
         } else {
             try {
@@ -61,6 +59,39 @@ public class AccountController {
                 log.error("余额充值异常", e);
                 message.setMsg("充值异常：" + e.getMessage());
             }
+        }
+
+        return message;
+    }
+
+    /**
+     * 余额充值通知
+     * 1、余额充值通知
+     * 2、调用支付查询接口，查询是否支付成功并处理
+     *
+     * @param outTradeNo 商户订单号
+     * @param payType
+     * @return
+     */
+    @ApiOperation(value = "余额充值通知")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "outTradeNo", value = "商户订单号", paramType = "form", required = true),
+            @ApiImplicitParam(name = "payType", value = "支付方式：1-微信APP；2-微信H5；3-支付宝APP；4-支付宝H5；5-银行卡支付", paramType = "form", required = true)
+    })
+    @GetMapping("notify")
+    public BusinessMessage rechargeNotify(String outTradeNo, int payType) {
+        BusinessMessage message = new BusinessMessage<>();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (user == null || StringUtils.isBlank(user.getId())) {
+            message.setMsg("获取当前登录用户信息失败");
+            return message;
+        }
+        log.debug("余额，outTradeNo = {}，payType = {}，userId = {}", outTradeNo, payType, user.getId());
+        try {
+            message = accountService.rechargeNotify(outTradeNo, payType);
+        } catch (Exception e) {
+            log.error("余额充值异常", e);
+            message.setMsg("充值异常：" + e.getMessage());
         }
 
         return message;

@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -138,6 +138,18 @@ public class SlUser implements Serializable {
      * 账号状态：0 禁用， 1 启用
      */
     private Integer status;
+
+    /**
+     * 登录次数
+     */
+    @Column(name = "login_count")
+    private Integer loginCount;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(name = "last_login")
+    private Date lastLogin;
 
     /**
      * 创建时间
@@ -600,6 +612,42 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取登录次数
+     *
+     * @return login_count - 登录次数
+     */
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    /**
+     * 设置登录次数
+     *
+     * @param loginCount 登录次数
+     */
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    /**
+     * 获取最后登录时间
+     *
+     * @return last_login - 最后登录时间
+     */
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    /**
+     * 设置最后登录时间
+     *
+     * @param lastLogin 最后登录时间
+     */
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return created_at - 创建时间
@@ -666,6 +714,8 @@ public class SlUser implements Serializable {
         sb.append(", openId=").append(openId);
         sb.append(", type=").append(type);
         sb.append(", status=").append(status);
+        sb.append(", loginCount=").append(loginCount);
+        sb.append(", lastLogin=").append(lastLogin);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

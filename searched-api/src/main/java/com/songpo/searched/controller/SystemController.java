@@ -482,10 +482,6 @@ public class SystemController {
             SlUser user = this.userService.selectOne(new SlUser() {{
                 setOpenId(openId);
             }});
-
-            if (null != user) {
-                this.userCache.put(openId, user);
-            }
 //            }
 
             // 从数据库查询用户信息
@@ -513,11 +509,15 @@ public class SystemController {
 
                 this.sendRegisterGiftToNewUser(user.getId());
             }
+            user.setLastLogin(new Date());
+            user.setLoginCount(user.getLoginCount() + 1);
+            userService.updateByPrimaryKeySelective(user);
 
             this.userCache.put(openId, user);
 
             JSONObject data = new JSONObject();
             data.put("userId", user.getId());
+            data.put("userName", user.getUsername());
             data.put("clientId", user.getClientId());
             data.put("clientSecret", user.getClientSecret());
             // 用户真实姓名
@@ -532,6 +532,7 @@ public class SystemController {
             data.put("email", user.getEmail());
             // 是否设置支付密码
             data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+            data.put("loginCount", user.getLoginCount());
 
             message.setData(data);
             message.setSuccess(true);
@@ -561,7 +562,7 @@ public class SystemController {
             message.setMsg("密码为空");
         } else {
             try {
-                String pwd = this.smsPasswordCache.get(phone);
+                String pwd = this.smsVerifyCodeCache.get(phone);
                 if (StringUtils.isBlank(pwd) || !pwd.contentEquals(password)) {
                     message.setMsg("密码已过期，请重试");
                 } else {
@@ -597,6 +598,9 @@ public class SystemController {
                         // 天降洪福，100乐豆（银豆）
                         sendRegisterGiftToNewUser(user.getId());
                     }
+                    user.setLastLogin(new Date());
+                    user.setLoginCount(user.getLoginCount() + 1);
+                    userService.updateByPrimaryKeySelective(user);
 
                     this.userCache.put(phone, user);
 //                    }
@@ -619,6 +623,10 @@ public class SystemController {
                     data.put("email", user.getEmail());
                     // 是否设置支付密码
                     data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
+                    data.put("loginCount", user.getLoginCount());
+
+                    // 清除验证码
+                    this.smsVerifyCodeCache.evict(phone);
 
                     message.setData(data);
                     message.setSuccess(true);

@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -66,6 +66,12 @@ public class SlTransactionDetail implements Serializable {
      */
     @Column(name = "transaction_type")
     private Integer transactionType;
+
+    /**
+     * 交易状态：1-已生效；2-未生效
+     */
+    @Column(name = "transaction_status")
+    private Byte transactionStatus;
 
     /**
      * 创建时间
@@ -282,6 +288,24 @@ public class SlTransactionDetail implements Serializable {
     }
 
     /**
+     * 获取交易状态：1-已生效；2-未生效
+     *
+     * @return transaction_status - 交易状态：1-已生效；2-未生效
+     */
+    public Byte getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    /**
+     * 设置交易状态：1-已生效；2-未生效
+     *
+     * @param transactionStatus 交易状态：1-已生效；2-未生效
+     */
+    public void setTransactionStatus(Byte transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -352,6 +376,7 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", silver=").append(silver);
         sb.append(", dealType=").append(dealType);
         sb.append(", transactionType=").append(transactionType);
+        sb.append(", transactionStatus=").append(transactionStatus);
         sb.append(", createTime=").append(createTime);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
