@@ -1605,7 +1605,8 @@ public class CmOrderService {
                                         setId(shop.getOwnerId());
                                     }});
                                     if (null != user1) {
-                                        int p = user1.getCoin() + detail.getDeductTotalSilver();
+                                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
+                                        int p = user1.getCoin() + silvers;
                                         user1.setCoin(p);
                                         userCache.put(user1.getClientId(), user1);
                                         userService.updateByPrimaryKeySelective(new SlUser() {{
@@ -1623,7 +1624,7 @@ public class CmOrderService {
                                             // 购物类型店主收入
                                             setType(300);
                                             // 增加金豆数量
-                                            setCoin(detail.getDeductTotalSilver());
+                                            setCoin(silvers);
                                             // 金豆
                                             setDealType(5);
                                             // 收入
