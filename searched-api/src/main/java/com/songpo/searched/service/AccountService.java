@@ -141,6 +141,9 @@ public class AccountService {
         } else if (payTypeEnum.equals(PayTypeEnum.BANK_CARD_PAY)) {
 
         }
+        if (payStatus == true) {
+
+        }
 
         return message;
     }
