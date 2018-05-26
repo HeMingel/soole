@@ -5,6 +5,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.typehandler.*;
+import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
@@ -123,21 +124,22 @@ public class AccountService {
             return message;
         }
 
-        /********** 支付装填查询 ***********/
-        Map<String, String> map = new HashMap<>();
-        switch (payTypeEnum) {
-            case WX_APP_PAY:
-                break;
-            case WX_H5_PAY:
-                break;
-            case ALI_APP_PAY:
-                break;
-            case ALI_H5_PAY:
-                break;
-            case BANK_CARD_PAY:
-                break;
-            default:
-                break;
+        /********** 支付状态查询 ***********/
+        //第三方返回的支付状态
+        boolean payStatus = false;
+        //第三方返回的支付金额
+        BigDecimal payAmount;
+        if (payTypeEnum.equals(PayTypeEnum.WX_APP_PAY) || payTypeEnum.equals(PayTypeEnum.WX_H5_PAY)) {
+            Map<String, String> result = wxPayService.orderQuery("", transactionDetailId);
+            if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS") && result.get("trade_state").equals("SUCCESS")) {
+                payStatus = true;
+                double total_fee = Arith.div(Double.valueOf(result.get("total_fee")), 100, 2);
+                payAmount = new BigDecimal(total_fee);
+            }
+        } else if (payTypeEnum.equals(PayTypeEnum.ALI_APP_PAY) || payTypeEnum.equals(PayTypeEnum.ALI_H5_PAY)) {
+
+        } else if (payTypeEnum.equals(PayTypeEnum.BANK_CARD_PAY)) {
+
         }
 
         return message;

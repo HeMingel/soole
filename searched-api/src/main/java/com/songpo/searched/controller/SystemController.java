@@ -625,6 +625,9 @@ public class SystemController {
                     data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                     data.put("loginCount", user.getLoginCount());
 
+                    // 清除验证码
+                    this.smsVerifyCodeCache.evict(phone);
+
                     message.setData(data);
                     message.setSuccess(true);
                 }
