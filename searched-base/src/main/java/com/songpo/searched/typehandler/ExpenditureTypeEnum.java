@@ -24,7 +24,8 @@ public enum ExpenditureTypeEnum implements BaseEnum {
     INVITE_REWARD("邀请好友奖励", 102),
     SHOPPING_PAYMENT("购物支付", 200),
     SHOPPING_AWAY("购物赠送", 201),
-    COMMENT_REWARD("评价晒单奖励", 202);
+    COMMENT_REWARD("评价晒单奖励", 202),
+    SHARE_AWARD("分享奖励", 203);
 
     private String label;
 
