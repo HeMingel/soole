@@ -7,6 +7,7 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
+import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,6 +52,8 @@ public class ProcessOrders {
     private SlTransactionDetailMapper transactionDetailMapper;
     @Autowired
     private OrderCache orderCache;
+    @Autowired
+    private ShopService shopService;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -170,6 +173,17 @@ public class ProcessOrders {
                                 productService.updateByPrimaryKeySelective(new SlProduct() {{
                                     setId(product.getId());
                                     setSalesVolume(product.getSalesVolume() + 1);
+                                }});
+                            }
+                            SlShop shop = shopService.selectOne(new SlShop() {{
+                                setId(detail.getShopId());
+                            }});
+                            if (null != shop) {
+                                Double money = Arith.mul(detail.getPrice().doubleValue(), detail.getQuantity());
+                                Double tm = shop.getTotalSales().doubleValue() + money;
+                                shopService.updateByPrimaryKeySelective(new SlShop() {{
+                                    setId(shop.getId());
+                                    setTotalSales(BigDecimal.valueOf(tm));
                                 }});
                             }
                             JSONObject object = new JSONObject();
