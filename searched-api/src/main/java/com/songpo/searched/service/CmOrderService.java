@@ -1723,7 +1723,7 @@ public class CmOrderService {
             message.setMsg("订单支付后才可以分享获得奖励");
             return message;
         }
-        if (order.getShareCount() > 2) {
+        if (order.getShareCount() >= 2) {
             message.setMsg("已经获取过分享奖励");
             return message;
         }
@@ -1735,22 +1735,30 @@ public class CmOrderService {
         List<SlOrderDetail> orderDetailList = orderDetailService.select(new SlOrderDetail() {{
             setOrderId(orderId);
         }});
+        //订单支付现金金额
         BigDecimal totalAmount = new BigDecimal(0);
+        //拼团商品数量
+        int groupProductCnt = 0;
         if (orderDetailList != null && orderDetailList.size() > 0) {
             for (SlOrderDetail orderDetail : orderDetailList) {
-                if (StringUtils.isNotBlank(orderDetail.getProductId())) {
-                    SlProduct product = productService.selectByPrimaryKey(orderDetail.getProductId());
-                    if (product != null && StringUtils.isNotBlank(product.getId())) {
-                        /** 云易购物、普通商品可以获取分享奖励 **/
-                        if (product.getSalesModeId().equals(String.valueOf(SalesModeConstant.SALES_MODE_PRESELL)) || product.getSalesModeId().equals(String.valueOf(SalesModeConstant.SALES_MODE_NORMAL))) {
-                            totalAmount = totalAmount.add(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
-                        }
-                    }
+                /** 云易购物、普通商品、拼团可以获取分享奖励 **/
+                if (orderDetail.getType().equals(OrderDetailTypeEnum.PRESELL_ORDER.getValue())
+                        || orderDetail.getType().equals(OrderDetailTypeEnum.NORMAL_ORDER.getValue())
+                        || orderDetail.getType().equals(OrderDetailTypeEnum.GROUP_ORDER.getValue())) {
+                    totalAmount = totalAmount.add(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
+                }
+                /** 订单中拼团商品数量 **/
+                if (orderDetail.getType().equals(OrderDetailTypeEnum.GROUP_ORDER.getValue())) {
+                    groupProductCnt++;
                 }
             }
         }
+        if (groupProductCnt > 0 && (order.getSpellGroupStatus() == null || order.getSpellGroupStatus() != 2)) {
+            message.setMsg("拼团订单需要拼团成功才可以获取分享奖励");
+            return message;
+        }
         if (totalAmount.compareTo(new BigDecimal(0)) <= 0) {
-            message.setMsg("只有云易购物、普通商品可以获取分享奖励");
+            message.setMsg("只有云易购物、普通、拼团商品可以获取分享奖励");
             return message;
         }
         int silverAward = 0;
