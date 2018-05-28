@@ -175,16 +175,18 @@ public class ProcessOrders {
                                     setSalesVolume(product.getSalesVolume() + 1);
                                 }});
                             }
-                            SlShop shop = shopService.selectOne(new SlShop() {{
-                                setId(detail.getShopId());
-                            }});
-                            if (null != shop) {
-                                Double money = Arith.mul(detail.getPrice().doubleValue(), detail.getQuantity());
-                                Double tm = shop.getTotalSales().doubleValue() + money;
-                                shopService.updateByPrimaryKeySelective(new SlShop() {{
-                                    setId(shop.getId());
-                                    setTotalSales(BigDecimal.valueOf(tm));
+                            if (detail.getPrice().compareTo(BigDecimal.valueOf(0)) > 0) {
+                                SlShop shop = shopService.selectOne(new SlShop() {{
+                                    setId(detail.getShopId());
                                 }});
+                                if (null != shop) {
+                                    Double money = Arith.mul(detail.getPrice().doubleValue(), detail.getQuantity());
+                                    Double tm = shop.getTotalSales().doubleValue() + money;
+                                    shopService.updateByPrimaryKeySelective(new SlShop() {{
+                                        setId(shop.getId());
+                                        setTotalSales(BigDecimal.valueOf(tm));
+                                    }});
+                                }
                             }
                             JSONObject object = new JSONObject();
                             object.put("avatar", user.getAvatar());
