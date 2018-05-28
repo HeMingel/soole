@@ -15,7 +15,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
-import com.songpo.searched.typehandler.MessageTypeEnum;
+import com.songpo.searched.typehandler.*;
 import com.songpo.searched.util.*;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
@@ -88,6 +88,8 @@ public class CmOrderService {
     private ShopService shopService;
     @Autowired
     private ProcessOrders processOrders;
+    @Autowired
+    private TransactionDetailService transactionDetailService;
 
     /**
      * 多商品下单
@@ -1691,6 +1693,93 @@ public class CmOrderService {
                 processOrders.processOrders(orderId, 3);
             }
         }
+        return message;
+    }
+
+    /**
+     * 分享订单奖励
+     * 1、第一次分享奖励订单支付金额的16%银豆
+     * 2、第二次分享奖励50银豆
+     * 3、支付时间5分钟内可以领取红包
+     *
+     * @param orderId 分享的订单ID
+     * @return
+     */
+    @Transactional
+    public BusinessMessage shareAward(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (user == null || StringUtils.isBlank(user.getId())) {
+            message.setMsg("获取当前登录用户信息失败");
+            return message;
+        }
+        SlOrder order = orderService.selectByPrimaryKey(orderId);
+        if (order == null || StringUtils.isBlank(order.getId()) || !order.getUserId().equals(user.getId())) {
+            message.setMsg("订单不存在");
+            return message;
+        }
+        if (order.getPaymentState() != 1) {
+            message.setMsg("订单支付后才可以分享获得奖励");
+            return message;
+        }
+        if (order.getShareCount() > 2) {
+            message.setMsg("已经获取过分享奖励");
+            return message;
+        }
+        /** 订单支付5分钟内可以领取红包 **/
+        if (LocalDateTimeUtils.parse(order.getPayTime()).before(LocalDateTimeUtils.addMinute(new Date(), -5))) {
+            message.setMsg("已经超过获取奖励时间，无法获取奖励");
+            return message;
+        }
+        List<SlOrderDetail> orderDetailList = orderDetailService.select(new SlOrderDetail() {{
+            setOrderId(orderId);
+        }});
+        BigDecimal totalAmount = new BigDecimal(0);
+        if (orderDetailList != null && orderDetailList.size() > 0) {
+            for (SlOrderDetail orderDetail : orderDetailList) {
+                if (StringUtils.isNotBlank(orderDetail.getProductId())) {
+                    SlProduct product = productService.selectByPrimaryKey(orderDetail.getProductId());
+                    if (product != null && StringUtils.isNotBlank(product.getId())) {
+                        /** 云易购物、普通商品可以获取分享奖励 **/
+                        if (product.getSalesModeId().equals(String.valueOf(SalesModeConstant.SALES_MODE_PRESELL)) || product.getSalesModeId().equals(String.valueOf(SalesModeConstant.SALES_MODE_NORMAL))) {
+                            totalAmount = totalAmount.add(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
+                        }
+                    }
+                }
+            }
+        }
+        if (totalAmount.compareTo(new BigDecimal(0)) <= 0) {
+            message.setMsg("只有云易购物、普通商品可以获取分享奖励");
+            return message;
+        }
+        int silverAward = 0;
+        if (order.getShareCount() == 0) {
+            silverAward = (int) Math.floor(totalAmount.multiply(new BigDecimal(0.16)).doubleValue());
+        } else if (order.getShareCount() == 1) {
+            silverAward = 50;
+        }
+        /******** 记录奖励 *******/
+        SlTransactionDetail transactionDetail = new SlTransactionDetail();
+        transactionDetail.setTargetId(order.getUserId());
+        transactionDetail.setOrderId(orderId);
+        transactionDetail.setType(ExpenditureTypeEnum.SHARE_AWARD.getValue());
+        transactionDetail.setSilver(silverAward);
+        transactionDetail.setDealType(TransactionCurrencyTypeEnum.SILVER.getValue());
+        transactionDetail.setTransactionType(TransactionTypeEnum.INCOME.getValue());
+        transactionDetail.setTransactionStatus(TransactionStatusEnum.EFFICIENT.getValue().byteValue());
+        transactionDetailService.insertSelective(transactionDetail);
+
+        user.setSilver(user.getSilver() + silverAward);
+        userService.updateByPrimaryKeySelective(user);
+
+        order.setShareCount(order.getShareCount() + 1);
+        order.setCreatedAt(null);
+        order.setUpdatedAt(null);
+        orderService.updateByPrimaryKeySelective(order);
+
+        message.setData(silverAward);
+        message.setSuccess(true);
+        log.debug("userId = {}分享orderId = {}获取银豆奖励{}个", user.getId(), orderId, silverAward);
         return message;
     }
 

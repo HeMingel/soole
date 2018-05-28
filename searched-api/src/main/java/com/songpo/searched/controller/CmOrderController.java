@@ -1,14 +1,14 @@
 package com.songpo.searched.controller;
 
 
-import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.CmOrderService;
+import com.songpo.searched.service.LoginUserService;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +25,8 @@ public class CmOrderController {
 
     @Autowired
     private CmOrderService cmOrderService;
+    @Autowired
+    private LoginUserService loginUserService;
 
     /**
      * 多商品订单
@@ -358,6 +360,34 @@ public class CmOrderController {
             e.printStackTrace();
             log.debug("纯了豆下单，{}", e);
         }
+        return message;
+    }
+
+    /**
+     * 分享订单奖励
+     *
+     * @param orderId 分享的订单ID
+     * @return
+     */
+    @ApiOperation("分享订单奖励")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "分享的订单ID", paramType = "form", required = true)
+    })
+    @GetMapping("share-award")
+    public BusinessMessage shareAward(String orderId) {
+        log.debug("分享订单奖励，orderId = {}", orderId);
+        BusinessMessage message = new BusinessMessage();
+        if (StringUtils.isBlank(orderId)) {
+            message.setMsg("订单ID不能为空");
+            return message;
+        }
+        try {
+            message = cmOrderService.shareAward(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("分享订单奖励失败，orderId = {}，Exception = {}", orderId, e);
+        }
+
         return message;
     }
 

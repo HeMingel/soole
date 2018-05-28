@@ -1,5 +1,7 @@
 package com.songpo.searched.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -12,15 +14,41 @@ import java.util.Date;
 
 public class LocalDateTimeUtils {
 
-    //获取当前时间的LocalDateTime对象
-    //LocalDateTime.now();
+    /**
+     * 定义常量
+     **/
+    public static final String DATE_JFP_STR = "yyyyMM";
+    public static final String DATE_FULL_STR = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_SMALL_STR = "yyyy-MM-dd";
+    public static final String DATE_KEY_STR = "yyMMddHHmmss";
 
-    //根据年月日构建LocalDateTime
-    //LocalDateTime.of();
 
-    //比较日期先后
-    //LocalDateTime.now().isBefore(),
-    //LocalDateTime.now().isAfter(),
+    /**
+     * 使用预设格式提取字符串日期
+     *
+     * @param strDate 日期字符串
+     * @return
+     */
+    public static Date parse(String strDate) {
+        return parse(strDate, DATE_FULL_STR);
+    }
+
+    /**
+     * 使用用户格式提取字符串日期
+     *
+     * @param strDate 日期字符串
+     * @param pattern 日期格式
+     * @return
+     */
+    public static Date parse(String strDate, String pattern) {
+        SimpleDateFormat df = new SimpleDateFormat(pattern);
+        try {
+            return df.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     //Date转换为LocalDateTime
     public static LocalDateTime convertDateToLDT(Date date) {
@@ -44,13 +72,13 @@ public class LocalDateTimeUtils {
     }
 
     //获取指定时间的指定格式
-    public static String formatTime(LocalDateTime time,String pattern) {
+    public static String formatTime(LocalDateTime time, String pattern) {
         return time.format(DateTimeFormatter.ofPattern(pattern));
     }
 
     //获取当前时间的指定格式
     public static String formatNow(String pattern) {
-        return  formatTime(LocalDateTime.now(), pattern);
+        return formatTime(LocalDateTime.now(), pattern);
     }
 
     //日期加上一个数,根据field不同加不同值,field为ChronoUnit.*
@@ -59,15 +87,16 @@ public class LocalDateTimeUtils {
     }
 
     //日期减去一个数,根据field不同减不同值,field参数为ChronoUnit.*
-    public static LocalDateTime minu(LocalDateTime time, long number, TemporalUnit field){
-        return time.minus(number,field);
+    public static LocalDateTime minu(LocalDateTime time, long number, TemporalUnit field) {
+        return time.minus(number, field);
     }
 
     /**
      * 获取两个日期的差  field参数为ChronoUnit.*
+     *
      * @param startTime
      * @param endTime
-     * @param field  单位(年月日时分秒)
+     * @param field     单位(年月日时分秒)
      * @return
      */
     public static long betweenTwoTime(LocalDateTime startTime, LocalDateTime endTime, ChronoUnit field) {
@@ -103,7 +132,21 @@ public class LocalDateTimeUtils {
     public static Date addHour(Date date, int hour) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR, hour);//当前时间减去一年，即一年前的时间
+        calendar.add(Calendar.HOUR, hour);
+        return calendar.getTime();
+    }
+
+    /**
+     * 增加分钟
+     *
+     * @param date   时间
+     * @param minute 要增加的分钟，可以为负数
+     * @return
+     */
+    public static Date addMinute(Date date, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minute);
         return calendar.getTime();
     }
 

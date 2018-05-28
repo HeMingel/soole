@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -111,6 +111,12 @@ public class SlOrder implements Serializable {
      */
     @Column(name = "group_master")
     private String groupMaster;
+
+    /**
+     * 分享次数
+     */
+    @Column(name = "share_count")
+    private Integer shareCount;
 
     /**
      * 创建时间
@@ -482,6 +488,24 @@ public class SlOrder implements Serializable {
     }
 
     /**
+     * 获取分享次数
+     *
+     * @return share_count - 分享次数
+     */
+    public Integer getShareCount() {
+        return shareCount;
+    }
+
+    /**
+     * 设置分享次数
+     *
+     * @param shareCount 分享次数
+     */
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -631,6 +655,7 @@ public class SlOrder implements Serializable {
         sb.append(", detailed=").append(detailed);
         sb.append(", spellGroupStatus=").append(spellGroupStatus);
         sb.append(", groupMaster=").append(groupMaster);
+        sb.append(", shareCount=").append(shareCount);
         sb.append(", createTime=").append(createTime);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", activityProductId=").append(activityProductId);

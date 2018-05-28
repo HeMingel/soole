@@ -240,6 +240,7 @@ public class CommonConfig {
         if (orderList != null && orderList.size() > 0) {
             for (SlOrder order : orderList) {
                 if (order != null && StringUtils.isNotBlank(order.getId())) {
+                    log.debug("更新订单{}的支付状态", order.getId());
                     //请求微信订单查询接口并处理订单数据
                     try {
                         Map<String, String> result = wxPayService.orderQuery("", order.getId());
