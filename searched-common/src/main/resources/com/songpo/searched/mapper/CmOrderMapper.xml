@@ -124,6 +124,13 @@
     <!--order by sap.begin_time DESC-->
     <!--limit 1-->
     <!--</select>-->
+    <update id="reduceNumber">
+        UPDATE sl_product_repository
+        SET count = count - #{count}
+        where id = #{id} and
+        count > 0
+    </update>
+
     <select id="selectOrdersCount" resultType="java.lang.Integer">
         select
         ifnull(sum(sod.quantity),0) quantity

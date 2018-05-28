@@ -318,21 +318,18 @@ public class CmOrderService {
                                                         //活动总商品上架数量 - 本次购买的数量
                                                         setCount(slActivityProduct.getCount() - quantity);
                                                     }}, example);
+
+
                                                     // 当前库存 - 本次该商品规格下单库存
                                                     repository.setCount(repository.getCount() - quantity);
                                                     // 更新redis中该商品规格的库存
                                                     repositoryCache.put(repository.getId(), repository);
-                                                    Example example1 = new Example(SlProductRepository.class);
-                                                    example1.createCriteria()
-                                                            // 比0大的库存
-                                                            .andGreaterThan("count", 0)
-                                                            .andEqualTo("id", repository.getId());
                                                     //更新数据库该商品规格的库存
-                                                    this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
-                                                        setCount(repository.getCount() - quantity);
-                                                    }}, example1);
-                                                    message.setMsg("订单生成成功");
-                                                    message.setSuccess(true);
+                                                    int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
+                                                    if (updateCount > 0) {
+                                                        message.setMsg("订单生成成功");
+                                                        message.setSuccess(true);
+                                                    }
                                                 } else {
                                                     log.error("当前库存不足");
                                                     message.setMsg(slProduct.getName() + "当前库存不足");
@@ -1020,14 +1017,12 @@ public class CmOrderService {
             // 更新redis中该商品规格的库存
             repositoryCache.put(repository.getId(), repository);
             // 再更新数据库中的库存
-            Example example1 = new Example(SlProductRepository.class);
-            example1.createCriteria().andEqualTo("id", repository.getId()).andGreaterThan("count", 0);
             //更新数据库该商品规格的库存
-            this.productRepositoryService.updateByExampleSelective(new SlProductRepository() {{
-                setCount(cou);
-            }}, example1);
-            message.setMsg("订单生成成功");
-            message.setSuccess(true);
+            int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
+            if (updateCount > 0) {
+                message.setMsg("订单生成成功");
+                message.setSuccess(true);
+            }
             Map<String, String> map = new HashMap<>();
             map.put("order_num", slOrder.getId());
             map.put("total_amount", money.toString());

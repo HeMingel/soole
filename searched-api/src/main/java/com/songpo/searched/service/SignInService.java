@@ -112,12 +112,12 @@ public class SignInService {
             int count = slSignInMapper.insertSelective(signIn);
             if (count == 1) {
                 SlSignIn finalSignIn = signIn;
-                int silver = user.getSilver() + finalSignIn.getAwardSilver();
-                user.setSilver(silver);
+                int coin = user.getCoin() + finalSignIn.getAwardSilver();
+                user.setCoin(coin);
                 userCache.put(user.getClientId(), user);
                 userService.updateByPrimaryKeySelective(new SlUser() {{
                     setId(user.getId());
-                    setSilver(silver);
+                    setCoin(coin);
                 }});
                 // 加入明细表
                 transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
@@ -126,11 +126,11 @@ public class SignInService {
                     // 购物类型(签到)
                     setType(101);
                     // 奖励了豆数量
-                    setSilver(finalSignIn.getAwardSilver());
+                    setCoin(finalSignIn.getAwardSilver());
                     // 插入时间
                     setCreateTime(new Date());
-                    // 银豆
-                    setDealType(6);
+                    // 金豆
+                    setDealType(5);
                     // 收入
                     setTransactionType(2);
                 }});

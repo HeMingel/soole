@@ -41,8 +41,6 @@ public class CommonConfig {
     @Autowired
     private OrderDetailService orderDetailService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private OrderService orderService;
     @Autowired
     private ProcessOrders processOrders;
