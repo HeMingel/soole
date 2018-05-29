@@ -140,6 +140,8 @@ public class ProcessOrders {
                                             SlReturnsDetail detail1 = new SlReturnsDetail();
                                             detail1.setOrderId(order.getId());
                                             detail1.setUserId(user.getId());
+                                            //期数
+                                            detail1.setNumberOfPeriods(record.getNumberOfPeriods());
                                             // 返款金额
                                             detail1.setReturnMoney(record.getReturnedMoney());
                                             // 创建时间
@@ -149,13 +151,14 @@ public class ProcessOrders {
                                                 detail1.setReturnTime(
                                                         LocalDateTimeUtils.formatTime(LocalDateTimeUtils.plus(LocalDateTime.now(),
                                                                 record.getReturnedNumber(),
-                                                                ChronoUnit.DAYS), "yyyy年MM月dd日 HH:mm:ss"));
+                                                                ChronoUnit.DAYS), "yyyy-MM-dd HH:mm:ss"));
                                                 date = detail1.getReturnTime();
                                             } else {
+                                                DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                                                 detail1.setReturnTime(
-                                                        LocalDateTimeUtils.formatTime(LocalDateTimeUtils.plus(LocalDateTime.parse(date),
+                                                        LocalDateTimeUtils.formatTime(LocalDateTimeUtils.plus(LocalDateTime.parse(date, df),
                                                                 record.getReturnedNumber(),
-                                                                ChronoUnit.DAYS), "yyyy年MM月dd日 HH:mm:ss"));
+                                                                ChronoUnit.DAYS), "yyyy-MM-dd HH:mm:ss"));
                                             }
                                             this.returnsDetailMapper.insertSelective(detail1);
                                         }
