@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +50,6 @@ public class CmProductService {
     private SlProductTypeMapper slProductTypeMapper;
     @Autowired
     private SlMyCollectionMapper slMyCollectionMapper;
-
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -406,11 +406,10 @@ public class CmProductService {
         try {
             // 1.预售模式2.消费返利模式
             String type = "1";
-
-            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.select(new SlPresellReturnedRecord() {{
-                setProductId(goodsId);
-                setType(type);
-            }});
+            Example example = new Example(SlPresellReturnedRecord.class);
+            example.createCriteria().andEqualTo("productId",goodsId).andEqualTo("type",type);
+            example.setOrderByClause("number_of_periods asc");
+            List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.selectByExample(example);
             if (slPresellReturnedRecordList.size() > 0) {
                 double totalMoney = 0;
                 int totalDays = 0;
