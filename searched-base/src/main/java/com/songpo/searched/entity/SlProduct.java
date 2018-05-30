@@ -100,6 +100,11 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
+     * 逻辑删除0不删除1删除
+     */
+    private Boolean del;
+
+    /**
      * 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
      */
     private Boolean ship;
@@ -130,6 +135,12 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /**
+     * 虚拟销量
+     */
+    @Column(name = "sales_virtual")
+    private Integer salesVirtual;
 
     /**
      * 商品详情（存放商品的图文和详情图片 h5展示）
@@ -427,6 +438,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取逻辑删除0不删除1删除
+     *
+     * @return del - 逻辑删除0不删除1删除
+     */
+    public Boolean getDel() {
+        return del;
+    }
+
+    /**
+     * 设置逻辑删除0不删除1删除
+     *
+     * @param del 逻辑删除0不删除1删除
+     */
+    public void setDel(Boolean del) {
+        this.del = del;
+    }
+
+    /**
      * 获取第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
      *
      * @return ship - 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
@@ -535,6 +564,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取虚拟销量
+     *
+     * @return sales_virtual - 虚拟销量
+     */
+    public Integer getSalesVirtual() {
+        return salesVirtual;
+    }
+
+    /**
+     * 设置虚拟销量
+     *
+     * @param salesVirtual 虚拟销量
+     */
+    public void setSalesVirtual(Integer salesVirtual) {
+        this.salesVirtual = salesVirtual;
+    }
+
+    /**
      * 获取商品详情（存放商品的图文和详情图片 h5展示）
      *
      * @return detail - 商品详情（存放商品的图文和详情图片 h5展示）
@@ -574,12 +621,14 @@ public class SlProduct implements Serializable {
         sb.append(", recommend=").append(recommend);
         sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
+        sb.append(", del=").append(del);
         sb.append(", ship=").append(ship);
         sb.append(", antistop=").append(antistop);
         sb.append(", reason=").append(reason);
         sb.append(", remark=").append(remark);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", salesVirtual=").append(salesVirtual);
         sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
