@@ -21,12 +21,14 @@
     <result column="recommend" jdbcType="INTEGER" property="recommend" />
     <result column="postage" jdbcType="DECIMAL" property="postage" />
     <result column="sold_out" jdbcType="BIT" property="soldOut" />
+    <result column="del" jdbcType="BIT" property="del" />
     <result column="ship" jdbcType="BIT" property="ship" />
     <result column="antistop" jdbcType="VARCHAR" property="antistop" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="sales_virtual" jdbcType="INTEGER" property="salesVirtual" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlProduct">
     <!--
@@ -40,7 +42,7 @@
     -->
     id, name, product_number, image_url, introduction, product_type_id, comment_num, 
     sales_volume, shop_id, sales_mode_id, creator, create_time, pro_check_time, recommend, 
-    postage, sold_out, ship, antistop, reason, remark, created_at, updated_at
+    postage, sold_out, del, ship, antistop, reason, remark, created_at, updated_at, sales_virtual
   </sql>
   <sql id="Blob_Column_List">
     <!--

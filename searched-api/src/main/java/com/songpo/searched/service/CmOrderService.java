@@ -326,8 +326,13 @@ public class CmOrderService {
                                                     repository.setCount(repository.getCount() - quantity);
                                                     // 更新redis中该商品规格的库存
                                                     repositoryCache.put(repository.getId(), repository);
-                                                    //更新数据库该商品规格的库存
+                                                    // 更新数据库该商品规格的库存
                                                     int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
+                                                    // 把虚拟销量加上
+                                                    productService.updateByPrimaryKeySelective(new SlProduct() {{
+                                                        setId(slProduct.getId());
+                                                        setSalesVirtual(slProduct.getSalesVirtual() + quantity);
+                                                    }});
                                                     if (updateCount > 0) {
                                                         message.setMsg("订单生成成功");
                                                         message.setSuccess(true);
@@ -1018,7 +1023,11 @@ public class CmOrderService {
             repository.setCount(cou);
             // 更新redis中该商品规格的库存
             repositoryCache.put(repository.getId(), repository);
-            // 再更新数据库中的库存
+            // 把虚拟销量加上
+            productService.updateByPrimaryKeySelective(new SlProduct() {{
+                setId(slProduct.getId());
+                setSalesVirtual(slProduct.getSalesVirtual() + quantity);
+            }});
             //更新数据库该商品规格的库存
             int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
             if (updateCount > 0) {
