@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -175,7 +176,7 @@ public class ProcessOrders {
                             if (null != product) {
                                 productService.updateByPrimaryKeySelective(new SlProduct() {{
                                     setId(product.getId());
-                                    setSalesVolume(product.getSalesVolume() + 1);
+                                    setSalesVolume(product.getSalesVolume() + detail.getQuantity());
                                 }});
                             }
                             if (detail.getPrice().compareTo(BigDecimal.valueOf(0)) > 0) {
