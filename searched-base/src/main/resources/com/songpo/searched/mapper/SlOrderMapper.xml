@@ -23,6 +23,7 @@
     <result column="detailed" jdbcType="VARCHAR" property="detailed" />
     <result column="spell_group_status" jdbcType="INTEGER" property="spellGroupStatus" />
     <result column="group_master" jdbcType="VARCHAR" property="groupMaster" />
+    <result column="share_count" jdbcType="INTEGER" property="shareCount" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
@@ -37,7 +38,7 @@
     -->
     id, serial_number, user_id, total_amount, deduct_total_pulse, payment_state, payment_channel, 
     pay_time, pay_time_stamp, status, consigneeName, consigneePhone, province, city, 
-    county, detailed, spell_group_status, group_master, create_time, updated_at, activity_product_id, 
-    created_at, remark, type, fee
+    county, detailed, spell_group_status, group_master, share_count, create_time, updated_at, 
+    activity_product_id, created_at, remark, type, fee
   </sql>
 </mapper>
