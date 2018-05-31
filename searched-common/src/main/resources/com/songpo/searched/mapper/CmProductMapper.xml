@@ -196,7 +196,7 @@
     <select id="goodsBaseInfo" parameterType="String" resultType="Map">
       SELECT
           p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark,p.image_url,p.shop_id,
-          p.postage postAge,ap.price as activityPrice,p.sales_virtual,
+          p.postage postAge,ap.price as activityPrice,p.sales_virtual
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
