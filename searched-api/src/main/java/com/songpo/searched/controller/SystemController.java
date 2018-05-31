@@ -510,7 +510,7 @@ public class SystemController {
                 this.sendRegisterGiftToNewUser(user.getId());
             }
             user.setLastLogin(new Date());
-            user.setLoginCount(user.getLoginCount() + 1);
+            user.setLoginCount((user.getLoginCount() == null ? 0 : user.getLoginCount()) + 1);
             userService.updateByPrimaryKeySelective(user);
 
             this.userCache.put(openId, user);
@@ -599,7 +599,7 @@ public class SystemController {
                         sendRegisterGiftToNewUser(user.getId());
                     }
                     user.setLastLogin(new Date());
-                    user.setLoginCount(user.getLoginCount() + 1);
+                    user.setLoginCount((user.getLoginCount() == null ? 0 : user.getLoginCount()) + 1);
                     userService.updateByPrimaryKeySelective(user);
 
                     this.userCache.put(phone, user);
@@ -870,7 +870,10 @@ public class SystemController {
      * @param user
      */
     private void userInsert(SlUser user) {
-        int maxUserName = cmUserMapper.selectMaxUserName();
+        Integer maxUserName = cmUserMapper.selectMaxUserName();
+        if (maxUserName == null) {
+            maxUserName = 0;
+        }
         maxUserName += 6;
         if (String.valueOf(maxUserName).contains("4")) {
             maxUserName = Integer.valueOf(String.valueOf(maxUserName).replaceAll("4", "5"));
