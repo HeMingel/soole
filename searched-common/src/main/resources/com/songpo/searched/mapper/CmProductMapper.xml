@@ -106,7 +106,7 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         SELECT
-        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id,p.sales_virtual,
+        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id,p.sales_virtual
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
