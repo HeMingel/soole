@@ -1,9 +1,7 @@
 package com.songpo.searched.controller;
 
-
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.CmOrderService;
-import com.songpo.searched.service.LoginUserService;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,8 +23,6 @@ public class CmOrderController {
 
     @Autowired
     private CmOrderService cmOrderService;
-    @Autowired
-    private LoginUserService loginUserService;
 
     /**
      * 多商品订单
@@ -349,11 +345,11 @@ public class CmOrderController {
      * @return
      */
     @PostMapping("only-pulse-pay")
-    public BusinessMessage onlyPulsePay(String orderId) {
+    public BusinessMessage onlyPulsePay(String orderId,String payPassword) {
         log.debug("纯了豆下单，orderId = {}", orderId);
         BusinessMessage message = new BusinessMessage<>();
         try {
-            message = this.cmOrderService.onlyPulsePay(orderId);
+            message = this.cmOrderService.onlyPulsePay(orderId,payPassword);
             message.setData(message.getData());
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {

@@ -287,7 +287,7 @@ public class CommonConfig {
                         if (ldt.plusDays(1).compareTo(time) < 0) {
                             this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                 setId(order.getId());
-                                setPaymentState(101);
+                                setSpellGroupStatus(0);
                             }});
                         }
                     }

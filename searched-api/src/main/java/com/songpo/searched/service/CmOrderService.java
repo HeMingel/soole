@@ -485,6 +485,7 @@ public class CmOrderService {
                                             int count1 = this.orderService.selectCount(new SlOrder() {{
                                                 setUserId(groupMaster);
                                                 setSerialNumber(serialNumber);
+                                                setSpellGroupStatus(1);
                                             }});
                                             //如果存在 && 只有一条
                                             if (count1 == 1) {
@@ -502,7 +503,7 @@ public class CmOrderService {
                                                     return message;
                                                 }
                                             } else {
-                                                message.setMsg("订单失效或不存在");
+                                                message.setMsg("拼团失败或不存在");
                                                 return message;
                                             }
                                         } else {
@@ -1446,6 +1447,24 @@ public class CmOrderService {
     }
 
     /**
+     * 校验支付密码
+     *
+     * @param userId
+     * @param payPassword
+     * @return
+     */
+    public Boolean verifyPaymentPassword(String userId, String payPassword) {
+        Boolean falg = false;
+        SlUser user = userService.selectByPrimaryKey(userId);
+        if (null != user) {
+            if (user.getPayPassword().equals(payPassword)) {
+                falg = true;
+            }
+        }
+        return falg;
+    }
+
+    /**
      * 微信支付
      *
      * @param req
@@ -1662,14 +1681,23 @@ public class CmOrderService {
      * @return
      */
     @Transactional
-    public BusinessMessage<Map> onlyPulsePay(String orderId) {
+    public BusinessMessage<Map> onlyPulsePay(String orderId, String payPassword) {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        message = checkTheOrder(orderId, user);
-        if (message.getSuccess() == true) {
-            if (message.getData().get("money").toString().equals("0.00")) {
-                processOrders.processOrders(orderId, 3);
+        if (null != user) {
+            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
+            if (falg) {
+                message = checkTheOrder(orderId, user);
+                if (message.getSuccess() == true) {
+                    if (message.getData().get("money").toString().equals("0.00")) {
+                        processOrders.processOrders(orderId, 3);
+                    }
+                }
+            } else {
+                message.setMsg("支付密码错误");
             }
+        } else {
+            message.setMsg("请登录");
         }
         return message;
     }
