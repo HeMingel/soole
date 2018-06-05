@@ -9,6 +9,10 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="result" jdbcType="TINYINT" property="result" />
+      <result column="mock_join_people_number" jdbcType="INTEGER" property="mockJoinPeopleNumber"/>
+      <result column="fact_join_people_number" jdbcType="INTEGER" property="factJoinPeopleNumber"/>
+      <result column="rule_declaration" jdbcType="VARCHAR" property="ruleDeclaration"/>
+      <result column="is_wheel_sowing" jdbcType="TINYINT" property="isWheelSowing"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -17,6 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, type, result, create_time, end_time, update_time
+      id, name, type, result, mock_join_people_number, fact_join_people_number, rule_declaration,
+      is_wheel_sowing, create_time, end_time, update_time
   </sql>
 </mapper>

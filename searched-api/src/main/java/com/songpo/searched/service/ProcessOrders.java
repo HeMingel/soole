@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -185,7 +184,7 @@ public class ProcessOrders {
                                 }});
                                 if (null != shop) {
                                     Double money = Arith.mul(detail.getPrice().doubleValue(), detail.getQuantity());
-                                    Double tm = shop.getTotalSales().doubleValue() + money;
+                                    Double tm = (shop.getTotalSales() == null ? 0 : shop.getTotalSales().doubleValue()) + money;
                                     shopService.updateByPrimaryKeySelective(new SlShop() {{
                                         setId(shop.getId());
                                         setTotalSales(BigDecimal.valueOf(tm));

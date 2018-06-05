@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_transaction_detail")
 public class SlTransactionDetail implements Serializable {
@@ -47,7 +47,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单  203：分享奖励   
+     （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单
 
 （300-400：收益相关）300店主收益
      */
@@ -216,7 +216,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单  203：分享奖励   
+     （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单
 
 （300-400：收益相关）300店主收益
      *
@@ -225,7 +225,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单  203：分享奖励   
+    （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单
 
 （300-400：收益相关）300店主收益
      */
@@ -239,7 +239,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单  203：分享奖励   
+     （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单
 
 （300-400：收益相关）300店主收益
      *
@@ -248,7 +248,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单  203：分享奖励   
+    （200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单
 
 （300-400：收益相关）300店主收益
      */

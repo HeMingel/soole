@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_search_ring_news")
 public class SlSearchRingNews implements Serializable {
@@ -33,6 +33,12 @@ public class SlSearchRingNews implements Serializable {
      */
     @Column(name = "share_num")
     private Integer shareNum;
+
+    /**
+     * 商品id（分享商品详情到搜圈时使用）
+     */
+    @Column(name = "product_id")
+    private String productId;
 
     /**
      * 发表时间
@@ -152,6 +158,24 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
+     * 获取商品id（分享商品详情到搜圈时使用）
+     *
+     * @return product_id - 商品id（分享商品详情到搜圈时使用）
+     */
+    public String getProductId() {
+        return productId;
+    }
+
+    /**
+     * 设置商品id（分享商品详情到搜圈时使用）
+     *
+     * @param productId 商品id（分享商品详情到搜圈时使用）
+     */
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
      * 获取发表时间
      *
      * @return create_time - 发表时间
@@ -252,6 +276,7 @@ public class SlSearchRingNews implements Serializable {
         sb.append(", commentNum=").append(commentNum);
         sb.append(", goodsNum=").append(goodsNum);
         sb.append(", shareNum=").append(shareNum);
+        sb.append(", productId=").append(productId);
         sb.append(", createTime=").append(createTime);
         sb.append(", editTime=").append(editTime);
         sb.append(", createdAt=").append(createdAt);

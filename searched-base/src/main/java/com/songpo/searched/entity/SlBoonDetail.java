@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_boon_detail")
 public class SlBoonDetail implements Serializable {
@@ -57,7 +57,7 @@ public class SlBoonDetail implements Serializable {
     private Integer surplusCount;
 
     /**
-     * 该奖品状态 1.正常 2.数量为空（暂未启用）
+     * 该奖品状态 1.正常 2.下架
      */
     private Integer result;
 
@@ -239,18 +239,18 @@ public class SlBoonDetail implements Serializable {
     }
 
     /**
-     * 获取该奖品状态 1.正常 2.数量为空（暂未启用）
+     * 获取该奖品状态 1.正常 2.下架
      *
-     * @return result - 该奖品状态 1.正常 2.数量为空（暂未启用）
+     * @return result - 该奖品状态 1.正常 2.下架
      */
     public Integer getResult() {
         return result;
     }
 
     /**
-     * 设置该奖品状态 1.正常 2.数量为空（暂未启用）
+     * 设置该奖品状态 1.正常 2.下架
      *
-     * @param result 该奖品状态 1.正常 2.数量为空（暂未启用）
+     * @param result 该奖品状态 1.正常 2.下架
      */
     public void setResult(Integer result) {
         this.result = result;

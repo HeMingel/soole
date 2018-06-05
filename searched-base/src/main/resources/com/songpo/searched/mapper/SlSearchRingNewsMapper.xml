@@ -10,6 +10,7 @@
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
     <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
     <result column="share_num" jdbcType="INTEGER" property="shareNum" />
+      <result column="product_id" jdbcType="VARCHAR" property="productId"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -25,8 +26,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, comment_num, goods_num, share_num, create_time, edit_time, created_at, 
-    updated_at
+      id, user_id, comment_num, goods_num, share_num, product_id, create_time, edit_time,
+      created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_sign_in")
 public class SlSignIn implements Serializable {
@@ -32,7 +32,7 @@ public class SlSignIn implements Serializable {
     private Integer signNum;
 
     /**
-     * 奖励银豆
+     * 奖励金豆
      */
     @Column(name = "award_silver")
     private Integer awardSilver;
@@ -124,18 +124,18 @@ public class SlSignIn implements Serializable {
     }
 
     /**
-     * 获取奖励银豆
+     * 获取奖励金豆
      *
-     * @return award_silver - 奖励银豆
+     * @return award_silver - 奖励金豆
      */
     public Integer getAwardSilver() {
         return awardSilver;
     }
 
     /**
-     * 设置奖励银豆
+     * 设置奖励金豆
      *
-     * @param awardSilver 奖励银豆
+     * @param awardSilver 奖励金豆
      */
     public void setAwardSilver(Integer awardSilver) {
         this.awardSilver = awardSilver;
