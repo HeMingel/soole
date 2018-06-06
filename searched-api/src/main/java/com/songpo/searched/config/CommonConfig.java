@@ -21,7 +21,6 @@ import tk.mybatis.mapper.entity.Example;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -57,6 +56,7 @@ public class CommonConfig {
         updOrderPreSaleState();
         updOrderConfirmReceipt();
         updReturnsDetailOrderPreSaleState();
+        virtualOrderNotice();
     }
 
     /**
@@ -265,48 +265,11 @@ public class CommonConfig {
                 orderService.updateByPrimaryKeySelective(order);
             }
         }
-        updGroupStatus();
-    }
-<<<<<<< .mine
-
-=======
-
->>>>>>> .theirs
-    /**
-     * 处理拼团订单失效
-     */
-    void updGroupStatus() {
-        List<SlOrderDetail> list = this.orderDetailService.select(new SlOrderDetail() {{
-            setShippingState(3);
-            setType(2);
-        }});
-        if (list.size() > 0) {
-            for (SlOrderDetail detail : list) {
-                SlOrder order = this.orderService.selectOne(new SlOrder() {{
-                    setId(detail.getOrderId());
-                    setSpellGroupStatus(1);
-                }});
-                if (null != order) {
-                    if (detail.getCreator().equals(order.getGroupMaster())) {
-                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDateTime time = LocalDateTime.now();
-                        LocalDateTime ldt = LocalDateTime.parse(order.getPayTime(), df);
-                        if (ldt.plusDays(1).compareTo(time) < 0) {
-                            this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
-                                setId(order.getId());
-                                setSpellGroupStatus(0);
-                            }});
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
      * 虚拟下单通知
      */
-    @Scheduled(cron = "0/10 * * * * ? ")
     public void virtualOrderNotice(){
         List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
         if(orderDetails!=null &&orderDetails.size()>0){

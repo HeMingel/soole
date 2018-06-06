@@ -97,6 +97,7 @@ public class SlUser implements Serializable {
     private Byte groupVar;
 
     /**
+     * 金币
      * 金币,金豆.可以转
      */
     private Integer coin;

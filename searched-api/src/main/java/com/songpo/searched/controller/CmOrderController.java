@@ -345,7 +345,9 @@ public class CmOrderController {
      * @return
      */
     @PostMapping("only-pulse-pay")
-    public BusinessMessage onlyPulsePay(String orderId,String payPassword) {
+    public BusinessMessage onlyPulsePay(String orderId
+//            ,String payPassword
+    ) {
         log.debug("纯了豆下单，orderId = {}", orderId);
         BusinessMessage message = new BusinessMessage<>();
         try {
