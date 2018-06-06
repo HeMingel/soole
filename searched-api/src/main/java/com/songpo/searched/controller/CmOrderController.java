@@ -351,7 +351,7 @@ public class CmOrderController {
         log.debug("纯了豆下单，orderId = {}", orderId);
         BusinessMessage message = new BusinessMessage<>();
         try {
-            message = this.cmOrderService.onlyPulsePay(orderId,payPassword);
+            message = this.cmOrderService.onlyPulsePay(orderId,null);
             message.setData(message.getData());
             message.setSuccess(message.getSuccess());
         } catch (Exception e) {

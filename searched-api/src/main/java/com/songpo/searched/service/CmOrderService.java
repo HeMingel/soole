@@ -1457,10 +1457,10 @@ public class CmOrderService {
         Boolean falg = false;
         SlUser user = userService.selectByPrimaryKey(userId);
         if (null != user) {
-            if (user.getPayPassword().equals(payPassword)) {
+           if (user.getPayPassword().equals(payPassword)) {
                 falg = true;
             }
-        }
+        }*/
         return falg;
     }
 
@@ -1685,7 +1685,7 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
-            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
+//            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
             if (falg) {
                 message = checkTheOrder(orderId, user);
                 if (message.getSuccess() == true) {
