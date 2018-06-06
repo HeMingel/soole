@@ -56,7 +56,6 @@ public class CommonConfig {
         updOrderPreSaleState();
         updOrderConfirmReceipt();
         updReturnsDetailOrderPreSaleState();
-        virtualOrderNotice();
     }
 
     /**
@@ -270,6 +269,7 @@ public class CommonConfig {
     /**
      * 虚拟下单通知
      */
+    @Scheduled(cron = "0/10 * * * * ? ")
     public void virtualOrderNotice(){
         List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
         if(orderDetails!=null &&orderDetails.size()>0){
