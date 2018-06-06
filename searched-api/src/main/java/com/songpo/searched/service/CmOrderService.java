@@ -1685,17 +1685,20 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
-//            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
-            if (falg) {
-                message = checkTheOrder(orderId, user);
-                if (message.getSuccess() == true) {
-                    if (message.getData().get("money").toString().equals("0.00")) {
-                        processOrders.processOrders(orderId, 3);
-                    }
+            message = checkTheOrder(orderId, user);
+            if (message.getSuccess() == true) {
+                if (message.getData().get("money").toString().equals("0.00")) {
+                    processOrders.processOrders(orderId, 3);
                 }
-            } else {
-                message.setMsg("支付密码错误");
             }
+//            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
+//            if (falg) {
+//
+//            }
+
+//            else {
+//                message.setMsg("支付密码错误");
+//            }
         } else {
             message.setMsg("请登录");
         }
