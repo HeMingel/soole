@@ -175,7 +175,7 @@ public class ProcessOrders {
                             if (null != product) {
                                 productService.updateByPrimaryKeySelective(new SlProduct() {{
                                     setId(product.getId());
-                                    setSalesVolume(product.getSalesVolume() + 1);
+                                    setSalesVolume(product.getSalesVolume() + detail.getQuantity());
                                 }});
                             }
                             if (detail.getPrice().compareTo(BigDecimal.valueOf(0)) > 0) {
@@ -184,7 +184,7 @@ public class ProcessOrders {
                                 }});
                                 if (null != shop) {
                                     Double money = Arith.mul(detail.getPrice().doubleValue(), detail.getQuantity());
-                                    Double tm = shop.getTotalSales().doubleValue() + money;
+                                    Double tm = (shop.getTotalSales() == null ? 0 : shop.getTotalSales().doubleValue()) + money;
                                     shopService.updateByPrimaryKeySelective(new SlShop() {{
                                         setId(shop.getId());
                                         setTotalSales(BigDecimal.valueOf(tm));

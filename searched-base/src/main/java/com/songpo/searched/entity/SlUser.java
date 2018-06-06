@@ -97,12 +97,12 @@ public class SlUser implements Serializable {
     private Byte groupVar;
 
     /**
-     * 金币
+     * 金币,金豆.可以转
      */
     private Integer coin;
 
     /**
-     * 银币
+     * 银币,不可以转
      */
     private Integer silver;
 
@@ -468,36 +468,36 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取金币
+     * 获取金币,金豆.可以转
      *
-     * @return coin - 金币
+     * @return coin - 金币,金豆.可以转
      */
     public Integer getCoin() {
         return coin;
     }
 
     /**
-     * 设置金币
+     * 设置金币,金豆.可以转
      *
-     * @param coin 金币
+     * @param coin 金币,金豆.可以转
      */
     public void setCoin(Integer coin) {
         this.coin = coin;
     }
 
     /**
-     * 获取银币
+     * 获取银币,不可以转
      *
-     * @return silver - 银币
+     * @return silver - 银币,不可以转
      */
     public Integer getSilver() {
         return silver;
     }
 
     /**
-     * 设置银币
+     * 设置银币,不可以转
      *
-     * @param silver 银币
+     * @param silver 银币,不可以转
      */
     public void setSilver(Integer silver) {
         this.silver = silver;

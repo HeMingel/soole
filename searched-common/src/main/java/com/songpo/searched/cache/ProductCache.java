@@ -12,4 +12,5 @@ public class ProductCache extends BaseCache<SlProduct> {
     public ProductCache(RedisTemplate<String, SlProduct> redisTemplate) {
         super("com.songpo.seached:product:time-limit:", redisTemplate, 7200L, TimeUnit.SECONDS);
     }
+
 }

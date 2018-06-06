@@ -1,7 +1,7 @@
 package com.songpo.searched.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "sl_shop_bankcard")
 public class SlShopBankcard implements Serializable {
@@ -15,8 +15,8 @@ public class SlShopBankcard implements Serializable {
     /**
      * 商户id
      */
-    @Column(name = "shop_id")
-    private String shopId;
+    @Column(name = "user_id")
+    private String userId;
 
     /**
      * 持卡人姓名
@@ -58,19 +58,19 @@ public class SlShopBankcard implements Serializable {
     /**
      * 获取商户id
      *
-     * @return shop_id - 商户id
+     * @return user_id - 商户id
      */
-    public String getShopId() {
-        return shopId;
+    public String getUserId() {
+        return userId;
     }
 
     /**
      * 设置商户id
      *
-     * @param shopId 商户id
+     * @param userId 商户id
      */
-    public void setShopId(String shopId) {
-        this.shopId = shopId == null ? null : shopId.trim();
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     /**
@@ -134,7 +134,7 @@ public class SlShopBankcard implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", shopId=").append(shopId);
+        sb.append(", userId=").append(userId);
         sb.append(", cardholder=").append(cardholder);
         sb.append(", cardNumber=").append(cardNumber);
         sb.append(", openingBank=").append(openingBank);

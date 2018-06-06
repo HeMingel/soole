@@ -10,6 +10,7 @@
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="red_packet_id" jdbcType="VARCHAR" property="redPacketId" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="share_id" jdbcType="VARCHAR" property="shareId" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="coin" jdbcType="INTEGER" property="coin" />
@@ -25,7 +26,12 @@
     <!--
       WARNING - @mbg.generated
     -->
+<<<<<<< HEAD
     id, source_id, target_id, red_packet_id, order_id, type, money, coin, silver, deal_type, 
     transaction_type, transaction_status, create_time, created_at, updated_at
+=======
+    id, source_id, target_id, red_packet_id, order_id, share_id, type, money, coin, silver, 
+    deal_type, transaction_type, transaction_status, create_time, created_at, updated_at
+>>>>>>> 520449c8ebc9e0ea1bb7fe2e11e829999a54fe82
   </sql>
 </mapper>

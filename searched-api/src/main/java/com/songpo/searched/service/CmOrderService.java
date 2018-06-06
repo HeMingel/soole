@@ -292,20 +292,6 @@ public class CmOrderService {
                                                             setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity);
                                                         }
                                                     }});
-                                                    // 忘了这块是要表达什么 ?? 如果是新人专享活动的话
-//                                        if (slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
-//                                            Example example1 = new Example(SlActivityProduct.class);
-//                                            example1.createCriteria()
-//                                                    .andEqualTo("productId", slProduct.getId())
-//                                                    .andGreaterThan("count", 0);
-//                                            this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
-//                                                if (activityProductCount == 0) {
-//                                                    setEnabled(false);
-//                                                }
-//                                                //活动总商品上架数量 - 本次购买的数量
-//                                                setCount(activityProductCount);
-//                                            }}, example1);
-//                                        } else {}
                                                     // 如果库存为0 的话就下架了
                                                     Example example = new Example(SlActivityProduct.class);
                                                     example.createCriteria()
@@ -499,6 +485,7 @@ public class CmOrderService {
                                             int count1 = this.orderService.selectCount(new SlOrder() {{
                                                 setUserId(groupMaster);
                                                 setSerialNumber(serialNumber);
+                                                setSpellGroupStatus(1);
                                             }});
                                             //如果存在 && 只有一条
                                             if (count1 == 1) {
@@ -516,7 +503,7 @@ public class CmOrderService {
                                                     return message;
                                                 }
                                             } else {
-                                                message.setMsg("订单失效或不存在");
+                                                message.setMsg("拼团失败或不存在");
                                                 return message;
                                             }
                                         } else {
@@ -863,21 +850,6 @@ public class CmOrderService {
         slOrder.setUserId(userId);
         // 团主Id
         slOrder.setGroupMaster(groupMaster);
-        // 订单类型
-//        slOrder.setType(type);
-        // 如果是拼团订单
-//        if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
-//            // 查询该订单号的所有订单 && 支付成功状态
-//            int count2 = this.orderService.selectCount(new SlOrder() {{
-//                setSerialNumber(serialNumber);
-//                setPaymentState(1);
-//            }});
-//            // 如果单数 + 他自己 <=所需人数
-//            if (count2 + 1 <= activityProduct.getPeopleNum()) {
-//                // 拼团状态为拼团中状态
-//                slOrder.setSpellGroupStatus(1);
-//            }
-//        }
         // 该商品的规格价格 * 加入购物车中的数量 = 该用户本次加入商品的价格
         double price = 0.00;
         if (spellGroupType == 1) {
@@ -1311,8 +1283,10 @@ public class CmOrderService {
             // 查询有没有这个订单
             SlOrderDetail detail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                 setOrderId(orderId);
-                //并且是待发货状态
-                setShippingState(3);
+                //并且是已发货状态
+                setShippingState(4);
+                //用户id
+                setCreator(user.getId());
             }});
             // 有这个订单明细
             if (null != detail) {
@@ -1470,6 +1444,24 @@ public class CmOrderService {
             message.setMsg("请登录");
         }
         return message;
+    }
+
+    /**
+     * 校验支付密码
+     *
+     * @param userId
+     * @param payPassword
+     * @return
+     */
+    public Boolean verifyPaymentPassword(String userId, String payPassword) {
+        Boolean falg = false;
+        SlUser user = userService.selectByPrimaryKey(userId);
+        if (null != user) {
+            if (user.getPayPassword().equals(payPassword)) {
+                falg = true;
+            }
+        }
+        return falg;
     }
 
     /**
@@ -1689,14 +1681,23 @@ public class CmOrderService {
      * @return
      */
     @Transactional
-    public BusinessMessage<Map> onlyPulsePay(String orderId) {
+    public BusinessMessage<Map> onlyPulsePay(String orderId, String payPassword) {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
-        message = checkTheOrder(orderId, user);
-        if (message.getSuccess() == true) {
-            if (message.getData().get("money").toString().equals("0.00")) {
-                processOrders.processOrders(orderId, 3);
+        if (null != user) {
+            Boolean falg = verifyPaymentPassword(user.getId(), payPassword);
+            if (falg) {
+                message = checkTheOrder(orderId, user);
+                if (message.getSuccess() == true) {
+                    if (message.getData().get("money").toString().equals("0.00")) {
+                        processOrders.processOrders(orderId, 3);
+                    }
+                }
+            } else {
+                message.setMsg("支付密码错误");
             }
+        } else {
+            message.setMsg("请登录");
         }
         return message;
     }

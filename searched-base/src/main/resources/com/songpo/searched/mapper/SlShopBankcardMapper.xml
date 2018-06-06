@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+      <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     <result column="cardholder" jdbcType="VARCHAR" property="cardholder" />
     <result column="card_number" jdbcType="BIGINT" property="cardNumber" />
     <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
@@ -15,6 +15,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, shop_id, cardholder, card_number, opening_bank
+      id, user_id, cardholder, card_number, opening_bank
   </sql>
 </mapper>

@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -144,7 +144,7 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现金额(限消费奖励模式)
+     * 返现金额(限预售模式)
      */
     @Column(name = "return_cash_money")
     private BigDecimal returnCashMoney;
@@ -646,18 +646,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现金额(限消费奖励模式)
+     * 获取返现金额(限预售模式)
      *
-     * @return return_cash_money - 返现金额(限消费奖励模式)
+     * @return return_cash_money - 返现金额(限预售模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(限消费奖励模式)
+     * 设置返现金额(限预售模式)
      *
-     * @param returnCashMoney 返现金额(限消费奖励模式)
+     * @param returnCashMoney 返现金额(限预售模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;

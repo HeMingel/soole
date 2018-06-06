@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlBoonDetailMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlBoonDetail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="boon_id" jdbcType="VARCHAR" property="boonId" />
+    <result column="prize_type" jdbcType="BIT" property="prizeType" />
+    <result column="deal_type" jdbcType="VARCHAR" property="dealType" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="prize_count" jdbcType="BIT" property="prizeCount" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="surplus_count" jdbcType="INTEGER" property="surplusCount" />
+    <result column="result" jdbcType="INTEGER" property="result" />
+    <result column="chance" jdbcType="DOUBLE" property="chance" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, boon_id, prize_type, deal_type, name, image_url, prize_count, count, surplus_count, 
+    result, chance, create_time, update_time
+  </sql>
+</mapper>
