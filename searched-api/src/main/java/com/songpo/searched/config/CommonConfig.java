@@ -1,15 +1,13 @@
 package com.songpo.searched.config;
 
-import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
-import com.songpo.searched.entity.SlReturnsDetail;
-import com.songpo.searched.entity.SlSignIn;
+import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.SlActivityProductMapper;
 import com.songpo.searched.mapper.SlReturnsDetailMapper;
 import com.songpo.searched.mapper.SlSignInMapper;
-import com.songpo.searched.service.OrderDetailService;
-import com.songpo.searched.service.OrderService;
-import com.songpo.searched.service.ProcessOrders;
-import com.songpo.searched.service.UserService;
+import com.songpo.searched.rabbitmq.NotificationService;
+import com.songpo.searched.service.*;
+import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
@@ -24,10 +22,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class CommonConfig {
@@ -46,6 +41,14 @@ public class CommonConfig {
     private ProcessOrders processOrders;
     @Autowired
     private WxPayService wxPayService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SlActivityProductMapper activityProductMapper;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private NotificationService notificationService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
@@ -53,6 +56,7 @@ public class CommonConfig {
         updOrderPreSaleState();
         updOrderConfirmReceipt();
         updReturnsDetailOrderPreSaleState();
+        virtualOrderNotice();
     }
 
     /**
@@ -262,4 +266,38 @@ public class CommonConfig {
             }
         }
     }
+
+    /**
+     * 虚拟下单通知
+     */
+    public void virtualOrderNotice(){
+        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
+        if(orderDetails!=null &&orderDetails.size()>0){
+            int size = orderDetails.size();
+            Random rand = new Random();
+            int i = rand.nextInt(size);
+            SlOrderDetail orderDetail = orderDetails.get(i);
+            String creator = orderDetail.getCreator();
+            String productId = orderDetail.getProductId();
+
+            SlUser user = userService.selectByPrimaryKey(creator);
+            SlProduct product = productService.selectByPrimaryKey(productId);
+            JSONObject object = new JSONObject();
+            object.put("avatar", user.getAvatar());
+            object.put("nickName", user.getNickName());
+            object.put("productName", orderDetail.getProductName());
+            object.put("salesModeId", product.getSalesModeId());
+            SlActivityProduct activityProduct = activityProductMapper.selectOne(new SlActivityProduct() {{
+                setId(orderDetail.getActivityProductId());
+            }});
+            object.put("activityId", activityProduct.getActivityId());
+            object.put("productId", orderDetail.getProductId());
+//                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
+            //系统通知
+            notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
+        }else {
+            return ;
+        }
+    }
+
 }

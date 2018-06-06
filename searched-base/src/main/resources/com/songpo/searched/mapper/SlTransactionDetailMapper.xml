@@ -16,7 +16,7 @@
     <result column="silver" jdbcType="INTEGER" property="silver" />
     <result column="deal_type" jdbcType="INTEGER" property="dealType" />
     <result column="transaction_type" jdbcType="INTEGER" property="transactionType" />
-      <result column="transaction_status" jdbcType="TINYINT" property="transactionStatus"/>
+    <result column="transaction_status" jdbcType="TINYINT" property="transactionStatus" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -25,7 +25,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, source_id, target_id, red_packet_id, order_id, type, money, coin, silver, deal_type,
-      transaction_type, transaction_status, create_time, created_at, updated_at
+    id, source_id, target_id, red_packet_id, order_id, type, money, coin, silver, deal_type, 
+    transaction_type, transaction_status, create_time, created_at, updated_at
   </sql>
 </mapper>

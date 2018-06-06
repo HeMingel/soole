@@ -30,8 +30,8 @@
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
-      <result column="login_count" jdbcType="INTEGER" property="loginCount"/>
-      <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin"/>
+    <result column="login_count" jdbcType="INTEGER" property="loginCount" />
+    <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -39,9 +39,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-      id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
-      birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver,
-      money, client_id, client_secret, open_id, type, status, login_count, last_login,
-      created_at, updated_at
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
+    birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
+    money, client_id, client_secret, open_id, type, status, login_count, last_login, 
+    created_at, updated_at
   </sql>
 </mapper>
