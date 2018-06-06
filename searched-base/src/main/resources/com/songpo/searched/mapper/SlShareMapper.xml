@@ -8,6 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+      <result column="silver" jdbcType="INTEGER" property="silver"/>
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -16,6 +17,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, order_id, type, created_at, updated_at
+      id, user_id, order_id, silver, type, created_at, updated_at
   </sql>
 </mapper>

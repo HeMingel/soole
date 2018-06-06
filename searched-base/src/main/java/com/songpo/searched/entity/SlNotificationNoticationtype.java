@@ -6,37 +6,45 @@ import java.util.Date;
 
 @Table(name = "sl_notification_noticationtype")
 public class SlNotificationNoticationtype implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 所属类型id
      */
     @Column(name = "parentId")
     private String parentid;
+
     private String name;
+
     private String description;
+
     /**
      * 修改时间
      */
     @Column(name = "updateTime")
     private Date updatetime;
+
     /**
      * 修改人
      */
     @Column(name = "updateUser")
     private String updateuser;
+
     /**
      * 创建时间
      */
     @Column(name = "createTime")
     private Date createtime;
+
     /**
      * 创建人
      */
     @Column(name = "createUser")
     private String createuser;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

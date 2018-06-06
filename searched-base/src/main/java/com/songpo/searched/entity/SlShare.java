@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_share")
 public class SlShare implements Serializable {
@@ -17,13 +17,21 @@ public class SlShare implements Serializable {
     private String userId;
 
     /**
-     * 订单id
+     * 订单id（订单支付完成分享使用）
      */
     @Column(name = "order_id")
     private String orderId;
 
     /**
-     * 分享类型  1.购物完成分享订单（第一次）  2.购物完成分享订单（第二次）
+     * app分享后打开的h5页面，拆红包显示的银豆数量
+     */
+    private Integer silver;
+
+    /**
+     * 分享类型 
+     1. 购物完成分享订单（第一次）
+     2. 购物完成分享订单（第二次）
+     3. h5页面拆红包获得的银豆数量（用户每天拆一次红包，会生成一条记录，可以根据有几条记录判断用户当天拆红包次数）
      */
     private Integer type;
 
@@ -74,36 +82,66 @@ public class SlShare implements Serializable {
     }
 
     /**
-     * 获取订单id
+     * 获取订单id（订单支付完成分享使用）
      *
-     * @return order_id - 订单id
+     * @return order_id - 订单id（订单支付完成分享使用）
      */
     public String getOrderId() {
         return orderId;
     }
 
     /**
-     * 设置订单id
+     * 设置订单id（订单支付完成分享使用）
      *
-     * @param orderId 订单id
+     * @param orderId 订单id（订单支付完成分享使用）
      */
     public void setOrderId(String orderId) {
         this.orderId = orderId == null ? null : orderId.trim();
     }
 
     /**
-     * 获取分享类型  1.购物完成分享订单（第一次）  2.购物完成分享订单（第二次）
+     * 获取app分享后打开的h5页面，拆红包显示的银豆数量
      *
-     * @return type - 分享类型  1.购物完成分享订单（第一次）  2.购物完成分享订单（第二次）
+     * @return silver - app分享后打开的h5页面，拆红包显示的银豆数量
+     */
+    public Integer getSilver() {
+        return silver;
+    }
+
+    /**
+     * 设置app分享后打开的h5页面，拆红包显示的银豆数量
+     *
+     * @param silver app分享后打开的h5页面，拆红包显示的银豆数量
+     */
+    public void setSilver(Integer silver) {
+        this.silver = silver;
+    }
+
+    /**
+     * 获取分享类型 
+     1. 购物完成分享订单（第一次）
+     2. 购物完成分享订单（第二次）
+     3. h5页面拆红包获得的银豆数量（用户每天拆一次红包，会生成一条记录，可以根据有几条记录判断用户当天拆红包次数）
+     *
+     * @return type - 分享类型 
+    1. 购物完成分享订单（第一次）
+    2. 购物完成分享订单（第二次）
+    3. h5页面拆红包获得的银豆数量（用户每天拆一次红包，会生成一条记录，可以根据有几条记录判断用户当天拆红包次数）
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置分享类型  1.购物完成分享订单（第一次）  2.购物完成分享订单（第二次）
+     * 设置分享类型 
+     1. 购物完成分享订单（第一次）
+     2. 购物完成分享订单（第二次）
+     3. h5页面拆红包获得的银豆数量（用户每天拆一次红包，会生成一条记录，可以根据有几条记录判断用户当天拆红包次数）
      *
-     * @param type 分享类型  1.购物完成分享订单（第一次）  2.购物完成分享订单（第二次）
+     * @param type 分享类型 
+    1. 购物完成分享订单（第一次）
+    2. 购物完成分享订单（第二次）
+    3. h5页面拆红包获得的银豆数量（用户每天拆一次红包，会生成一条记录，可以根据有几条记录判断用户当天拆红包次数）
      */
     public void setType(Integer type) {
         this.type = type;
@@ -154,6 +192,7 @@ public class SlShare implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", orderId=").append(orderId);
+        sb.append(", silver=").append(silver);
         sb.append(", type=").append(type);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);

@@ -26,12 +26,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-<<<<<<< HEAD
-    id, source_id, target_id, red_packet_id, order_id, type, money, coin, silver, deal_type, 
-    transaction_type, transaction_status, create_time, created_at, updated_at
-=======
     id, source_id, target_id, red_packet_id, order_id, share_id, type, money, coin, silver, 
     deal_type, transaction_type, transaction_status, create_time, created_at, updated_at
->>>>>>> 520449c8ebc9e0ea1bb7fe2e11e829999a54fe82
   </sql>
 </mapper>

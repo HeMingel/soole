@@ -6,33 +6,38 @@ import java.util.Date;
 
 @Table(name = "sl_check_order")
 public class SlCheckOrder implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 订单详情表ID
      */
     @Column(name = "order_detail_id")
     private String orderDetailId;
+
     /**
      * 是否确认1未确认2已确认
      */
     @Column(name = "co_state")
     private Boolean coState;
+
     /**
      * 创建时间
      */
     @Column(name = "created_at")
     private Date createdAt;
+
     /**
      * 更新时间
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键ID

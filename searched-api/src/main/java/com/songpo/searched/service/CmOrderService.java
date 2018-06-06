@@ -1460,7 +1460,7 @@ public class CmOrderService {
            if (user.getPayPassword().equals(payPassword)) {
                 falg = true;
             }
-        }*/
+        }
         return falg;
     }
 

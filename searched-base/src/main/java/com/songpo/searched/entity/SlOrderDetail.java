@@ -184,6 +184,18 @@ public class SlOrderDetail implements Serializable {
     private Integer type;
 
     /**
+     * 财务审核确认订单时使用1待确认2已确认
+     */
+    @Column(name = "check_state")
+    private Boolean checkState;
+
+    /**
+     * 财务审核人员信息
+     */
+    @Column(name = "check_name")
+    private String checkName;
+
+    /**
      * (暂未使用)修改人
      */
     private String modifier;
@@ -774,6 +786,42 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
+     * 获取财务审核确认订单时使用1待确认2已确认
+     *
+     * @return check_state - 财务审核确认订单时使用1待确认2已确认
+     */
+    public Boolean getCheckState() {
+        return checkState;
+    }
+
+    /**
+     * 设置财务审核确认订单时使用1待确认2已确认
+     *
+     * @param checkState 财务审核确认订单时使用1待确认2已确认
+     */
+    public void setCheckState(Boolean checkState) {
+        this.checkState = checkState;
+    }
+
+    /**
+     * 获取财务审核人员信息
+     *
+     * @return check_name - 财务审核人员信息
+     */
+    public String getCheckName() {
+        return checkName;
+    }
+
+    /**
+     * 设置财务审核人员信息
+     *
+     * @param checkName 财务审核人员信息
+     */
+    public void setCheckName(String checkName) {
+        this.checkName = checkName == null ? null : checkName.trim();
+    }
+
+    /**
      * 获取(暂未使用)修改人
      *
      * @return modifier - (暂未使用)修改人
@@ -952,6 +1000,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", activityProductId=").append(activityProductId);
         sb.append(", type=").append(type);
+        sb.append(", checkState=").append(checkState);
+        sb.append(", checkName=").append(checkName);
         sb.append(", modifier=").append(modifier);
         sb.append(", modificationTime=").append(modificationTime);
         sb.append(", createdAt=").append(createdAt);

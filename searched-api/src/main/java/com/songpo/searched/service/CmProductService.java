@@ -131,6 +131,43 @@ public class CmProductService {
                 if (avatarList.size() > 0) {
                     map.getList().get(i).put("avatarList", avatarList);
                 }
+
+                if (StringUtils.isNotBlank(activityId)) {
+                    //未拼成订单集合
+                    List<Map<String, Object>> orderList = this.mapper.selectGroupOrder(activityId, map.getList().get(i).get("product_id").toString());
+                    /** 去除已经拼单完成的数据 **/
+                    if (orderList != null && orderList.size() > 0) {
+                        List<Map<String, Object>> removeOrderList = new ArrayList<>();
+                        for (Map<String, Object> ordermap : orderList) {
+                            if (ordermap.get("already_people").equals(ordermap.get("need_people"))) {
+                                removeOrderList.add(ordermap);
+                            }
+                        }
+                        if (removeOrderList.size() > 0) {
+                            orderList.removeAll(removeOrderList);
+                        }
+                    }
+                    if (orderList != null && orderList.size() > 0) {
+                        //遍历订单集合 查询首发人
+                        List<Object> groupList = new ArrayList<>();
+                        for (int j = 0; j < orderList.size(); j++) {
+                            Map<String, Object> groupMapper = new HashMap<>(16);
+                            String groupId = orderList.get(j).get("group_master").toString();
+                            Map<String, Object> groupMaster = this.mapper.findGroupPeople(groupId);
+                            groupMapper.put("groupMaster", groupMaster);
+                            groupMapper.put("order", orderList.get(j));
+                            groupList.add(groupMapper);
+                        }
+                        map.getList().get(i).put("groupList", groupList);
+                    } else {
+                        List<Object> groupList = new ArrayList<>();
+                        Map<String, String> groupMaster = new HashMap();
+                        groupList.add(groupMaster);
+                        Map<String, String> order = new HashMap();
+                        groupList.add(order);
+                        map.getList().get(i).put("groupList", groupList);
+                    }
+                }
             }
             return new PageInfo<>(list);
         } else {
@@ -330,22 +367,23 @@ public class CmProductService {
                         list.add(order);
                         data.put("groupList", list);
                     }
-                }else{
+                } else {
                     //非拼团商品
-                    Map<String, Object>  map = new HashMap<>(16);
-                    List<Map<String,Object>> alreadyOrderMap = this.mapper.alreadyOrder(activityId, goodsId);
-                    if(alreadyOrderMap.size()>0){
-                        for(int i = 0 ;i < alreadyOrderMap.size();i++){
-                            if(alreadyOrderMap.get(i).containsKey("user_id")){
-                                Map<String,Object> userInfo = this.mapper.findGroupPeople(alreadyOrderMap.get(i).get("user_id").toString());
-                                if (userInfo != null){
+                    Map<String, Object> map = new HashMap<>(16);
+                    List<Map<String, Object>> alreadyOrderMap = this.mapper.alreadyOrder(activityId, goodsId);
+                    if (alreadyOrderMap.size() > 0) {
+                        for (int i = 0; i < alreadyOrderMap.size(); i++) {
+                            if (alreadyOrderMap.get(i).containsKey("user_id")) {
+                                Map<String, Object> userInfo = this.mapper.findGroupPeople(alreadyOrderMap.get(i).get("user_id").toString());
+                                if (userInfo != null) {
                                     //放入user信息,头像昵称
-                                    alreadyOrderMap.get(i).put("userInfo",userInfo);
+                                    alreadyOrderMap.get(i).put("userInfo", userInfo);
                                 }
-                            }else {
-                              Map<String,Object> userInfo = new HashMap<>();
+                            } else {
+                                Map<String, Object> userInfo = new HashMap<>();
 
-                              alreadyOrderMap.get(i).put("userInfo",userInfo); }
+                                alreadyOrderMap.get(i).put("userInfo", userInfo);
+                            }
                         }
                     }
 
@@ -407,7 +445,7 @@ public class CmProductService {
             // 1.预售模式2.消费返利模式
             String type = "1";
             Example example = new Example(SlPresellReturnedRecord.class);
-            example.createCriteria().andEqualTo("productId",goodsId).andEqualTo("type",type);
+            example.createCriteria().andEqualTo("productId", goodsId).andEqualTo("type", type);
             example.setOrderByClause("number_of_periods asc");
             List<SlPresellReturnedRecord> slPresellReturnedRecordList = this.slPresellReturnedRecordMapper.selectByExample(example);
             if (slPresellReturnedRecordList.size() > 0) {

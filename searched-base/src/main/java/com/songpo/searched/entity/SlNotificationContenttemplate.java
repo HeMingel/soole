@@ -6,26 +6,34 @@ import java.util.Date;
 
 @Table(name = "sl_notification_contenttemplate")
 public class SlNotificationContenttemplate implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     @Column(name = "templateText")
     private String templatetext;
+
     private String title;
+
     @Column(name = "updateTime")
     private Date updatetime;
+
     @Column(name = "updateUser")
     private String updateuser;
+
     @Column(name = "createTime")
     private Date createtime;
+
     @Column(name = "createUser")
     private String createuser;
+
     /**
      * 所属通知类型的id
      */
     @Column(name = "type_id")
     private String typeId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

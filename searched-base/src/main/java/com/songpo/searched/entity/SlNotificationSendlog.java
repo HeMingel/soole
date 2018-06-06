@@ -6,25 +6,29 @@ import java.util.Date;
 
 @Table(name = "sl_notification_sendlog")
 public class SlNotificationSendlog implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     /**
      * 发送通知的消息队列账户
      */
     @Column(name = "sendUser_id")
     private String senduserId;
+
     /**
      * 消息队列发送通知的正文
      */
     @Column(name = "sendContent")
     private String sendcontent;
+
     /**
      * 发送时间
      */
     @Column(name = "sendTime")
     private Date sendtime;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return id

@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-api.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-base.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-common.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched.iml" filepath="$PROJECT_DIR$/.idea/modules/searched.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-api/searched-api.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-api/searched-api.iml" group="searched-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-api/searched-api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-api/searched-api_main.iml" group="searched-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-api/searched-api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-api/searched-api_test.iml" group="searched-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-base/searched-base.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-base/searched-base.iml" group="searched-base" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-base/searched-base_main.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-base/searched-base_main.iml" group="searched-base" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-base/searched-base_test.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-base/searched-base_test.iml" group="searched-base" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-common/searched-common.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-common/searched-common.iml" group="searched-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-common/searched-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-common/searched-common_main.iml" group="searched-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/searched-common/searched-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/searched-common/searched-common_test.iml" group="searched-common" />
     </modules>
   </component>
 </project>
