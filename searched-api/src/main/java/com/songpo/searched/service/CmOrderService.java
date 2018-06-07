@@ -717,6 +717,7 @@ public class CmOrderService {
                             }}, example);
                             List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
                                 setOrderId(orderId);
+                                setIsVirtualSpellGroup((byte) 1);
                             }});
                             for (SlOrderDetail detail : detailList) {
                                 p += detail.getPlaceOrderReturnPulse();
@@ -790,6 +791,7 @@ public class CmOrderService {
                     // 查询该订单id关联的所有商品明细
                     List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
                         setOrderId(key);
+                        setIsVirtualSpellGroup((byte) 1);
                     }});
                     for (SlOrderDetail slOrderDetail : detailList) {
                         p += slOrderDetail.getPlaceOrderReturnPulse();
@@ -1702,6 +1704,11 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
+                Example example = new Example(SlOrderDetail.class);
+                example.createCriteria().andEqualTo("orderId", orderId);
+                orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                    setIsVirtualSpellGroup((byte) 0);
+                }}, example);
                 if (message.getData().get("money").toString().equals("0.00")) {
                     processOrders.processOrders(orderId, 3);
                 }

@@ -91,6 +91,7 @@ public class ProcessOrders {
                     }}, example);
                     List<SlOrderDetail> details = orderDetailService.select(new SlOrderDetail() {{
                         setOrderId(order.getId());
+                        setIsVirtualSpellGroup((byte) 1);
                     }});
                     orderCache.evict(orderId);
                     if (details.size() > 0) {
