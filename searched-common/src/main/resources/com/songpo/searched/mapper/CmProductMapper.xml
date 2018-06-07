@@ -404,6 +404,7 @@
         p.introduction,
         p.remark,
         p.image_url,
+        p.sales_virtual,
         ap.*
         FROM
           sl_product p
