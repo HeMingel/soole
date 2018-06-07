@@ -1488,10 +1488,11 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                SlOrderDetail orderDetail = new SlOrderDetail();
-                orderDetail.setIsVirtualSpellGroup((byte) 0);
-                orderDetail.setOrderId(orderId);
-                this.orderDetailService.updateByExampleSelective(orderDetail, null);
+                Example example = new Example(SlOrderDetail.class);
+                example.createCriteria().andEqualTo("orderId", orderId);
+                orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                    setIsVirtualSpellGroup((byte) 0);
+                }}, example);
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
