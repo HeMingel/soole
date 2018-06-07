@@ -270,7 +270,7 @@ public class CommonConfig {
     /**
      * 虚拟下单通知,每10秒一次
      */
-    @Scheduled(cron = "0/10 * * * * ? ")
+    @Scheduled(cron = "0/5 * * * * ? ")
     public void virtualOrderNotice() throws InterruptedException {
         Random rand = new Random();
 //        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
@@ -301,7 +301,7 @@ public class CommonConfig {
             object.put("productId", productId);
 //                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
             //随机通知间隔
-            long maxNoticePlus= rand.nextInt(20)*1000;
+            long maxNoticePlus= rand.nextInt(12)*1000;
             Thread.sleep(maxNoticePlus);
             //系统通知
             notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
