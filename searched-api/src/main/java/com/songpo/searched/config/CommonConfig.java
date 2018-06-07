@@ -270,44 +270,44 @@ public class CommonConfig {
     /**
      * 虚拟下单通知,每10秒一次
      */
-    @Scheduled(cron = "0/5 * * * * ? ")
-    public void virtualOrderNotice() throws InterruptedException {
-        Random rand = new Random();
-//        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
-        List<Map<String,Object>> activityProductList= productService.simpleActivityProduct();
-        List<SlUser> userList = userService.selectAll();
-
-        if(activityProductList!=null && activityProductList.size()>0){
-            int index = rand.nextInt(activityProductList.size());
-            Map<String, Object> activityProductMap = activityProductList.get(index);
-            String productId = (String) activityProductMap.get("productId");
-            String activityId = (String) activityProductMap.get("activityId");
-            String salesModeId = (String) activityProductMap.get("salesModeId");
-            String productName = (String) activityProductMap.get("productName");
-            String product_image_url = (String) activityProductMap.get("product_image_url");
-            String username="...";
-            String avatar="jwefda";
-            if(userList!=null && userList.size()>0){
-                SlUser user = userList.get(rand.nextInt(userList.size()));
-                username=user.getNickName();
-                avatar=user.getAvatar();
-            }
-            JSONObject object = new JSONObject();
-            object.put("avatar", avatar);
-            object.put("nickName", username);
-            object.put("productName", productName);
-            object.put("salesModeId",salesModeId);
-            object.put("activityId", activityId);
-            object.put("productId", productId);
-//                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
-            //随机通知间隔
-            long maxNoticePlus= rand.nextInt(12)*1000;
-            Thread.sleep(maxNoticePlus);
-            //系统通知
-            notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
-        }else {
-            return;
-        }
+//    @Scheduled(cron = "0/5 * * * * ? ")
+//    public void virtualOrderNotice() throws InterruptedException {
+//        Random rand = new Random();
+////        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
+//        List<Map<String,Object>> activityProductList= productService.simpleActivityProduct();
+//        List<SlUser> userList = userService.selectAll();
+//
+//        if(activityProductList!=null && activityProductList.size()>0){
+//            int index = rand.nextInt(activityProductList.size());
+//            Map<String, Object> activityProductMap = activityProductList.get(index);
+//            String productId = (String) activityProductMap.get("productId");
+//            String activityId = (String) activityProductMap.get("activityId");
+//            String salesModeId = (String) activityProductMap.get("salesModeId");
+//            String productName = (String) activityProductMap.get("productName");
+//            String product_image_url = (String) activityProductMap.get("product_image_url");
+//            String username="...";
+//            String avatar="jwefda";
+//            if(userList!=null && userList.size()>0){
+//                SlUser user = userList.get(rand.nextInt(userList.size()));
+//                username=user.getNickName();
+//                avatar=user.getAvatar();
+//            }
+//            JSONObject object = new JSONObject();
+//            object.put("avatar", avatar);
+//            object.put("nickName", username);
+//            object.put("productName", productName);
+//            object.put("salesModeId",salesModeId);
+//            object.put("activityId", activityId);
+//            object.put("productId", productId);
+////                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
+//            //随机通知间隔
+//            long maxNoticePlus= rand.nextInt(12)*1000;
+//            Thread.sleep(maxNoticePlus);
+//            //系统通知
+//            notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
+//        }else {
+//            return;
+//        }
 //        if(orderDetails!=null &&orderDetails.size()>0){
 //
 //            int size = orderDetails.size();
