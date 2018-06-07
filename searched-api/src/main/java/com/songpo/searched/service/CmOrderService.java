@@ -2,6 +2,7 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.domain.OrderDetail;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.alipay.service.AliPayService;
@@ -980,7 +981,7 @@ public class CmOrderService {
                         setReturnCashMoney(repository.getReturnCashMoney());
                     }
                 }
-                setIsVirtualSpellGroup((byte)1);
+                setIsVirtualSpellGroup((byte) 1);
             }});
             // 商品上架数量 - 本次加入订单的数量
             int activityProductCount = activityProduct.getCount() - quantity;
@@ -1428,13 +1429,14 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         Map<String, String> map = new HashMap<>();
-
         if (null != user) {
+            message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                SlOrderDetail orderDetail=new SlOrderDetail();
-                orderDetail.setIsVirtualSpellGroup((byte) 0);
-                orderDetail.setOrderId(orderId);
-                this.orderDetailService.updateByExampleSelective(orderDetail,null);
+                Example example = new Example(SlOrderDetail.class);
+                example.createCriteria().andEqualTo("orderId", orderId);
+                orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
+                    setIsVirtualSpellGroup((byte) 0);
+                }}, example);
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
@@ -1464,7 +1466,7 @@ public class CmOrderService {
         Boolean falg = false;
         SlUser user = userService.selectByPrimaryKey(userId);
         if (null != user) {
-           if (user.getPayPassword().equals(payPassword)) {
+            if (user.getPayPassword().equals(payPassword)) {
                 falg = true;
             }
         }
@@ -1486,10 +1488,10 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                SlOrderDetail orderDetail=new SlOrderDetail();
+                SlOrderDetail orderDetail = new SlOrderDetail();
                 orderDetail.setIsVirtualSpellGroup((byte) 0);
                 orderDetail.setOrderId(orderId);
-                this.orderDetailService.updateByExampleSelective(orderDetail,null);
+                this.orderDetailService.updateByExampleSelective(orderDetail, null);
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
@@ -1530,6 +1532,7 @@ public class CmOrderService {
                 List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
                     setOrderId(orderId);
                     setCreator(user.getId());
+                    setIsVirtualSpellGroup((byte) 1);
                 }});
                 if (orderDetails.size() > 0) {
                     if (order.getDeductTotalPulse() > 0) {
