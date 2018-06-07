@@ -79,7 +79,9 @@ public class CmProductCommentService {
                         if (commentImages != null && commentImages.size() > 0) {
                             for (Map<String, Object> map : commentImages) {
                                 if (map.get("image_url") != null && StringUtils.isNotBlank(map.get("image_url").toString())) {
-                                    map.put("image_url", domain + map.get("image_url"));
+                                    if (!map.get("image_url").toString().contains("http")) {
+                                        map.put("image_url", domain + map.get("image_url"));
+                                    }
                                 }
                             }
                         }
