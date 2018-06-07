@@ -1,6 +1,7 @@
 package com.songpo.searched.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.domain.InsMktCouponCmpgnBaseDTO;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SlActivityProductMapper;
 import com.songpo.searched.mapper.SlReturnsDetailMapper;
@@ -46,9 +47,9 @@ public class CommonConfig {
     @Autowired
     private SlActivityProductMapper activityProductMapper;
     @Autowired
-    private ProductService productService;
-    @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private CmProductService productService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
@@ -56,7 +57,6 @@ public class CommonConfig {
         updOrderPreSaleState();
         updOrderConfirmReceipt();
         updReturnsDetailOrderPreSaleState();
-        virtualOrderNotice();
     }
 
     /**
@@ -268,36 +268,66 @@ public class CommonConfig {
     }
 
     /**
-     * 虚拟下单通知
+     * 虚拟下单通知,每10秒一次
      */
-    public void virtualOrderNotice(){
-        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
-        if(orderDetails!=null &&orderDetails.size()>0){
-            int size = orderDetails.size();
-            Random rand = new Random();
-            int i = rand.nextInt(size);
-            SlOrderDetail orderDetail = orderDetails.get(i);
-            String creator = orderDetail.getCreator();
-            String productId = orderDetail.getProductId();
+    @Scheduled(cron = "0/10 * * * * ? ")
+    public void virtualOrderNotice() throws InterruptedException {
+        Random rand = new Random();
+//        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
+        List<Map<String,Object>> activityProductList= productService.simpleActivityProduct();
+        List<SlUser> userList = userService.selectAll();
 
-            SlUser user = userService.selectByPrimaryKey(creator);
-            SlProduct product = productService.selectByPrimaryKey(productId);
+        if(activityProductList!=null && activityProductList.size()>0){
+            int index = rand.nextInt(activityProductList.size());
+            Map<String, Object> activityProductMap = activityProductList.get(index);
+            String productId = (String) activityProductMap.get("productId");
+            String activityId = (String) activityProductMap.get("activityId");
+            String salesModeId = (String) activityProductMap.get("salesModeId");
+            String productName = (String) activityProductMap.get("productName");
+            String product_image_url = (String) activityProductMap.get("product_image_url");
+            String username="...";
+            String avatar="jwefda";
+            if(userList!=null && userList.size()>0){
+                SlUser user = userList.get(rand.nextInt(userList.size()));
+                username=user.getNickName();
+                avatar=user.getAvatar();
+            }
             JSONObject object = new JSONObject();
-            object.put("avatar", user.getAvatar());
-            object.put("nickName", user.getNickName());
-            object.put("productName", orderDetail.getProductName());
-            object.put("salesModeId", product.getSalesModeId());
-            SlActivityProduct activityProduct = activityProductMapper.selectOne(new SlActivityProduct() {{
-                setId(orderDetail.getActivityProductId());
-            }});
-            object.put("activityId", activityProduct.getActivityId());
-            object.put("productId", orderDetail.getProductId());
+            object.put("avatar", avatar);
+            object.put("nickName", username);
+            object.put("productName", productName);
+            object.put("salesModeId",salesModeId);
+            object.put("activityId", activityId);
+            object.put("productId", productId);
 //                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
+            //随机通知间隔
+            long maxNoticePlus= rand.nextInt(20)*1000;
+            Thread.sleep(maxNoticePlus);
             //系统通知
             notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
         }else {
-            return ;
+            return;
         }
+//        if(orderDetails!=null &&orderDetails.size()>0){
+//
+//            int size = orderDetails.size();
+//
+//            int i = rand.nextInt(size);
+//            SlOrderDetail orderDetail = orderDetails.get(i);
+//            String creator = orderDetail.getCreator();
+//            String productId = orderDetail.getProductId();
+//
+//            SlUser user = userService.selectByPrimaryKey(creator);
+//            SlProduct product = productService.selectByPrimaryKey(productId);
+//            JSONObject object = new JSONObject();
+//            object.put("avatar", user.getAvatar());
+//            object.put("nickName", user.getNickName());
+//            object.put("productName", orderDetail.getProductName());
+//            object.put("salesModeId", product.getSalesModeId());
+//
+//        }else {
+//            return ;
+//        }
     }
 
 }

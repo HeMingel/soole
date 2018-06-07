@@ -617,4 +617,9 @@ public class CmProductService {
         }
     }
 
+    public List<Map<String,Object>> simpleActivityProduct(){
+        List<Map<String, Object>> mapList =slProductMapper.simpleActivityProductQuery();
+        return mapList;
+    }
+
 }
