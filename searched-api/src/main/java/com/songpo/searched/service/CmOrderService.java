@@ -450,6 +450,11 @@ public class CmOrderService {
                 }});
                 //7.如果商品存在的话
                 if (null != slProduct) {
+                    // 把虚拟销量加上
+                    productService.updateByPrimaryKeySelective(new SlProduct() {{
+                        setId(slProduct.getId());
+                        setSalesVirtual(slProduct.getSalesVirtual() + quantity);
+                    }});
                     //查询活动商品信息
                     SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                     if (null != activityProduct) {
@@ -837,6 +842,7 @@ public class CmOrderService {
                                             String buyerMessage,
                                             int spellGroupType) {
         BusinessMessage message = new BusinessMessage();
+
         SlOrder slOrder = new SlOrder();
         // 订单id
         slOrder.setId(formatUUID32());
@@ -995,11 +1001,7 @@ public class CmOrderService {
             repository.setCount(cou);
             // 更新redis中该商品规格的库存
             repositoryCache.put(repository.getId(), repository);
-            // 把虚拟销量加上
-            productService.updateByPrimaryKeySelective(new SlProduct() {{
-                setId(slProduct.getId());
-                setSalesVirtual(slProduct.getSalesVirtual() + quantity);
-            }});
+
             //更新数据库该商品规格的库存
             int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
             if (updateCount > 0) {
