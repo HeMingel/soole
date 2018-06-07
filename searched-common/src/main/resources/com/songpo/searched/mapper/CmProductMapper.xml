@@ -321,6 +321,7 @@
           AND od.`product_id` = #{goodsId}
           AND o.payment_state = 1
           AND o.spell_group_status = 1
+          and od.is_virtual_spell_group = 0
         GROUP BY o.serial_number
 
     </select>
@@ -430,6 +431,40 @@
             </if>
         </trim>
     </select>
+
+    <select id="selectVirtualSpellGroup" parameterType="String" resultType="map">
+
+        SELECT
+          COUNT(od.serial_number) AS virtual_has_spell,
+          od.group_people AS need_people,
+          od.`serial_number` AS order_num,
+          o.`group_master`
+        FROM
+          sl_order_detail od
+          LEFT JOIN sl_order o
+            ON od.`order_id` = o.`id`
+            LEFT JOIN sl_activity_product ap
+            ON od.`activity_product_id` = ap.`id`
+        WHERE ap.`activity_id` =  #{activityId}
+          AND od.`product_id` = #{goodsId}
+          AND o.payment_state = 1
+          AND o.spell_group_status = 1
+          and od.is_virtual_spell_group = 1
+        GROUP BY o.serial_number
+    </select>
+
+    <select id="simpleActivityProductQuery" resultType="java.util.HashMap">
+        SELECT
+        p.id productId,
+        ap.`activity_id` activityId,
+    --     sm.`name`,
+        sm.`id` salesModeId,
+        p.`name` productName,
+        p.`image_url` product_image_url
+        FROM sl_activity_product ap
+          JOIN sl_product p ON ap.`product_id`=p.`id`
+          JOIN sl_sales_mode sm ON sm.`id`=p.`sales_mode_id`
+  </select>
 </mapper>
 
 

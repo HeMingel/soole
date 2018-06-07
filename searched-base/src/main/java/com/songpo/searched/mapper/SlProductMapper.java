@@ -7,5 +7,4 @@ import java.util.List;
 import java.util.Map;
 
 public interface SlProductMapper extends Mapper<SlProduct> {
-    List<Map<String,Object>> simpleActivityProductQuery();
 }

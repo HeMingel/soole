@@ -241,6 +241,9 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "deduct_total_gold")
     private Integer deductTotalGold;
 
+    @Column(name = "is_virtual_spell_group")
+    private byte isVirtualSpellGroup;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -963,6 +966,14 @@ public class SlOrderDetail implements Serializable {
      */
     public void setDeductTotalGold(Integer deductTotalGold) {
         this.deductTotalGold = deductTotalGold;
+    }
+
+    public byte getIsVirtualSpellGroup() {
+        return isVirtualSpellGroup;
+    }
+
+    public void setIsVirtualSpellGroup(byte isVirtualSpellGroup) {
+        this.isVirtualSpellGroup = isVirtualSpellGroup;
     }
 
     @Override

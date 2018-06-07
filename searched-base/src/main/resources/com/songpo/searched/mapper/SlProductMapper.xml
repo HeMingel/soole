@@ -50,16 +50,4 @@
     -->
     detail
   </sql>
-  <select id="simpleActivityProductQuery" resultType="java.util.HashMap">
-    SELECT
-    p.id productId,
-    ap.`activity_id` activityId,
---     sm.`name`,
-    sm.`id` salesModeId,
-    p.`name` productName,
-    p.`image_url` product_image_url
-    FROM sl_activity_product ap
-      JOIN sl_product p ON ap.`product_id`=p.`id`
-      JOIN sl_sales_mode sm ON sm.`id`=p.`sales_mode_id`
-  </select>
 </mapper>

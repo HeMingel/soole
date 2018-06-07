@@ -980,6 +980,7 @@ public class CmOrderService {
                         setReturnCashMoney(repository.getReturnCashMoney());
                     }
                 }
+                setIsVirtualSpellGroup((byte)1);
             }});
             // 商品上架数量 - 本次加入订单的数量
             int activityProductCount = activityProduct.getCount() - quantity;
@@ -1427,9 +1428,13 @@ public class CmOrderService {
         BusinessMessage<Map> message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         Map<String, String> map = new HashMap<>();
+
         if (null != user) {
-            message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
+                SlOrderDetail orderDetail=new SlOrderDetail();
+                orderDetail.setIsVirtualSpellGroup((byte) 0);
+                orderDetail.setOrderId(orderId);
+                this.orderDetailService.updateByExampleSelective(orderDetail,null);
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
@@ -1481,6 +1486,10 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
+                SlOrderDetail orderDetail=new SlOrderDetail();
+                orderDetail.setIsVirtualSpellGroup((byte) 0);
+                orderDetail.setOrderId(orderId);
+                this.orderDetailService.updateByExampleSelective(orderDetail,null);
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);

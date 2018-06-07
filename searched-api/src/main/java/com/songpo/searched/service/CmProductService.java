@@ -41,6 +41,8 @@ public class CmProductService {
     @Autowired
     private SlProductMapper slProductMapper;
     @Autowired
+    private CmProductMapper cmProductMapper;
+    @Autowired
     private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
@@ -298,12 +300,21 @@ public class CmProductService {
                 if (Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP) {
                     //未拼成订单集合
                     List<Map<String, Object>> orderList = this.mapper.selectGroupOrder(activityId, goodsId);
-                    /** 去除已经拼单完成的数据 **/
+
                     if (orderList != null && orderList.size() > 0) {
                         List<Map<String, Object>> removeOrderList = new ArrayList<>();
                         for (Map<String, Object> map : orderList) {
+                            int already_people=(int)map.get("already_people");
+                            int need_people=(int)map.get("need_people");
+                            /** 去除已经拼单完成的数据 **/
                             if (map.get("already_people").equals(map.get("need_people"))) {
                                 removeOrderList.add(map);
+                            }else if(already_people<need_people){
+                                //如果拼团人数还不够,增加虚拟批团
+                                List<Map<String, Object>> virtualSpellGroup = this.mapper.selectVirtualSpellGroup(activityId, goodsId);
+                                if(virtualSpellGroup!=null && virtualSpellGroup.size()>0){
+                                    data.put("virtualSpellGroup",virtualSpellGroup);
+                                }
                             }
                         }
                         if (removeOrderList.size() > 0) {
@@ -581,7 +592,7 @@ public class CmProductService {
     }
 
     public List<Map<String,Object>> simpleActivityProduct(){
-        List<Map<String, Object>> mapList =slProductMapper.simpleActivityProductQuery();
+        List<Map<String, Object>> mapList =cmProductMapper.simpleActivityProductQuery();
         return mapList;
     }
 

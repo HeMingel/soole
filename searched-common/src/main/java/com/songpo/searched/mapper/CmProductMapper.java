@@ -212,4 +212,15 @@ public interface CmProductMapper{
                                              @Param("sortBySale")String sortBySale,
                                              @Param("sortByPrice")String sortByPrice);
 
+    /**
+     * 查询虚拟拼团列表
+     * @return
+     */
+    List<Map<String,Object>> selectVirtualSpellGroup(@Param("activityId")String activityId,@Param("goodsId")String goodsId);
+
+    /**
+     * 虚拟下单通知数据,简单查询
+     * @return
+     */
+    List<Map<String,Object>> simpleActivityProductQuery();
 }
