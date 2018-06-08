@@ -203,7 +203,11 @@ public class ProcessOrders {
                             object.put("productId", detail.getProductId());
 //                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
                             //系统通知
-                            notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
+                            try {
+                                notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
+                            } catch (Exception e) {
+                                log.error("发送订单通知失败，{}", e);
+                            }
                         }
                         if (payType != 3) {
                             // 加入明细表
@@ -234,13 +238,13 @@ public class ProcessOrders {
                                 setOrderId(orderId);
                                 // 购物
                                 setType(200);
-                                // 扣除金额
+                                // 返豆
                                 setSilver(finalPulse);
                                 // 银豆
                                 setDealType(6);
                                 // 插入时间
                                 setCreateTime(new Date());
-                                // 支出
+                                // 收入
                                 setTransactionType(2);
                             }});
                             int silver = user.getSilver() + pulse;

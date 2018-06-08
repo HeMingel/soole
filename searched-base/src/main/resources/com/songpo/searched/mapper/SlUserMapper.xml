@@ -34,14 +34,15 @@
     <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+      <result column="is_virtual" jdbcType="TINYINT" property="isVirtual"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
-    birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
-    money, client_id, client_secret, open_id, type, status, login_count, last_login, 
-    created_at, updated_at
+      id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
+      birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver,
+      money, client_id, client_secret, open_id, type, status, login_count, last_login,
+      created_at, updated_at, is_virtual
   </sql>
 </mapper>

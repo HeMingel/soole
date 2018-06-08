@@ -241,8 +241,11 @@ public class SlOrderDetail implements Serializable {
     @Column(name = "deduct_total_gold")
     private Integer deductTotalGold;
 
+    /**
+     * 是否是虚拟拼团.1:是;0:不是.
+     */
     @Column(name = "is_virtual_spell_group")
-    private byte isVirtualSpellGroup;
+    private Byte isVirtualSpellGroup;
 
     private static final long serialVersionUID = 1L;
 
@@ -968,11 +971,21 @@ public class SlOrderDetail implements Serializable {
         this.deductTotalGold = deductTotalGold;
     }
 
-    public byte getIsVirtualSpellGroup() {
+    /**
+     * 获取是否是虚拟拼团.1:是;0:不是.
+     *
+     * @return is_virtual_spell_group - 是否是虚拟拼团.1:是;0:不是.
+     */
+    public Byte getIsVirtualSpellGroup() {
         return isVirtualSpellGroup;
     }
 
-    public void setIsVirtualSpellGroup(byte isVirtualSpellGroup) {
+    /**
+     * 设置是否是虚拟拼团.1:是;0:不是.
+     *
+     * @param isVirtualSpellGroup 是否是虚拟拼团.1:是;0:不是.
+     */
+    public void setIsVirtualSpellGroup(Byte isVirtualSpellGroup) {
         this.isVirtualSpellGroup = isVirtualSpellGroup;
     }
 
@@ -1021,6 +1034,7 @@ public class SlOrderDetail implements Serializable {
         sb.append(", rebatePulse=").append(rebatePulse);
         sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", deductTotalGold=").append(deductTotalGold);
+        sb.append(", isVirtualSpellGroup=").append(isVirtualSpellGroup);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_order")
 public class SlOrder implements Serializable {
@@ -151,6 +151,12 @@ public class SlOrder implements Serializable {
      * (暂未使用)1：普通订单 2：拼团订单 3:预售订单 4:助力购 5:消费奖励 6:豆赚
      */
     private Integer type;
+
+    /**
+     * 已拼团人数.虚拟数
+     */
+    @Column(name = "has_virtual_group_people")
+    private Integer hasVirtualGroupPeople;
 
     /**
      * (暂未使用)手续费
@@ -614,6 +620,24 @@ public class SlOrder implements Serializable {
     }
 
     /**
+     * 获取已拼团人数.虚拟数
+     *
+     * @return has_virtual_group_people - 已拼团人数.虚拟数
+     */
+    public Integer getHasVirtualGroupPeople() {
+        return hasVirtualGroupPeople;
+    }
+
+    /**
+     * 设置已拼团人数.虚拟数
+     *
+     * @param hasVirtualGroupPeople 已拼团人数.虚拟数
+     */
+    public void setHasVirtualGroupPeople(Integer hasVirtualGroupPeople) {
+        this.hasVirtualGroupPeople = hasVirtualGroupPeople;
+    }
+
+    /**
      * 获取(暂未使用)手续费
      *
      * @return fee - (暂未使用)手续费
@@ -662,6 +686,7 @@ public class SlOrder implements Serializable {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", remark=").append(remark);
         sb.append(", type=").append(type);
+        sb.append(", hasVirtualGroupPeople=").append(hasVirtualGroupPeople);
         sb.append(", fee=").append(fee);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

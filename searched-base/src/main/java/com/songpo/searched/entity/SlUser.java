@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -97,7 +97,6 @@ public class SlUser implements Serializable {
     private Byte groupVar;
 
     /**
-     * 金币
      * 金币,金豆.可以转
      */
     private Integer coin;
@@ -163,6 +162,12 @@ public class SlUser implements Serializable {
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /**
+     * 是否虚拟用户;0:否,1:是
+     */
+    @Column(name = "is_virtual")
+    private Byte isVirtual;
 
     private static final long serialVersionUID = 1L;
 
@@ -684,6 +689,24 @@ public class SlUser implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * 获取是否虚拟用户;0:否,1:是
+     *
+     * @return is_virtual - 是否虚拟用户;0:否,1:是
+     */
+    public Byte getIsVirtual() {
+        return isVirtual;
+    }
+
+    /**
+     * 设置是否虚拟用户;0:否,1:是
+     *
+     * @param isVirtual 是否虚拟用户;0:否,1:是
+     */
+    public void setIsVirtual(Byte isVirtual) {
+        this.isVirtual = isVirtual;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -719,6 +742,7 @@ public class SlUser implements Serializable {
         sb.append(", lastLogin=").append(lastLogin);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", isVirtual=").append(isVirtual);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

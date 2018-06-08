@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sl_product_comment")
 public class SlProductComment implements Serializable {
@@ -40,6 +40,12 @@ public class SlProductComment implements Serializable {
      */
     @Column(name = "isImage")
     private Integer isimage;
+
+    /**
+     * 虚拟评论标识1真实评论2虚拟评论(默认真实评论)
+     */
+    @Column(name = "com_dummy")
+    private Boolean comDummy;
 
     /**
      * 创建时间
@@ -186,6 +192,24 @@ public class SlProductComment implements Serializable {
     }
 
     /**
+     * 获取虚拟评论标识1真实评论2虚拟评论(默认真实评论)
+     *
+     * @return com_dummy - 虚拟评论标识1真实评论2虚拟评论(默认真实评论)
+     */
+    public Boolean getComDummy() {
+        return comDummy;
+    }
+
+    /**
+     * 设置虚拟评论标识1真实评论2虚拟评论(默认真实评论)
+     *
+     * @param comDummy 虚拟评论标识1真实评论2虚拟评论(默认真实评论)
+     */
+    public void setComDummy(Boolean comDummy) {
+        this.comDummy = comDummy;
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -305,6 +329,7 @@ public class SlProductComment implements Serializable {
         sb.append(", content=").append(content);
         sb.append(", status=").append(status);
         sb.append(", isimage=").append(isimage);
+        sb.append(", comDummy=").append(comDummy);
         sb.append(", createTime=").append(createTime);
         sb.append(", creator=").append(creator);
         sb.append(", modifier=").append(modifier);

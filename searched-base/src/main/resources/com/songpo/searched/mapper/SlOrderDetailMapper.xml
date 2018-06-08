@@ -44,6 +44,7 @@
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
     <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
     <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
+      <result column="is_virtual_spell_group" jdbcType="TINYINT" property="isVirtualSpellGroup"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -55,6 +56,6 @@
       ems_id, ship_number, group_people, presell_shipments_days, return_cash_money, place_order_return_pulse,
       rewards_money, share_of_people_id, activity_product_id, type, check_state, check_name,
       modifier, modification_time, created_at, updated_at, discount, rebate_pulse, return_cash_pulse,
-      deduct_total_gold
+      deduct_total_gold, is_virtual_spell_group
   </sql>
 </mapper>
