@@ -314,7 +314,8 @@ public class CmProductService {
                     VirtualUserConstant vuc = new VirtualUserConstant();
                     String nickName = vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]+"**";
                     masterMap.put("nick_name",nickName);
-                    masterMap.put("avatar","http://api2.test.xn--ykq093c.com/data/file/b/2/0/5b16514eef17f.jpg");
+                    String url = vuc.URLAVATAR+(int)(Math.random()*vuc.IMAGENUM)+".png";
+                    masterMap.put("avatar",url);
                     virtualMap.put("groupMaster",masterMap);
                     virtualMap.put("order",orderMap);
                    // virtualGroupOne.add(virtualMap);
