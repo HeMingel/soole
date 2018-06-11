@@ -12,6 +12,7 @@ import com.songpo.searched.entity.SlPresellReturnedRecord;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.typehandler.ProductEnum;
+import com.songpo.searched.util.OrderNumGeneration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -298,6 +299,23 @@ public class CmProductService {
                 //step 1 : 判断该商品销售模式 是否为拼团商品
                 //step 2 : 如果是拼团商品 则查询该商品的 在该活动下的拼团信息
                 if (Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP) {
+                    //2018.6.11 为每个拼团商品添加一条虚拟拼团信息
+                    //List<Map<String, Object>> virtualGroupOne = new ArrayList<>();
+                    Map<String, Object> virtualMap =  new HashMap<String,Object>(16);
+                    Map<String, Object> orderMap =  new HashMap<String,Object>(16);
+                    orderMap .put("need_people",2);
+                    orderMap .put("already_people",1);
+                    orderMap .put("group_master", "ed12f9494a2c4627b2fe81a9a14cda5b");
+                    orderMap .put("virual_open",2);
+                    orderMap .put("order_num",OrderNumGeneration.getOrderIdByUUId());
+                    OrderNumGeneration.getOrderIdByUUId();
+                    Map<String, Object> masterMap =  new HashMap<String,Object>(16);
+                    masterMap.put("nick_name","***");
+                    masterMap.put("avatar","http://api2.test.xn--ykq093c.com/data/file/b/2/0/5b16514eef17f.jpg");
+                    virtualMap.put("groupMaster",masterMap);
+                    virtualMap.put("order",orderMap);
+                   // virtualGroupOne.add(virtualMap);
+                    //data.put("virtualGroupOne",virtualGroupOne);
                     //未拼成订单集合
                     List<Map<String, Object>> orderList = this.mapper.selectGroupOrder(activityId, goodsId);
 
@@ -332,6 +350,7 @@ public class CmProductService {
                             groupMapper.put("order", orderList.get(i));
                             groupList.add(groupMapper);
                         }
+                        groupList.add(virtualMap);
                         data.put("groupList", groupList);
                     } else {
                         List<Object> list = new ArrayList<>();
@@ -339,6 +358,7 @@ public class CmProductService {
                         list.add(groupMaster);
                         Map<String, String> order = new HashMap();
                         list.add(order);
+                        list.add(virtualMap);
                         data.put("groupList", list);
                     }
                 } else {
