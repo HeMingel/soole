@@ -304,7 +304,7 @@ public class CmProductService {
                     if (orderList != null && orderList.size() > 0) {
                         List<Map<String, Object>> removeOrderList = new ArrayList<>();
                         for (Map<String, Object> map : orderList) {
-                            int already_people=(int)map.get("already_people");
+                            int already_people=Integer.valueOf(map.get("already_people").toString());
                             int need_people=(int)map.get("need_people");
                             /** 去除已经拼单完成的数据 **/
                             if (map.get("already_people").equals(map.get("need_people"))) {
