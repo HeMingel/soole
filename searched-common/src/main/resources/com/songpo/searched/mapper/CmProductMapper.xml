@@ -310,7 +310,7 @@
           COUNT(od.serial_number) AS already_people,
           od.group_people AS need_people,
           od.`serial_number` AS order_num,
-          o.`virtual_open` AS virual_open,
+          o.`virtual_open` AS virtual_open,
           o.`group_master`
         FROM
           sl_order_detail od
@@ -439,7 +439,7 @@
           COUNT(od.serial_number) AS virtual_has_spell,
           od.group_people AS need_people,
           od.`serial_number` AS order_num,
-          o.`virtual_open` AS virual_open,
+          o.`virtual_open` AS virtual_open,
           o.`group_master`
         FROM
           sl_order_detail od
