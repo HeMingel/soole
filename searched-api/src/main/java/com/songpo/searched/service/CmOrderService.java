@@ -2,7 +2,6 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.domain.OrderDetail;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.alipay.service.AliPayService;
@@ -42,6 +41,8 @@ import java.util.concurrent.TimeUnit;
 public class CmOrderService {
 
     public static final Logger log = LoggerFactory.getLogger(CmOrderService.class);
+
+    private static final String systemUserId = "58BE6433-CAC8-880B-1661-E99CA0070C26";
 
     @Autowired
     private ProductRepositoryService productRepositoryService;
@@ -1620,7 +1621,8 @@ public class CmOrderService {
                                         setId(shop.getOwnerId());
                                     }});
                                     if (null != user1) {
-                                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
+                                        /******* 店铺老板收入豆 *******/
+                                        int silvers = (int) Math.floor(detail.getDeductTotalSilver() * detail.getQuantity() * 0.9);
                                         int p = user1.getCoin() + silvers;
                                         user1.setCoin(p);
                                         userCache.put(user1.getClientId(), user1);
@@ -1645,6 +1647,34 @@ public class CmOrderService {
                                             // 收入
                                             setTransactionType(2);
                                         }});
+                                        /*********** 平台公众号收入豆 ************/
+                                        SlUser systemUser = this.userService.selectOne(new SlUser() {{
+                                            setId(systemUserId);
+                                        }});
+                                        if (systemUser != null && StringUtils.isNotBlank(systemUser.getId())) {
+                                            int commissionSilvers = detail.getDeductTotalSilver() * detail.getQuantity() - silvers;
+                                            userService.updateByPrimaryKeySelective(new SlUser() {{
+                                                setId(systemUserId);
+                                                setCoin(systemUser.getCoin() + commissionSilvers);
+                                            }});
+                                            // 金豆记录
+                                            transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                                // 目标id
+                                                setTargetId(systemUserId);
+                                                // 订单id
+                                                setOrderId(order.getId());
+                                                // 创建时间
+                                                setCreateTime(new Date());
+                                                // 购物类型店主收入
+                                                setType(300);
+                                                // 增加金豆数量
+                                                setCoin(commissionSilvers);
+                                                // 金豆
+                                                setDealType(5);
+                                                // 收入
+                                                setTransactionType(2);
+                                            }});
+                                        }
                                     }
                                 }
                             }
