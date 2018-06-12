@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 自定义商品服务类
@@ -309,7 +306,6 @@ public class CmProductService {
                     orderMap .put("group_master", "ed12f9494a2c4627b2fe81a9a14cda5b");
                     orderMap .put("virtual_open",2);
                     orderMap .put("order_num",OrderNumGeneration.getOrderIdByUUId());
-                    OrderNumGeneration.getOrderIdByUUId();
                     Map<String, Object> masterMap =  new HashMap<String,Object>(16);
                     VirtualUserConstant vuc = new VirtualUserConstant();
                     String nickName = vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]+"**";
@@ -366,6 +362,19 @@ public class CmProductService {
                         data.put("groupList", list);
                     }
                 } else {
+                    //添加商品虚拟购买信息
+                    List<Map<String, Object>> buyInfoList = new ArrayList<>();
+                    VirtualUserConstant vuc = new VirtualUserConstant();
+                    int len =new Random().nextInt(3)+2;
+                    for(int i = 0 ; i < len ; i++){
+                        Map<String, Object> virtualBuyInfo = new HashMap<>(16);
+                        String nickName = vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]+"**";
+                        virtualBuyInfo.put("nick_name",nickName);
+                        String url = vuc.URLAVATAR+(int)(Math.random()*vuc.IMAGENUM)+".png";
+                        virtualBuyInfo.put("avatar",url);
+                        buyInfoList.add(virtualBuyInfo);
+                    }
+                    data.put("virtualBuyInfoList", buyInfoList);
                     //非拼团商品
                     Map<String, Object> map = new HashMap<>(16);
                     List<Map<String, Object>> alreadyOrderMap = this.mapper.alreadyOrder(activityId, goodsId);
