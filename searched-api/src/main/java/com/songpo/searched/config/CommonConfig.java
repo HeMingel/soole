@@ -330,4 +330,37 @@ public class CommonConfig {
 //        }
 //    }
 
+
+    /**
+     * 处理拼团超时订单
+     * 24小时后超时订单失效并返回钱
+     */
+    @Scheduled(cron = "0 0 *  * * ? ")
+    void updateOrderSpellStatus() {
+        List<SlOrder> orderList = orderService.select(new SlOrder() {{
+            setSpellGroupStatus(1);
+            setStatus(1);
+        }});
+        //时间分隔点
+        Date compareDate = LocalDateTimeUtils.addHour(new Date(), -24);
+        //拼团超时时间列表
+        List<SlOrder> spellOverTimeOrderList = new ArrayList<>();
+        //移除不需要的订单
+        if (orderList != null && orderList.size() > 0) {
+            List<SlOrder> removeOrderList = new ArrayList<>();
+            for (SlOrder order : orderList) {
+                //时间判断，24小时未拼团成功订单需要关闭
+                if (order.getCreatedAt().before(compareDate)) {
+                    removeOrderList.add(order);
+                    spellOverTimeOrderList.add(order);
+                }
+            }
+            if (removeOrderList.size() > 0) {
+                orderList.removeAll(removeOrderList);
+            }
+        }
+        if(orderList!=null&&orderList.size()>0){
+
+        }
+    }
 }
