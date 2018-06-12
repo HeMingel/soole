@@ -2,7 +2,7 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.domain.OrderDetail;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.alipay.service.AliPayService;
@@ -1844,5 +1844,70 @@ public class CmOrderService {
         String uuid = UUID.randomUUID().toString();
         uuid = uuid.replace("-", "");
         return uuid;
+    }
+ /**
+  *   /**
+  *      * alipay.trade.refund(统一收单交易退款接口)
+  *      *
+  *      * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，支付宝将在收到退款请求并且验证成功之后，按照退款规则将支付款按原路退到买家帐号上。 交易超过约定时间（签约时设置的可退款时间）的订单无法进行退款 支付宝退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。总退款金额不能超过用户实际支付金额
+  *      * 来源 https://docs.open.alipay.com/api_1/alipay.trade.refund/
+  *      *
+  *      * @param outTradeNo    String	特殊可选	64	原支付请求的商户订单号,和支付宝交易号不能同时为空
+  *      * @param tradeNo    String	特殊可选	64	支付宝交易号，和商户订单号不能同时为空
+  *      * @param refundAmount    Price	必选	9	需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+  *      * @param refundReason    String	可选	256	退款的原因说明
+  *      * @param outRequestNo    String	可选	64	标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+  *      * @param operatorId    String	可选	30	商户的操作员编号
+  *      * @param storeId    String	可选	32	商户的门店编号
+  *      * @param terminalId    String	可选	32	商户的终端编号
+  *      * @return 响应信息
+     */
+    public BusinessMessage refundOrder (String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        //获取订单信息
+        SlOrder order = this.orderService.selectOne(new SlOrder(){{
+            setId(orderId);
+            setPaymentState(1);
+        }});
+        if (null != order) {
+            int paymentChannel = order.getPaymentChannel();
+            Map<String,String> map  = new HashMap<>();
+            //微信支付
+            if(paymentChannel == 1) {
+                String transactionId = order.getSerialNumber();
+                String outTradeNo = order.getId();
+                String outRefundNo = OrderNumGeneration.getOrderIdByUUId();
+                BigDecimal totalAmount = order.getTotalAmount().multiply(new BigDecimal(100));
+                int  totalFee = totalAmount.setScale( 0, BigDecimal.ROUND_DOWN ).intValue();
+                String totalFeeStr = String.valueOf(totalFee);
+                String refundDesc = "拼团失败";
+                map=wxPayService.refund(transactionId,outTradeNo,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
+                if (!map.isEmpty()) {
+                    message.setSuccess(true);
+                    order.setSpellGroupStatus(0);
+                    this.orderService.updateByPrimaryKey(order);
+                }
+                }//支付宝支付
+                else if (paymentChannel == 2){
+               String  outTradeNo = order.getSerialNumber();
+               String   tradeNo = OrderNumGeneration.getOrderIdByUUId();
+               String refundAmount = String.valueOf(order.getTotalAmount().doubleValue());
+               String refundReason = "拼团失败";
+               AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,tradeNo,refundAmount,refundReason,null,null,null,null);
+               String strResponse =response.getCode();
+               if (strResponse.equals("1000")) {
+                   message.setSuccess(true);
+               }
+            }
+
+        }else{
+            message.setMsg("订单不存在或订单未支付");
+        }
+        //退款成功修改订单状态
+        if (message.getSuccess() == true ) {
+            order.setSpellGroupStatus(0);
+            this.orderService.updateByPrimaryKey(order);
+        }
+        return message;
     }
 }
