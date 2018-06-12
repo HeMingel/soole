@@ -59,9 +59,9 @@ public class CmOrderController {
         BusinessMessage message = new BusinessMessage();
         try {
             message = this.cmOrderService.addOrder(request, detail, shippingAddressId);
-            message.setData(message.getData());
-            message.setMsg(message.getMsg());
-            message.setSuccess(message.getSuccess());
+//            message.setData(message.getData());
+//            message.setMsg(message.getMsg());
+//            message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             message.setMsg("添加订单失败");
             log.error("新增订单失败 {}", e);
@@ -92,7 +92,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form", required = true),
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
             @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
-            @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form")
     })
     @PostMapping("purchase-immediately")
     public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response,
@@ -103,14 +104,15 @@ public class CmOrderController {
                                             String groupMaster,
                                             @RequestParam(value = "shippingAddressId") String shippingAddressId,
                                             String buyerMessage,
-                                            @RequestParam(value = "activityProductId") String activityProductId,
-                                            int spellGroupType) {
+                                             @RequestParam(value = "activityProductId") String activityProductId,
+                                            int spellGroupType,
+                                            @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType);
-            message.setData(message.getData());
-            message.setMsg(message.getMsg());
-            message.setSuccess(true);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen);
+//            message.setData(message.getData());
+//            message.setMsg(message.getMsg());
+//            message.setSuccess(true);
         } catch (Exception e) {
             message.setMsg("添加订单失败");
             log.error("新增订单失败 {}", e);
