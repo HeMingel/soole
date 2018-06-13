@@ -1911,7 +1911,7 @@ public class CmOrderService {
                String refundAmount = String.valueOf(order.getTotalAmount().doubleValue());
                String refundReason = "拼团失败";
                AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundAmount,refundReason,null,null,null,null);
-               String strResponse =response.getCode();
+               String strResponse = response.getCode();
                if ("10000".equals(strResponse)) {
                    message.setSuccess(true);
                }
