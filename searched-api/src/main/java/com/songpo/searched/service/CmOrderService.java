@@ -1882,6 +1882,7 @@ public class CmOrderService {
   *      * @param terminalId    String	可选	32	商户的终端编号
   *      * @return 响应信息
      */
+    @Transactional
     public BusinessMessage refundOrder (String orderId) {
         BusinessMessage message = new BusinessMessage();
         //获取订单信息
