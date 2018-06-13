@@ -11,7 +11,7 @@
         sp.id productId,
         sod.quantity quantity,
         so.payment_state paymentState,
-        sod.shipping_state shippingState,
+        sod.shipping_state shippingState,sl_order
         sod.price price,
         sod.deduct_total_silver pulse,
         sod.post_fee postFee,
@@ -56,7 +56,7 @@
         su.avatar avatar
         from sl_user su
         LEFT JOIN sl_order so ON su.id = so.user_id
-        WHERE so.payment_state = '1' AND so.serial_number = #{serialNumber}
+        WHERE so.payment_state = '1'  AND so.status = 1  AND so.serial_number = #{serialNumber}
         limit 10
     </select>
 
@@ -103,7 +103,7 @@
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
         left join sl_shop ss on ss.id = sod.shop_id
         left join sl_user su on su.id = ss.owner_id
-        WHERE so.user_id = #{userId} and sod.id = #{id}
+        WHERE  so.status = 1 AND so.user_id = #{userId} and sod.id = #{id}
     </select>
 
     <!--<select id="findActivityProduct" resultType="java.util.Map">-->
@@ -137,7 +137,7 @@
         from sl_order so
         LEFT JOIN sl_order_detail sod ON so.id = sod.order_id
         AND so.serial_number = sod.serial_number
-        WHERE so.payment_state &lt; 100
+        WHERE so.payment_state &lt; 100 AND so.status = 1
         AND sod.product_id = #{productId} and sod.creator = #{userId}
         and so.user_id = #{userId}
         and sod.activity_product_id = #{activityProductId}
@@ -156,7 +156,7 @@
         SELECT count(*) FROM sl_order_detail sod
         LEFT JOIN sl_order so ON sod.`order_id` = so.`id` AND sod.`serial_number` = so.`serial_number`
         WHERE
-        sod.type = '2' and so.payment_state = 1 AND so.serial_number = #{serialNumber}
+        sod.type = '2' and so.payment_state = 1  AND so.status = 1 AND so.serial_number = #{serialNumber}
     </select>
     <select id="selectActivityProductByRepositoryId"
             resultType="com.songpo.searched.entity.SlActivityProduct">

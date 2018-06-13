@@ -1063,6 +1063,26 @@ public class CmOrderService {
             log.error("删除失败 {}", e);
         }
     }
+    /**
+     * 逻辑删除订单（order_detail暂时未做处理）
+     *
+     * @param orderId  订单id
+     */
+    public void logicalDeleteOrder(String orderId) {
+        SlUser user = loginUserService.getCurrentLoginUser();
+        try {
+            if (null != user) {
+                this.orderService.updateByPrimaryKeySelective(new SlOrder() {{
+                    setId(orderId);
+                    setUserId(user.getId());
+                    setStatus(0);
+                }});
+            }
+
+        } catch (Exception e) {
+            log.error("逻辑删除订单失败 {}", e);
+        }
+    }
 
     /**
      * 预售订单
@@ -1884,8 +1904,6 @@ public class CmOrderService {
                 map=wxPayService.refund(null,outTradeNo,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
                 if (map.get("return_msg").equals("OK")) {
                     message.setSuccess(true);
-                    order.setSpellGroupStatus(0);
-                    this.orderService.updateByPrimaryKey(order);
                 }
                 }//支付宝支付
                 else if (paymentChannel == 2){
@@ -1905,7 +1923,8 @@ public class CmOrderService {
         //退款成功修改订单状态
         if (message.getSuccess() == true ) {
             order.setSpellGroupStatus(0);
-            this.orderService.updateByPrimaryKey(order);
+            order.setId(orderId);
+            this.orderService.updateByPrimaryKeySelective(order);
         }
         return message;
     }

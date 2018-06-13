@@ -204,6 +204,30 @@ public class CmOrderController {
     }
 
     /**
+     * 逻辑删除订单
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(value = "逻辑删除订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单Id", paramType = "form", required = true)
+    })
+    @PostMapping("logical-delete-order")
+    public BusinessMessage deleteLogicalOrder(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            this.cmOrderService.logicalDeleteOrder(orderId);
+            message.setSuccess(true);
+            message.setMsg("逻辑删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("逻辑删除失败 {}", e);
+        }
+        return message;
+    }
+
+    /**
      * 预售订单查询
      *
      * @param status

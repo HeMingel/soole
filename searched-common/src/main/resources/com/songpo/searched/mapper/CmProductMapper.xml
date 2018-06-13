@@ -160,6 +160,7 @@
           LEFT JOIN sl_user u
             ON u.id = o.user_id
         WHERE o.payment_state = '1'
+          AND o.status = 1
           AND od.product_id = #{goodsId}
           and o.spell_group_status =1
         GROUP BY o.serial_number
@@ -321,6 +322,7 @@
         WHERE ap.`activity_id` =  #{activityId}
           AND od.`product_id` = #{goodsId}
           AND o.payment_state = 1
+          AND o.status = 1
           AND o.spell_group_status = 1
           and od.is_virtual_spell_group = 0
         GROUP BY o.serial_number
@@ -345,6 +347,7 @@
           ap.`activity_id` = #{activityId}
           AND od.`product_id` = #{goodsId}
           AND o.payment_state = 1
+          AND o.status = 1
           AND o.spell_group_status = 1
 
 
@@ -450,6 +453,7 @@
         WHERE ap.`activity_id` =  #{activityId}
           AND od.`product_id` = #{goodsId}
           AND o.payment_state = 1
+          AND o.status = 1
           AND o.spell_group_status = 1
           and od.is_virtual_spell_group = 1
         GROUP BY o.serial_number
