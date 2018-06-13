@@ -1874,26 +1874,25 @@ public class CmOrderService {
             Map<String,String> map  = new HashMap<>();
             //微信支付
             if(paymentChannel == 1) {
-                String transactionId = order.getSerialNumber();
-                String outTradeNo = order.getId();
+                String transactionId = order.getId();
+                //String outTradeNo = order.getId();
                 String outRefundNo = OrderNumGeneration.getOrderIdByUUId();
                 BigDecimal totalAmount = order.getTotalAmount().multiply(new BigDecimal(100));
                 int  totalFee = totalAmount.setScale( 0, BigDecimal.ROUND_DOWN ).intValue();
                 String totalFeeStr = String.valueOf(totalFee);
                 String refundDesc = "拼团失败";
-                map=wxPayService.refund(transactionId,outTradeNo,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
-                if (!map.isEmpty()) {
+                map=wxPayService.refund(transactionId,null,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
+                if (map.get("return_msg").equals("OK")) {
                     message.setSuccess(true);
                     order.setSpellGroupStatus(0);
                     this.orderService.updateByPrimaryKey(order);
                 }
                 }//支付宝支付
                 else if (paymentChannel == 2){
-               String  outTradeNo = order.getSerialNumber();
-               String   tradeNo = OrderNumGeneration.getOrderIdByUUId();
+               String  outTradeNo = order.getId();
                String refundAmount = String.valueOf(order.getTotalAmount().doubleValue());
                String refundReason = "拼团失败";
-               AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,tradeNo,refundAmount,refundReason,null,null,null,null);
+               AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundAmount,refundReason,null,null,null,null);
                String strResponse =response.getCode();
                if (strResponse.equals("1000")) {
                    message.setSuccess(true);
