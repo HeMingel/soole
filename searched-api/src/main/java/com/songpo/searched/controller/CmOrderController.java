@@ -55,10 +55,10 @@ public class CmOrderController {
     @PostMapping("add")
     public BusinessMessage addOrder(HttpServletRequest request,
                                     String[] detail,
-                                    @RequestParam(value = "shippingAddressId") String shippingAddressId) {
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, detail, shippingAddressId);
+            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(message.getSuccess());

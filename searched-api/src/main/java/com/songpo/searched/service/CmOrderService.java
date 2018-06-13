@@ -102,13 +102,14 @@ public class CmOrderService {
      * @param request
      * @param detail            商品1的规格id|商品1的商品数量|商品1买家留言|分享人id(如果是分享奖励的话)
      * @param shippingAddressId 当前用户选择的收货地址id
+     * @param postFee           邮费
      * @return
      */
     @Transactional
-    public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId) {
+    public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId, String postFee) {
         log.debug("request = [" + request + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
-        double money = 0.00;
+        double money = 0.00+Double.parseDouble(postFee==null?"0":postFee);
         int pulse = 0;
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -203,9 +204,9 @@ public class CmOrderService {
                                                     // 钱相加 用于统计和添加到订单表扣除总钱里边
                                                     money += repository.getPrice().doubleValue() * quantity;
                                                     // 如果邮费不为空
-                                                    if (slProduct.getPostage().doubleValue() > 0) {
-                                                        money = money + slProduct.getPostage().doubleValue();
-                                                    }
+//                                                    if (slProduct.getPostage().doubleValue() > 0) {
+//                                                        money = money + slProduct.getPostage().doubleValue();
+//                                                    }
                                                     // 了豆相加  用于统计和添加到订单表扣除了豆里边
                                                     if (repository.getSilver() > 0) {
                                                         pulse += repository.getSilver() * quantity;
@@ -424,7 +425,7 @@ public class CmOrderService {
                                             int spellGroupType,
                                             Integer virtualOpen,
                                             String postFee) {
-        log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
+        log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "], postFee = ["+postFee+"]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -460,7 +461,7 @@ public class CmOrderService {
                 //7.如果商品存在的话
                 if (null != slProduct) {
                     //把邮费加上
-                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee)));
+                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee==null?"0":postFee)));
                     // 把虚拟销量加上
                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                         setId(slProduct.getId());
@@ -496,7 +497,7 @@ public class CmOrderService {
                                     //8.如果销售模式是拼团订单的话
                                     if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
                                         //如果是虚拟开团 则按照个人拼团流程走 价格使用拼团价
-                                        if(2==virtualOpen){
+                                        if(2==(virtualOpen!=2?1:virtualOpen)){
                                             // ==== 按照自己开团流程走 ======
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
