@@ -91,6 +91,10 @@ public class CmOrderService {
     private ProcessOrders processOrders;
     @Autowired
     private TransactionDetailService transactionDetailService;
+    @Autowired
+    private SlProductNoMailMapper slProductNoMailMapper;
+    @Autowired
+    private  ProductNoMailService productNoMailService;
 
     /**
      * 多商品下单
@@ -403,6 +407,7 @@ public class CmOrderService {
      * @param activityProductId 活动商品Id
      * @param spellGroupType    1 : 普通活动价 2:个人价
      * @param virtualOpen        1 : 正常用户开团 2:虚拟用户开团
+     * @param postFee             邮费
      * @return
      */
     @Transactional
@@ -417,7 +422,8 @@ public class CmOrderService {
                                             String buyerMessage,
                                             String activityProductId,
                                             int spellGroupType,
-                                            Integer virtualOpen) {
+                                            Integer virtualOpen,
+                                            String postFee) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -453,6 +459,8 @@ public class CmOrderService {
                 }});
                 //7.如果商品存在的话
                 if (null != slProduct) {
+                    //把邮费加上
+                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee)));
                     // 把虚拟销量加上
                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                         setId(slProduct.getId());
@@ -1927,6 +1935,62 @@ public class CmOrderService {
             order.setId(orderId);
             this.orderService.updateByPrimaryKeySelective(order);
         }
+        return message;
+    }
+    /**
+     * 商品邮费
+     *
+     * @param ship      运费修改  1.包邮 2.部分地区不包邮
+     * @param id          用户地址ID
+     * @param  productIds  产品ID
+     * @return
+     */
+    @Transactional
+    public BusinessMessage shopShip(int ship,String id,String productIds){
+        BusinessMessage message = new BusinessMessage();
+        JSONObject data = new JSONObject();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (null != user) {
+            Double postFee = 0.00;
+            //多商品id , 分割
+            String[] proId = productIds.split(",");
+            for(String productId : proId ){
+                SlProduct slProduct = this.productService.selectOne(new SlProduct(){{setId(productId);}});
+                if(null !=slProduct){
+                    //判断是否包邮 1.包邮 2.部分地区不包邮
+                    if (2==ship){
+
+                        SlUserAddress slUserAddress = this.slUserAddressMapper.selectOne(new SlUserAddress(){{setId(id);}});
+                        //获取不包邮的地区
+                        List<SlProductNoMail> list = slProductNoMailMapper.select(new SlProductNoMail(){{setProductId(productId);}});
+                        if(list.size()>0){
+                            for(SlProductNoMail slProductNoMail : list){
+                                if(slUserAddress.getProvince().equals(slProductNoMail.getNoShipArea())){
+                                    postFee=Arith.add(slProductNoMail.getAreamoney().doubleValue(),postFee);
+                                    break;
+                                }
+                            }
+                        }else{
+                            //不包邮地区不存在 邮费选择默认
+                            postFee=Arith.add(slProduct.getPostage().doubleValue(),postFee);
+                        }
+                    }
+                }else {
+                    log.debug("该商品不存在");
+                    message.setMsg("该商品不存在");
+                    message.setSuccess(false);
+                    return message;
+                }
+            }
+            data.put("postage",postFee);
+            message.setData(data);
+        }else {
+            log.debug("用户不存在");
+            message.setMsg("用户不存在");
+            message.setSuccess(false);
+            return message;
+        }
+        message.setSuccess(true);
         return message;
     }
 }
