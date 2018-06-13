@@ -1874,14 +1874,14 @@ public class CmOrderService {
             Map<String,String> map  = new HashMap<>();
             //微信支付
             if(paymentChannel == 1) {
-                String transactionId = order.getId();
-                //String outTradeNo = order.getId();
+                //String transactionId = order.getId();
+                String outTradeNo = order.getId();
                 String outRefundNo = OrderNumGeneration.getOrderIdByUUId();
                 BigDecimal totalAmount = order.getTotalAmount().multiply(new BigDecimal(100));
                 int  totalFee = totalAmount.setScale( 0, BigDecimal.ROUND_DOWN ).intValue();
                 String totalFeeStr = String.valueOf(totalFee);
                 String refundDesc = "拼团失败";
-                map=wxPayService.refund(transactionId,null,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
+                map=wxPayService.refund(null,outTradeNo,outRefundNo,totalFeeStr,totalFeeStr,null,refundDesc,null);
                 if (map.get("return_msg").equals("OK")) {
                     message.setSuccess(true);
                     order.setSpellGroupStatus(0);
