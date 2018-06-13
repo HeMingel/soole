@@ -1912,7 +1912,7 @@ public class CmOrderService {
                String refundReason = "拼团失败";
                AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundAmount,refundReason,null,null,null,null);
                String strResponse =response.getCode();
-               if (strResponse.equals("1000")) {
+               if ("10000".equals(strResponse)) {
                    message.setSuccess(true);
                }
             }
