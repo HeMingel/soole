@@ -416,14 +416,15 @@ public class CmOrderController {
 
         return message;
     }
-    //////////////////////////////退款测试///////////////////////////
+   /**
+    * //////////////////////////////退款测试///////////////////////////
     @GetMapping("refundOrder")
     public BusinessMessage refundOrder(String orderId) {
         BusinessMessage message = new BusinessMessage();
         message = cmOrderService.refundOrder(orderId);
         return message;
     }
-
+*/
     ///////////////////////////////////////////////// 支付测试开始 /////////////////////////////////////////////////////
 
 
