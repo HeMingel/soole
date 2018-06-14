@@ -126,13 +126,13 @@
         AND p.product_type_id = #{goodsTypeId}
     </if>
     <if test="screenGoods == null and screenGoods ==''">
-        ORDER BY (p.sales_volume + p.comment_num) DESC
+        ORDER BY (p.sales_virtual + p.comment_num) DESC
     </if>
     <if test="screenGoods != null and screenGoods !='' and screenGoods == 1">
-        ORDER BY p.sales_volume DESC
+        ORDER BY p.sales_virtual DESC
     </if>
     <if test="screenGoods != null and screenGoods !='' and screenGoods == 2">
-        ORDER BY p.sales_volume ASC
+        ORDER BY p.sales_virtual ASC
     </if>
     <if test="screenGoods != null and screenGoods !='' and screenGoods == 3">
             ORDER BY ap.price DESC

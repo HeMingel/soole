@@ -11,7 +11,7 @@
         sp.id productId,
         sod.quantity quantity,
         so.payment_state paymentState,
-        sod.shipping_state shippingState,sl_order
+        sod.shipping_state shippingState,
         sod.price price,
         sod.deduct_total_silver pulse,
         sod.post_fee postFee,
