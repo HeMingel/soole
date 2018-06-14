@@ -55,10 +55,10 @@ public class CmOrderController {
     @PostMapping("add")
     public BusinessMessage addOrder(HttpServletRequest request,
                                     String[] detail,
-                                    @RequestParam(value = "shippingAddressId") String shippingAddressId) {
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, detail, shippingAddressId);
+            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(message.getSuccess());
@@ -93,7 +93,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
             @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
             @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form")
+            @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form"),
+            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true)
     })
     @PostMapping("purchase-immediately")
     public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response,
@@ -106,10 +107,11 @@ public class CmOrderController {
                                             String buyerMessage,
                                              @RequestParam(value = "activityProductId") String activityProductId,
                                             int spellGroupType,
-                                            @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen) {
+                                            @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
+                                            String  postFee) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(true);
@@ -501,5 +503,33 @@ public class CmOrderController {
 //        return message;
 //    }
     ///////////////////////////////////////////////// 支付测试结束 /////////////////////////////////////////////////////
+    /**
+     * 商品邮费
+     *
+     * @param ship      运费修改  1.包邮 2.部分地区不包邮
+     * @param id          用户地址ID
+     * @param  productId  产品ID
+     * @return
+     */
+    @ApiOperation("商品邮费")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ship", value = "运费修改  1.包邮 2.部分地区不包邮", paramType = "form", required = true),
+            @ApiImplicitParam(name = "id", value = "用户地址ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "productId", value = "产品ID", paramType = "form", required = true)
+    })
+    @PostMapping("product-ship")
+    public BusinessMessage shopShip(int ship, String id, String productId) {
+        log.debug("商品邮费，ship = {}, id = {}, productId = {}", ship, id, productId);
+        BusinessMessage message = new BusinessMessage();
+
+        try {
+            message = cmOrderService.shopShip(ship,id,productId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("商品邮费，ship = {}, id = {}, productId = {}，Exception = {}", ship, id, productId, e);
+        }
+
+        return message;
+    }
 
 }
