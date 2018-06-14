@@ -149,5 +149,20 @@ public class LocalDateTimeUtils {
         calendar.add(Calendar.MINUTE, minute);
         return calendar.getTime();
     }
-
+    /**
+     * 字符串转date
+     * @param str 字符串
+     * @return
+     */
+    public static Date stringToDate(String str) {
+        SimpleDateFormat formatter;
+        formatter = new SimpleDateFormat(DATE_FULL_STR);
+        Date date = null;
+        try {
+            date = formatter.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 }

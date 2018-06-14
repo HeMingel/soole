@@ -344,23 +344,25 @@ public class CommonConfig {
             setSpellGroupStatus(1);
             setStatus(1);
         }});
-        System.out.println("@@@@@@@@@@@@@@@@@@@@"+orderList.size());
         //时间分隔点
         Date compareDate = LocalDateTimeUtils.addHour(new Date(), -24);
         if (orderList != null && orderList.size() > 0) {
             for (SlOrder order : orderList) {
-                //时间判断，24小时未拼团成功订单需要关闭
-                if (order.getCreatedAt().before(compareDate)) {
+                //时间判断，24小时未拼团成功并且付款时间大于2018-06-15 00:00:00的订单需要关闭
+                String str = "2018-06-15 00:00:00";
+                if ((LocalDateTimeUtils.stringToDate(order.getPayTime()).after(LocalDateTimeUtils.stringToDate(str)))&&(order.getCreatedAt().before(compareDate))){
                     if (order != null && StringUtils.isNotBlank(order.getId())) {
                         log.debug("更新订单{}的拼团状态", order.getId());
                         //请求CmOrderService接口并处理订单数据
                         try {
                         BusinessMessage message = cmOrderService.refundOrder(order.getId());
                         } catch (Exception e) {
-                            log.error("更新订单" + order.getId() + "拼图状态失败", e);
+                            log.error("更新订单" + order.getId() + "拼团状态失败", e);
                             continue;
                         }
                     }
+                }else{
+                    continue;
                 }
             }
         }

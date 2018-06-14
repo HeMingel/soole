@@ -77,11 +77,11 @@
                 p.sales_volume ${sortBySale},
             </if>
             <if test="synthesize != '' and synthesize != null">
-                (p.sales_volume + p.comment_num) DESC,
+                (p.sales_virtual + p.comment_num) DESC,
             </if>
             <if test="addressNow!=''and addressNow !=null  ">
                 <bind name="pAddress" value="'%' + addressNow + '%'"/>
-                s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_volume DESC
+                s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_virtual DESC
             </if>
 
         </trim>
