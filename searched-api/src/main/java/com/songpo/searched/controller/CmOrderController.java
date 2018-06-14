@@ -303,6 +303,25 @@ public class CmOrderController {
     }
 
     /**
+     * 根据订单号获取订单信息
+     * @param orderId 订单ID
+     * @return
+     */
+    @ApiOperation(value="根据订单号获取订单信息")
+    @ApiImplicitParam(name="orderId",value="订单ID",paramType = "form",required = true)
+    @PostMapping("order-detail-byId")
+    public BusinessMessage  getOrderById(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+        message = this.cmOrderService.getOrderById(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("查询订单失败 {}", e);
+        }
+        return message;
+    }
+
+    /**
      * 快递100 接口
      *
      * @param emsId

@@ -1865,6 +1865,31 @@ public class CmOrderService {
     }
 
     /**
+     *根据ID获取订单
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage getOrderById (String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (user == null || StringUtils.isBlank(user.getId())) {
+            message.setMsg("获取当前登录用户信息失败");
+            message.setSuccess(false);
+            return message;
+        }
+        SlOrder order = orderService.selectByPrimaryKey(orderId);
+       if (order == null || StringUtils.isBlank(order.getId()) || !order.getUserId().equals(user.getId())) {
+            message.setMsg("订单不存在");
+            message.setSuccess(false);
+            return message;
+        }
+        message.setData(order);
+        message.setSuccess(true);
+        return message;
+    }
+
+    /**
      * 生成订单ID，32位长度
      *
      * @return
