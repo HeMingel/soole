@@ -278,6 +278,7 @@ public class CmProductService {
             //查询商品列表信息
             Map<String, Object> goodsBaseInfo = this.mapper.goodsBaseInfo(goodsId, activityId);
             if (goodsBaseInfo != null) {
+                Integer salesModeId =  Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString());
                 data.put("goodsBaseInfo", goodsBaseInfo);
                 //商品图片
                 List<Map<String, Object>> mapImageUrls = this.mapper.goodsImageUrl(goodsId);
@@ -296,7 +297,7 @@ public class CmProductService {
                 //   查询拼团信息
                 //step 1 : 判断该商品销售模式 是否为拼团商品
                 //step 2 : 如果是拼团商品 则查询该商品的 在该活动下的拼团信息
-                if (Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_GROUP) {
+                if (salesModeId == SalesModeConstant.SALES_MODE_GROUP) {
                     //2018.6.11 为每个拼团商品添加一条虚拟拼团信息
                     //List<Map<String, Object>> virtualGroupOne = new ArrayList<>();
                     Map<String, Object> virtualMap =  new HashMap<String,Object>(16);
@@ -308,7 +309,9 @@ public class CmProductService {
                     orderMap .put("order_num",OrderNumGeneration.getOrderIdByUUId());
                     Map<String, Object> masterMap =  new HashMap<String,Object>(16);
                     VirtualUserConstant vuc = new VirtualUserConstant();
-                    String nickName = vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]+"**";
+                    String nickName =
+                            vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]
+                                    +vuc.LASTNAME[new Random().nextInt(2)];
                     masterMap.put("nick_name",nickName);
                     String url = vuc.URLAVATAR+(int)(Math.random()*vuc.IMAGENUM)+".png";
                     masterMap.put("avatar",url);
@@ -365,10 +368,11 @@ public class CmProductService {
                     //添加商品虚拟购买信息
                     List<Map<String, Object>> buyInfoList = new ArrayList<>();
                     VirtualUserConstant vuc = new VirtualUserConstant();
-                    int len =new Random().nextInt(3)+2;
+                    int len =new Random().nextInt(10)+25;
                     for(int i = 0 ; i < len ; i++){
                         Map<String, Object> virtualBuyInfo = new HashMap<>(16);
-                        String nickName = vuc.RANDOM_NAME[(int)(Math.random()*vuc.RANDOM_NAME.length)]+"**";
+                        String nickName =
+                                vuc.RANDOM_NAME[(int)(Math.random()*(vuc.RANDOM_NAME.length))]+vuc.LASTNAME[new Random().nextInt(2)];
                         virtualBuyInfo.put("nick_name",nickName);
                         String url = vuc.URLAVATAR+(int)(Math.random()*vuc.IMAGENUM)+".png";
                         virtualBuyInfo.put("avatar",url);
@@ -418,6 +422,11 @@ public class CmProductService {
                     for (int i = 0; i < goodsActivityList.size(); i++) {
                         Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(), activityId);
                         goodsRepository.put("restrict_count", goodsActivityList.get(i).get("restrict_count"));
+                        if (salesModeId == SalesModeConstant.SALES_MODE_PRESELL) {
+                            goodsRepository.put("silver",0);
+
+
+                        }
                         goodsRepositoryList.add(goodsRepository);
                     }
                     businessMessage.setData(goodsRepositoryList);
@@ -488,6 +497,13 @@ public class CmProductService {
         log.debug("商品规格详情,商品id:{},活动Id", id, activityId);
         BusinessMessage<Object> businessMessage = new BusinessMessage<>();
         businessMessage.setSuccess(false);
+        int salesMode = 0;
+        SlProduct slProduct = this.slProductMapper.selectByPrimaryKey(id);
+        if (slProduct == null) {
+            businessMessage.setMsg("查询无数据");
+        } else {
+            salesMode = Integer.parseInt(slProduct.getSalesModeId());
+        }
         try {
             //商品活动
             List<Map<String, Object>> goodsActivityList = this.mapper.goodsActivityList(id, activityId);
@@ -496,6 +512,13 @@ public class CmProductService {
                 for (int i = 0; i < goodsActivityList.size(); i++) {
                     Map<String, Object> goodsRepository = this.mapper.goodsRepository(goodsActivityList.get(i).get("product_repository_id").toString(), activityId);
                     goodsRepository.put("restrict_count", goodsActivityList.get(i).get("restrict_count"));
+                    /**
+                     * 预售模式由钱+豆购买 改成 纯钱购买模式
+                     * 2018年6月14日11:58:51 heming
+                     */
+                    if (salesMode == SalesModeConstant.SALES_MODE_PRESELL) {
+                        goodsRepository.put("silver",0);
+                    }
                     goodsRepositoryList.add(goodsRepository);
                 }
                 businessMessage.setSuccess(true);

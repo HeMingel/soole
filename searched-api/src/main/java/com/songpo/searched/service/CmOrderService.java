@@ -12,6 +12,7 @@ import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
+import com.songpo.searched.constant.VirtualUserConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
@@ -502,6 +503,15 @@ public class CmOrderService {
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                             message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                            //加入虚拟开团的用户在remark字段添加虚拟团主头像
+                                            Map<String, String> map  = (Map<String, String>) message.getData();
+                                            String orderId = map.get("order_num");
+                                            VirtualUserConstant vuc = new VirtualUserConstant();
+                                            String url = vuc.URLAVATAR+(int)(Math.random()*vuc.IMAGENUM)+".png";
+                                            this.orderService.updateByPrimaryKeySelective(new SlOrder(){{
+                                                setId(orderId);
+                                                setRemark(url);
+                                            }});
                                         }else{
                                             //8(1).如果是拼团订单的话 拼团订单不为空 && 开团团主不为空的情况下
                                             if (!StringUtils.isEmpty(serialNumber) && !StringUtils.isEmpty(groupMaster)) {
@@ -1663,12 +1673,28 @@ public class CmOrderService {
                                     }});
                                     if (null != user1) {
                                         int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
-                                        int p = user1.getCoin() + silvers;
+                                        /**
+                                         * 扣除10%金豆 转入平台账号(账号名称100)
+                                         * 2018年6月14日20:02:44  mingel
+                                         */
+                                        int surplusSilvers = (int) (silvers*0.9);
+                                        //手续费 10%金豆
+                                        int poundage = silvers - surplusSilvers;
+                                        int p = user1.getCoin() + surplusSilvers;
                                         user1.setCoin(p);
                                         userCache.put(user1.getClientId(), user1);
                                         userService.updateByPrimaryKeySelective(new SlUser() {{
                                             setId(user1.getId());
                                             setCoin(p);
+                                        }});
+                                        //更新平台账号金豆数量
+                                       SlUser platform = userService.selectOne(new SlUser(){{
+                                            setName("100");
+                                        }});
+                                        Integer newCoin = platform.getCoin()+poundage;
+                                        userService.updateByPrimaryKeySelective(new SlUser (){{
+                                            setId(platform.getId());
+                                            setCoin(newCoin);
                                         }});
                                         // 金豆记录
                                         transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
@@ -1681,7 +1707,7 @@ public class CmOrderService {
                                             // 购物类型店主收入
                                             setType(300);
                                             // 增加金豆数量
-                                            setCoin(silvers);
+                                            setCoin(surplusSilvers);
                                             // 金豆
                                             setDealType(5);
                                             // 收入
