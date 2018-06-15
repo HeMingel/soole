@@ -96,4 +96,37 @@ public class AccountController {
 
         return message;
     }
+
+    /**
+     * 根据ID获取用户详情
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value = "根据ID获取用户详情")
+    @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true)
+    @PostMapping("getUserInfo")
+    public BusinessMessage getUserInfo(String userId) {
+        BusinessMessage message  = accountService.getUserInfo(userId);
+        return message;
+    }
+
+
+    /**
+     * 根据ID 操作用户金豆
+     * @param userId
+     * @param number
+     * @param type   0: 增加 1:扣除
+     * @return
+     */
+    @ApiOperation(value="操作用户金豆")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "number", value = "需要操作的豆子", paramType = "form", required = true),
+            @ApiImplicitParam(name = "type", value = "操作类型 0: 增加 1:扣除 ", paramType = "form", required = true)
+    })
+    @PostMapping("operateCoinById")
+    public BusinessMessage operateCoinById (String userId,Integer number,Integer type) {
+        BusinessMessage  message = accountService.operateCoinById(userId,number,type);
+        return message;
+    }
 }

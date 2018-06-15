@@ -4,6 +4,7 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.typehandler.*;
 import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.ClientIPUtil;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +37,8 @@ public class AccountService {
     private WxPayService wxPayService;
     @Autowired
     private AliPayService aliPayService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 余额充值
@@ -145,6 +149,84 @@ public class AccountService {
 
         }
 
+        return message;
+    }
+
+    /**
+     *根据ID 获取用户信息
+     * @param userId
+     * @return
+     */
+    public BusinessMessage getUserInfo (String userId) {
+        BusinessMessage message = new BusinessMessage<>();
+        SlUser user = userService.selectByPrimaryKey(userId);
+        if (user == null || StringUtils.isBlank(user.getId())) {
+            message.setMsg("获取当前登录用户信息失败");
+            return message;
+        }
+        message.setData(user);
+        return message;
+    }
+
+    /**
+     *根据ID操作用户的豆子
+     * @param userId 用户id
+     * @param number 豆子数量
+     * @param type 0: 增加 1:扣除
+     * @return
+     */
+    public BusinessMessage operateCoinById (String userId,Integer number,Integer type) {
+        BusinessMessage message = new BusinessMessage<>();
+        if (number <= 0) {
+            message.setMsg("非法金豆数量");
+        }
+       if (type == null ) {
+            message.setMsg("非法操作");
+       }
+        if (userId != null && userId != "") {
+            SlUser user = userService.selectByPrimaryKey(userId);
+            Integer coin = user.getCoin();
+
+            if ( 0 == type) {
+                coin = user.getCoin() + number;
+            }else if (1 == type) {
+                coin = user.getCoin() - number;
+                if (coin  < 0 ) {
+                    message.setMsg("对不起，您的账户金豆数不足");
+                    return message;
+                }
+            }else {
+
+            }
+            Integer finalCoin = coin;
+           int result =  userService.updateByPrimaryKeySelective(new SlUser(){{
+                setId(user.getId());
+                setCoin(finalCoin);
+            }});
+           if (result > 0) {
+               //添加交易记录
+               SlTransactionDetail transactionDetail = new SlTransactionDetail();
+               transactionDetail.setTargetId(user.getId());
+               if (type == 0 ) {
+                   transactionDetail.setType(501);
+                   transactionDetail.setTransactionType(TransactionTypeEnum.INCOME.getValue());
+               }
+               if (type == 1) {
+                   transactionDetail.setType(502);
+                   transactionDetail.setTransactionType(TransactionTypeEnum.EXPENDITURE.getValue());
+               }
+               transactionDetail.setMoney(new BigDecimal(0));
+               transactionDetail.setCoin(number);
+               transactionDetail.setDealType(TransactionCurrencyTypeEnum.COIN.getValue());
+               transactionDetail.setTransactionStatus(TransactionStatusEnum.EFFICIENT.getValue().byteValue());
+               transactionDetail.setCreateTime(new Date());
+               transactionDetailService.insertSelective(transactionDetail);
+               message.setMsg("操作成功");
+               message.setSuccess(true);
+           }
+        }else {
+            message.setMsg("用户ID不能为空");
+        }
         return message;
     }
 }
