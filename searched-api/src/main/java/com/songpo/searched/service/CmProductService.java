@@ -652,28 +652,14 @@ public class CmProductService {
         return mapList;
     }
     /**
-     * 根据活动商品ID查找商品
-     *
-     * @param productIds 商品ID
+     * 查找助力购物商品
      */
-    public BusinessMessage selectProductByproductIds(String productIds) {
-        log.debug("根据活动商品ID查询商品列表，商品ID：{}",  productIds);
+    public BusinessMessage selectPowerShopping() {
+        log.debug("查询助力购物商品列表");
         BusinessMessage message = new BusinessMessage();
-//            if(null!=productIds){
-                String[] id = productIds.split(",");
-//                StringBuffer sb = new StringBuffer();
-//                for(String productId : str){
-//                    sb.append("'"+productId+"',");
-//                }
-                    List<String> list = new ArrayList<String>();
-                    for (int i = 0; i<id.length;i++) {
-                        list.add(id[i]);
-                }
-//                System.out.println("@@@@@@@@@@@@"+sb);
-                message.setData(this.mapper.selectProductByproductIds(list));
+                message.setData(this.mapper.selectPowerShopping());
                 message.setMsg("查询成功");
                 message.setSuccess(true);
-//            }
         return message;
     }
 }

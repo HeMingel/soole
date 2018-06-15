@@ -239,19 +239,14 @@ public class ProductController {
         return message;
     }
     /**
-     * 根据活动商品ID查找商品  (多个商品ID)
-     *s
-     * @param productIds 商品id
+     * 查询助力购物商品
      * @return 商品列表
      */
-    @ApiOperation(value = "根据活动商品ID查找商品")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "productIds", value = "活动唯一标识符", paramType = "form", required = true)
-    })
-    @GetMapping("by-productIds")
-    public BusinessMessage selectByActivity(String productIds) {
-        log.debug("查询商品，商品ID：{}", productIds);
-        return this.productService.selectProductByproductIds(productIds);
+    @ApiOperation(value = "查询助力购物商品")
+    @GetMapping("power_shopping")
+    public BusinessMessage selectPowerShopping() {
+        log.debug("查询助力购物商品");
+        return this.productService.selectPowerShopping();
     }
 }
 

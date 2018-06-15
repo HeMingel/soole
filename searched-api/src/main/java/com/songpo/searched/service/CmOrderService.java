@@ -1590,140 +1590,147 @@ public class CmOrderService {
                     setIsVirtualSpellGroup((byte) 1);
                 }});
                 if (orderDetails.size() > 0) {
-                    if (order.getDeductTotalPulse() > 0) {
-                        if ((user.getSilver() + user.getCoin()) >= order.getDeductTotalPulse()) {
-                            if (user.getSilver() >= order.getDeductTotalPulse()) {
-                                int pulse = user.getSilver() - order.getDeductTotalPulse();
-                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
-                                    setId(user.getId());
-                                    setSilver(pulse);
-                                }});
-                                user.setSilver(pulse);
-                                userCache.put(user.getClientId(), user);
-                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                    // 目标id
-                                    setTargetId(user.getId());
-                                    // 订单id
-                                    setOrderId(order.getId());
-                                    // 购物类型
-                                    setType(200);
-                                    // 创建时间
-                                    setCreateTime(new Date());
-                                    // 扣除银豆数量
-                                    setSilver(order.getDeductTotalPulse());
-                                    // 银豆
-                                    setDealType(6);
-                                    // 支出
-                                    setTransactionType(1);
-                                }});
-                            } else {
-                                int p = order.getDeductTotalPulse() - user.getSilver();
-                                int c = user.getCoin() - p;
-                                // 银豆记录
-                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                    // 目标id
-                                    setTargetId(user.getId());
-                                    // 订单id
-                                    setOrderId(order.getId());
-                                    // 购物类型
-                                    setType(200);
-                                    // 创建时间
-                                    setCreateTime(new Date());
-                                    // 扣除银豆数量
-                                    setSilver(user.getSilver());
-                                    // 银豆
-                                    setDealType(6);
-                                    // 支出
-                                    setTransactionType(1);
-                                }});
-                                // 金豆记录
-                                transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                    // 目标id
-                                    setTargetId(user.getId());
-                                    // 订单id
-                                    setOrderId(order.getId());
-                                    // 创建时间
-                                    setCreateTime(new Date());
-                                    // 购物类型
-                                    setType(200);
-                                    // 扣除金豆数量
-                                    setCoin(p);
-                                    // 金豆
-                                    setDealType(5);
-                                    // 支出
-                                    setTransactionType(1);
-                                }});
-                                count = userService.updateByPrimaryKeySelective(new SlUser() {{
-                                    setId(user.getId());
-                                    setCoin(c);
-                                    setSilver(0);
-                                }});
-                                user.setSilver(0);
-                                user.setCoin(c);
-                                userCache.put(user.getClientId(), user);
-                            }
-                            // 给店铺老板加上金豆
-                            for (SlOrderDetail detail : orderDetails) {
-                                SlShop shop = this.shopService.selectOne(new SlShop() {{
-                                    setId(detail.getShopId());
-                                }});
-                                if (null != shop) {
-                                    SlUser user1 = this.userService.selectOne(new SlUser() {{
-                                        setId(shop.getOwnerId());
+                    //如果是云易购物商品直接不扣豆
+                    if(orderDetails.get(0).getType()!=3){
+                        if (order.getDeductTotalPulse() > 0) {
+                            if ((user.getSilver() + user.getCoin()) >= order.getDeductTotalPulse()) {
+                                if (user.getSilver() >= order.getDeductTotalPulse()) {
+                                    int pulse = user.getSilver() - order.getDeductTotalPulse();
+                                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                                        setId(user.getId());
+                                        setSilver(pulse);
                                     }});
-                                    if (null != user1) {
-                                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
-                                        int p = user1.getCoin() + silvers;
-                                        user1.setCoin(p);
-                                        userCache.put(user1.getClientId(), user1);
-                                        userService.updateByPrimaryKeySelective(new SlUser() {{
-                                            setId(user1.getId());
-                                            setCoin(p);
+                                    user.setSilver(pulse);
+                                    userCache.put(user.getClientId(), user);
+                                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                        // 目标id
+                                        setTargetId(user.getId());
+                                        // 订单id
+                                        setOrderId(order.getId());
+                                        // 购物类型
+                                        setType(200);
+                                        // 创建时间
+                                        setCreateTime(new Date());
+                                        // 扣除银豆数量
+                                        setSilver(order.getDeductTotalPulse());
+                                        // 银豆
+                                        setDealType(6);
+                                        // 支出
+                                        setTransactionType(1);
+                                    }});
+                                } else {
+                                    int p = order.getDeductTotalPulse() - user.getSilver();
+                                    int c = user.getCoin() - p;
+                                    // 银豆记录
+                                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                        // 目标id
+                                        setTargetId(user.getId());
+                                        // 订单id
+                                        setOrderId(order.getId());
+                                        // 购物类型
+                                        setType(200);
+                                        // 创建时间
+                                        setCreateTime(new Date());
+                                        // 扣除银豆数量
+                                        setSilver(user.getSilver());
+                                        // 银豆
+                                        setDealType(6);
+                                        // 支出
+                                        setTransactionType(1);
+                                    }});
+                                    // 金豆记录
+                                    transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                        // 目标id
+                                        setTargetId(user.getId());
+                                        // 订单id
+                                        setOrderId(order.getId());
+                                        // 创建时间
+                                        setCreateTime(new Date());
+                                        // 购物类型
+                                        setType(200);
+                                        // 扣除金豆数量
+                                        setCoin(p);
+                                        // 金豆
+                                        setDealType(5);
+                                        // 支出
+                                        setTransactionType(1);
+                                    }});
+                                    count = userService.updateByPrimaryKeySelective(new SlUser() {{
+                                        setId(user.getId());
+                                        setCoin(c);
+                                        setSilver(0);
+                                    }});
+                                    user.setSilver(0);
+                                    user.setCoin(c);
+                                    userCache.put(user.getClientId(), user);
+                                }
+                                // 给店铺老板加上金豆
+                                for (SlOrderDetail detail : orderDetails) {
+                                    SlShop shop = this.shopService.selectOne(new SlShop() {{
+                                        setId(detail.getShopId());
+                                    }});
+                                    if (null != shop) {
+                                        SlUser user1 = this.userService.selectOne(new SlUser() {{
+                                            setId(shop.getOwnerId());
                                         }});
-                                        // 金豆记录
-                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                            // 目标id
-                                            setTargetId(user1.getId());
-                                            // 订单id
-                                            setOrderId(order.getId());
-                                            // 创建时间
-                                            setCreateTime(new Date());
-                                            // 购物类型店主收入
-                                            setType(300);
-                                            // 增加金豆数量
-                                            setCoin(silvers);
-                                            // 金豆
-                                            setDealType(5);
-                                            // 收入
-                                            setTransactionType(2);
-                                        }});
+                                        if (null != user1) {
+                                            int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
+                                            int p = user1.getCoin() + silvers;
+                                            user1.setCoin(p);
+                                            userCache.put(user1.getClientId(), user1);
+                                            userService.updateByPrimaryKeySelective(new SlUser() {{
+                                                setId(user1.getId());
+                                                setCoin(p);
+                                            }});
+                                            // 金豆记录
+                                            transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                                // 目标id
+                                                setTargetId(user1.getId());
+                                                // 订单id
+                                                setOrderId(order.getId());
+                                                // 创建时间
+                                                setCreateTime(new Date());
+                                                // 购物类型店主收入
+                                                setType(300);
+                                                // 增加金豆数量
+                                                setCoin(silvers);
+                                                // 金豆
+                                                setDealType(5);
+                                                // 收入
+                                                setTransactionType(2);
+                                            }});
+                                        }
                                     }
                                 }
+                            } else {
+                                message.setMsg("当前用户了豆数量不足");
                             }
-                        } else {
-                            message.setMsg("当前用户了豆数量不足");
-                        }
-                    } else if (order.getDeductTotalPulse() == 0) {
-                        SlOrderDetail detail = orderDetails.get(0);
-                        SlProduct product = productService.selectOne(new SlProduct() {{
-                            setId(detail.getProductId());
-                        }});
-                        if (null != product) {
-                            if (product.getSalesModeId().equals(SalesModeConstant.SALES_MODE_GROUP)) {
-                                int c = this.orderService.selectCount(new SlOrder() {{
-                                    setSerialNumber(order.getSerialNumber());
-                                    setPaymentState(1);
-                                }});
-                                if (c == detail.getGroupPeople()) {
-                                    message.setMsg("该拼团已结束");
+                        } else if (order.getDeductTotalPulse() == 0) {
+                            SlOrderDetail detail = orderDetails.get(0);
+                            SlProduct product = productService.selectOne(new SlProduct() {{
+                                setId(detail.getProductId());
+                            }});
+                            if (null != product) {
+                                if (product.getSalesModeId().equals(SalesModeConstant.SALES_MODE_GROUP)) {
+                                    int c = this.orderService.selectCount(new SlOrder() {{
+                                        setSerialNumber(order.getSerialNumber());
+                                        setPaymentState(1);
+                                    }});
+                                    if (c == detail.getGroupPeople()) {
+                                        message.setMsg("该拼团已结束");
+                                    } else {
+                                        message.setSuccess(true);
+                                    }
                                 } else {
                                     message.setSuccess(true);
                                 }
-                            } else {
-                                message.setSuccess(true);
                             }
                         }
+                    }else{
+                        //如果是云易购物则设置count=1
+                        count=1;
                     }
+
                     if (count == 1) {
                         message.setSuccess(true);
                     }

@@ -227,8 +227,7 @@ public interface CmProductMapper{
     /**
      * 根据活动商品ID查找商品
      *
-     * @param list 商品ID
      * @return 商品集合
      */
-    List<SlProduct> selectProductByproductIds( @Param("list")List list);
+    List<SlProduct> selectPowerShopping();
 }
