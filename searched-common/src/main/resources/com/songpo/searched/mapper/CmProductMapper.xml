@@ -472,14 +472,24 @@
           JOIN sl_sales_mode sm ON sm.`id`=p.`sales_mode_id`
   </select>
 
-    <!-- 根据活动商品ID查找商品 -->
-    <select id="selectPowerShopping" parameterType="java.util.List" resultType="com.songpo.searched.entity.SlProduct">
+    <!-- 查找助理购物商品 -->
+    <select id="selectPowerShopping"  resultType="map">
         SELECT
-        *
+        p.id as goods_id,
+        p.sales_mode_id,
+        p.name,
+        p.comment_num,
+        p.sales_volume,
+        p.introduction,
+        p.remark,
+        p.image_url,
+        p.sales_virtual,
+        ap.*
         FROM sl_product p
+        LEFT  JOIN sl_activity_product ap ON ap.`product_id`=p.`id`
         LEFT JOIN sl_sales_mode sm
-        ON sm.id = p.sales_mode_id
-        where sm.id=5
+        ON p.sales_mode_id=sm.id
+        where p.sales_mode_id=5
     </select>
 </mapper>
 

@@ -56,10 +56,11 @@ public class CmOrderController {
     @PostMapping("add")
     public BusinessMessage addOrder(HttpServletRequest request,
                                     String[] detail,
-                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee, int inviterId) {
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee, Integer inviterId) {
         BusinessMessage message = new BusinessMessage();
+        int ss = inviterId==null?0:inviterId;
         try {
-            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,inviterId);
+            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,ss);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(message.getSuccess());
@@ -110,10 +111,11 @@ public class CmOrderController {
                                              @RequestParam(value = "activityProductId") String activityProductId,
                                             int spellGroupType,
                                             @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
-                                            String  postFee, int inviterId) {
+                                            String  postFee, Integer inviterId) {
         BusinessMessage message = new BusinessMessage();
+        int ss = inviterId==null?0:inviterId;
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee, inviterId);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee, ss);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(true);
