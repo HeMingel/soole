@@ -51,7 +51,7 @@ public class CmOrderController {
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
             @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form")
     })
     @PostMapping("add")
     public BusinessMessage addOrder(HttpServletRequest request,
@@ -96,7 +96,7 @@ public class CmOrderController {
             @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
             @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true),
-            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form", required = true)
+            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form")
     })
     @PostMapping("purchase-immediately")
     public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response,
