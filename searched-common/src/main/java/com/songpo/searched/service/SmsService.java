@@ -110,9 +110,10 @@ public class SmsService {
      * 发送短信登录密码
      *
      * @param mobile 手机号码
+     * @param zone 地区
      * @return 发送结果
      */
-    public BusinessMessage<SendSmsResponse> sendPassword(String mobile) {
+    public BusinessMessage<SendSmsResponse> sendPassword(String mobile, String zone) {
         log.debug("发送短信登录密码，手机号码：{}", mobile);
         BusinessMessage<SendSmsResponse> message = new BusinessMessage<>();
 
@@ -144,7 +145,11 @@ public class SmsService {
                 //必填:短信签名-可在短信控制台中找到
                 request.setSignName("搜了平台");
                 //必填:短信模板-可在短信控制台中找到
-                request.setTemplateCode("SMS_130929507");
+                if(null==zone||"中国大陆".equals(zone)){
+                    request.setTemplateCode("SMS_130929507");
+                }else {
+                    request.setTemplateCode("SMS_137550007");
+                }
 
                 RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(DIGITS).build();
                 code = generator.generate(6);

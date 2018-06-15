@@ -9,6 +9,7 @@
         pc.content,
         pc.create_time ,
         u.`nick_name`,
+        u.phone,
         u.avatar,
         s.`name` AS shopName,
         pc.status,

@@ -471,6 +471,21 @@
           JOIN sl_product p ON ap.`product_id`=p.`id`
           JOIN sl_sales_mode sm ON sm.`id`=p.`sales_mode_id`
   </select>
+
+    <!-- 根据活动商品ID查找商品 -->
+    <select id="selectProductByproductIds" parameterType="java.util.List" resultType="com.songpo.searched.entity.SlProduct">
+        SELECT
+        *
+        FROM sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON ap.product_id = p.id
+        <where>
+         p.id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        </where>
+    </select>
 </mapper>
 
 

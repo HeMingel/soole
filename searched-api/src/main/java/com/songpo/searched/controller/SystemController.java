@@ -771,13 +771,14 @@ public class SystemController {
     @ApiOperation(value = "绑定手机号码")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true),
             @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
             @ApiImplicitParam(name = "openId", value = "第三方标识", paramType = "form", required = true)
     })
     @PostMapping("bind-phone-new")
     @Transactional
     public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId) {
-        log.debug("绑定手机号码，手机号码：{}，验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
+        log.debug("绑定手机号码，手机号码：{}， 验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("第三方标识为空");

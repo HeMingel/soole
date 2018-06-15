@@ -36,10 +36,11 @@ public class SmsController {
 
     @ApiOperation(value = "发送短信登录密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "form")
+            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "form"),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form")
     })
     @PostMapping("pwd")
-    public BusinessMessage<SendSmsResponse> sendPassword(String mobile) {
-        return smsService.sendPassword(mobile);
+    public BusinessMessage<SendSmsResponse> sendPassword(String mobile, String zone) {
+        return smsService.sendPassword(mobile, zone);
     }
 }

@@ -651,5 +651,29 @@ public class CmProductService {
         List<Map<String, Object>> mapList =cmProductMapper.simpleActivityProductQuery();
         return mapList;
     }
-
+    /**
+     * 根据活动商品ID查找商品
+     *
+     * @param productIds 商品ID
+     */
+    public BusinessMessage selectProductByproductIds(String productIds) {
+        log.debug("根据活动商品ID查询商品列表，商品ID：{}",  productIds);
+        BusinessMessage message = new BusinessMessage();
+//            if(null!=productIds){
+                String[] id = productIds.split(",");
+//                StringBuffer sb = new StringBuffer();
+//                for(String productId : str){
+//                    sb.append("'"+productId+"',");
+//                }
+                    List<String> list = new ArrayList<String>();
+                    for (int i = 0; i<id.length;i++) {
+                        list.add(id[i]);
+                }
+//                System.out.println("@@@@@@@@@@@@"+sb);
+                message.setData(this.mapper.selectProductByproductIds(list));
+                message.setMsg("查询成功");
+                message.setSuccess(true);
+//            }
+        return message;
+    }
 }
