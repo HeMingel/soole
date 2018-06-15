@@ -50,15 +50,16 @@ public class CmOrderController {
             @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
             @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
-            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
+            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form", required = true)
     })
     @PostMapping("add")
     public BusinessMessage addOrder(HttpServletRequest request,
                                     String[] detail,
-                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee) {
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee, int inviterId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee);
+            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,inviterId);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(message.getSuccess());
@@ -94,7 +95,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
             @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
             @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form"),
-            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true)
+            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true),
+            @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form", required = true)
     })
     @PostMapping("purchase-immediately")
     public BusinessMessage purchaseAddOrder(HttpServletRequest request, HttpServletResponse response,
@@ -108,10 +110,10 @@ public class CmOrderController {
                                              @RequestParam(value = "activityProductId") String activityProductId,
                                             int spellGroupType,
                                             @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
-                                            String  postFee) {
+                                            String  postFee, int inviterId) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee, inviterId);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(true);

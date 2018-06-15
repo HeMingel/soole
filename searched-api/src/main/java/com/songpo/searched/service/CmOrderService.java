@@ -104,10 +104,11 @@ public class CmOrderService {
      * @param detail            商品1的规格id|商品1的商品数量|商品1买家留言|分享人id(如果是分享奖励的话)
      * @param shippingAddressId 当前用户选择的收货地址id
      * @param postFee           邮费
+     * @param inviterId             邀请人ID
      * @return
      */
     @Transactional
-    public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId, String postFee) {
+    public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId, String postFee, int inviterId) {
         log.debug("request = [" + request + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00+Double.parseDouble(postFee==null?"0":postFee);
@@ -216,6 +217,8 @@ public class CmOrderService {
                                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                                         setId(formatUUID32());
                                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                                                        //邀请人ID
+                                                        setInviterId(inviterId);
                                                         // 拼团订单去这个属性判断是哪个人的
                                                         setCreator(slOrder.getUserId());
                                                         // 商品名称
@@ -410,6 +413,7 @@ public class CmOrderService {
      * @param spellGroupType    1 : 普通活动价 2:个人价
      * @param virtualOpen        1 : 正常用户开团 2:虚拟用户开团
      * @param postFee             邮费
+     * @param inviterId             邀请人ID
      * @return
      */
     @Transactional
@@ -425,7 +429,7 @@ public class CmOrderService {
                                             String activityProductId,
                                             int spellGroupType,
                                             Integer virtualOpen,
-                                            String postFee) {
+                                            String postFee, int inviterId) {
         log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "], postFee = ["+postFee+"]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -502,7 +506,7 @@ public class CmOrderService {
                                             // ==== 按照自己开团流程走 ======
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
                                             //加入虚拟开团的用户在remark字段添加虚拟团主头像
                                             Map<String, String> map  = (Map<String, String>) message.getData();
                                             String orderId = map.get("order_num");
@@ -531,7 +535,7 @@ public class CmOrderService {
                                                     //如果不存在的话
                                                     if (f.equals(false)) {
                                                         // ======= 是团员的话 =======
-                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
                                                     } else {
                                                         message.setMsg("您已参加过该团,请勿重复参加");
                                                         return message;
@@ -544,7 +548,7 @@ public class CmOrderService {
                                                 // ==== 如果是他自己开的团 ======
                                                 //生成订单号
                                                 String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType);
+                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
                                             }
                                         }
 
@@ -553,29 +557,29 @@ public class CmOrderService {
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1, inviterId);
                                     }
                                     // ====== 如果是助力购 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1, inviterId);
                                     }
                                     // ====== 消费返利 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1, inviterId);
                                         //  ====== 豆赚 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1, inviterId);
                                         //  ====== 普通商品 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1, inviterId);
                                     }
                                     if (message.getSuccess() == false) {
                                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -862,6 +866,7 @@ public class CmOrderService {
      * @param type              订单类型
      * @param buyerMessage      买家留言
      * @param spellGroupType    价格1 : 普通活动价 2:个人价(只用作拼团价)
+     * @param inviterId    价邀请人ID
      * @return
      */
     public BusinessMessage processingOrders(String userId,
@@ -875,7 +880,8 @@ public class CmOrderService {
                                             SlProduct slProduct,
                                             int type,
                                             String buyerMessage,
-                                            int spellGroupType) {
+                                            int spellGroupType,
+                                            int inviterId) {
         BusinessMessage message = new BusinessMessage();
 
         SlOrder slOrder = new SlOrder();
@@ -933,6 +939,8 @@ public class CmOrderService {
 //            SlProductRepository finalRepository1 = repository;
 //            SlProduct finalSlProduct = slProduct;
             orderDetailService.insertSelective(new SlOrderDetail() {{
+                //邀请人ID
+                setInviterId(inviterId);
                 // 订单明细id
                 setId(formatUUID32());
                 // 订单明细创建时间
