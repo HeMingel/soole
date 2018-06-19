@@ -119,6 +119,7 @@ public class CmOrderService {
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
+                setCaptain(2);
             }});
             if(inviterId==user.getUsername()||slUser==null){
                 inviterId=100;
@@ -447,6 +448,7 @@ public class CmOrderService {
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
+                setCaptain(2);
             }});
             if(inviterId==user.getUsername()||slUser==null){
                 inviterId=100;
