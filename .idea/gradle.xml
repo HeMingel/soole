@@ -5,6 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.3.1-all/97nfwr7im082t7xwc6bkwfrg9/gradle-4.3.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -13,7 +14,6 @@
             <option value="$PROJECT_DIR$/searched-common" />
           </set>
         </option>
-        <option name="useAutoImport" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

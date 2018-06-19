@@ -183,14 +183,14 @@
     <!--根据商品名称查询商品-->
     <select id="selectByName" resultType="Map" parameterType="String">
         SELECT
-          p.name,p.image_url,p.introduction,p.product_type_id,p.comment_num,p.sales_volume,p.shop_id,p.`sales_mode_id`,ap.*
+           p.`id` AS goodsId,p.`sales_mode_id`,p.remark,
+          p.postage postAge,ap.price as activityPrice,p.sales_virtual,p.ship,p.name,p.image_url,p.introduction,p.product_type_id,p.comment_num,p.sales_volume,p.shop_id,p.`sales_mode_id`,ap.*
         FROM
           sl_product p
           LEFT JOIN sl_activity_product ap
            ON p.id = ap.product_id
            WHERE p.`sold_out`=1
           AND ap.enabled = 1
-          and p.del = 0
           and p.name LIKE #{goodsName}
 
     </select>

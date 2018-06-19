@@ -112,9 +112,18 @@ public class CmOrderService {
         log.debug("request = [" + request + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
         double money = 0.00+Double.parseDouble(postFee==null?"0":postFee);
+
         int pulse = 0;
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
+            int finalInviterId = inviterId;
+            SlUser slUser = userService.selectOne(new SlUser() {{
+                setUsername(finalInviterId);
+            }});
+            if(inviterId==user.getUsername()||slUser==null){
+                inviterId=100;
+            }
+
             SlOrder slOrder = new SlOrder();
             String orderNum = OrderNumGeneration.getOrderIdByUUId();// 生成订单编号
             slOrder.setId(formatUUID32());
@@ -214,11 +223,12 @@ public class CmOrderService {
                                                         pulse += repository.getSilver() * quantity;
                                                     }
 //                                                SlProductRepository finalRepository = repository;
+                                                    int finalInviterId1 = inviterId;
                                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                                         setId(formatUUID32());
                                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                                                         //邀请人ID
-                                                        setInviterId(inviterId);
+                                                        setInviterId(finalInviterId1);
                                                         // 拼团订单去这个属性判断是哪个人的
                                                         setCreator(slOrder.getUserId());
                                                         // 商品名称
@@ -434,6 +444,14 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
+            int finalInviterId = inviterId;
+            SlUser slUser = userService.selectOne(new SlUser() {{
+                setUsername(finalInviterId);
+            }});
+            if(inviterId==user.getUsername()||slUser==null){
+                inviterId=100;
+            }
+
 //                SlProductRepository repository = new SlProductRepository();
 //                //1.先从redis中去取该商品规格的详细参数
 //                repository = this.repositoryCache.get(repositoryId);
@@ -1878,7 +1896,7 @@ public class CmOrderService {
                                             setCoin(p);
                                         }});
                                         //更新平台账号金豆数量
-                                       SlUser platform = userService.selectOne(new SlUser(){{
+                                        SlUser platform = userService.selectOne(new SlUser(){{
                                             setUsername(100);
                                         }});
                                         Integer newCoin = platform.getCoin()+poundage;
@@ -2095,7 +2113,7 @@ public class CmOrderService {
             return message;
         }
         SlOrder order = orderService.selectByPrimaryKey(orderId);
-       if (order == null || StringUtils.isBlank(order.getId()) || !order.getUserId().equals(user.getId())) {
+        if (order == null || StringUtils.isBlank(order.getId()) || !order.getUserId().equals(user.getId())) {
             message.setMsg("订单不存在");
             message.setSuccess(false);
             return message;
@@ -2115,22 +2133,22 @@ public class CmOrderService {
         uuid = uuid.replace("-", "");
         return uuid;
     }
- /**
-  *   /**
-  *      * alipay.trade.refund(统一收单交易退款接口)
-  *      *
-  *      * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，支付宝将在收到退款请求并且验证成功之后，按照退款规则将支付款按原路退到买家帐号上。 交易超过约定时间（签约时设置的可退款时间）的订单无法进行退款 支付宝退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。总退款金额不能超过用户实际支付金额
-  *      * 来源 https://docs.open.alipay.com/api_1/alipay.trade.refund/
-  *      *
-  *      * @param outTradeNo    String	特殊可选	64	原支付请求的商户订单号,和支付宝交易号不能同时为空
-  *      * @param tradeNo    String	特殊可选	64	支付宝交易号，和商户订单号不能同时为空
-  *      * @param refundAmount    Price	必选	9	需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
-  *      * @param refundReason    String	可选	256	退款的原因说明
-  *      * @param outRequestNo    String	可选	64	标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
-  *      * @param operatorId    String	可选	30	商户的操作员编号
-  *      * @param storeId    String	可选	32	商户的门店编号
-  *      * @param terminalId    String	可选	32	商户的终端编号
-  *      * @return 响应信息
+    /**
+     *   /**
+     *      * alipay.trade.refund(统一收单交易退款接口)
+     *      *
+     *      * 当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，支付宝将在收到退款请求并且验证成功之后，按照退款规则将支付款按原路退到买家帐号上。 交易超过约定时间（签约时设置的可退款时间）的订单无法进行退款 支付宝退款支持单笔交易分多次退款，多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。总退款金额不能超过用户实际支付金额
+     *      * 来源 https://docs.open.alipay.com/api_1/alipay.trade.refund/
+     *      *
+     *      * @param outTradeNo    String	特殊可选	64	原支付请求的商户订单号,和支付宝交易号不能同时为空
+     *      * @param tradeNo    String	特殊可选	64	支付宝交易号，和商户订单号不能同时为空
+     *      * @param refundAmount    Price	必选	9	需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+     *      * @param refundReason    String	可选	256	退款的原因说明
+     *      * @param outRequestNo    String	可选	64	标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+     *      * @param operatorId    String	可选	30	商户的操作员编号
+     *      * @param storeId    String	可选	32	商户的门店编号
+     *      * @param terminalId    String	可选	32	商户的终端编号
+     *      * @return 响应信息
      */
     @Transactional
     public BusinessMessage refundOrder (String orderId) {
@@ -2156,16 +2174,16 @@ public class CmOrderService {
                 if (map.get("return_msg").equals("OK")) {
                     message.setSuccess(true);
                 }
-                }//支付宝支付
-                else if (paymentChannel == 2){
-               String  outTradeNo = order.getId();
-               String refundAmount = String.valueOf(order.getTotalAmount().doubleValue());
-               String refundReason = "拼团失败";
-               AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundAmount,refundReason,null,null,null,null);
-               String strResponse = response.getCode();
-               if ("10000".equals(strResponse)) {
-                   message.setSuccess(true);
-               }
+            }//支付宝支付
+            else if (paymentChannel == 2){
+                String  outTradeNo = order.getId();
+                String refundAmount = String.valueOf(order.getTotalAmount().doubleValue());
+                String refundReason = "拼团失败";
+                AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundAmount,refundReason,null,null,null,null);
+                String strResponse = response.getCode();
+                if ("10000".equals(strResponse)) {
+                    message.setSuccess(true);
+                }
             }
 
         }else{

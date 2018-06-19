@@ -58,9 +58,8 @@ public class CmOrderController {
                                     String[] detail,
                                     @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee, Integer inviterId) {
         BusinessMessage message = new BusinessMessage();
-        int ss = inviterId==null?0:inviterId;
         try {
-            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,ss);
+            message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,inviterId);
 //            message.setData(message.getData());
 //            message.setMsg(message.getMsg());
 //            message.setSuccess(message.getSuccess());
