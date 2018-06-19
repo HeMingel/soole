@@ -554,4 +554,23 @@ public class CmOrderController {
         return message;
     }
 
+    /**
+     * 延迟收货
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("延迟收货")
+    @ApiImplicitParam(name="orderId",value="订单ID",paramType = "form",required = true)
+    @PostMapping("delayed-delivery")
+    public BusinessMessage delayedDelivery(String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = cmOrderService.delayedDelivery(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("延迟收货，orderId = {}", orderId,e);
+        }
+        return message;
+    }
+
 }

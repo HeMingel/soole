@@ -2,6 +2,7 @@ package com.songpo.searched.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.domain.InsMktCouponCmpgnBaseDTO;
+import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.SlActivityProductMapper;
@@ -115,26 +116,21 @@ public class CommonConfig {
      * 7天自动确认收货
      */
     void updOrderConfirmReceipt() {
+        int defaultDay = BaseConstant.DEFAULT_RECEIVING_DATE;
+        int delayDay = BaseConstant.DELAY_DATE + defaultDay;
         LocalDate today = LocalDate.now();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
             setShippingState(4);
         }});
-        for (SlOrderDetail detail : detailList) {
-            if (StringUtils.isNotBlank(detail.getShippingTime())) {
-                LocalDate ldt = LocalDate.parse(detail.getShippingTime().substring(0, 10), df);
-                //如果发货时间 + 7天
-                if (ldt.plusDays(7).equals(today)) {
-                    orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
-                        setId(detail.getId());
-                        // 已完成/已收货
-                        setShippingState(5);
-                    }});
-                }
-            }
-        }
 
-
+        //如果发货时间默认值7天
+        changeOrderDetailState(detailList,defaultDay);
+        //延迟发货列表
+        List<SlOrderDetail> delaylList = this.orderDetailService.select(new SlOrderDetail() {{
+            setShippingState(4);
+        }});
+        changeOrderDetailState(delaylList,delayDay);
 //        for (SlReturnsDetail detail : list) {
 //            if (detail.getReturnTime().equals(localTime)) {
 //                returnsDetailMapper.updateByPrimaryKeySelective(new SlReturnsDetail() {{
@@ -158,6 +154,24 @@ public class CommonConfig {
 //        }
     }
 
+    void changeOrderDetailState(List<SlOrderDetail> list,int days) {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (SlOrderDetail detail : list) {
+            if (StringUtils.isNotBlank(detail.getShippingTime())) {
+                log.debug("自动更新订单{}为已收货状态，当前订单自动收货天数为{}天", detail.getOrderId(),days);
+                LocalDate ldt = LocalDate.parse(detail.getShippingTime().substring(0, 10), df);
+                //如果发货时间
+                if (ldt.plusDays(days).equals(today)) {
+                    orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                        setId(detail.getId());
+                        // 已完成/已收货
+                        setShippingState(5);
+                    }});
+                }
+            }
+        }
+    }
     /**
      * 预售订单确认收货(商家发货3天,自动确认收货)
      */

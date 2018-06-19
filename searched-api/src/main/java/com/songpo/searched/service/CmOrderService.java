@@ -220,7 +220,10 @@ public class CmOrderService {
 //                                                        money = money + slProduct.getPostage().doubleValue();
 //                                                    }
                                                     // 了豆相加  用于统计和添加到订单表扣除了豆里边
-                                                    if (repository.getSilver() > 0) {
+                                                    /**
+                                                     * 预售模式修改 由 豆+钱  改为纯钱模式
+                                                     */
+                                                    if (repository.getSilver() > 0 && !"2".equals(slProduct.getSalesModeId()) ) {
                                                         pulse += repository.getSilver() * quantity;
                                                     }
 //                                                SlProductRepository finalRepository = repository;
@@ -903,7 +906,14 @@ public class CmOrderService {
                                             int spellGroupType,
                                             int inviterId) {
         BusinessMessage message = new BusinessMessage();
+        /**
+         * 2018年6月19日14:07:03
+         * 预售模式改成纯钱模式 不再消耗金豆
+         */
 
+        if (type ==  3)  {
+            repository.setSilver(0);
+        }
         SlOrder slOrder = new SlOrder();
         // 订单id
         slOrder.setId(formatUUID32());
@@ -1898,7 +1908,7 @@ public class CmOrderService {
                                             setCoin(p);
                                         }});
                                         //更新平台账号金豆数量
-                                        SlUser platform = userService.selectOne(new SlUser(){{
+                                       SlUser platform = userService.selectOne(new SlUser(){{
                                             setUsername(100);
                                         }});
                                         Integer newCoin = platform.getCoin()+poundage;
@@ -1906,7 +1916,24 @@ public class CmOrderService {
                                             setId(platform.getId());
                                             setCoin(newCoin);
                                         }});
-                                        // 金豆记录
+                                        //平台金豆记录
+                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                                            // 目标id
+                                            setTargetId(platform.getId());
+                                            // 订单id
+                                            setOrderId(order.getId());
+                                            // 创建时间
+                                            setCreateTime(new Date());
+                                            // 购物类型店主收入
+                                            setType(300);
+                                            // 增加金豆数量
+                                            setCoin(poundage);
+                                            // 金豆
+                                            setDealType(5);
+                                            // 收入
+                                            setTransactionType(2);
+                                        }});
+                                        //店铺金豆记录
                                         transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
                                             // 目标id
                                             setTargetId(user1.getId());
@@ -2254,5 +2281,43 @@ public class CmOrderService {
         }
         message.setSuccess(true);
         return message;
+    }
+
+    /**
+     * 延迟收货
+     * @date  2018年6月19日15:47:19
+     * @author mingel
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage delayedDelivery(String orderId){
+        BusinessMessage message = new BusinessMessage();
+        SlUser slUser = loginUserService.getCurrentLoginUser();
+        if ( null != slUser ) {
+            Example example = new Example(SlOrderDetail.class);
+            example.createCriteria()
+                    .andEqualTo("orderId", orderId)
+                    .andEqualTo("creator",slUser.getId());
+            int result = this.orderDetailService.updateByExampleSelective(new SlOrderDetail(){{
+                    setShippingState(8);
+            }},example);
+            if (result > 0) {
+                log.debug("更新成功");
+                message.setMsg("更新成功");
+                message.setSuccess(true);
+                return message;
+            } else {
+                log.debug("更新失败");
+                message.setMsg("更新失败");
+                message.setSuccess(false);
+                return message;
+            }
+        }else {
+            log.debug("用户不存在");
+            message.setMsg("用户不存在");
+            message.setSuccess(false);
+            return message;
+        }
     }
 }

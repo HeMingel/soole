@@ -65,7 +65,7 @@ public class ProcessOrders {
      * @param orderId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void processOrders(String orderId, int payType) {
         String date = null;
         int pulse = 0;
