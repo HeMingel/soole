@@ -54,6 +54,8 @@ public class ProcessOrders {
     private OrderCache orderCache;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private TransactionDetailService transactionDetailService;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -257,7 +259,57 @@ public class ProcessOrders {
                         }
                     }
                 }
+                //给邀请人返钱+豆
+                fanMoney(orderId);
             }
+        }
+    }
+
+    /**
+     *给邀请人返10%金额+5%乐豆
+     */
+    public void fanMoney(String orderId) {
+        try {
+            //获取订单表数据
+            SlOrder slOrder = this.orderService.selectOne(new SlOrder() {{
+                setId(orderId);
+            }});
+            //获取订单详情表数据
+            SlOrderDetail orderDetail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+                setOrderId(orderId);
+            }});
+
+            //获取邀请人信息
+            SlUser slUser = this.userService.selectOne(new SlUser() {{
+                setUsername(orderDetail.getInviterId());
+            }});
+            //订单金额的10%
+            BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
+            //订单金额的5%
+            Double bean = slOrder.getTotalAmount().doubleValue() * 0.05;
+
+            slUser.setMoney(slUser.getMoney().add(fanMoney));
+            if (orderDetail.getType() == 4) {
+                //给邀请人余额打钱
+                userService.updateByPrimaryKey(slUser);
+                //在order表的reMark字段记录
+                slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
+                orderService.updateByPrimaryKey(slOrder);
+                //记录邀请人交易明细
+                SlTransactionDetail detail = new SlTransactionDetail();
+                detail.setSourceId(slOrder.getUserId());
+                detail.setTargetId(slUser.getId());
+                detail.setOrderId(orderId);
+                detail.setType(104);
+                detail.setMoney(fanMoney);
+                detail.setDealType(1);
+                detail.setTransactionType(2);
+                detail.setCreateTime(new Date());
+                transactionDetailService.insertSelective(detail);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

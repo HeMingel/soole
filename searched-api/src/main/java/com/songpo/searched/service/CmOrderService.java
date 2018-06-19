@@ -1494,9 +1494,6 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                //给邀请人返钱+豆
-                fanMoney(orderId);
-
                 Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
@@ -1553,9 +1550,6 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                //给邀请人返钱+豆
-                fanMoney(orderId);
-
                 Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
@@ -2240,39 +2234,5 @@ public class CmOrderService {
         }
         message.setSuccess(true);
         return message;
-    }
-
-    /**
-     *给邀请人返10%金额+5%乐豆
-     */
-    public void fanMoney(String orderId) {
-        try {
-            //获取订单表数据
-            SlOrder slOrder = this.orderService.selectOne(new SlOrder() {{
-                setId(orderId);
-            }});
-            //获取订单详情表数据
-            SlOrderDetail orderDetail = this.orderDetailService.selectOne(new SlOrderDetail() {{
-                setOrderId(orderId);
-            }});
-            //获取邀请人信息
-            SlUser slUser = this.userService.selectOne(new SlUser() {{
-                setUsername(orderDetail.getInviterId());
-            }});
-            //订单金额的10%
-            BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
-            //订单金额的5%
-            Double bean = slOrder.getTotalAmount().doubleValue() * 0.05;
-
-                slUser.setMoney(slUser.getMoney().add(fanMoney));
-            if (orderDetail.getType() == 4) {
-                userService.updateByPrimaryKey(slUser);
-                slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
-                orderService.updateByPrimaryKey(slOrder);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
