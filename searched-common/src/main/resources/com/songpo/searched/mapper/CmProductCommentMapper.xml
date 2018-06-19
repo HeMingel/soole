@@ -23,7 +23,7 @@
         ON pc.`product_id` = p.`id`
         LEFT JOIN sl_shop s
         ON p.`shop_id` = s.`id`
-        WHERE pc.`product_id` = #{goodsId}
+        WHERE pc.`product_id` = #{goodsId} and p.del = 0
         <if test="status != null and status != '' and status !=4 ">
             and pc.status = #{status}
         </if>
