@@ -39,10 +39,11 @@ public class SmsService {
      * 发送短信验证码
      *
      * @param mobile 手机号码
+     * @param zone   地区
      * @return 发送结果
      */
-    public BusinessMessage<SendSmsResponse> sendSms(String mobile) {
-        log.debug("发送短信验证码，手机号码：{}", mobile);
+    public BusinessMessage<SendSmsResponse> sendSms(String mobile, String zone) {
+        log.debug("发送短信验证码，手机号码：{}, 地区：{}", mobile, zone);
         BusinessMessage<SendSmsResponse> message = new BusinessMessage<>();
 
         // 从缓存获取短信验证码
@@ -73,7 +74,11 @@ public class SmsService {
                 //必填:短信签名-可在短信控制台中找到
                 request.setSignName("搜了平台");
                 //必填:短信模板-可在短信控制台中找到
-                request.setTemplateCode("SMS_127168926");
+                if(null==zone||"中国大陆".equals(zone)){
+                    request.setTemplateCode("SMS_130929507");
+                }else {
+                    request.setTemplateCode("SMS_137550007");
+                }
 
                 RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(DIGITS).build();
                 code = generator.generate(6);
@@ -152,6 +157,7 @@ public class SmsService {
                 }
 
                 RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(DIGITS).build();
+                System.out.println("generator=="+generator);
                 code = generator.generate(6);
 
                 //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的登录密码为${code}"时,此处的值为

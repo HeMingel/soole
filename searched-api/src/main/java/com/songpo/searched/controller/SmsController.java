@@ -27,11 +27,12 @@ public class SmsController {
 
     @ApiOperation(value = "发送短信验证码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "form")
+            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "form"),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form")
     })
     @PostMapping("verify-code")
-    public BusinessMessage<SendSmsResponse> sendSms(String mobile) {
-        return smsService.sendSms(mobile);
+    public BusinessMessage<SendSmsResponse> sendSms(String mobile, String zone) {
+        return smsService.sendSms(mobile,zone);
     }
 
     @ApiOperation(value = "发送短信登录密码")

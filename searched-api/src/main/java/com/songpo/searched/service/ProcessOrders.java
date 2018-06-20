@@ -111,7 +111,7 @@ public class ProcessOrders {
                                     // 查询已支付的该拼团的订单数量
                                     int count = this.cmOrderMapper.groupOrdersByUser(order.getSerialNumber());
                                     // 如果拼团人数够了
-                                    if (count == detail.getGroupPeople()) {
+                                    if (count == detail.getGroupPeople()||2==order.getVirtualOpen()) {
                                         Example e = new Example(SlOrder.class);
                                         e.createCriteria()
                                                 .andEqualTo("serialNumber", order.getSerialNumber())
