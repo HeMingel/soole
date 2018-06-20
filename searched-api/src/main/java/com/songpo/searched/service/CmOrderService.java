@@ -116,13 +116,14 @@ public class CmOrderService {
         int pulse = 0;
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
+            //查询邀请人并且是区块链团队长
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
                 setCaptain(2);
             }});
-            if(inviterId==user.getUsername()||slUser==null){
-                inviterId=100;
+            if(inviterId==user.getUsername()||slUser==null||inviterId<=0){
+                inviterId=7777;
             }
 
             SlOrder slOrder = new SlOrder();
@@ -448,13 +449,14 @@ public class CmOrderService {
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
+            //查询邀请人并且是区块链团队长
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
                 setCaptain(2);
             }});
-            if(inviterId==user.getUsername()||slUser==null){
-                inviterId=100;
+            if(inviterId==user.getUsername()||slUser==null||inviterId<=0){
+                inviterId=7777;
             }
 
 //                SlProductRepository repository = new SlProductRepository();
@@ -529,7 +531,7 @@ public class CmOrderService {
                                             // ==== 按照自己开团流程走 ======
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
+                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
                                             //加入虚拟开团的用户在remark字段添加虚拟团主头像
                                             Map<String, String> map  = (Map<String, String>) message.getData();
                                             String orderId = map.get("order_num");
@@ -558,7 +560,7 @@ public class CmOrderService {
                                                     //如果不存在的话
                                                     if (f.equals(false)) {
                                                         // ======= 是团员的话 =======
-                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
+                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
                                                     } else {
                                                         message.setMsg("您已参加过该团,请勿重复参加");
                                                         return message;
@@ -571,7 +573,7 @@ public class CmOrderService {
                                                 // ==== 如果是他自己开的团 ======
                                                 //生成订单号
                                                 String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId);
+                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
                                             }
                                         }
 
@@ -580,29 +582,29 @@ public class CmOrderService {
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1, inviterId);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     // ====== 如果是助力购 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1, inviterId);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     // ====== 消费返利 ======
                                     else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1, inviterId);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1, inviterId,virtualOpen);
                                         //  ====== 豆赚 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1, inviterId);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1, inviterId,virtualOpen);
                                         //  ====== 普通商品 ======
                                     } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1, inviterId);
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     if (message.getSuccess() == false) {
                                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -890,6 +892,7 @@ public class CmOrderService {
      * @param buyerMessage      买家留言
      * @param spellGroupType    价格1 : 普通活动价 2:个人价(只用作拼团价)
      * @param inviterId    价邀请人ID
+     * @param virtualOpen        是否虚拟用户开团: 1 不是   2 是
      * @return
      */
     public BusinessMessage processingOrders(String userId,
@@ -904,7 +907,7 @@ public class CmOrderService {
                                             int type,
                                             String buyerMessage,
                                             int spellGroupType,
-                                            int inviterId) {
+                                            int inviterId,int virtualOpen) {
         BusinessMessage message = new BusinessMessage();
         /**
          * 2018年6月19日14:07:03
@@ -933,6 +936,9 @@ public class CmOrderService {
             price = repository.getPrice().doubleValue();
         } else {
             price = repository.getPersonalPrice().doubleValue();
+        }
+        if(2==virtualOpen){
+            slOrder.setVirtualOpen(2);
         }
         Double d = price * quantity;
         BigDecimal money = new BigDecimal(d.toString());
@@ -2254,7 +2260,7 @@ public class CmOrderService {
                         List<SlProductNoMail> list = slProductNoMailMapper.select(new SlProductNoMail(){{setProductId(productId);}});
                         if(list.size()>0){
                             for(SlProductNoMail slProductNoMail : list){
-                                if(slUserAddress.getProvince().equals(slProductNoMail.getNoShipArea())){
+                                if(slUserAddress.getProvince().contains(slProductNoMail.getNoShipArea())){
                                     postFee=Arith.add(slProductNoMail.getAreamoney().doubleValue(),postFee);
                                     break;
                                 }
@@ -2318,6 +2324,74 @@ public class CmOrderService {
             message.setMsg("用户不存在");
             message.setSuccess(false);
             return message;
+        }
+    }
+
+    //给店铺老板加豆
+    public void returnCoinToShop(String orderId) {
+        // 给店铺老板加上金豆
+        SlOrder order = orderService.selectOne(new SlOrder() {{
+            setId(orderId);
+            setPaymentState(1);
+        }});
+        if (null != order) {
+            List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
+                setOrderId(orderId);
+                setIsVirtualSpellGroup((byte) 1);
+            }});
+            for (SlOrderDetail detail : orderDetails) {
+                SlShop shop = this.shopService.selectOne(new SlShop() {{
+                    setId(detail.getShopId());
+                }});
+                if (null != shop) {
+                    SlUser user1 = this.userService.selectOne(new SlUser() {{
+                        setId(shop.getOwnerId());
+                    }});
+                    if (null != user1) {
+                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
+                        /**
+                         * 扣除10%金豆 转入平台账号(账号名称100)
+                         * 2018年6月14日20:02:44  mingel
+                         */
+                        int surplusSilvers = (int) (silvers * 0.9);
+                        //手续费 10%金豆
+                        int poundage = silvers - surplusSilvers;
+                        int p = user1.getCoin() + surplusSilvers;
+                        user1.setCoin(p);
+                        userCache.put(user1.getClientId(), user1);
+                        userService.updateByPrimaryKeySelective(new SlUser() {{
+                            setId(user1.getId());
+                            setCoin(p);
+                        }});
+                        //更新平台账号金豆数量
+                        SlUser platform = userService.selectOne(new SlUser() {{
+                            setUsername(100);
+                        }});
+                        Integer newCoin = platform.getCoin() + poundage;
+                        userService.updateByPrimaryKeySelective(new SlUser() {{
+                            setId(platform.getId());
+                            setCoin(newCoin);
+                        }});
+                        // 金豆记录
+                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                            // 目标id
+                            setTargetId(user1.getId());
+                            // 订单id
+                            setOrderId(order.getId());
+                            // 创建时间
+                            setCreateTime(new Date());
+                            // 购物类型店主收入
+                            setType(300);
+                            // 增加金豆数量
+                            setCoin(surplusSilvers);
+                            // 金豆
+                            setDealType(5);
+                            // 收入
+                            setTransactionType(2);
+                        }});
+                    }
+                }
+            }
         }
     }
 }
