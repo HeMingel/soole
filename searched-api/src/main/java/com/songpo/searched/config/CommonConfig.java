@@ -116,12 +116,13 @@ public class CommonConfig {
      * 7天自动确认收货
      */
     void updOrderConfirmReceipt() {
+        //默认收货日期
         int defaultDay = BaseConstant.DEFAULT_RECEIVING_DATE;
+        //延迟收货日期
         int delayDay = BaseConstant.DELAY_DATE + defaultDay;
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
             setShippingState(4);
+            setIsDelayed(0);
         }});
 
         //如果发货时间默认值7天
@@ -129,6 +130,7 @@ public class CommonConfig {
         //延迟发货列表
         List<SlOrderDetail> delaylList = this.orderDetailService.select(new SlOrderDetail() {{
             setShippingState(4);
+            setIsDelayed(1);
         }});
         changeOrderDetailState(delaylList,delayDay);
 //        for (SlReturnsDetail detail : list) {

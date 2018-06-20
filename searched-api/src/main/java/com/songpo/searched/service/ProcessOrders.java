@@ -9,15 +9,20 @@ import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.LocalDateTimeUtils;
+import com.songpo.searched.util.StreamTool;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -56,6 +61,10 @@ public class ProcessOrders {
     private ShopService shopService;
     @Autowired
     private TransactionDetailService transactionDetailService;
+    @Autowired
+    private LoginUserService loginUserService;
+    @Autowired
+    private Environment environment;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -308,8 +317,59 @@ public class ProcessOrders {
                 transactionDetailService.insertSelective(detail);
 
             }
+            /**
+             * 极光推送
+             */
+            String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
+                    "元,成功获得分润奖励"+fanMoney+"元，请打开APP“我的账本-钱包”查看奖励余额";
+            sendPush(slUser.getUsername().toString(),content,5,"邀请返现");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 极光推送，调用PHP接口
+     * @date  2018年6月20日16:15:05
+     * @param username 推送用户标识，使用user表中的username字段作为标识
+     * @param content  需要推送的内容
+     * @param type  推送类型，目前支持 1.系统通知 2.账户通知 3.物流通知 4.拼团通知 5.区块链佣金通知 6-10备用
+     * @param title 推送消息标题
+     */
+    public void  sendPush(String username ,String content,int type ,String title ) {
+        SlUser slUser = loginUserService.getCurrentLoginUser();
+        if (slUser == null) {
+            log.debug("推送失败，用户不存在");
+        }else{
+            try {
+                URL url = new URL(environment.getProperty("push.php.url"));
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                StringBuffer params = new StringBuffer();
+                // 提交模式
+                conn.setRequestMethod("POST");
+                // 是否输入参数
+                conn.setDoOutput(true);
+                // 表单参数与get形式一样
+                params.append("user_id").append("=").append(slUser.getId()).append("&").append("username")
+                        .append("=").append(username).append("&").append("type").append("=").append(type)
+                        .append("&").append("content").append("=").append(content).append("&").append("title")
+                        .append("=").append(title);
+                byte[] bypes = params.toString().getBytes();
+                // 输入参数
+                conn.getOutputStream().write(bypes);
+                InputStream inStream=conn.getInputStream();
+                String result = new String(StreamTool.readInputStream(inStream), "utf-8");
+                if (result.indexOf("消息推送成功") > 0) {
+                    log.debug("推送用户ID为{}的消息成功",slUser.getId());
+                }else {
+                    log.debug("推送用户ID为{}的消息失败",slUser.getId());
+                }
+            } catch (Exception e) {
+                log.error("推送用户ID{}消息失败",slUser.getId(),e);
+                e.printStackTrace();
+            }
+        }
+
     }
 }

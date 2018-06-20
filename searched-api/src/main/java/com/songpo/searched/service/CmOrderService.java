@@ -2306,7 +2306,7 @@ public class CmOrderService {
                     .andEqualTo("orderId", orderId)
                     .andEqualTo("creator",slUser.getId());
             int result = this.orderDetailService.updateByExampleSelective(new SlOrderDetail(){{
-                    setShippingState(8);
+                    setIsDelayed(1);
             }},example);
             if (result > 0) {
                 log.debug("更新成功");
