@@ -28,6 +28,7 @@
         ss.phone shopPhone,
         sod.ems_id emsId,
         sod.ship_number shipNumber,
+        sod.is_delayed isDelayed,
         sap.activity_id activityId
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
@@ -94,6 +95,7 @@
         sod.ems_id emsId,
         sod.ship_number shipNumber,
         sod.deduct_total_silver pulse,
+        sod.is_delayed isDelayed,
         sa.id activityId,
         sp.sales_mode_id salesModeId
         from sl_order so
