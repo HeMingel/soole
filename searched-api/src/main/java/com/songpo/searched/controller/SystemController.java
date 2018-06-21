@@ -550,10 +550,11 @@ public class SystemController {
     @ApiOperation(value = "短信登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
-            @ApiImplicitParam(name = "password", value = "短信密码", paramType = "form", required = true)
+            @ApiImplicitParam(name = "password", value = "短信密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
     })
     @PostMapping("sms-login")
-    public BusinessMessage<JSONObject> smsLogin(String phone, String password) {
+    public BusinessMessage<JSONObject> smsLogin(String phone, String password ,String zone) {
         log.debug("短信登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
@@ -579,7 +580,7 @@ public class SystemController {
                     if (null == user) {
                         user = new SlUser();
                         user.setPhone(phone);
-
+                        user.setZone(zone);
                         // 天降洪福，100乐豆（银豆）
                         user.setSilver(100);
 
@@ -777,8 +778,8 @@ public class SystemController {
     })
     @PostMapping("bind-phone-new")
     @Transactional
-    public BusinessMessage<JSONObject> bindPhone(String phone, String code, String openId) {
-        log.debug("绑定手机号码，手机号码：{}， 验证码：{}，第三方标识：{}，密码：******", phone, code, openId);
+    public BusinessMessage<JSONObject> bindPhoneNew(String phone, String code, String openId, String zone) {
+        log.debug("绑定手机号码，手机号码：{}, 地区() ， 验证码：{}，第三方标识：{}，密码：******", phone, zone, code, openId);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(openId)) {
             message.setMsg("第三方标识为空");
@@ -786,7 +787,9 @@ public class SystemController {
             message.setMsg("手机号码为空");
         } else if (StringUtils.isBlank(code)) {
             message.setMsg("验证码为空");
-        } else {
+        } else if (StringUtils.isBlank(zone)){
+            message.setMsg("地区为空");
+        }else {
             // 校验短信验证码
             String cacheCode = this.smsVerifyCodeCache.get(phone);
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
@@ -823,6 +826,7 @@ public class SystemController {
                         if (StringUtils.isBlank(phoneUser.getAvatar())) {
                             phoneUser.setAvatar(user.getAvatar());
                         }
+                        phoneUser.setZone(zone);
                         phoneUser.setType(user.getType());
                         //修补错误数据，原来的微信用户中的金豆银豆转移
                         phoneUser.setSilver(phoneUser.getSilver() + ((user.getSilver() - 100) < 0 ? 0 : (user.getSilver() - 100)));
@@ -834,6 +838,7 @@ public class SystemController {
                     } else {
                         /********** 不存在相同手机号用户，更新用户信息 *********/
                         user.setPhone(phone);
+                        user.setZone(zone);
                         user.setCreatedAt(null);
                         user.setUpdatedAt(null);
                         // 更新
