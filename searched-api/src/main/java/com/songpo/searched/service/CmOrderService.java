@@ -1449,6 +1449,10 @@ public class CmOrderService {
      */
     public BusinessMessage<JSONObject> searchExpress(Integer emsId, String expressCode) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>(false);
+        if (emsId == null) {
+            message.setMsg("emsId不能为空");
+            return message;
+        }
         SlUser user = loginUserService.getCurrentLoginUser();
         List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
             // 物流单号唯一
