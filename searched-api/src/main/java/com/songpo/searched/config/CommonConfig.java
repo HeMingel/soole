@@ -170,6 +170,9 @@ public class CommonConfig {
                         // 已完成/已收货
                         setShippingState(5);
                     }});
+                    if(6==detail.getType()){
+                        cmOrderService.returnCoinToShop(detail.getOrderId());
+                    }
                 }
             }
         }

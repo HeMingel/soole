@@ -815,6 +815,14 @@ public class CmOrderService {
                                 //确认收货时间
                                 setConfirmReceiptTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                             }}, example1);
+                            //获取订单详情信息
+                            SlOrderDetail slOrderDetail = this.orderDetailService.selectOne(new SlOrderDetail(){{
+                                setOrderId(orderId);
+                            }});
+                            //如果是纯豆商品 给店铺老板返都
+                            if(6==slOrderDetail.getType()){
+                                returnCoinToShop(orderId);
+                            }
                             message.setMsg("确认收货成功");
                             message.setSuccess(true);
                         } else {
@@ -1889,76 +1897,76 @@ public class CmOrderService {
                                 userCache.put(user.getClientId(), user);
                             }
                             // 给店铺老板加上金豆
-                            for (SlOrderDetail detail : orderDetails) {
-                                SlShop shop = this.shopService.selectOne(new SlShop() {{
-                                    setId(detail.getShopId());
-                                }});
-                                if (null != shop) {
-                                    SlUser user1 = this.userService.selectOne(new SlUser() {{
-                                        setId(shop.getOwnerId());
-                                    }});
-                                    if (null != user1) {
-                                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
-                                        /**
-                                         * 扣除10%金豆 转入平台账号(账号名称100)
-                                         * 2018年6月14日20:02:44  mingel
-                                         */
-                                        int surplusSilvers = (int) (silvers*0.9);
-                                        //手续费 10%金豆
-                                        int poundage = silvers - surplusSilvers;
-                                        int p = user1.getCoin() + surplusSilvers;
-                                        user1.setCoin(p);
-                                        userCache.put(user1.getClientId(), user1);
-                                        userService.updateByPrimaryKeySelective(new SlUser() {{
-                                            setId(user1.getId());
-                                            setCoin(p);
-                                        }});
-                                        //更新平台账号金豆数量
-                                       SlUser platform = userService.selectOne(new SlUser(){{
-                                            setUsername(100);
-                                        }});
-                                        Integer newCoin = platform.getCoin()+poundage;
-                                        userService.updateByPrimaryKeySelective(new SlUser (){{
-                                            setId(platform.getId());
-                                            setCoin(newCoin);
-                                        }});
-                                        //平台金豆记录
-                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                            // 目标id
-                                            setTargetId(platform.getId());
-                                            // 订单id
-                                            setOrderId(order.getId());
-                                            // 创建时间
-                                            setCreateTime(new Date());
-                                            // 购物类型店主收入
-                                            setType(300);
-                                            // 增加金豆数量
-                                            setCoin(poundage);
-                                            // 金豆
-                                            setDealType(5);
-                                            // 收入
-                                            setTransactionType(2);
-                                        }});
-                                        //店铺金豆记录
-                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
-                                            // 目标id
-                                            setTargetId(user1.getId());
-                                            // 订单id
-                                            setOrderId(order.getId());
-                                            // 创建时间
-                                            setCreateTime(new Date());
-                                            // 购物类型店主收入
-                                            setType(300);
-                                            // 增加金豆数量
-                                            setCoin(surplusSilvers);
-                                            // 金豆
-                                            setDealType(5);
-                                            // 收入
-                                            setTransactionType(2);
-                                        }});
-                                    }
-                                }
-                            }
+//                            for (SlOrderDetail detail : orderDetails) {
+//                                SlShop shop = this.shopService.selectOne(new SlShop() {{
+//                                    setId(detail.getShopId());
+//                                }});
+//                                if (null != shop) {
+//                                    SlUser user1 = this.userService.selectOne(new SlUser() {{
+//                                        setId(shop.getOwnerId());
+//                                    }});
+//                                    if (null != user1) {
+//                                        int silvers = detail.getDeductTotalSilver() * detail.getQuantity();
+//                                        /**
+//                                         * 扣除10%金豆 转入平台账号(账号名称100)
+//                                         * 2018年6月14日20:02:44  mingel
+//                                         */
+//                                        int surplusSilvers = (int) (silvers*0.9);
+//                                        //手续费 10%金豆
+//                                        int poundage = silvers - surplusSilvers;
+//                                        int p = user1.getCoin() + surplusSilvers;
+//                                        user1.setCoin(p);
+//                                        userCache.put(user1.getClientId(), user1);
+//                                        userService.updateByPrimaryKeySelective(new SlUser() {{
+//                                            setId(user1.getId());
+//                                            setCoin(p);
+//                                        }});
+//                                        //更新平台账号金豆数量
+//                                       SlUser platform = userService.selectOne(new SlUser(){{
+//                                            setUsername(100);
+//                                        }});
+//                                        Integer newCoin = platform.getCoin()+poundage;
+//                                        userService.updateByPrimaryKeySelective(new SlUser (){{
+//                                            setId(platform.getId());
+//                                            setCoin(newCoin);
+//                                        }});
+//                                        //平台金豆记录
+//                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+//                                            // 目标id
+//                                            setTargetId(platform.getId());
+//                                            // 订单id
+//                                            setOrderId(order.getId());
+//                                            // 创建时间
+//                                            setCreateTime(new Date());
+//                                            // 购物类型店主收入
+//                                            setType(300);
+//                                            // 增加金豆数量
+//                                            setCoin(poundage);
+//                                            // 金豆
+//                                            setDealType(5);
+//                                            // 收入
+//                                            setTransactionType(2);
+//                                        }});
+//                                        //店铺金豆记录
+//                                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+//                                            // 目标id
+//                                            setTargetId(user1.getId());
+//                                            // 订单id
+//                                            setOrderId(order.getId());
+//                                            // 创建时间
+//                                            setCreateTime(new Date());
+//                                            // 购物类型店主收入
+//                                            setType(300);
+//                                            // 增加金豆数量
+//                                            setCoin(surplusSilvers);
+//                                            // 金豆
+//                                            setDealType(5);
+//                                            // 收入
+//                                            setTransactionType(2);
+//                                        }});
+//                                    }
+//                                }
+//                            }
                         } else {
                             message.setMsg("当前用户了豆数量不足");
                         }
