@@ -1552,7 +1552,7 @@ public class CmOrderService {
                  * 2018年6月22日16:07:35
                  * 大于500 以上整额订单 立减0.1-00.1
                  */
-                 money = com.songpo.searched.util.StringUtils.getDealMoney(money);
+                 //money = com.songpo.searched.util.StringUtils.getDealMoney(money);
                 String serialNumber = message.getData().get("serialNumber").toString();
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                 if (StringUtils.isNotBlank(str)) {
@@ -1613,7 +1613,7 @@ public class CmOrderService {
                  * 2018年6月22日16:07:35
                  * 大于500 以上整额订单 立减0.1-00.1
                  */
-                money = com.songpo.searched.util.StringUtils.getDealMoney(money);
+              //  money = com.songpo.searched.util.StringUtils.getDealMoney(money);
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
                 String total_fee = String.valueOf(Math.round(mo));
