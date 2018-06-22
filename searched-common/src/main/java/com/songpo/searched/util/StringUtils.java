@@ -1,11 +1,10 @@
 package com.songpo.searched.util;
 
+import org.junit.Test;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Pattern;
 
     /**
@@ -383,5 +382,23 @@ import java.util.regex.Pattern;
             return resultStr;
         }
 
+        //判断是不是整数
+        public static Boolean isIntegerForDouble(Double dStr){
+            double eps = 1e-10;  // 精度范围
+            return dStr-Math.floor(dStr) < eps;
+        }
 
+        /**
+         * 大于500的整额钱数随即立减0.1-0.01
+         * @param
+         * @return
+         */
+        public static String  getDealMoney (String str) {
+            double money = Double.parseDouble(str);
+           if ( money > 500 && isIntegerForDouble(money)) {
+            double  smallMoney = new Random().nextInt(10) * 0.01;
+            money = money - smallMoney;
+           }
+           return Double.toString(money);
+        }
     }
