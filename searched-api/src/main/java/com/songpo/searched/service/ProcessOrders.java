@@ -65,6 +65,8 @@ public class ProcessOrders {
     private LoginUserService loginUserService;
     @Autowired
     private Environment environment;
+    @Autowired
+    private SlMessageCenterMapper slMessageCenterMapper;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -322,7 +324,7 @@ public class ProcessOrders {
              */
             String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
                     "元,成功获得分润奖励"+fanMoney+"元，请打开APP“我的账本-钱包”查看奖励余额";
-            sendPush(slUser.getUsername().toString(),content,5,"邀请返现");
+            sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -362,6 +364,12 @@ public class ProcessOrders {
                 String result = new String(StreamTool.readInputStream(inStream), "utf-8");
                 if (result.indexOf("消息推送成功") > 0) {
                     log.debug("推送用户ID为{}的消息成功",slUser.getId());
+                    slMessageCenterMapper.insertSelective( new SlMessageCenter() {{
+                        setUsername(username);
+                        setTitle(title);
+                        setContent(content);
+                        setType((byte)2);
+                    }});
                 }else {
                     log.debug("推送用户ID为{}的消息失败",slUser.getId());
                 }
