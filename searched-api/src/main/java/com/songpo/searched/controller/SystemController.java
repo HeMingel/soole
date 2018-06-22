@@ -535,7 +535,8 @@ public class SystemController {
             // 是否设置支付密码
             data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
             data.put("loginCount", user.getLoginCount());
-
+            //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+            data.put("circleState",user.getCircleState());
             message.setData(data);
             message.setSuccess(true);
         }
