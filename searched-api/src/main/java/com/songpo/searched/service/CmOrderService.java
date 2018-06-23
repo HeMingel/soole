@@ -757,7 +757,7 @@ public class CmOrderService {
      * 取消订单/确定收货
      *
      * @param state   订单状态
-     * @param orderId 订单id
+     * @param orderId 订单id state = 5 参数为 orderDetailId  state = 102 参数为orderId
      * @return
      */
     public BusinessMessage cancelAnOrder(String orderId, String state) {
