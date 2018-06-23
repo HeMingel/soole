@@ -2371,7 +2371,7 @@ public class CmOrderService {
         if (null != order) {
             List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
                 setOrderId(orderId);
-                setIsVirtualSpellGroup((byte) 1);
+                setIsVirtualSpellGroup((byte) 0);
             }});
             for (SlOrderDetail detail : orderDetails) {
                 SlShop shop = this.shopService.selectOne(new SlShop() {{
