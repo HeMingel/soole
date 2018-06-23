@@ -66,8 +66,7 @@
                     AND s.address like #{pAddress}
                 </if>
             </where>
-        order by  p.sales_virtual DESC
-        <!-- 动态拼接排序规则，自动取出多余的逗号
+        <!-- 动态拼接排序规则，自动取出多余的逗号-->
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="sortByPrice != ''">
                 ap.price ${sortByPrice},
@@ -76,17 +75,20 @@
                 s.rating ${sortByRating},
             </if>
             <if test="sortBySale != ''">
-                p.sales_volume ${sortBySale},
+                p.sales_virtual ${sortBySale},
             </if>
             <if test="synthesize != '' and synthesize != null">
                 (p.sales_virtual + p.comment_num) DESC,
             </if>
-            <if test="addressNow!=''and addressNow !=null  ">
+            <!--<if test="addressNow!=''and addressNow !=null  ">
                 <bind name="pAddress" value="'%' + addressNow + '%'"/>
                 s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_virtual DESC
+            </if>-->
+            <if test="sortByPrice=='' and sortByRating=='' and  sortBySale=='' and synthesize==null ">
+                p.sales_virtual DESC
             </if>
 
-        </trim>-->
+        </trim>
     </select>
     <!--77行涉及到排序 经纬度-->
     <!--<if test="addressNow!=''and addressNow !=null and longitudeNow !=null and longitudeNow != '' and latitudeNow != '' and latitudeNow != null ">-->
