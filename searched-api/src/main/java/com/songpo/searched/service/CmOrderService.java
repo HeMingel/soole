@@ -822,7 +822,7 @@ public class CmOrderService {
                             }}, example1);
                             //获取订单详情信息
                             SlOrderDetail slOrderDetail = this.orderDetailService.selectOne(new SlOrderDetail(){{
-                                setOrderId(orderId);
+                                setId(orderId);
                             }});
                             //如果是纯豆商品 给店铺老板返都
                             if(6==slOrderDetail.getType()){
