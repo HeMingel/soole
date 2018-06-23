@@ -826,7 +826,7 @@ public class CmOrderService {
                             }});
                             //如果是纯豆商品 给店铺老板返都
                             if(6==slOrderDetail.getType()){
-                                returnCoinToShop(orderId);
+                                returnCoinToShop(slOrderDetail.getOrderId());
                             }
                             message.setMsg("确认收货成功");
                             message.setSuccess(true);
