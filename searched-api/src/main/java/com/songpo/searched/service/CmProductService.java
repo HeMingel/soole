@@ -643,6 +643,10 @@ public class CmProductService {
                     setId(productId);
                     setEnabled(false);
                 }});
+                this.slProductMapper.updateByPrimaryKeySelective(new SlProduct(){{
+                    setId(productId);
+                    setSoldOut(false);
+                }});
             }
         }
     }
