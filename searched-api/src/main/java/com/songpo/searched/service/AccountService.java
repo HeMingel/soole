@@ -179,9 +179,18 @@ public class AccountService {
         BusinessMessage message = new BusinessMessage<>();
         if (number <= 0) {
             message.setMsg("非法金豆数量");
+            return message;
+        }
+        /**
+         * 获益超过100W返回异常
+         */
+        if (number > 1000000 && type == 0) {
+            message.setMsg("数据异常");
+            return message;
         }
        if (type == null ) {
             message.setMsg("非法操作");
+           return message;
        }
         if (userId != null && userId != "") {
             SlUser user = userService.selectByPrimaryKey(userId);

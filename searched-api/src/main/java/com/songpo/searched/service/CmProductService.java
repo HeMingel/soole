@@ -345,6 +345,7 @@ public class CmProductService {
                     if (orderList != null && orderList.size() > 0) {
                         //遍历订单集合 查询首发人
                         List<Object> groupList = new ArrayList<>();
+                        groupList.add(virtualMap);
                         for (int i = 0; i < orderList.size(); i++) {
                             Map<String, Object> groupMapper = new HashMap<>(16);
                             String groupId = orderList.get(i).get("group_master").toString();
@@ -353,7 +354,6 @@ public class CmProductService {
                             groupMapper.put("order", orderList.get(i));
                             groupList.add(groupMapper);
                         }
-                        groupList.add(virtualMap);
                         data.put("groupList", groupList);
                     } else {
                         List<Object> list = new ArrayList<>();
