@@ -79,6 +79,7 @@
         sa.name activityName,
         sod.place_order_return_pulse placeOrderReturnPulse,
         ifnull(so.payment_channel,0) paymentChannel,
+        sb.name paymentName,
         su.username owner,
         ss.id shopId,
         ss.name shopName,
@@ -105,6 +106,7 @@
         LEFT JOIN sl_activity sa ON sa.id = sap.activity_id
         left join sl_shop ss on ss.id = sod.shop_id
         left join sl_user su on su.id = ss.owner_id
+        LEFT JOIN sl_base_payment sb ON so.payment_channel=sb.id
         WHERE  so.status = 1 AND so.user_id = #{userId} and sod.id = #{id}
     </select>
 

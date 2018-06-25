@@ -2406,7 +2406,24 @@ public class CmOrderService {
                             setId(platform.getId());
                             setCoin(newCoin);
                         }});
-                        // 金豆记录
+                        //平台金豆记录
+                        transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
+                            // 目标id
+                            setTargetId(platform.getId());
+                            // 订单id
+                            setOrderId(order.getId());
+                            // 创建时间
+                            setCreateTime(new Date());
+                            // 购物类型店主收入
+                            setType(300);
+                            // 增加金豆数量
+                            setCoin(poundage);
+                            // 金豆
+                            setDealType(5);
+                            // 收入
+                            setTransactionType(2);
+                        }});
+                        //店铺金豆记录
                         transactionDetailMapper.insertSelective(new SlTransactionDetail() {{
                             // 目标id
                             setTargetId(user1.getId());
