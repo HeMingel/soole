@@ -54,26 +54,12 @@ public class SharingLinksController {
     }
 
 
+    @ApiOperation("根据用户ID查询分享链接记录")
+    @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "String", required = true)
+    @PostMapping("list")
     public BusinessMessage listByuserId(String userId) {
         BusinessMessage message = cmSharingLinksService.listByUserId(userId);
         return message;
     }
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SlOrderExtendMapper slOrderExtendMapper;
-    @GetMapping("test")
-    public void Test(){
-        /*SlUser user = userService.selectOne(new SlUser(){{
-            setPhone("17611235811");
-        }}) ;
-*/
-        slOrderExtendMapper.insertSelective(new SlOrderExtend(){{
-            setServiceId("cd9d566f792311e886c57cd30abeb1d8");
-            setServiceType((byte)1);
-            setOrderId(String.valueOf(UUID.randomUUID()));
-        }});
-
-    }
 }
