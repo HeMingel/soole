@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmSharingLinksMapper">
+    <select id="listByUserId" resultType="map">
+        SELECT
+          sl.*,
+          temp.counts,
+          sp.`name` product_name,
+          sp.`image_url`
+        FROM
+          `sl_sharing_links` sl
+          LEFT JOIN
+            (SELECT
+              COUNT(id) counts,
+              service_id
+            FROM
+              `sl_order_extend` soe
+            WHERE soe.`service_type` = 1
+            GROUP BY soe.`service_id`
+            LIMIT 0, 1000) AS temp
+            ON temp.service_id = sl.`id`
+          LEFT JOIN `sl_product` sp
+            ON sp.id = sl.`product_id`
+            WHERE sl.`share_person_id` = #{userId}
+            ORDER BY sl.`created_at` DESC
+    </select>
+</mapper>

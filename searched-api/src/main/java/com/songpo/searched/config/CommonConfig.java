@@ -2,6 +2,7 @@ package com.songpo.searched.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.domain.InsMktCouponCmpgnBaseDTO;
+import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
@@ -54,6 +55,10 @@ public class CommonConfig {
     private CmProductService productService;
     @Autowired
     private CmOrderService cmOrderService;
+    @Autowired
+    private ProductRepositoryService productRepositoryService;
+    @Autowired
+    private ProductRepositoryCache repositoryCache;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
@@ -285,8 +290,11 @@ public class CommonConfig {
                 order.setCreatedAt(null);
                 order.setUpdatedAt(null);
                 orderService.updateByPrimaryKeySelective(order);
+                //失效订单库存退回
+                getProductCountBack(order);
             }
         }
+
     }
 
     /**
@@ -375,6 +383,8 @@ public class CommonConfig {
                         //请求CmOrderService接口并处理订单数据
                         try {
                         BusinessMessage message = cmOrderService.refundOrder(order.getId());
+                        //把失效订单中的商品数量加到商品库存中去
+                            getProductCountBack(order);
                         } catch (Exception e) {
                             log.error("更新订单" + order.getId() + "拼团状态失败", e);
                             continue;
@@ -385,5 +395,33 @@ public class CommonConfig {
                 }
             }
         }
+    }
+
+    /**
+     *  把失效订单中的商品数量加到商品库存中去
+     */
+    public void getProductCountBack(SlOrder order) {
+        try {
+            List<SlOrderDetail> list = orderDetailService.select(new SlOrderDetail() {{
+                setOrderId(order.getId());
+            }});
+            for (SlOrderDetail detail : list) {
+                SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
+                    setId(detail.getRepositoryId());
+                }});
+                // 把订单中的商品数量加到商品库存中去
+                this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
+                    setId(repository.getId());
+                    setCount(repository.getCount() + detail.getQuantity());
+                }});
+                repository.setCount(repository.getCount() + detail.getQuantity());
+                //更新redis
+                this.repositoryCache.put(repository.getId(), repository);
+            }
+
+        }catch (Exception e) {
+            log.debug("失效订单{}中的商品数量加到商品库存失败",order.getId(),e);
+        }
+
     }
 }
