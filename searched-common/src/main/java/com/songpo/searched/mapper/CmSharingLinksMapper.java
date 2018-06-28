@@ -62,4 +62,10 @@ public interface  CmSharingLinksMapper {
      */
     List<Map<String, Object>> selectRedPacketByResult(@Param("result") String result,
                                                       @Param("userId") String userId);
+    /**
+     *获取红包数 已领红包金额
+     * @param userId
+     * @return
+     */
+    List selectRedByUserId(@Param("userId") String userId);
 }

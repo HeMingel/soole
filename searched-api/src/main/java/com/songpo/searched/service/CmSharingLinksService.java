@@ -211,4 +211,30 @@ public class CmSharingLinksService {
 
         return message;
     }
+    /**
+     * 获取红包数 已领红包金额
+     * @param  userId 用户ID
+     * @return
+     */
+    public BusinessMessage selectRedByUserId(String userId) {
+        log.debug("根据用户ID获取红包数 已领红包金额, 用户ID: {}", userId);
+        BusinessMessage message = new BusinessMessage();
+        try {
+            if (null != userId){
+                List list = cmSharingLinksMapper.selectRedByUserId(userId);
+                message.setData(list);
+                message.setMsg("获取红包数 已领红包金额成功");
+                message.setSuccess(true);
+            }else {
+                message.setMsg("用户信息不存在");
+                message.setSuccess(false);
+            }
+        }catch (Exception e){
+            log.error("获取红包数 已领红包金额异常", e);
+            message.setSuccess(false);
+            message.setMsg("获取红包数 已领红包金额失败, 请重试");
+        }
+
+        return message;
+    }
 }

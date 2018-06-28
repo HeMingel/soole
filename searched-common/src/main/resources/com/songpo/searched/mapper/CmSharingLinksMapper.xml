@@ -124,17 +124,28 @@
 
   <!-- 根据红包结果状态 查询红包信息-->
   <select id="selectRedPacketByResult" resultType="map">
-    select * from sl_red_packet srp
+    select srp.user_id, srp.money,srp.red_packet_type,srp.result,sl.share_person_id,sl.product_id,sl.is_failure,sp.*
+    from sl_red_packet srp
+    LEFT JOIN sl_sharing_links sl ON srp.sharing_links_id=sl.id
+    LEFT JOIN sl_product sp ON sl.product_id=sp.id
     <where>
       srp.user_id = #{userId}
       <choose>
         <when test="result == '' or result == null ">
-          srp.result in (4,5,6)
+          and srp.result in (4,5,6)
         </when>
         <otherwise>
-          srp.result = #{result}
+          and srp.result = #{result}
         </otherwise>
       </choose>
     </where>
+  </select>
+
+  <!-- 获取红包数 已领红包金额-->
+  <select id="selectRedByUserId" resultType="map">
+   SELECT count(rp.id) AS redNum, ifnull((CASE rp.type WHEN 6 THEN SUM(rp.money) ELSE SUM(0) END),0)AS moneyNum
+   FROM sl_red_packet rp
+   WHERE rp.type in (4,5,6)
+   and  rp.user_id = #{userId}
   </select>
 </mapper>
