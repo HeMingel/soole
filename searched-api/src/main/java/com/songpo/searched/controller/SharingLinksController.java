@@ -162,5 +162,18 @@ public class SharingLinksController {
         log.debug("红包结果状态: {}", result);
         return  this.cmSharingLinksService.selectRedPacketByResult(result);
     }
-
+    /**
+     * 获取红包数 已领红包金额
+     * @param  userId 用户ID
+     * @return
+     */
+    @ApiOperation(value = "获取红包数 已领红包金额")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "userId",value = "用户ID",paramType = "form")
+    })
+    @PostMapping("red_by_userId")
+    public BusinessMessage selectRedByUserId(String userId){
+        log.debug("用户ID: {}", userId);
+        return  this.cmSharingLinksService.selectRedByUserId(userId);
+    }
 }
