@@ -15,4 +15,9 @@ public class BaseConstant {
      * 延迟收货天数
      */
     public static final int DELAY_DATE = 7;
+
+    /**
+     * 注册赠送的豆数
+     */
+    public static final int REGISTER_PEAS = 16;
 }

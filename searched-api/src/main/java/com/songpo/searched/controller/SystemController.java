@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.SmsPasswordCache;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.cache.UserCache;
+import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlMember;
 import com.songpo.searched.entity.SlTransactionDetail;
@@ -244,8 +245,8 @@ public class SystemController {
                         user.setPhone(phone);
                         user.setPassword(passwordEncoder.encode(password));
 
-                        // 天降洪福，100乐豆（银豆）
-                        user.setSilver(100);
+                        // 天降洪福，赠送乐豆（银豆）
+                        user.setSilver(BaseConstant.REGISTER_PEAS);
 
                         // 定义生成字符串范围
                         char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
@@ -259,7 +260,7 @@ public class SystemController {
 //                        userService.insertSelective(user);
                         this.userInsert(user);
 
-                        // 天降洪福，100乐豆（银豆）
+                        // 天降洪福，乐豆（银豆）
                         sendRegisterGiftToNewUser(user.getId());
 
                         JSONObject data = new JSONObject();
