@@ -6,9 +6,7 @@ import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.SlActivityProductMapper;
-import com.songpo.searched.mapper.SlReturnsDetailMapper;
-import com.songpo.searched.mapper.SlSignInMapper;
+import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.service.*;
 import com.songpo.searched.typehandler.MessageTypeEnum;
@@ -46,19 +44,19 @@ public class CommonConfig {
     @Autowired
     private WxPayService wxPayService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private SlActivityProductMapper activityProductMapper;
-    @Autowired
-    private NotificationService notificationService;
-    @Autowired
-    private CmProductService productService;
-    @Autowired
     private CmOrderService cmOrderService;
     @Autowired
     private ProductRepositoryService productRepositoryService;
     @Autowired
     private ProductRepositoryCache repositoryCache;
+    @Autowired
+    private SharingLinksService sharingLinksService;
+    @Autowired
+    private CmRedPacketMapper cmRedPacketMapper;
+    @Autowired
+    private SlOrderExtendMapper slOrderExtendMapper;
+    @Autowired
+    private  RedPacketService redPacketService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
@@ -164,9 +162,9 @@ public class CommonConfig {
     void changeOrderDetailState(List<SlOrderDetail> list,int days) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        for (SlOrderDetail detail : list) {
+        for (SlOrderDetail detail : list)
             if (StringUtils.isNotBlank(detail.getShippingTime())) {
-                log.debug("自动更新订单{}为已收货状态，当前订单自动收货天数为{}天", detail.getOrderId(),days);
+                log.debug("自动更新订单{}为已收货状态，当前订单自动收货天数为{}天", detail.getOrderId(), days);
                 LocalDate ldt = LocalDate.parse(detail.getShippingTime().substring(0, 10), df);
                 //如果发货时间
                 if (ldt.plusDays(days).equals(today)) {
@@ -175,12 +173,30 @@ public class CommonConfig {
                         // 已完成/已收货
                         setShippingState(5);
                     }});
-                    if(6==detail.getType()){
+                    if (6 == detail.getType()) {
                         cmOrderService.returnCoinToShop(detail.getOrderId());
+                    }
+                    //分享奖励 将红包分享红包设置为可领取状态
+                    if (7 == detail.getType()) {
+                        SlOrderExtend slOrderExtend = slOrderExtendMapper.selectOne(new SlOrderExtend() {{
+                            setOrderId(detail.getOrderId());
+                            setServiceType((byte) 1);
+                        }});
+                        if (slOrderExtend != null) {
+                            List<SlRedPacket> redPacketList = cmRedPacketMapper.listSharingByLinksId(slOrderExtend.getServiceId());
+                            if (redPacketList != null ) {
+                                for  (SlRedPacket slRedPacket : redPacketList) {
+                                    redPacketService.updateByPrimaryKeySelective(  new SlRedPacket(){{
+                                        setId(slRedPacket.getId());
+                                        setResult((byte) 5);
+                                    }});
+                                }
+                            }
+                        }
+
                     }
                 }
             }
-        }
     }
     /**
      * 预售订单确认收货(商家发货3天,自动确认收货)
@@ -422,6 +438,29 @@ public class CommonConfig {
         }catch (Exception e) {
             log.debug("失效订单{}中的商品数量加到商品库存失败",order.getId(),e);
         }
+    }
 
+    /**
+     * 设置链接失效 每五分钟一次
+     */
+    @Scheduled(cron = "0 0/5 * * * ? ")
+    void setSharingLinksFailure() {
+
+        List<SlSharingLinks> list = sharingLinksService.select( new SlSharingLinks(){{
+            setIsFailure((byte)2);
+        }});
+        //时间分隔点
+        Date compareDate = LocalDateTimeUtils.addHour(new Date(), -24);
+        for (SlSharingLinks links :list) {
+            if (links.getCreatedAt().before(compareDate)){
+               int reuslt =  sharingLinksService.updateByPrimaryKeySelective(new SlSharingLinks(){{
+                    setId(links.getId());
+                    setIsFailure((byte)1);
+                }});
+               if (reuslt > 0 ) {
+                   log.debug("更新分享链接ID为:{}为失效状态",links.getId());
+               }
+            }
+        }
     }
 }
