@@ -30,4 +30,111 @@
               AND sl.`share_person_id` = #{userId}
              ORDER BY sl.`created_at` DESC
     </select>
+  <!-- 查询商品,模式 活动 分类 名称 ; 智能排序以及各种排序 -->
+
+  <select id="selectBySharingLinks" resultType="map">
+    SELECT
+    p.name,
+    p.image_url,
+    p.comment_num,
+    p.sales_volume,
+    p.`sales_mode_id`,
+    p.`introduction`,
+    pt.name product_type_name,
+    p.sales_virtual,
+    pr.count,
+    ap.*
+    FROM
+    sl_product p
+    LEFT JOIN sl_activity_product ap
+    ON p.id = ap.`product_id`
+    LEFT JOIN sl_shop s
+    ON p.`shop_id` = s.`id`
+    LEFT JOIN sl_product_type pt
+    ON p.product_type_id = pt.id
+    LEFT JOIN sl_product_repository pr
+    ON pr.product_id = p.id
+    <where>
+      p.sold_out = 1
+      and ap.enabled = 1
+      and p.del = 0
+      and pr.count > 0
+      <if test="salesModeId != '' and salesModeId != null">
+        AND p.sales_mode_id = #{salesModeId}
+      </if>
+      <if test="activityId != '' and activityId != null ">
+        and ap.activity_id = #{activityId}
+      </if>
+      <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==2 ">
+        and p.product_type_id = #{goodsTypeId}
+      </if>
+      <if test="goodsTypeId !='' and goodsTypeId != null and goodsTypeStatus ==1 ">
+        and pt.parent_id = #{goodsTypeId}
+      </if>
+
+      <!-- 如果经纬度不为空，则选择经纬度加指定值范围内的店铺 -->
+      <if test="null != longitudeMin and null != longitudeMax and null != latitudeMin and null != latitudeMax">
+        AND s.longitude BETWEEN #{longitudeMin} - 10 AND #{longitudeMax}
+        AND s.latitude BETWEEN #{latitudeMin} - 10 AND #{latitudeMax}
+      </if>
+      <!-- 如果价格区间最小值不为空，最大值为空，则选择商品价格大于或等于价格区间最小值 -->
+      <if test="null != priceMin and null == priceMax">
+        AND ap.price &gt;= #{priceMin}
+      </if>
+      <!-- 如果价格区间最大值不为空，最小值为空，则选择商品价格小于或等于价格区间最大值 -->
+      <if test="null == priceMin and null != priceMax">
+        AND ap.price &lt;= #{priceMax}
+      </if>
+      <!-- 如果价格区间最小值不为空，最大值不为空，则选择商品价格大于价格区间最小值和小于价格区间最大值 -->
+      <if test="null != priceMin and null != priceMax">
+        AND ap.price BETWEEN #{priceMin} AND #{priceMax}
+      </if>
+      <if test="addressNow!=''and addressNow !=null">
+        <bind name="pAddress" value="'%' + addressNow + '%'"/>
+        AND s.address like #{pAddress}
+      </if>
+    </where>
+    <!-- 动态拼接排序规则，自动取出多余的逗号-->
+    <trim prefix="ORDER BY" suffixOverrides=",">
+      <if test="sortByPrice != ''">
+        ap.price ${sortByPrice},
+      </if>
+      <if test="sortByCount != ''">
+        pr.count ${sortByCount},
+      </if>
+      <if test="sortByAward != ''">
+        ap.awward_money ${sortByAward},
+      </if>
+      <if test="sortBySale != ''">
+        p.sales_virtual ${sortBySale},
+      </if>
+      <if test="synthesize != '' and synthesize != null">
+        (p.sales_virtual + p.comment_num) DESC,
+      </if>
+      <!--<if test="addressNow!=''and addressNow !=null  ">
+          <bind name="pAddress" value="'%' + addressNow + '%'"/>
+          s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_virtual DESC
+      </if>-->
+      <if test="sortByPrice=='' and  sortBySale=='' and synthesize==null and sortByCount=='' and sortByAward=='' ">
+        p.sales_virtual DESC
+      </if>
+
+    </trim>
+  </select>
+
+  <!-- 根据红包结果状态 查询红包信息-->
+  <select id="selectRedPacketByResult" resultType="map">
+    select * from sl_red_packet srp
+    <where>
+      srp.user_id = #{userId}
+      <choose>
+        <when test="result == '' or result == null ">
+          srp.result in (4,5,6)
+        </when>
+        <otherwise>
+          srp.result = #{result}
+        </otherwise>
+      </choose>
+    </where>
+  </select>
 </mapper>
