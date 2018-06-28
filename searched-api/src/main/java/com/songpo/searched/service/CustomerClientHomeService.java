@@ -79,6 +79,9 @@ public class CustomerClientHomeService {
     @Autowired
     private SlGoldAdviserMapper slGoldAdviserMapper;
 
+    @Autowired
+    private CmSharingLinksService cmSharingLinksService;
+
     /**
      * 获取首页所有数据
      *
@@ -136,6 +139,10 @@ public class CustomerClientHomeService {
         // 获取热词
         List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
         data.put("hotKeywords", hotKeywordsList);
+
+        //获取未领取红包
+        BusinessMessage  message = this.cmSharingLinksService.selectRedPacketByResult("4");
+        data.put("redPacket", message);
 
         // 海南之家
         List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
