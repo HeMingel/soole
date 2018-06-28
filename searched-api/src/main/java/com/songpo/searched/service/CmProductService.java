@@ -357,11 +357,14 @@ public class CmProductService {
                         data.put("groupList", groupList);
                     } else {
                         List<Object> list = new ArrayList<>();
-                        Map<String, String> groupMaster = new HashMap();
+                        list.add(virtualMap);
+                        /**
+                         *注释原因 优化前台JSON显示
+                         */
+                       /* Map<String, String> groupMaster = new HashMap();
                         list.add(groupMaster);
                         Map<String, String> order = new HashMap();
-                        list.add(order);
-                        list.add(virtualMap);
+                        list.add(order);*/
                         data.put("groupList", list);
                     }
                 } else {

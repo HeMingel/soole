@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface  CmRedPacketMapper {
 
-    List<SlRedPacket> listSharingByLinksId(@Param("linksId") String linksId);
+    List<SlRedPacket> listByOrderExtendId(@Param("orderExtendId") String orderExtendId);
 }

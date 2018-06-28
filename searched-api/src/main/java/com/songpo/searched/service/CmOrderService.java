@@ -96,6 +96,12 @@ public class CmOrderService {
     private SlProductNoMailMapper slProductNoMailMapper;
     @Autowired
     private  ProductNoMailService productNoMailService;
+    @Autowired
+    private CmRedPacketMapper cmRedPacketMapper;
+    @Autowired
+    private SlOrderExtendMapper slOrderExtendMapper;
+    @Autowired
+    private  RedPacketService redPacketService;
 
     /**
      * 多商品下单
@@ -828,6 +834,9 @@ public class CmOrderService {
                             if(6==slOrderDetail.getType()){
                                 returnCoinToShop(slOrderDetail.getOrderId());
                             }
+                            //分享奖励 将红包分享红包设置为可领取状态
+                            changeRedPacketResult(slOrderDetail);
+
                             message.setMsg("确认收货成功");
                             message.setSuccess(true);
                         } else {
@@ -2445,4 +2454,36 @@ public class CmOrderService {
             }
         }
     }
+
+    /**
+     * 分享奖励 将红包分享红包设置为可领取状态
+     *
+     * @param detail
+     */
+    public void  changeRedPacketResult (SlOrderDetail detail) {
+        try {
+            if (7 == detail.getType()) {
+                SlOrderExtend slOrderExtend = slOrderExtendMapper.selectOne(new SlOrderExtend() {{
+                    setOrderId(detail.getOrderId());
+                    setServiceType((byte) 1);
+                }});
+                if (slOrderExtend != null) {
+                    List<SlRedPacket> redPacketList = cmRedPacketMapper.listByOrderExtendId(slOrderExtend.getId());
+                    if (redPacketList != null) {
+                        for (SlRedPacket slRedPacket : redPacketList) {
+                            redPacketService.updateByPrimaryKeySelective(new SlRedPacket() {{
+                                setId(slRedPacket.getId());
+                                setResult((byte) 5);
+                            }});
+                        }
+                        log.debug("更新红包状态成功,订单ID：{}",detail.getOrderId());
+                    }
+                }
+
+            }
+        }catch ( Exception e ) {
+            log.error("更新红包状态错误,订单ID：{}",detail.getOrderId(),e);
+        }
+    }
+
 }

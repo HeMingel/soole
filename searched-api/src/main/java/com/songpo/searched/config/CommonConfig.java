@@ -51,13 +51,6 @@ public class CommonConfig {
     private ProductRepositoryCache repositoryCache;
     @Autowired
     private SharingLinksService sharingLinksService;
-    @Autowired
-    private CmRedPacketMapper cmRedPacketMapper;
-    @Autowired
-    private SlOrderExtendMapper slOrderExtendMapper;
-    @Autowired
-    private  RedPacketService redPacketService;
-
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
         updSignState();
@@ -177,24 +170,7 @@ public class CommonConfig {
                         cmOrderService.returnCoinToShop(detail.getOrderId());
                     }
                     //分享奖励 将红包分享红包设置为可领取状态
-                    if (7 == detail.getType()) {
-                        SlOrderExtend slOrderExtend = slOrderExtendMapper.selectOne(new SlOrderExtend() {{
-                            setOrderId(detail.getOrderId());
-                            setServiceType((byte) 1);
-                        }});
-                        if (slOrderExtend != null) {
-                            List<SlRedPacket> redPacketList = cmRedPacketMapper.listSharingByLinksId(slOrderExtend.getServiceId());
-                            if (redPacketList != null ) {
-                                for  (SlRedPacket slRedPacket : redPacketList) {
-                                    redPacketService.updateByPrimaryKeySelective(  new SlRedPacket(){{
-                                        setId(slRedPacket.getId());
-                                        setResult((byte) 5);
-                                    }});
-                                }
-                            }
-                        }
-
-                    }
+                    cmOrderService.changeRedPacketResult(detail);
                 }
             }
     }
