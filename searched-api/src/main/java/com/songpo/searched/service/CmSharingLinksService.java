@@ -3,9 +3,12 @@ package com.songpo.searched.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlOrder;
+import com.songpo.searched.entity.SlOrderExtend;
 import com.songpo.searched.entity.SlSharingLinks;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmSharingLinksMapper;
+import com.songpo.searched.mapper.SlOrderExtendMapper;
 import com.songpo.searched.mapper.SlSharingLinksMapper;
 import com.songpo.searched.util.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +37,10 @@ public class CmSharingLinksService {
 
     @Autowired
     private LoginUserService loginUserService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private SlOrderExtendMapper slOrderExtendMapper;
 
     /**
      * 添加链接记录
@@ -236,5 +243,45 @@ public class CmSharingLinksService {
         }
 
         return message;
+    }
+
+    /**
+     * 支付成功后 添加订单-链接关联表信息
+     * @param orderId
+     * @param linksId
+     * @return
+     */
+    @Transactional
+    public BusinessMessage saveOrderExtend(String linksId, String orderId) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            SlOrder order = orderService.selectByPrimaryKey(orderId);
+            if (order == null) {
+                message.setMsg("订单不存在");
+            } else {
+                if (order.getPaymentState() == 1) {
+                    int result = slOrderExtendMapper.insertSelective(new SlOrderExtend() {
+                        {
+                            setServiceId(linksId);
+                            setServiceType((byte) 1);
+                            setOrderId(orderId);
+                        }
+                    });
+                    if (result > 0) {
+                        message.setMsg("添加成功");
+                        message.setSuccess(true);
+                    } else {
+                        message.setMsg("添加失败");
+                    }
+                } else {
+                    message.setMsg("订单未支付");
+                }
+            }
+        } catch (Exception e) {
+            log.error("添加分享链接-订单到关联表失败,订单id:{}", orderId, e);
+            message.setMsg("添加失败");
+        } finally {
+            return message;
+        }
     }
 }

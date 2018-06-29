@@ -2,8 +2,10 @@ package com.songpo.searched.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.mapper.SlSharingLinksMapper;
 import com.songpo.searched.service.CmSharingLinksService;
+import com.songpo.searched.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -30,8 +32,7 @@ public class SharingLinksController {
 
     @Autowired
     private CmSharingLinksService cmSharingLinksService;
-    @Autowired
-    private SlSharingLinksMapper slSharingLinksMapper;
+
     /**
      * /add 添加分享链接记录
      * @param userId
@@ -175,5 +176,23 @@ public class SharingLinksController {
     public BusinessMessage selectRedByUserId(String userId){
         log.debug("用户ID: {}", userId);
         return  this.cmSharingLinksService.selectRedByUserId(userId);
+    }
+
+    /**
+     * 支付成功后 添加订单-链接关联信息
+     *
+     * @param linksId
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(value = "添加订单-链接关联信息")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "linksId", value = "用户ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "orderId", value = "订单ID", paramType = "form", required = true)
+    })
+    @PostMapping("save-order-extend")
+    public BusinessMessage saveOrderExtend(String linksId, String orderId) {
+        BusinessMessage message = cmSharingLinksService.saveOrderExtend(linksId, orderId);
+        return message;
     }
 }
