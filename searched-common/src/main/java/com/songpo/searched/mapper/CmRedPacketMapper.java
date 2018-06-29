@@ -8,4 +8,6 @@ import java.util.List;
 public interface  CmRedPacketMapper {
 
     List<SlRedPacket> listByOrderExtendId(@Param("orderExtendId") String orderExtendId);
+
+    List<SlRedPacket> findRedByRedType(@Param("redType") String redType);
 }
