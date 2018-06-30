@@ -2195,8 +2195,19 @@ public class CmOrderService {
         //退款成功修改订单状态
         if (message.getSuccess() == true ) {
             order.setSpellGroupStatus(0);
+            order.setPaymentState(101);
             order.setId(orderId);
             this.orderService.updateByPrimaryKeySelective(order);
+            List<SlOrderDetail> detailsList = orderDetailService.select(new SlOrderDetail(){{
+                setOrderId(order.getId());
+            }});
+            // 更改orderDetial表shipping_state状态
+            for (SlOrderDetail slOrderDetail : detailsList ) {
+                orderDetailService.updateByPrimaryKeySelective( new SlOrderDetail(){{
+                    setId(slOrderDetail.getId());
+                    setShippingState(0);
+                }});
+            }
         }
         return message;
     }
