@@ -68,4 +68,13 @@ public interface  CmSharingLinksMapper {
      * @return
      */
     List selectRedByUserId(@Param("userId") String userId);
+
+    /**
+     *查询我的分享以及详情
+     * @param userId
+     * @param shareId
+     * @return
+     */
+    List<Map<String, Object>> selectShareList(@Param("shareId") String userId,
+                                                      @Param("userId") String shareId);
 }

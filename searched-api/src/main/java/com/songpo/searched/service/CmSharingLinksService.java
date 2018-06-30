@@ -342,4 +342,26 @@ public class CmSharingLinksService {
 
         return  message;
     }
+
+    /**
+     * 我的分享以及详情
+     * @param userId  用户ID
+     * @param shareId 分享ID
+     * @return
+     */
+    public BusinessMessage selectShareList(String userId, String shareId){
+        BusinessMessage message = new BusinessMessage();
+        JSONObject data = new JSONObject();
+        try {
+            message.setData(this.cmSharingLinksMapper.selectShareList(userId, shareId));
+            message.setMsg("获取我的分享以及详情成功");
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("获取我的分享以及详情失败", e);
+            message.setSuccess(false);
+            message.setMsg("获取我的分享以及详情失败");
+        }
+
+        return  message;
+    }
 }

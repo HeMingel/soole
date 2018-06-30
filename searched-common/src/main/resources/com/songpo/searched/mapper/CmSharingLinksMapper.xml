@@ -158,4 +158,11 @@
    WHERE rp.type in (4,5,6)
    and  rp.user_id = #{userId}
   </select>
+
+  <!-- 查询我的分享以及详情-->
+  <select id="selectShareList" resultType="map">
+
+
+
+  </select>
 </mapper>
