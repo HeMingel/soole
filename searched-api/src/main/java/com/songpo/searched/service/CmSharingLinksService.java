@@ -1,8 +1,11 @@
 package com.songpo.searched.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.CmRedPacketMapper;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderExtend;
 import com.songpo.searched.entity.SlSharingLinks;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +45,15 @@ public class CmSharingLinksService {
     private OrderService orderService;
     @Autowired
     private SlOrderExtendMapper slOrderExtendMapper;
+
+    @Autowired
+    private CmRedPacketMapper cmRedPacketMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private  OrderExtendService orderExtendService;
+    @Autowired
+    private ProductService productService;
 
     /**
      * 添加链接记录
@@ -283,5 +296,50 @@ public class CmSharingLinksService {
         } finally {
             return message;
         }
+    }
+
+    /**
+     * 获取分享红包详情
+     *
+     * @return
+     */
+    public BusinessMessage selectRedPacketDetail(){
+        BusinessMessage message = new BusinessMessage();
+        JSONObject data = new JSONObject();
+        List list  = new ArrayList();
+        try {
+            //获取分享红包
+            List<SlRedPacket> redPacketList =  cmRedPacketMapper.findRedByRedType("4");
+            for(SlRedPacket slRedPacket : redPacketList){
+                data.put("slRedPacket", slRedPacket);
+                //购买人信息
+                SlUser slUserBuy = userService.selectOne(new SlUser(){{setId(slRedPacket.getUserId());}});
+                data.put("slUserBuy", slUserBuy);
+                //订单关联表
+                SlOrderExtend slOrderExtend = orderExtendService.selectOne(new SlOrderExtend(){{setId(slRedPacket.getOrderExtendId());}});
+
+                //分享链接表详情
+                SlSharingLinks slSharingLinks = sharingLinksService.selectOne(new SlSharingLinks(){{setId(slOrderExtend.getServiceId());}});
+                //订单详情
+                SlOrder slOrder = orderService.selectOne(new SlOrder(){{setId(slOrderExtend.getOrderId());}});
+                data.put("slOrder", slOrder);
+                //分享人信息
+                SlUser slUserShare = userService.selectOne(new SlUser(){{setId(slSharingLinks.getSharePersonId());}});
+                data.put("slUserShare", slUserShare);
+                //商品信息
+                SlProduct slProduct = productService.selectOne(new SlProduct(){{setId(slSharingLinks.getProductId());}});
+                data.put("slProduct",slProduct);
+                list.add(data);
+            }
+            message.setData(list);
+            message.setSuccess(true);
+            message.setMsg("获取分享红包详情成功");
+        }catch (Exception e){
+            log.error("获取分享红包详情失败", e);
+            message.setSuccess(false);
+            message.setMsg("获取分享红包详情失败");
+        }
+
+        return  message;
     }
 }

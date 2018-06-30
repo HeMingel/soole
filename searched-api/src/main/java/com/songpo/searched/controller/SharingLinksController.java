@@ -1,5 +1,6 @@
 package com.songpo.searched.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
@@ -176,6 +177,16 @@ public class SharingLinksController {
     public BusinessMessage selectRedByUserId(String userId){
         log.debug("用户ID: {}", userId);
         return  this.cmSharingLinksService.selectRedByUserId(userId);
+    }
+    /**
+     * 分享红包详情
+     * @return
+     */
+    @ApiOperation(value = "分享红包详情")
+    @GetMapping("red_packet_detail")
+    public BusinessMessage selectRedPacketDetail(){
+        log.debug("查询 分享红包详情");
+        return this.cmSharingLinksService.selectRedPacketDetail();
     }
 
     /**

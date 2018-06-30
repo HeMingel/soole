@@ -10,4 +10,14 @@
             WHERE rp.`order_extend_id` = #{orderExtendId}
                AND rp.`type` IN (3.4)
     </select>
+
+
+    <!--  获取红包信息-->
+    <select id="findRedByRedType" resultType="map">
+            SELECT
+              rp.*
+            FROM
+              `sl_red_packet` rp
+            WHERE  rp.`red_packet_type` = 4
+    </select>
 </mapper>
