@@ -29,4 +29,8 @@ public class SalesModeConstant {
      * 销售模式-普通
      */
     public static final int SALES_MODE_NORMAL = 6;
+    /**
+     * 销售模式--分享奖励
+     */
+    public static final int SALES_MODE_SHARE = 7;
 }

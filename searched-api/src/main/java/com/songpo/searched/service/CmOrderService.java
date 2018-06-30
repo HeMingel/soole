@@ -536,7 +536,8 @@ public class CmOrderService {
                                 if (repository.getCount() >= quantity) {
                                     //  ====== 拼团订单 ======
                                     //8.如果销售模式是拼团订单的话
-                                    if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_GROUP) {
+                                    Integer saleModes = Integer.parseInt(slProduct.getSalesModeId());
+                                    if ( saleModes  == SalesModeConstant.SALES_MODE_GROUP) {
                                         //如果是虚拟开团 则按照个人拼团流程走 价格使用拼团价
                                         if(2==(virtualOpen!=2?1:virtualOpen)){
                                             // ==== 按照自己开团流程走 ======
@@ -590,43 +591,48 @@ public class CmOrderService {
 
                                     }
                                     // ====== 如果是预售模式 ======
-                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_PRESELL) {
+                                    else if (saleModes  == SalesModeConstant.SALES_MODE_PRESELL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 3, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     // ====== 如果是助力购 ======
-                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_ONE) {
+                                    else if (saleModes  == SalesModeConstant.SALES_MODE_ONE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 4, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     // ====== 消费返利 ======
-                                    else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_REBATE) {
+                                    else if (saleModes  == SalesModeConstant.SALES_MODE_REBATE) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 5, buyerMessage, 1, inviterId,virtualOpen);
                                         //  ====== 豆赚 ======
-                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_BEANS) {
+                                    } else if (saleModes  == SalesModeConstant.SALES_MODE_BEANS) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 6, buyerMessage, 1, inviterId,virtualOpen);
                                         //  ====== 普通商品 ======
-                                    } else if (Integer.parseInt(slProduct.getSalesModeId()) == SalesModeConstant.SALES_MODE_NORMAL) {
+                                    } else if (saleModes  == SalesModeConstant.SALES_MODE_NORMAL) {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 1, buyerMessage, 1, inviterId,virtualOpen);
+                                        //  =====分享奖励商品 ====
+                                    } else if (saleModes  == SalesModeConstant.SALES_MODE_SHARE ) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 7, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     if (message.getSuccess() == false) {
                                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                                         message.setData("");
                                         return message;
                                     }
-                                } else {
-                                    log.debug("当前规格的商品,库存不足");
+                                } else {log.debug("当前规格的商品,库存不足");
                                     message.setMsg("当前规格的商品,库存不足");
                                     message.setSuccess(false);
                                     return message;
+
                                 }
                             } else {
                                 log.debug("已超出该商品的下单商品数量");
