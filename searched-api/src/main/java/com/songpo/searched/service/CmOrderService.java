@@ -795,7 +795,7 @@ public class CmOrderService {
                             }}, example);
                             List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
                                 setOrderId(orderId);
-                                setIsVirtualSpellGroup((byte) 1);
+                                //setIsVirtualSpellGroup((byte) 1);
                             }});
                             for (SlOrderDetail detail : detailList) {
                                 p += detail.getPlaceOrderReturnPulse();
@@ -880,7 +880,7 @@ public class CmOrderService {
                     // 查询该订单id关联的所有商品明细
                     List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
                         setOrderId(key);
-                        setIsVirtualSpellGroup((byte) 1);
+                        //setIsVirtualSpellGroup((byte) 1);
                     }});
                     for (SlOrderDetail slOrderDetail : detailList) {
                         p += slOrderDetail.getPlaceOrderReturnPulse();
@@ -1087,7 +1087,7 @@ public class CmOrderService {
                         setReturnCashMoney(repository.getReturnCashMoney());
                     }
                 }
-                setIsVirtualSpellGroup((byte) 1);
+                //setIsVirtualSpellGroup((byte) 1);
             }});
             // 商品上架数量 - 本次加入订单的数量
             int activityProductCount = activityProduct.getCount() - quantity;
@@ -1569,11 +1569,11 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                Example example = new Example(SlOrderDetail.class);
+                /*Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                     setIsVirtualSpellGroup((byte) 0);
-                }}, example);
+                }}, example);*/
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
@@ -1625,11 +1625,11 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrder(orderId, user);
             if (message.getSuccess() == true) {
-                Example example = new Example(SlOrderDetail.class);
+                /*Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                     setIsVirtualSpellGroup((byte) 0);
-                }}, example);
+                }}, example);*/
                 String money = message.getData().get("money").toString();
                 String serialNumber = message.getData().get("serialNumber").toString();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
@@ -1670,7 +1670,7 @@ public class CmOrderService {
                 List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
                     setOrderId(orderId);
                     setCreator(user.getId());
-                    setIsVirtualSpellGroup((byte) 1);
+                   // setIsVirtualSpellGroup((byte) 1);
                 }});
                 if (orderDetails.size() > 0) {
                     //如果是云易购物商品直接不扣豆
@@ -1852,7 +1852,7 @@ public class CmOrderService {
                 List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
                     setOrderId(orderId);
                     setCreator(user.getId());
-                    setIsVirtualSpellGroup((byte) 1);
+                    //setIsVirtualSpellGroup((byte) 1);
                 }});
                 if (orderDetails.size() > 0) {
                     if (order.getDeductTotalPulse() > 0) {
@@ -1983,11 +1983,11 @@ public class CmOrderService {
         if (null != user) {
             message = checkTheOrderForOnlyPulsePay(orderId, user);
             if (message.getSuccess() == true) {
-                Example example = new Example(SlOrderDetail.class);
+                /*Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                     setIsVirtualSpellGroup((byte) 0);
-                }}, example);
+                }}, example);*/
                 if (message.getData().get("money").toString().equals("0.00")) {
                     processOrders.processOrders(orderId, 3);
                 }
@@ -2305,7 +2305,7 @@ public class CmOrderService {
         if (null != order) {
             List<SlOrderDetail> orderDetails = orderDetailService.select(new SlOrderDetail() {{
                 setOrderId(orderId);
-                setIsVirtualSpellGroup((byte) 0);
+                //setIsVirtualSpellGroup((byte) 0);
             }});
             for (SlOrderDetail detail : orderDetails) {
                 SlShop shop = this.shopService.selectOne(new SlShop() {{
