@@ -351,7 +351,6 @@ public class CmSharingLinksService {
      */
     public BusinessMessage selectShareList(String userId, String shareId){
         BusinessMessage message = new BusinessMessage();
-        JSONObject data = new JSONObject();
         try {
             message.setData(this.cmSharingLinksMapper.selectShareList(userId, shareId));
             message.setMsg("获取我的分享以及详情成功");

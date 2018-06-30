@@ -75,6 +75,6 @@ public interface  CmSharingLinksMapper {
      * @param shareId
      * @return
      */
-    List<Map<String, Object>> selectShareList(@Param("shareId") String userId,
-                                                      @Param("userId") String shareId);
+    List<Map<String, Object>> selectShareList(@Param("userId") String userId,
+                                                      @Param("shareId") String shareId);
 }

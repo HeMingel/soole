@@ -206,4 +206,21 @@ public class SharingLinksController {
         BusinessMessage message = cmSharingLinksService.saveOrderExtend(linksId, orderId);
         return message;
     }
+
+    /**
+     * 我的分享以及详情
+     * @param  userId 用户ID
+     * @param  shareId 分享ID
+     * @return
+     */
+    @ApiOperation(value = "我的分享以及详情")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "userId",value = "用户ID",paramType = "form"),
+            @ApiImplicitParam(name = "shareId",value = "分享ID",paramType = "form")
+    })
+    @PostMapping("share_by_userId")
+    public BusinessMessage selectShareList(String userId, String shareId) {
+        log.debug("用户ID: {}, 分享ID: {}", userId, shareId);
+        return this.cmSharingLinksService.selectShareList(userId, shareId);
+    }
 }
