@@ -289,6 +289,9 @@ public class CmOrderService {
                                                             case SalesModeConstant.SALES_MODE_NORMAL:
                                                                 setType(1);
                                                                 break;
+                                                            case SalesModeConstant.SALES_MODE_SHARE:
+                                                                setType(7);
+                                                                break;
                                                         }
                                                         // 订单编号
                                                         setSerialNumber(orderNum);
