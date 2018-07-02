@@ -42,6 +42,7 @@
     p.`introduction`,
     pt.name product_type_name,
     p.sales_virtual,
+    UNIX_TIMESTAMP(ap.end_time)-unix_timestamp(now()) as plusTime ,
     ap.*
     FROM
     sl_product p
