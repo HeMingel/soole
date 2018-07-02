@@ -2049,58 +2049,47 @@ public class CmOrderService {
         }});
         //订单支付现金金额
         BigDecimal totalAmount = new BigDecimal(0);
-        //拼团商品数量
-        int groupProductCnt = 0;
         if (orderDetailList != null && orderDetailList.size() > 0) {
             for (SlOrderDetail orderDetail : orderDetailList) {
-                /** 云易购物、普通商品、拼团可以获取分享奖励 **/
-                if (orderDetail.getType().equals(OrderDetailTypeEnum.PRESELL_ORDER.getValue())
-                        || orderDetail.getType().equals(OrderDetailTypeEnum.NORMAL_ORDER.getValue())
-                        || orderDetail.getType().equals(OrderDetailTypeEnum.GROUP_ORDER.getValue())) {
+                /** 普通商品 可以获取分享奖励 **/
+                if (orderDetail.getType().equals(OrderDetailTypeEnum.NORMAL_ORDER.getValue())) {
                     totalAmount = totalAmount.add(orderDetail.getPrice().multiply(new BigDecimal(orderDetail.getQuantity())));
-                }
-                /** 订单中拼团商品数量 **/
-                if (orderDetail.getType().equals(OrderDetailTypeEnum.GROUP_ORDER.getValue())) {
-                    groupProductCnt++;
                 }
             }
         }
-        if (groupProductCnt > 0 && (order.getSpellGroupStatus() == null || order.getSpellGroupStatus() != 2)) {
-            message.setMsg("拼团订单需要拼团成功才可以获取分享奖励");
-            return message;
-        }
         if (totalAmount.compareTo(new BigDecimal(0)) <= 0) {
-            message.setMsg("只有云易购物、普通、拼团商品可以获取分享奖励");
+            message.setMsg("只有普通可以获取分享奖励");
             return message;
         }
-        int silverAward = 0;
+        //奖励金额
+        int award = 0;
         if (order.getShareCount() == 0) {
-            silverAward = (int) Math.floor(totalAmount.multiply(new BigDecimal(0.16)).doubleValue());
+            award = (int) Math.floor(totalAmount.multiply(new BigDecimal(0.16)).doubleValue());
         } else if (order.getShareCount() == 1) {
-            silverAward = 50;
+            award = 50;
         }
         /******** 记录奖励 *******/
         SlTransactionDetail transactionDetail = new SlTransactionDetail();
         transactionDetail.setTargetId(order.getUserId());
         transactionDetail.setOrderId(orderId);
         transactionDetail.setType(ExpenditureTypeEnum.SHARE_AWARD.getValue());
-        transactionDetail.setSilver(silverAward);
+        transactionDetail.setCoin(award);
         transactionDetail.setDealType(TransactionCurrencyTypeEnum.SILVER.getValue());
         transactionDetail.setTransactionType(TransactionTypeEnum.INCOME.getValue());
         transactionDetail.setTransactionStatus(TransactionStatusEnum.EFFICIENT.getValue().byteValue());
         transactionDetailService.insertSelective(transactionDetail);
-
-        user.setSilver(user.getSilver() + silverAward);
+        //更新USER表信息
+        user.setCoin(user.getCoin() + award);
         userService.updateByPrimaryKeySelective(user);
-
+        //更新订单分享次数
         order.setShareCount(order.getShareCount() + 1);
         order.setCreatedAt(null);
         order.setUpdatedAt(null);
         orderService.updateByPrimaryKeySelective(order);
 
-        message.setData(silverAward);
+        message.setData(award);
         message.setSuccess(true);
-        log.debug("userId = {}分享orderId = {}获取银豆奖励{}个", user.getId(), orderId, silverAward);
+        log.debug("userId = {}分享orderId = {}获取银豆奖励{}个", user.getId(), orderId, award);
         return message;
     }
 

@@ -24,7 +24,7 @@ public class OrderDetailService extends BaseService<SlOrderDetail, String> {
      * @return
      */
     public void virtualSpellGroup(SlOrderDetail virtualOrderDetail){
-        virtualOrderDetail.setIsVirtualSpellGroup((byte) 1);
+       // virtualOrderDetail.setIsVirtualSpellGroup((byte) 1);
         orderDetailMapper.insert(virtualOrderDetail);
     }
 }
