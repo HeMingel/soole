@@ -37,12 +37,15 @@
     p.name,
     p.image_url,
     p.comment_num,
+    p.postage,
+    p.ship,
     p.sales_volume,
     p.`sales_mode_id`,
     p.`introduction`,
     pt.name product_type_name,
     p.sales_virtual,
     UNIX_TIMESTAMP(ap.end_time)-unix_timestamp(now()) as plusTime ,
+    s.name shopName,
     ap.*
     FROM
     sl_product p
