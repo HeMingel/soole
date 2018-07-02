@@ -112,6 +112,7 @@ public class ProcessOrders {
                             example1.createCriteria()
                                     .andEqualTo("orderId", order.getId())
                                     .andEqualTo("creator", user.getId());
+
                             orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                                 // 明细中改成代发货状态
                                 setShippingState(3);
@@ -137,6 +138,11 @@ public class ProcessOrders {
                                             setId(order.getId());
                                             // 拼团中
                                             setSpellGroupStatus(1);
+                                        }});
+                                        //拼团中shipping_state状态改成0
+                                        orderDetailService.updateByPrimaryKey( new SlOrderDetail(){{
+                                            setId(detail.getId());
+                                            setShippingState(0);
                                         }});
                                     }
                                     break;
