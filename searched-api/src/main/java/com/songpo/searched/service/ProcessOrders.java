@@ -307,9 +307,10 @@ public class ProcessOrders {
             //订单金额的10%
             BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
             //订单金额的5%
-            Double bean = slOrder.getTotalAmount().doubleValue() * 0.05;
+            BigDecimal bean = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.05);
 
             slUser.setMoney(slUser.getMoney().add(fanMoney));
+            slUser.setSlb(slUser.getSlb().add(bean));
             if (orderDetail.getType() == 4) {
                 //给邀请人余额打钱
                 userService.updateByPrimaryKey(slUser);
@@ -317,6 +318,7 @@ public class ProcessOrders {
                 slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
                 orderService.updateByPrimaryKey(slOrder);
                 //记录邀请人交易明细
+                //1.保存金钱交易明细
                 SlTransactionDetail detail = new SlTransactionDetail();
                 detail.setSourceId(slOrder.getUserId());
                 detail.setTargetId(slUser.getId());
@@ -326,6 +328,17 @@ public class ProcessOrders {
                 detail.setDealType(1);
                 detail.setTransactionType(2);
                 detail.setCreateTime(new Date());
+                transactionDetailService.insertSelective(detail);
+
+                //2.保存搜了币交易明细
+                SlTransactionDetail detail2 = new SlTransactionDetail();
+                detail2.setSourceId(slOrder.getUserId());
+                detail2.setTargetId(slUser.getId());
+                detail2.setOrderId(orderId);
+                detail2.setType(203);
+                detail2.setDealType(7);
+                detail2.setTransactionType(2);
+                detail2.setCreateTime(new Date());
                 transactionDetailService.insertSelective(detail);
 
             }
