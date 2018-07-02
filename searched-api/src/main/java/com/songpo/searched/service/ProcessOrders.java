@@ -293,7 +293,7 @@ public class ProcessOrders {
     }
 
     /**
-     *给邀请人返10%金额+5%乐豆
+     *给邀请人返10%金额+5%搜了币
      */
     public void fanMoney(String orderId) {
         try {
@@ -305,7 +305,8 @@ public class ProcessOrders {
             SlOrderDetail orderDetail = this.orderDetailService.selectOne(new SlOrderDetail() {{
                 setOrderId(orderId);
             }});
-
+            //获取购买人信息
+            SlUser slUserBuy = this.userService.selectOne(new SlUser(){{setId(slOrder.getUserId());}});
             //获取邀请人信息
             SlUser slUser = this.userService.selectOne(new SlUser() {{
                 setUsername(orderDetail.getInviterId());
@@ -323,7 +324,6 @@ public class ProcessOrders {
                 //在order表的reMark字段记录
                 slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
                 orderService.updateByPrimaryKey(slOrder);
-                //记录邀请人交易明细
                 //1.保存金钱交易明细
                 SlTransactionDetail detail = new SlTransactionDetail();
                 detail.setSourceId(slOrder.getUserId());
@@ -337,22 +337,19 @@ public class ProcessOrders {
                 transactionDetailService.insertSelective(detail);
 
                 //2.保存搜了币交易明细
-                SlTransactionDetail detail2 = new SlTransactionDetail();
-                detail2.setSourceId(slOrder.getUserId());
-                detail2.setTargetId(slUser.getId());
-                detail2.setOrderId(orderId);
-                detail2.setType(203);
-                detail2.setDealType(7);
-                detail2.setTransactionType(2);
-                detail2.setCreateTime(new Date());
-                transactionDetailService.insertSelective(detail);
+                //2.1 保存邀请人搜了币交易明细
+                SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+                slSlbTransaction1.setTargetId(slUser.getId());
+
+//                transactionDetailService.insertSelective(detail);
+                //2.2 保存购买人搜了币交易明细
 
             }
             /**
              * 极光推送
              */
             String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
-                    "元,成功获得分润奖励"+fanMoney+"元，请打开APP“我的账本-钱包”查看奖励余额";
+                    "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
             sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
         } catch (Exception e) {
             e.printStackTrace();
