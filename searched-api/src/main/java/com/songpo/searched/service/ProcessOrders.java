@@ -317,7 +317,6 @@ public class ProcessOrders {
             BigDecimal bean = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.05);
 
             slUser.setMoney(slUser.getMoney().add(fanMoney));
-            slUser.setSlb(slUser.getSlb().add(bean));
             if (orderDetail.getType() == 4) {
                 //给邀请人余额打钱
                 userService.updateByPrimaryKey(slUser);
