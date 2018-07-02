@@ -140,7 +140,7 @@ public class ProcessOrders {
                                             setSpellGroupStatus(1);
                                         }});
                                         //拼团中shipping_state状态改成0
-                                        orderDetailService.updateByPrimaryKey( new SlOrderDetail(){{
+                                        orderDetailService.updateByPrimaryKeySelective( new SlOrderDetail(){{
                                             setId(detail.getId());
                                             setShippingState(0);
                                         }});
