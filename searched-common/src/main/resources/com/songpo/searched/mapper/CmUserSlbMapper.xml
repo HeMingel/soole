@@ -15,5 +15,11 @@
         and t.slb_type =  #{slbType}
 
     </select>
+    <!--查询总搜了贝-->
+    <select id="selectSumSlb" resultType="map">
+        SELECT sum(usb.slb) slbSum
+        FROM sl_user_slb usb
+        WHERE usb.user_id = #{userId}
 
+    </select>
 </mapper>

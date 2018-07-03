@@ -16,4 +16,10 @@ public interface CmUserSlbMapper {
      */
     List<Map<String, Object>> selectUserSlbDetail(@Param("userId") String userId,
                                               @Param("slbType") Integer slbType);
+
+    /**
+     *@param userId    用户OD
+     *@return 查询总搜了贝
+     */
+    List<Map<String, Object>> selectSumSlb(@Param("userId") String userId);
 }

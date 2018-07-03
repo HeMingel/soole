@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlSlbTransaction;
 import com.songpo.searched.entity.SlUser;
@@ -110,6 +111,7 @@ public class CmUserSlbService {
      * @return
      */
     public BusinessMessage selectUserSlb () {
+        JSONObject data = new JSONObject();
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (user == null || StringUtils.isBlank(user.getId())) {
@@ -120,7 +122,10 @@ public class CmUserSlbService {
         List<SlUserSlb> list = userSlbService.select(new SlUserSlb(){{
             setUserId(user.getId());
         }});
-        message.setData(list);
+        data.put("slbList", list);
+        List listSum = cmUserSlbMapper.selectSumSlb(user.getId());
+        data.put("slbSum",listSum);
+        message.setData(data);
         message.setMsg("查询搜了贝成功");
         message.setSuccess(true);
         return message;

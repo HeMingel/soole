@@ -108,6 +108,10 @@ public class CmOrderService {
     private UserSlbService  userSlbService;
     @Autowired
     private SlSlbTransactionMapper slbTransactionMapper;
+    @Autowired
+    private  SlTotalPoolMapper slTotalPoolMapper;
+    @Autowired
+    private  SlTotalPoolDetailMapper slTotalPoolDetailMapper;
 
 
     /**
@@ -2451,6 +2455,9 @@ public class CmOrderService {
             slUserSlb.setSlbType(slSlbType.getSlbType());
             userSlbService.insert(slUserSlb);
         }
+
+        //资金池搜了贝修改以及搜了贝交易记录
+        savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
     }
     //保存邀请人搜了贝以及交易记录
     @Transactional(rollbackFor = Exception.class)
@@ -2478,6 +2485,8 @@ public class CmOrderService {
             slUserSlb.setSlbType(slSlbType.getSlbType());
             userSlbService.insert(slUserSlb);
         }
+
+        savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
     }
     /**
      * 给以前购买的区块链商品（助力购物）返回搜了贝
@@ -2511,5 +2520,24 @@ public class CmOrderService {
         }
 
     }
+    //资金池搜了贝修改以及搜了贝交易记录
+    @Transactional(rollbackFor = Exception.class)
+    public void savePoolSlb(BigDecimal slb, String userId, String orderId, int type ){
+        SlTotalPool slTotalPool = slTotalPoolMapper.selectOne(new SlTotalPool(){{
+            setId("8C0E7538-8796-E590-20D7-B98EB3AE61B2");
+        }});
 
+        if (-1==slTotalPool.getPoolSlb().compareTo(slb)){
+            //资金池里搜了贝不足
+        }else {
+            slTotalPool.setPoolSlb(slTotalPool.getPoolSlb().subtract(slb));
+            slTotalPoolMapper.updateByPrimaryKey(slTotalPool);
+        }
+        slTotalPoolDetailMapper.insert(new SlTotalPoolDetail(){{
+            setPdUserId(userId);
+            setPdOrderId(orderId);
+            setPdType(type);
+            setPdSlb(slb);
+        }});
+    }
 }
