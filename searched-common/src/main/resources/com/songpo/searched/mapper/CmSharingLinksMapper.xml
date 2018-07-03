@@ -100,7 +100,7 @@
         ap.price ${sortByPrice},
       </if>
       <if test="sortByCount != ''">
-        pr.count ${sortByCount},
+        ap.count ${sortByCount},
       </if>
       <if test="sortByAward != ''">
         ap.awward_money ${sortByAward},

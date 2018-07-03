@@ -307,55 +307,59 @@ public class ProcessOrders {
                 setId(orderId);
             }});
             //获取订单详情表数据
-            SlOrderDetail orderDetail = this.orderDetailService.selectOne(new SlOrderDetail() {{
+            List<SlOrderDetail> orderDetails = this.orderDetailService.select(new SlOrderDetail() {{
                 setOrderId(orderId);
             }});
             //获取购买人信息
             SlUser slUserBuy = this.userService.selectOne(new SlUser(){{setId(slOrder.getUserId());}});
-            //获取邀请人信息
-            SlUser slUser = this.userService.selectOne(new SlUser() {{
-                setUsername(orderDetail.getInviterId());
-            }});
-            //订单金额的10%
-            BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
-            //订单金额的5%
-            BigDecimal bean = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.05);
 
-            slUser.setMoney(slUser.getMoney().add(fanMoney));
-            if (orderDetail.getType() == 4) {
-                //给邀请人余额打钱
-                userService.updateByPrimaryKey(slUser);
-                //在order表的reMark字段记录
-                slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
-                orderService.updateByPrimaryKey(slOrder);
-                //1.保存金钱交易明细
-                SlTransactionDetail detail = new SlTransactionDetail();
-                detail.setSourceId(slOrder.getUserId());
-                detail.setTargetId(slUser.getId());
-                detail.setOrderId(orderId);
-                detail.setType(104);
-                detail.setMoney(fanMoney);
-                detail.setDealType(1);
-                detail.setTransactionType(2);
-                detail.setCreateTime(new Date());
-                transactionDetailService.insertSelective(detail);
+            for (SlOrderDetail orderDetail : orderDetails){
+                //获取邀请人信息
+                SlUser slUser = this.userService.selectOne(new SlUser() {{
+                    setUsername(orderDetail.getInviterId());
+                }});
+                //订单金额的10%
+                BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
+                //订单金额的5%
+                BigDecimal bean = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.05);
 
-                //2.保存搜了币交易明细
-                //2.1 保存邀请人搜了币交易明细
-                //获取搜了贝类型
-                SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{setPrice(orderDetail.getPrice());}});
-                //保存邀请人搜了贝以及交易记录
-                cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
+                slUser.setMoney(slUser.getMoney().add(fanMoney));
+                if (orderDetail.getType() == 4) {
+                    //给邀请人余额打钱
+                    userService.updateByPrimaryKey(slUser);
+                    //在order表的reMark字段记录
+                    slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
+                    orderService.updateByPrimaryKey(slOrder);
+                    //1.保存金钱交易明细
+                    SlTransactionDetail detail = new SlTransactionDetail();
+                    detail.setSourceId(slOrder.getUserId());
+                    detail.setTargetId(slUser.getId());
+                    detail.setOrderId(orderId);
+                    detail.setType(104);
+                    detail.setMoney(fanMoney);
+                    detail.setDealType(1);
+                    detail.setTransactionType(2);
+                    detail.setCreateTime(new Date());
+                    transactionDetailService.insertSelective(detail);
 
-                //2.2 保存购买人搜了币交易明细
-                cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
+                    //2.保存搜了币交易明细
+                    //2.1 保存邀请人搜了币交易明细
+                    //获取搜了贝类型
+                    SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{setPrice(orderDetail.getPrice());}});
+                    //保存邀请人搜了贝以及交易记录
+                    cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
+
+                    //2.2 保存购买人搜了币交易明细
+                    cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
+                }
+                /**
+                 * 极光推送
+                 */
+                String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
+                        "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
+                sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
             }
-            /**
-             * 极光推送
-             */
-            String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
-                    "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
-            sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

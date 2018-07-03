@@ -106,6 +106,8 @@ public class CmOrderService {
     private SlSlbTypeService slSlbTypeService;
     @Autowired
     private UserSlbService  userSlbService;
+    @Autowired
+    private SlSlbTransactionMapper slbTransactionMapper;
 
 
     /**
@@ -2430,7 +2432,7 @@ public class CmOrderService {
         slSlbTransaction1.setType(2);
         slSlbTransaction1.setSlb(slb);
         slSlbTransaction1.setTransactionType(2);
-        slSlbTypeService.insertSelective(slSlbType);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
 
         //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
         SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
@@ -2457,7 +2459,7 @@ public class CmOrderService {
         slSlbTransaction1.setType(3);
         slSlbTransaction1.setSlb(bean);
         slSlbTransaction1.setTransactionType(2);
-        slSlbTypeService.insertSelective(slSlbType);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
 
         //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
         SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
