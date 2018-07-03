@@ -67,6 +67,10 @@ public class ProcessOrders {
     private Environment environment;
     @Autowired
     private SlMessageCenterMapper slMessageCenterMapper;
+    @Autowired
+    private SlSlbTypeService slSlbTypeService;
+    @Autowired
+    private  CmOrderService cmOrderService;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -293,8 +297,9 @@ public class ProcessOrders {
     }
 
     /**
-     *给邀请人返10%金额+5%搜了币
+     *给邀请人返10%金额+5%搜了贝
      */
+    @Transactional(rollbackFor = Exception.class)
     public void fanMoney(String orderId) {
         try {
             //获取订单表数据
@@ -337,12 +342,13 @@ public class ProcessOrders {
 
                 //2.保存搜了币交易明细
                 //2.1 保存邀请人搜了币交易明细
-                SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
-                slSlbTransaction1.setTargetId(slUser.getId());
+                //获取搜了贝类型
+                SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{setPrice(orderDetail.getPrice());}});
+                //保存邀请人搜了贝以及交易记录
+                cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
 
-//                transactionDetailService.insertSelective(detail);
                 //2.2 保存购买人搜了币交易明细
-
+                cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
             }
             /**
              * 极光推送

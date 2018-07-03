@@ -102,6 +102,11 @@ public class CmOrderService {
     private SlOrderExtendMapper slOrderExtendMapper;
     @Autowired
     private  RedPacketService redPacketService;
+    @Autowired
+    private SlSlbTypeService slSlbTypeService;
+    @Autowired
+    private UserSlbService  userSlbService;
+
 
     /**
      * 多商品下单
@@ -2299,6 +2304,7 @@ public class CmOrderService {
     }
 
     //给店铺老板加豆
+    @Transactional
     public void returnCoinToShop(String orderId) {
         // 给店铺老板加上金豆
         SlOrder order = orderService.selectOne(new SlOrder() {{
@@ -2411,6 +2417,61 @@ public class CmOrderService {
             }
         }catch ( Exception e ) {
             log.error("更新红包状态错误,订单ID：{}",detail.getOrderId(),e);
+        }
+    }
+    @Transactional(rollbackFor = Exception.class)
+    //保存购买人搜了贝以及交易记录
+    public void saveSlbBuy(SlSlbType slSlbType,SlOrder slOrder,SlOrderDetail orderDetail){
+        BigDecimal slb = slSlbType.getPresentNum().multiply(BigDecimal.valueOf(orderDetail.getQuantity()));
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slOrder.getUserId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(2);
+        slSlbTransaction1.setSlb(slb);
+        slSlbTransaction1.setTransactionType(2);
+        slSlbTypeService.insertSelective(slSlbType);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slOrder.getUserId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{setSlb(slUserSlb1.getSlb().add(slb));}});
+        }else {
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slOrder.getUserId());
+            slUserSlb.setSlb(slb);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
+        }
+    }
+    //保存邀请人搜了贝以及交易记录
+    @Transactional(rollbackFor = Exception.class)
+    public void saveSlbInvite( SlUser slUser, SlOrder slOrder,SlSlbType slSlbType,BigDecimal bean){
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slUser.getId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(3);
+        slSlbTransaction1.setSlb(bean);
+        slSlbTransaction1.setTransactionType(2);
+        slSlbTypeService.insertSelective(slSlbType);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slUser.getId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{setSlb(slUserSlb1.getSlb().add(bean));}});
+        }else {
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slUser.getId());
+            slUserSlb.setSlb(bean);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
         }
     }
 
