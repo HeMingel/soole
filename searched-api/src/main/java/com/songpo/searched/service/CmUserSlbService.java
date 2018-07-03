@@ -121,7 +121,7 @@ public class CmUserSlbService {
             setUserId(user.getId());
         }});
         message.setData(list);
-        message.setMsg("转让搜了贝成功");
+        message.setMsg("查询搜了贝成功");
         message.setSuccess(true);
         return message;
     }
