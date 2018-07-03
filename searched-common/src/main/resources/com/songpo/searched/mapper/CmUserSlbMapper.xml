@@ -12,7 +12,9 @@
         LEFT JOIN sl_user u ON t.source_id = u.id
         LEFT JOIN sl_user us ON t.target_id = us.id
         where t.target_id =  #{userId}
-        and t.slb_type =  #{slbType}
+        <if test="slbType != 0">
+            and t.slb_type =  #{slbType}
+        </if>
 
     </select>
     <!--查询总搜了贝-->
