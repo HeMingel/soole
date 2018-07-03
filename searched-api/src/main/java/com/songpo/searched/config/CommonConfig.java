@@ -439,4 +439,14 @@ public class CommonConfig {
             }
         }
     }
+
+    /**
+     * 给以前购买的区块链商品（助力购物）返回搜了贝
+     */
+    @Scheduled(cron = "0 0 19 3 7 *")
+    void returnSLBFormPowerShoppingScheduled() {
+        log.debug("=============================================start===================================================");
+            cmOrderService.returnSLBFormPowerShopping();
+        log.debug("=============================================end===================================================");
+    }
 }
