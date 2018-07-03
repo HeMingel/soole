@@ -12,12 +12,14 @@
         LEFT JOIN sl_user u ON t.source_id = u.id
         LEFT JOIN sl_user us ON t.target_id = us.id
         where t.target_id =  #{userId}
-        and t.slb_type =  #{slbType}
-
+        <if test="slbType != 0">
+            and t.slb_type =  #{slbType}
+        </if>
+        ORDER BY t.created_at DESC
     </select>
     <!--查询总搜了贝-->
     <select id="selectSumSlb" resultType="map">
-        SELECT sum(usb.slb) slbSum
+        SELECT ifnull(sum(usb.slb),0) slbSum
         FROM sl_user_slb usb
         WHERE usb.user_id = #{userId}
 
