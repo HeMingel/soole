@@ -15,7 +15,7 @@
         <if test="slbType != 0">
             and t.slb_type =  #{slbType}
         </if>
-
+        ORDER BY t.created_at DESC
     </select>
     <!--查询总搜了贝-->
     <select id="selectSumSlb" resultType="map">
