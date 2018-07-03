@@ -38,7 +38,7 @@ public class UserSlbController {
             @ApiImplicitParam(name = "slb", value = "搜了贝", paramType = "form", required = true),
             @ApiImplicitParam(name = "slbType", value = "搜了贝类型", paramType = "form", required = true)
     })
-    @GetMapping("transfer-slb")
+    @PostMapping("transfer-slb")
     public BusinessMessage transferUserSlb(Integer id, BigDecimal slb, Integer slbType) {
         return this.cmUserSlbService.transferUserSlb(id,slb,slbType);
     }
