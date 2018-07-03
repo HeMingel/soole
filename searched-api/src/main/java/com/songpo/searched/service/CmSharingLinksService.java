@@ -313,21 +313,21 @@ public class CmSharingLinksService {
             for(SlRedPacket slRedPacket : redPacketList){
                 data.put("slRedPacket", slRedPacket);
                 //购买人信息
-                SlUser slUserBuy = userService.selectOne(new SlUser(){{setId(slRedPacket.getUserId());}});
+                SlUser slUserBuy = userService.selectByPrimaryKey(slRedPacket.getUserId());
                 data.put("slUserBuy", slUserBuy);
                 //订单关联表
-                SlOrderExtend slOrderExtend = orderExtendService.selectOne(new SlOrderExtend(){{setId(slRedPacket.getOrderExtendId());}});
+                SlOrderExtend slOrderExtend = orderExtendService.selectByPrimaryKey(slRedPacket.getOrderExtendId());
 
                 //分享链接表详情
-                SlSharingLinks slSharingLinks = sharingLinksService.selectOne(new SlSharingLinks(){{setId(slOrderExtend.getServiceId());}});
+                SlSharingLinks slSharingLinks = sharingLinksService.selectByPrimaryKey(slOrderExtend.getServiceId());
                 //订单详情
-                SlOrder slOrder = orderService.selectOne(new SlOrder(){{setId(slOrderExtend.getOrderId());}});
+                SlOrder slOrder = orderService.selectByPrimaryKey(slOrderExtend.getOrderId());
                 data.put("slOrder", slOrder);
                 //分享人信息
-                SlUser slUserShare = userService.selectOne(new SlUser(){{setId(slSharingLinks.getSharePersonId());}});
+                SlUser slUserShare = userService.selectByPrimaryKey(slSharingLinks.getSharePersonId());
                 data.put("slUserShare", slUserShare);
                 //商品信息
-                SlProduct slProduct = productService.selectOne(new SlProduct(){{setId(slSharingLinks.getProductId());}});
+                SlProduct slProduct = productService.selectByPrimaryKey(slSharingLinks.getProductId());
                 data.put("slProduct",slProduct);
                 list.add(data);
             }

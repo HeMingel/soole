@@ -13,9 +13,20 @@
 
 
     <!--  获取红包信息-->
-    <select id="findRedByRedType" resultType="map">
+    <select id="findRedByRedType" resultType="com.songpo.searched.entity.SlRedPacket">
             SELECT
-              rp.*
+                rp.id ,
+                rp.user_id userId,
+                rp.money,
+                rp.surplus_money surplusMoney,
+                rp.count,
+                rp.surplus_count surplusCount,
+                rp.type,
+                rp.red_packet_type redPacketType,
+                rp.result,
+                rp.create_time createTime,
+                rp.end_time endTime,
+                rp.order_extend_id orderExtendId
             FROM
               `sl_red_packet` rp
             WHERE  rp.`red_packet_type` = 4
