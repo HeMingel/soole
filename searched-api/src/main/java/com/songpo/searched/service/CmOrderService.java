@@ -2440,7 +2440,10 @@ public class CmOrderService {
             setSlbType(slSlbType.getSlbType());
         }});
         if(null != slUserSlb1){
-            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{setSlb(slUserSlb1.getSlb().add(slb));}});
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(slb));
+                }});
         }else {
             SlUserSlb slUserSlb = new SlUserSlb();
             slUserSlb.setUserId(slOrder.getUserId());
@@ -2475,6 +2478,38 @@ public class CmOrderService {
             slUserSlb.setSlbType(slSlbType.getSlbType());
             userSlbService.insert(slUserSlb);
         }
+    }
+    /**
+     * 给以前购买的区块链商品（助力购物）返回搜了贝
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public  void  returnSLBFormPowerShopping () {
+        try {
+            //获取搜了贝商品集合
+            List<SlOrderDetail> detailList = orderDetailService.select( new SlOrderDetail(){{
+                setType(4);
+            }});
+            Date now = new Date();
+            for (SlOrderDetail slOrderDetail : detailList){
+
+                if (slOrderDetail.getCreatedAt().before(now)){
+                    BigDecimal price = slOrderDetail.getPrice();
+                    SlSlbType slSlbType = slSlbTypeService.selectOne(new SlSlbType() {{
+                        setPrice(price);
+                    }});
+                    if (slSlbType != null ) {
+                        SlOrder slOrder = orderService.selectByPrimaryKey(slOrderDetail.getOrderId());
+                         if (slOrder.getPaymentState() == 1 ) {
+                             saveSlbBuy(slSlbType,slOrder,slOrderDetail);
+                         }
+                        log.debug("给订单ID{}返回搜了贝成功",slOrderDetail.getOrderId());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+
     }
 
 }
