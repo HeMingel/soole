@@ -2527,12 +2527,9 @@ public class CmOrderService {
             setId("8C0E7538-8796-E590-20D7-B98EB3AE61B2");
         }});
 
-        if (-1==slTotalPool.getPoolSlb().compareTo(slb)){
-            //资金池里搜了贝不足
-        }else {
-            slTotalPool.setPoolSlb(slTotalPool.getPoolSlb().subtract(slb));
-            slTotalPoolMapper.updateByPrimaryKey(slTotalPool);
-        }
+        slTotalPool.setPoolSlb(slTotalPool.getPoolSlb().subtract(slb));
+        slTotalPoolMapper.updateByPrimaryKey(slTotalPool);
+
         slTotalPoolDetailMapper.insert(new SlTotalPoolDetail(){{
             setPdUserId(userId);
             setPdOrderId(orderId);
