@@ -5,20 +5,26 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlSlbTransaction;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.entity.SlUserSlb;
+import com.songpo.searched.mapper.CmUserSlbMapper;
 import com.songpo.searched.mapper.SlSlbTransactionMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author yinsl
  */
 @Service
 public class CmUserSlbService {
+
+    public static final Logger log = LoggerFactory.getLogger(CmUserSlbService.class);
 
     @Autowired
     private LoginUserService loginUserService;
@@ -28,6 +34,8 @@ public class CmUserSlbService {
     private UserService userService;
     @Autowired
     private SlSlbTransactionMapper slbTransactionMapper;
+    @Autowired
+    private CmUserSlbMapper cmUserSlbMapper;
 
     /**
      *搜了贝转让
@@ -91,9 +99,52 @@ public class CmUserSlbService {
                 setSlbType(slbType);
             }});
         }
-
         message.setMsg("转让搜了贝成功");
         message.setSuccess(true);
+        return message;
+    }
+
+
+    /**
+     *查询搜了贝
+     * @return
+     */
+    public BusinessMessage selectUserSlb () {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (user == null || StringUtils.isBlank(user.getId())) {
+            message.setMsg("获取当前登录用户信息失败");
+            message.setSuccess(false);
+            return message;
+        }
+        List<SlUserSlb> list = userSlbService.select(new SlUserSlb(){{
+            setUserId(user.getId());
+        }});
+        message.setData(list);
+        message.setMsg("转让搜了贝成功");
+        message.setSuccess(true);
+        return message;
+    }
+
+    /**
+     *查询搜了贝详情
+     * @param userId
+     * @param slbType
+     * @return
+     */
+    @Transactional
+    public BusinessMessage selectUserSlbDetail (String userId, Integer slbType) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message.setData(this.cmUserSlbMapper.selectUserSlbDetail(userId, slbType));
+            message.setMsg("查询搜了贝详情成功");
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("查询搜了贝详情异常", e);
+            message.setMsg("查询搜了贝详情异常");
+            message.setSuccess(false);
+        }
+
         return message;
     }
 }

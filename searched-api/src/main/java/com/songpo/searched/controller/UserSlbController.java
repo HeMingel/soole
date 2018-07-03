@@ -27,8 +27,6 @@ public class UserSlbController {
     private CmUserSlbService cmUserSlbService;
 
 
-
-
     /**
      * 搜了贝转让
      *
@@ -45,4 +43,29 @@ public class UserSlbController {
         return this.cmUserSlbService.transferUserSlb(id,slb,slbType);
     }
 
+    /**
+     * 查询搜了贝
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询搜了贝 ")
+    @GetMapping("select-slb")
+    public BusinessMessage selectUserSlb() {
+        return this.cmUserSlbService.selectUserSlb();
+    }
+
+    /**
+     * 查询搜了贝详情
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询搜了贝详情 ")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "slbType", value = "搜了贝类型", paramType = "form", required = true)
+    })
+    @PostMapping("select-slb-detail")
+    public BusinessMessage selectUserSlbDetail(String userId, Integer slbType) {
+        return this.cmUserSlbService.selectUserSlbDetail(userId, slbType);
+    }
 }

@@ -319,9 +319,9 @@ public class ProcessOrders {
                     setUsername(orderDetail.getInviterId());
                 }});
                 //订单金额的10%
-                BigDecimal fanMoney = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.1);
+                BigDecimal fanMoney = BigDecimal.valueOf(orderDetail.getPrice().multiply(BigDecimal.valueOf(orderDetail.getQuantity())).doubleValue() * 0.1);
                 //订单金额的5%
-                BigDecimal bean = BigDecimal.valueOf(slOrder.getTotalAmount().doubleValue() * 0.05);
+                BigDecimal bean = BigDecimal.valueOf(orderDetail.getPrice().multiply(BigDecimal.valueOf(orderDetail.getQuantity())).doubleValue() * 0.05);
 
                 slUser.setMoney(slUser.getMoney().add(fanMoney));
                 if (orderDetail.getType() == 4) {

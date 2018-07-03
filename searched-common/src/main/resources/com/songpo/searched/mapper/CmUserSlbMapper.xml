@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmUserSlbMapper">
+
+    <!--查询搜了贝详情-->
+    <select id="selectUserSlbDetail" resultType="map">
+        SELECT t.*,u.username as sourceName,u.nick_name AS sourceNickName,
+			us.username AS targetName, us.nick_name AS targetNickName,
+			o.product_name
+        FROM sl_slb_transaction t
+        LEFT JOIN sl_order_detail o ON t.order_id = o.order_id
+        LEFT JOIN sl_user u ON t.source_id = u.id
+        LEFT JOIN sl_user us ON t.target_id = us.id
+        where t.target_id =  #{userId}
+        and t.slb_type =  #{slbType}
+
+    </select>
+
+</mapper>
