@@ -361,6 +361,7 @@ public class CommonConfig {
     void updateOrderSpellStatus() {
         List<SlOrder> orderList = orderService.select(new SlOrder() {{
             setSpellGroupStatus(1);
+            setPaymentState(1);
             setStatus(1);
         }});
         //时间分隔点
