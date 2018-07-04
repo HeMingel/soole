@@ -10,7 +10,8 @@ public enum OrderDetailTypeEnum implements BaseEnum {
     PRESELL_ORDER("（云易购物）预售订单", 3),
     ONE_ORDER("（助力购物）助力购", 4),
     REBATE_ORDER("（广告赠送）消费奖励", 5),
-    BEANS_ORDER("（优惠购物）豆赚", 5);
+    BEANS_ORDER("（优惠购物）豆赚", 6);
+
 
     private String label;
 

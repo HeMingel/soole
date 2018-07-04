@@ -29,6 +29,12 @@ public class SlSearchRingNewsImage implements Serializable {
     private String imageUrl;
 
     /**
+     * 视频url
+     */
+    @Column(name = "video_url")
+    private String videoUrl;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -117,6 +123,24 @@ public class SlSearchRingNewsImage implements Serializable {
     }
 
     /**
+     * 获取视频url
+     *
+     * @return video_url - 视频url
+     */
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    /**
+     * 设置视频url
+     *
+     * @param videoUrl 视频url
+     */
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl == null ? null : videoUrl.trim();
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_time - 创建时间
@@ -180,6 +204,7 @@ public class SlSearchRingNewsImage implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", newsId=").append(newsId);
         sb.append(", imageUrl=").append(imageUrl);
+        sb.append(", videoUrl=").append(videoUrl);
         sb.append(", createTime=").append(createTime);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);

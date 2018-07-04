@@ -8,7 +8,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="voucher" jdbcType="VARCHAR" property="voucher" />
+    <result column="voucher" jdbcType="INTEGER" property="voucher" />
     <result column="record_time" jdbcType="VARCHAR" property="recordTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />

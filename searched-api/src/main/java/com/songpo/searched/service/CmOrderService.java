@@ -11,6 +11,7 @@ import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.ActivityConstant;
+import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.constant.VirtualUserConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -2425,8 +2426,14 @@ public class CmOrderService {
             log.error("更新红包状态错误,订单ID：{}",detail.getOrderId(),e);
         }
     }
+
+    /**
+     * 保存购买人搜了贝以及交易记录
+     * @param slSlbType
+     * @param slOrder
+     * @param orderDetail
+     */
     @Transactional(rollbackFor = Exception.class)
-    //保存购买人搜了贝以及交易记录
     public void saveSlbBuy(SlSlbType slSlbType,SlOrder slOrder,SlOrderDetail orderDetail){
         BigDecimal slb = slSlbType.getPresentNum().multiply(BigDecimal.valueOf(orderDetail.getQuantity()));
         SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
@@ -2459,7 +2466,14 @@ public class CmOrderService {
         //资金池搜了贝修改以及搜了贝交易记录
         savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
     }
-    //保存邀请人搜了贝以及交易记录
+
+    /**
+     *   保存邀请人搜了贝以及交易记录
+     * @param slUser
+     * @param slOrder
+     * @param slSlbType
+     * @param bean
+     */
     @Transactional(rollbackFor = Exception.class)
     public void saveSlbInvite( SlUser slUser, SlOrder slOrder,SlSlbType slSlbType,BigDecimal bean){
         SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
@@ -2489,6 +2503,7 @@ public class CmOrderService {
         savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
     }
     /**
+     *
      * 给以前购买的区块链商品（助力购物）返回搜了贝
      */
     @Transactional(rollbackFor = Exception.class)
@@ -2507,11 +2522,33 @@ public class CmOrderService {
                         setPrice(price);
                     }});
                     if (slSlbType != null ) {
+                        //给购买人返贝
                         SlOrder slOrder = orderService.selectByPrimaryKey(slOrderDetail.getOrderId());
                          if (slOrder.getPaymentState() == 1 ) {
                              saveSlbBuy(slSlbType,slOrder,slOrderDetail);
+                             log.debug("给订单ID{}返回搜了贝成功,该商品的订单支付状态为{}",slOrderDetail.getOrderId(),slOrder.getPaymentState());
+                             //给邀请人返贝
+                             if (slOrderDetail.getInviterId() != null && slOrderDetail.getInviterId()!= 0 ) {
+                                 SlUser user = userService.selectOne( new SlUser(){{
+                                     setUsername(slOrderDetail.getInviterId());
+                                 }});
+                                 //平台账号
+                                 SlUser platform = userService.selectOne( new SlUser(){{
+                                    setUsername(7777);
+                                 }});
+                                    if (user != null) {
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        saveSlbInvite(user,slOrder,slSlbType,slb);
+                                        log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
+                                    } else{
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        saveSlbInvite(platform,slOrder,slSlbType,slb);
+                                        log.debug("给邀请人{}返回搜了贝成功",platform.getUsername());
+                                    }
+
+
+                             }
                          }
-                        log.debug("给订单ID{}返回搜了贝成功",slOrderDetail.getOrderId());
                     }
                 }
             }
@@ -2520,11 +2557,19 @@ public class CmOrderService {
         }
 
     }
-    //资金池搜了贝修改以及搜了贝交易记录
+
+    /**
+     *
+     *  资金池搜了贝修改以及搜了贝交易记录
+     * @param slb
+     * @param userId
+     * @param orderId
+     * @param type
+     */
     @Transactional(rollbackFor = Exception.class)
     public void savePoolSlb(BigDecimal slb, String userId, String orderId, int type ){
         SlTotalPool slTotalPool = slTotalPoolMapper.selectOne(new SlTotalPool(){{
-            setId("8C0E7538-8796-E590-20D7-B98EB3AE61B2");
+            setId(BaseConstant.TOTAL_POOL_ID);
         }});
 
         slTotalPool.setPoolSlb(slTotalPool.getPoolSlb().subtract(slb));

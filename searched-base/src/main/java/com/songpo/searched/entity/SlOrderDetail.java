@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_order_detail")
 public class SlOrderDetail implements Serializable {
@@ -63,7 +63,7 @@ public class SlOrderDetail implements Serializable {
     private String productDetailGroupName;
 
     /**
-     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
@@ -144,7 +144,7 @@ public class SlOrderDetail implements Serializable {
     private Integer presellShipmentsDays;
 
     /**
-     * 返现金额(限预售模式)
+     * 返现金额(限消费奖励模式)
      */
     @Column(name = "return_cash_money")
     private BigDecimal returnCashMoney;
@@ -177,9 +177,9 @@ public class SlOrderDetail implements Serializable {
      * 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
-4 : （助力购物）助力购 
+4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚
+6 : （优惠购物）豆赚 7:分享奖励
      */
     private Integer type;
 
@@ -246,6 +246,18 @@ public class SlOrderDetail implements Serializable {
      */
     @Column(name = "is_virtual_spell_group")
     private Byte isVirtualSpellGroup;
+
+    /**
+     * 邀请人ID
+     */
+    @Column(name = "inviter_id")
+    private Integer inviterId;
+
+    /**
+     * 是否延迟收货 1是 0否（默认）
+     */
+    @Column(name = "is_delayed")
+    private Integer isDelayed;
 
     private static final long serialVersionUID = 1L;
 
@@ -412,18 +424,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      *
-     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     public Integer getShippingState() {
         return shippingState;
     }
 
     /**
-     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      *
-     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后
+     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     public void setShippingState(Integer shippingState) {
         this.shippingState = shippingState;
@@ -664,18 +676,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取返现金额(限预售模式)
+     * 获取返现金额(限消费奖励模式)
      *
-     * @return return_cash_money - 返现金额(限预售模式)
+     * @return return_cash_money - 返现金额(限消费奖励模式)
      */
     public BigDecimal getReturnCashMoney() {
         return returnCashMoney;
     }
 
     /**
-     * 设置返现金额(限预售模式)
+     * 设置返现金额(限消费奖励模式)
      *
-     * @param returnCashMoney 返现金额(限预售模式)
+     * @param returnCashMoney 返现金额(限消费奖励模式)
      */
     public void setReturnCashMoney(BigDecimal returnCashMoney) {
         this.returnCashMoney = returnCashMoney;
@@ -757,16 +769,16 @@ public class SlOrderDetail implements Serializable {
      * 获取1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
-4 : （助力购物）助力购 
+4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚
+6 : （优惠购物）豆赚 7:分享奖励
      *
      * @return type - 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
-4 : （助力购物）助力购 
+4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚
+6 : （优惠购物）豆赚 7:分享奖励
      */
     public Integer getType() {
         return type;
@@ -776,16 +788,16 @@ public class SlOrderDetail implements Serializable {
      * 设置1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
-4 : （助力购物）助力购 
+4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚
+6 : （优惠购物）豆赚 7:分享奖励
      *
      * @param type 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
-4 : （助力购物）助力购 
+4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚
+6 : （优惠购物）豆赚 7:分享奖励
      */
     public void setType(Integer type) {
         this.type = type;
@@ -989,6 +1001,42 @@ public class SlOrderDetail implements Serializable {
         this.isVirtualSpellGroup = isVirtualSpellGroup;
     }
 
+    /**
+     * 获取邀请人ID
+     *
+     * @return inviter_id - 邀请人ID
+     */
+    public Integer getInviterId() {
+        return inviterId;
+    }
+
+    /**
+     * 设置邀请人ID
+     *
+     * @param inviterId 邀请人ID
+     */
+    public void setInviterId(Integer inviterId) {
+        this.inviterId = inviterId;
+    }
+
+    /**
+     * 获取是否延迟收货 1是 0否（默认）
+     *
+     * @return is_delayed - 是否延迟收货 1是 0否（默认）
+     */
+    public Integer getIsDelayed() {
+        return isDelayed;
+    }
+
+    /**
+     * 设置是否延迟收货 1是 0否（默认）
+     *
+     * @param isDelayed 是否延迟收货 1是 0否（默认）
+     */
+    public void setIsDelayed(Integer isDelayed) {
+        this.isDelayed = isDelayed;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -1035,6 +1083,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", returnCashPulse=").append(returnCashPulse);
         sb.append(", deductTotalGold=").append(deductTotalGold);
         sb.append(", isVirtualSpellGroup=").append(isVirtualSpellGroup);
+        sb.append(", inviterId=").append(inviterId);
+        sb.append(", isDelayed=").append(isDelayed);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

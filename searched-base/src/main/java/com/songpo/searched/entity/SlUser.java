@@ -1,9 +1,9 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_user")
 public class SlUser implements Serializable {
@@ -97,12 +97,12 @@ public class SlUser implements Serializable {
     private Byte groupVar;
 
     /**
-     * 金币,金豆.可以转
+     * 金币
      */
     private Integer coin;
 
     /**
-     * 银币,不可以转
+     * 银币
      */
     private Integer silver;
 
@@ -130,6 +130,11 @@ public class SlUser implements Serializable {
     private String openId;
 
     /**
+     * 区块链团队长1否2是
+     */
+    private Integer captain;
+
+    /**
      * 1：微信  2：QQ  登录方式
      */
     private Integer type;
@@ -138,6 +143,12 @@ public class SlUser implements Serializable {
      * 账号状态：0 禁用， 1 启用
      */
     private Integer status;
+
+    /**
+     * 搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+     */
+    @Column(name = "circle_state")
+    private Integer circleState;
 
     /**
      * 登录次数
@@ -164,10 +175,9 @@ public class SlUser implements Serializable {
     private Date updatedAt;
 
     /**
-     * 是否虚拟用户;0:否,1:是
+     * 地区
      */
-    @Column(name = "is_virtual")
-    private Byte isVirtual;
+    private String zone;
 
     private static final long serialVersionUID = 1L;
 
@@ -474,36 +484,36 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取金币,金豆.可以转
+     * 获取金币
      *
-     * @return coin - 金币,金豆.可以转
+     * @return coin - 金币
      */
     public Integer getCoin() {
         return coin;
     }
 
     /**
-     * 设置金币,金豆.可以转
+     * 设置金币
      *
-     * @param coin 金币,金豆.可以转
+     * @param coin 金币
      */
     public void setCoin(Integer coin) {
         this.coin = coin;
     }
 
     /**
-     * 获取银币,不可以转
+     * 获取银币
      *
-     * @return silver - 银币,不可以转
+     * @return silver - 银币
      */
     public Integer getSilver() {
         return silver;
     }
 
     /**
-     * 设置银币,不可以转
+     * 设置银币
      *
-     * @param silver 银币,不可以转
+     * @param silver 银币
      */
     public void setSilver(Integer silver) {
         this.silver = silver;
@@ -582,6 +592,24 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取区块链团队长1否2是
+     *
+     * @return captain - 区块链团队长1否2是
+     */
+    public Integer getCaptain() {
+        return captain;
+    }
+
+    /**
+     * 设置区块链团队长1否2是
+     *
+     * @param captain 区块链团队长1否2是
+     */
+    public void setCaptain(Integer captain) {
+        this.captain = captain;
+    }
+
+    /**
      * 获取1：微信  2：QQ  登录方式
      *
      * @return type - 1：微信  2：QQ  登录方式
@@ -615,6 +643,24 @@ public class SlUser implements Serializable {
      */
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    /**
+     * 获取搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+     *
+     * @return circle_state - 搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+     */
+    public Integer getCircleState() {
+        return circleState;
+    }
+
+    /**
+     * 设置搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+     *
+     * @param circleState 搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
+     */
+    public void setCircleState(Integer circleState) {
+        this.circleState = circleState;
     }
 
     /**
@@ -690,21 +736,21 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取是否虚拟用户;0:否,1:是
+     * 获取地区
      *
-     * @return is_virtual - 是否虚拟用户;0:否,1:是
+     * @return zone - 地区
      */
-    public Byte getIsVirtual() {
-        return isVirtual;
+    public String getZone() {
+        return zone;
     }
 
     /**
-     * 设置是否虚拟用户;0:否,1:是
+     * 设置地区
      *
-     * @param isVirtual 是否虚拟用户;0:否,1:是
+     * @param zone 地区
      */
-    public void setIsVirtual(Byte isVirtual) {
-        this.isVirtual = isVirtual;
+    public void setZone(String zone) {
+        this.zone = zone == null ? null : zone.trim();
     }
 
     @Override
@@ -736,13 +782,15 @@ public class SlUser implements Serializable {
         sb.append(", clientId=").append(clientId);
         sb.append(", clientSecret=").append(clientSecret);
         sb.append(", openId=").append(openId);
+        sb.append(", captain=").append(captain);
         sb.append(", type=").append(type);
         sb.append(", status=").append(status);
+        sb.append(", circleState=").append(circleState);
         sb.append(", loginCount=").append(loginCount);
         sb.append(", lastLogin=").append(lastLogin);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", isVirtual=").append(isVirtual);
+        sb.append(", zone=").append(zone);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -27,7 +27,7 @@ public class SlRemoveRecord implements Serializable {
     /**
      * 兑换数量
      */
-    private String voucher;
+    private Integer voucher;
 
     /**
      * 兑换时间
@@ -108,7 +108,7 @@ public class SlRemoveRecord implements Serializable {
      *
      * @return voucher - 兑换数量
      */
-    public String getVoucher() {
+    public Integer getVoucher() {
         return voucher;
     }
 
@@ -117,8 +117,8 @@ public class SlRemoveRecord implements Serializable {
      *
      * @param voucher 兑换数量
      */
-    public void setVoucher(String voucher) {
-        this.voucher = voucher == null ? null : voucher.trim();
+    public void setVoucher(Integer voucher) {
+        this.voucher = voucher;
     }
 
     /**

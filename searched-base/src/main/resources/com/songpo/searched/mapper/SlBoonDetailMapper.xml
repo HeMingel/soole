@@ -9,13 +9,17 @@
     <result column="boon_id" jdbcType="VARCHAR" property="boonId" />
     <result column="prize_type" jdbcType="BIT" property="prizeType" />
     <result column="deal_type" jdbcType="VARCHAR" property="dealType" />
+    <result column="vir_value" jdbcType="INTEGER" property="virValue" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="prize_count" jdbcType="BIT" property="prizeCount" />
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="surplus_count" jdbcType="INTEGER" property="surplusCount" />
     <result column="result" jdbcType="INTEGER" property="result" />
     <result column="chance" jdbcType="DOUBLE" property="chance" />
+    <result column="product_url" jdbcType="VARCHAR" property="productUrl" />
+    <result column="market_price" jdbcType="DOUBLE" property="marketPrice" />
+    <result column="boon_little_price" jdbcType="DOUBLE" property="boonLittlePrice" />
+    <result column="boon_big_price" jdbcType="DOUBLE" property="boonBigPrice" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -23,7 +27,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, boon_id, prize_type, deal_type, name, image_url, prize_count, count, surplus_count, 
-    result, chance, create_time, update_time
+    id, boon_id, prize_type, deal_type, vir_value, name, image_url, count, surplus_count, 
+    result, chance, product_url, market_price, boon_little_price, boon_big_price, create_time, 
+    update_time
   </sql>
 </mapper>

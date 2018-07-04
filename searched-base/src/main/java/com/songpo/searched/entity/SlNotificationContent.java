@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_notification_content")
 public class SlNotificationContent implements Serializable {
@@ -29,7 +29,8 @@ public class SlNotificationContent implements Serializable {
     /**
      * 是否已读.0:未读;1:已读
      */
-    private Boolean read;
+    @Column(name = "has_read")
+    private Boolean hasRead;
 
     /**
      * 通知创建时间
@@ -110,19 +111,19 @@ public class SlNotificationContent implements Serializable {
     /**
      * 获取是否已读.0:未读;1:已读
      *
-     * @return read - 是否已读.0:未读;1:已读
+     * @return has_read - 是否已读.0:未读;1:已读
      */
-    public Boolean getRead() {
-        return read;
+    public Boolean getHasRead() {
+        return hasRead;
     }
 
     /**
      * 设置是否已读.0:未读;1:已读
      *
-     * @param read 是否已读.0:未读;1:已读
+     * @param hasRead 是否已读.0:未读;1:已读
      */
-    public void setRead(Boolean read) {
-        this.read = read;
+    public void setHasRead(Boolean hasRead) {
+        this.hasRead = hasRead;
     }
 
     /**
@@ -153,7 +154,7 @@ public class SlNotificationContent implements Serializable {
         sb.append(", text=").append(text);
         sb.append(", title=").append(title);
         sb.append(", typeId=").append(typeId);
-        sb.append(", read=").append(read);
+        sb.append(", hasRead=").append(hasRead);
         sb.append(", createtime=").append(createtime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
