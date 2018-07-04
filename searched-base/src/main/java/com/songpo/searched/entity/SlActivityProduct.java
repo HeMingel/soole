@@ -78,12 +78,6 @@ public class SlActivityProduct implements Serializable {
     private Integer peopleNum;
 
     /**
-     * 已下单(已支付)人数
-     */
-    @Column(name = "orders_num")
-    private Integer ordersNum;
-
-    /**
      * 剩余总商品数量
      */
     @Column(name = "surplus_product_count")
@@ -134,6 +128,12 @@ public class SlActivityProduct implements Serializable {
      */
     @Column(name = "reference_peas")
     private Integer referencePeas;
+
+    /**
+     * (暂未使用)已下单(已支付)人数
+     */
+    @Column(name = "orders_num")
+    private Integer ordersNum;
 
     /**
      * （暂未使用）商家奖励额度
@@ -396,24 +396,6 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
-     * 获取已下单(已支付)人数
-     *
-     * @return orders_num - 已下单(已支付)人数
-     */
-    public Integer getOrdersNum() {
-        return ordersNum;
-    }
-
-    /**
-     * 设置已下单(已支付)人数
-     *
-     * @param ordersNum 已下单(已支付)人数
-     */
-    public void setOrdersNum(Integer ordersNum) {
-        this.ordersNum = ordersNum;
-    }
-
-    /**
      * 获取剩余总商品数量
      *
      * @return surplus_product_count - 剩余总商品数量
@@ -576,6 +558,24 @@ public class SlActivityProduct implements Serializable {
     }
 
     /**
+     * 获取(暂未使用)已下单(已支付)人数
+     *
+     * @return orders_num - (暂未使用)已下单(已支付)人数
+     */
+    public Integer getOrdersNum() {
+        return ordersNum;
+    }
+
+    /**
+     * 设置(暂未使用)已下单(已支付)人数
+     *
+     * @param ordersNum (暂未使用)已下单(已支付)人数
+     */
+    public void setOrdersNum(Integer ordersNum) {
+        this.ordersNum = ordersNum;
+    }
+
+    /**
      * 获取（暂未使用）商家奖励额度
      *
      * @return reward_value - （暂未使用）商家奖励额度
@@ -719,7 +719,6 @@ public class SlActivityProduct implements Serializable {
         sb.append(", endTime=").append(endTime);
         sb.append(", count=").append(count);
         sb.append(", peopleNum=").append(peopleNum);
-        sb.append(", ordersNum=").append(ordersNum);
         sb.append(", surplusProductCount=").append(surplusProductCount);
         sb.append(", awardPeasCounts=").append(awardPeasCounts);
         sb.append(", awwardMoney=").append(awwardMoney);
@@ -729,6 +728,7 @@ public class SlActivityProduct implements Serializable {
         sb.append(", presellShipmentsDays=").append(presellShipmentsDays);
         sb.append(", enabled=").append(enabled);
         sb.append(", referencePeas=").append(referencePeas);
+        sb.append(", ordersNum=").append(ordersNum);
         sb.append(", rewardValue=").append(rewardValue);
         sb.append(", returnMoney=").append(returnMoney);
         sb.append(", returnPeas=").append(returnPeas);

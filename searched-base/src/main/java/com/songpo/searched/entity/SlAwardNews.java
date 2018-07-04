@@ -6,88 +6,124 @@ import javax.persistence.*;
 
 @Table(name = "sl_award_news")
 public class SlAwardNews implements Serializable {
+    /**
+     * 主键ID
+     */
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    /**
+     * 补偿用户ID
+     */
     @Column(name = "an_user_id")
     private String anUserId;
 
+    /**
+     * 补偿数量
+     */
     @Column(name = "an_number")
     private Integer anNumber;
 
+    /**
+     * 创建时间
+     */
     @Column(name = "created_at")
     private Date createdAt;
 
+    /**
+     * 更新时间
+     */
     @Column(name = "updated_at")
     private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * @return id
+     * 获取主键ID
+     *
+     * @return id - 主键ID
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id
+     * 设置主键ID
+     *
+     * @param id 主键ID
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
     }
 
     /**
-     * @return an_user_id
+     * 获取补偿用户ID
+     *
+     * @return an_user_id - 补偿用户ID
      */
     public String getAnUserId() {
         return anUserId;
     }
 
     /**
-     * @param anUserId
+     * 设置补偿用户ID
+     *
+     * @param anUserId 补偿用户ID
      */
     public void setAnUserId(String anUserId) {
         this.anUserId = anUserId == null ? null : anUserId.trim();
     }
 
     /**
-     * @return an_number
+     * 获取补偿数量
+     *
+     * @return an_number - 补偿数量
      */
     public Integer getAnNumber() {
         return anNumber;
     }
 
     /**
-     * @param anNumber
+     * 设置补偿数量
+     *
+     * @param anNumber 补偿数量
      */
     public void setAnNumber(Integer anNumber) {
         this.anNumber = anNumber;
     }
 
     /**
-     * @return created_at
+     * 获取创建时间
+     *
+     * @return created_at - 创建时间
      */
     public Date getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * @param createdAt
+     * 设置创建时间
+     *
+     * @param createdAt 创建时间
      */
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
     /**
-     * @return updated_at
+     * 获取更新时间
+     *
+     * @return updated_at - 更新时间
      */
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
     /**
-     * @param updatedAt
+     * 设置更新时间
+     *
+     * @param updatedAt 更新时间
      */
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;

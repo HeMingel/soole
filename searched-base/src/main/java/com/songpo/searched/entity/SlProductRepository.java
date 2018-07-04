@@ -82,6 +82,12 @@ public class SlProductRepository implements Serializable {
     private Integer silver;
 
     /**
+     * 下单获得了豆数量(返商品现金价格的16%)拼团
+     */
+    @Column(name = "place_order_return_pulse_pt")
+    private Integer placeOrderReturnPulsePt;
+
+    /**
      * 下单获得了豆数量(返商品现金价格的16%)
      */
     @Column(name = "place_order_return_pulse")
@@ -98,6 +104,12 @@ public class SlProductRepository implements Serializable {
      */
     @Column(name = "rewards_money_ratio")
     private Float rewardsMoneyRatio;
+
+    /**
+     * 首单获得了豆(拼团)
+     */
+    @Column(name = "first_order_pulse_pt")
+    private Integer firstOrderPulsePt;
 
     /**
      * 首单获得了豆
@@ -415,6 +427,24 @@ public class SlProductRepository implements Serializable {
     }
 
     /**
+     * 获取下单获得了豆数量(返商品现金价格的16%)拼团
+     *
+     * @return place_order_return_pulse_pt - 下单获得了豆数量(返商品现金价格的16%)拼团
+     */
+    public Integer getPlaceOrderReturnPulsePt() {
+        return placeOrderReturnPulsePt;
+    }
+
+    /**
+     * 设置下单获得了豆数量(返商品现金价格的16%)拼团
+     *
+     * @param placeOrderReturnPulsePt 下单获得了豆数量(返商品现金价格的16%)拼团
+     */
+    public void setPlaceOrderReturnPulsePt(Integer placeOrderReturnPulsePt) {
+        this.placeOrderReturnPulsePt = placeOrderReturnPulsePt;
+    }
+
+    /**
      * 获取下单获得了豆数量(返商品现金价格的16%)
      *
      * @return place_order_return_pulse - 下单获得了豆数量(返商品现金价格的16%)
@@ -466,6 +496,24 @@ public class SlProductRepository implements Serializable {
      */
     public void setRewardsMoneyRatio(Float rewardsMoneyRatio) {
         this.rewardsMoneyRatio = rewardsMoneyRatio;
+    }
+
+    /**
+     * 获取首单获得了豆(拼团)
+     *
+     * @return first_order_pulse_pt - 首单获得了豆(拼团)
+     */
+    public Integer getFirstOrderPulsePt() {
+        return firstOrderPulsePt;
+    }
+
+    /**
+     * 设置首单获得了豆(拼团)
+     *
+     * @param firstOrderPulsePt 首单获得了豆(拼团)
+     */
+    public void setFirstOrderPulsePt(Integer firstOrderPulsePt) {
+        this.firstOrderPulsePt = firstOrderPulsePt;
     }
 
     /**
@@ -739,9 +787,11 @@ public class SlProductRepository implements Serializable {
         sb.append(", weight=").append(weight);
         sb.append(", ship=").append(ship);
         sb.append(", silver=").append(silver);
+        sb.append(", placeOrderReturnPulsePt=").append(placeOrderReturnPulsePt);
         sb.append(", placeOrderReturnPulse=").append(placeOrderReturnPulse);
         sb.append(", rewardsMoney=").append(rewardsMoney);
         sb.append(", rewardsMoneyRatio=").append(rewardsMoneyRatio);
+        sb.append(", firstOrderPulsePt=").append(firstOrderPulsePt);
         sb.append(", firstOrderPulse=").append(firstOrderPulse);
         sb.append(", peopleNum=").append(peopleNum);
         sb.append(", gold=").append(gold);

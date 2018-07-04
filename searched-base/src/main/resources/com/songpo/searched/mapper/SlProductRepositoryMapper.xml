@@ -18,9 +18,11 @@
     <result column="weight" jdbcType="VARCHAR" property="weight" />
     <result column="ship" jdbcType="BIT" property="ship" />
     <result column="silver" jdbcType="INTEGER" property="silver" />
+    <result column="place_order_return_pulse_pt" jdbcType="INTEGER" property="placeOrderReturnPulsePt" />
     <result column="place_order_return_pulse" jdbcType="INTEGER" property="placeOrderReturnPulse" />
     <result column="rewards_money" jdbcType="DECIMAL" property="rewardsMoney" />
     <result column="rewards_money_ratio" jdbcType="REAL" property="rewardsMoneyRatio" />
+    <result column="first_order_pulse_pt" jdbcType="INTEGER" property="firstOrderPulsePt" />
     <result column="first_order_pulse" jdbcType="INTEGER" property="firstOrderPulse" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
     <result column="gold" jdbcType="INTEGER" property="gold" />
@@ -41,9 +43,10 @@
       WARNING - @mbg.generated
     -->
     id, shop_id, product_id, product_name, product_detail_group_name, price, personal_price, 
-    return_cash_ratio, return_cash_money, count, weight, ship, silver, place_order_return_pulse, 
-    rewards_money, rewards_money_ratio, first_order_pulse, people_num, gold, cost_price, 
-    score, state, reference_price, discount, product_profit_money, product_profit_ratio, 
-    remark, product_image_url, created_at, updated_at
+    return_cash_ratio, return_cash_money, count, weight, ship, silver, place_order_return_pulse_pt, 
+    place_order_return_pulse, rewards_money, rewards_money_ratio, first_order_pulse_pt, 
+    first_order_pulse, people_num, gold, cost_price, score, state, reference_price, discount, 
+    product_profit_money, product_profit_ratio, remark, product_image_url, created_at, 
+    updated_at
   </sql>
 </mapper>

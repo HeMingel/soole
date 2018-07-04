@@ -17,7 +17,6 @@
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="orders_num" jdbcType="INTEGER" property="ordersNum" />
     <result column="surplus_product_count" jdbcType="INTEGER" property="surplusProductCount" />
     <result column="award_peas_counts" jdbcType="DOUBLE" property="awardPeasCounts" />
     <result column="awward_money" jdbcType="DOUBLE" property="awwardMoney" />
@@ -27,6 +26,7 @@
     <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
     <result column="reference_peas" jdbcType="INTEGER" property="referencePeas" />
+    <result column="orders_num" jdbcType="INTEGER" property="ordersNum" />
     <result column="reward_value" jdbcType="DOUBLE" property="rewardValue" />
     <result column="return_money" jdbcType="DECIMAL" property="returnMoney" />
     <result column="return_peas" jdbcType="INTEGER" property="returnPeas" />
@@ -40,9 +40,9 @@
       WARNING - @mbg.generated
     -->
     id, product_id, activity_id, activity_product_repository_serial_number, price, reference_price, 
-    peas, personal_price, begin_time, end_time, count, people_num, orders_num, surplus_product_count, 
+    peas, personal_price, begin_time, end_time, count, people_num, surplus_product_count, 
     award_peas_counts, awward_money, create_time, creator, restrict_count, presell_shipments_days, 
-    enabled, reference_peas, reward_value, return_money, return_peas, sharing_rewards_id, 
+    enabled, reference_peas, orders_num, reward_value, return_money, return_peas, sharing_rewards_id, 
     group_id, created_at, updated_at
   </sql>
 </mapper>

@@ -97,6 +97,12 @@ public class SlShop implements Serializable {
     private Integer silver;
 
     /**
+     * 是否签署《商家入驻协议及委托收款协议》
+     */
+    @Column(name = "is_agreement")
+    private Boolean isAgreement;
+
+    /**
      * 评分
      */
     private Double rating;
@@ -415,6 +421,24 @@ public class SlShop implements Serializable {
     }
 
     /**
+     * 获取是否签署《商家入驻协议及委托收款协议》
+     *
+     * @return is_agreement - 是否签署《商家入驻协议及委托收款协议》
+     */
+    public Boolean getIsAgreement() {
+        return isAgreement;
+    }
+
+    /**
+     * 设置是否签署《商家入驻协议及委托收款协议》
+     *
+     * @param isAgreement 是否签署《商家入驻协议及委托收款协议》
+     */
+    public void setIsAgreement(Boolean isAgreement) {
+        this.isAgreement = isAgreement;
+    }
+
+    /**
      * 获取评分
      *
      * @return rating - 评分
@@ -526,6 +550,7 @@ public class SlShop implements Serializable {
         sb.append(", money=").append(money);
         sb.append(", coin=").append(coin);
         sb.append(", silver=").append(silver);
+        sb.append(", isAgreement=").append(isAgreement);
         sb.append(", rating=").append(rating);
         sb.append(", phone=").append(phone);
         sb.append(", shopType=").append(shopType);

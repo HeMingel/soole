@@ -20,6 +20,12 @@ public class SlAdminMessage implements Serializable {
     private String amUserId;
 
     /**
+     * 商品ID(针对需要商家后台审核的商品通知)
+     */
+    @Column(name = "am_product_id")
+    private String amProductId;
+
+    /**
      * 消息标题
      */
     @Column(name = "am_title")
@@ -97,6 +103,24 @@ public class SlAdminMessage implements Serializable {
      */
     public void setAmUserId(String amUserId) {
         this.amUserId = amUserId == null ? null : amUserId.trim();
+    }
+
+    /**
+     * 获取商品ID(针对需要商家后台审核的商品通知)
+     *
+     * @return am_product_id - 商品ID(针对需要商家后台审核的商品通知)
+     */
+    public String getAmProductId() {
+        return amProductId;
+    }
+
+    /**
+     * 设置商品ID(针对需要商家后台审核的商品通知)
+     *
+     * @param amProductId 商品ID(针对需要商家后台审核的商品通知)
+     */
+    public void setAmProductId(String amProductId) {
+        this.amProductId = amProductId == null ? null : amProductId.trim();
     }
 
     /**
@@ -233,6 +257,7 @@ public class SlAdminMessage implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", amUserId=").append(amUserId);
+        sb.append(", amProductId=").append(amProductId);
         sb.append(", amTitle=").append(amTitle);
         sb.append(", amUserType=").append(amUserType);
         sb.append(", amMsgType=").append(amMsgType);

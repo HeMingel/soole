@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_boon")
 public class SlBoon implements Serializable {
@@ -48,6 +48,36 @@ public class SlBoon implements Serializable {
      */
     @Column(name = "is_wheel_sowing")
     private Byte isWheelSowing;
+
+    /**
+     * 单人总抽奖机会 0.表示不限
+     */
+    @Column(name = "one_draw_count")
+    private Integer oneDrawCount;
+
+    /**
+     * 每人每天抽奖次数 0.表示不限
+     */
+    @Column(name = "day_draw_count")
+    private Integer dayDrawCount;
+
+    /**
+     * 新用户免费次数 0.表示无
+     */
+    @Column(name = "new_user_free_draw_count")
+    private Integer newUserFreeDrawCount;
+
+    /**
+     * 是否收费  0.表示不收费
+     */
+    @Column(name = "collect_money")
+    private Integer collectMoney;
+
+    /**
+     * 用户等级限制，此处填写等级id
+     */
+    @Column(name = "level_id")
+    private String levelId;
 
     /**
      * 活动开始时间
@@ -210,6 +240,96 @@ public class SlBoon implements Serializable {
     }
 
     /**
+     * 获取单人总抽奖机会 0.表示不限
+     *
+     * @return one_draw_count - 单人总抽奖机会 0.表示不限
+     */
+    public Integer getOneDrawCount() {
+        return oneDrawCount;
+    }
+
+    /**
+     * 设置单人总抽奖机会 0.表示不限
+     *
+     * @param oneDrawCount 单人总抽奖机会 0.表示不限
+     */
+    public void setOneDrawCount(Integer oneDrawCount) {
+        this.oneDrawCount = oneDrawCount;
+    }
+
+    /**
+     * 获取每人每天抽奖次数 0.表示不限
+     *
+     * @return day_draw_count - 每人每天抽奖次数 0.表示不限
+     */
+    public Integer getDayDrawCount() {
+        return dayDrawCount;
+    }
+
+    /**
+     * 设置每人每天抽奖次数 0.表示不限
+     *
+     * @param dayDrawCount 每人每天抽奖次数 0.表示不限
+     */
+    public void setDayDrawCount(Integer dayDrawCount) {
+        this.dayDrawCount = dayDrawCount;
+    }
+
+    /**
+     * 获取新用户免费次数 0.表示无
+     *
+     * @return new_user_free_draw_count - 新用户免费次数 0.表示无
+     */
+    public Integer getNewUserFreeDrawCount() {
+        return newUserFreeDrawCount;
+    }
+
+    /**
+     * 设置新用户免费次数 0.表示无
+     *
+     * @param newUserFreeDrawCount 新用户免费次数 0.表示无
+     */
+    public void setNewUserFreeDrawCount(Integer newUserFreeDrawCount) {
+        this.newUserFreeDrawCount = newUserFreeDrawCount;
+    }
+
+    /**
+     * 获取是否收费  0.表示不收费
+     *
+     * @return collect_money - 是否收费  0.表示不收费
+     */
+    public Integer getCollectMoney() {
+        return collectMoney;
+    }
+
+    /**
+     * 设置是否收费  0.表示不收费
+     *
+     * @param collectMoney 是否收费  0.表示不收费
+     */
+    public void setCollectMoney(Integer collectMoney) {
+        this.collectMoney = collectMoney;
+    }
+
+    /**
+     * 获取用户等级限制，此处填写等级id
+     *
+     * @return level_id - 用户等级限制，此处填写等级id
+     */
+    public String getLevelId() {
+        return levelId;
+    }
+
+    /**
+     * 设置用户等级限制，此处填写等级id
+     *
+     * @param levelId 用户等级限制，此处填写等级id
+     */
+    public void setLevelId(String levelId) {
+        this.levelId = levelId == null ? null : levelId.trim();
+    }
+
+    /**
      * 获取活动开始时间
      *
      * @return create_time - 活动开始时间
@@ -277,6 +397,11 @@ public class SlBoon implements Serializable {
         sb.append(", factJoinPeopleNumber=").append(factJoinPeopleNumber);
         sb.append(", ruleDeclaration=").append(ruleDeclaration);
         sb.append(", isWheelSowing=").append(isWheelSowing);
+        sb.append(", oneDrawCount=").append(oneDrawCount);
+        sb.append(", dayDrawCount=").append(dayDrawCount);
+        sb.append(", newUserFreeDrawCount=").append(newUserFreeDrawCount);
+        sb.append(", collectMoney=").append(collectMoney);
+        sb.append(", levelId=").append(levelId);
         sb.append(", createTime=").append(createTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", updateTime=").append(updateTime);

@@ -30,16 +30,16 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="has_virtual_group_people" jdbcType="INTEGER" property="hasVirtualGroupPeople"/>
     <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="virtual_open" jdbcType="INTEGER" property="virtualOpen" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, serial_number, user_id, total_amount, deduct_total_pulse, payment_state, payment_channel,
-      pay_time, pay_time_stamp, status, consigneeName, consigneePhone, province, city,
-      county, detailed, spell_group_status, group_master, share_count, create_time, updated_at,
-      activity_product_id, created_at, remark, type, has_virtual_group_people, fee
+    id, serial_number, user_id, total_amount, deduct_total_pulse, payment_state, payment_channel, 
+    pay_time, pay_time_stamp, status, consigneeName, consigneePhone, province, city, 
+    county, detailed, spell_group_status, group_master, share_count, create_time, updated_at, 
+    activity_product_id, created_at, remark, type, fee, virtual_open
   </sql>
 </mapper>

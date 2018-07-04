@@ -28,21 +28,23 @@
     <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="captain" jdbcType="INTEGER" property="captain" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="circle_state" jdbcType="INTEGER" property="circleState" />
     <result column="login_count" jdbcType="INTEGER" property="loginCount" />
     <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-      <result column="is_virtual" jdbcType="TINYINT" property="isVirtual"/>
+    <result column="zone" jdbcType="VARCHAR" property="zone" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, username, password, pay_password, nick_name, name, card_type, card_number, sex,
-      birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver,
-      money, client_id, client_secret, open_id, type, status, login_count, last_login,
-      created_at, updated_at, is_virtual
+    id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
+    birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
+    money, client_id, client_secret, open_id, captain, type, status, circle_state, login_count, 
+    last_login, created_at, updated_at, zone
   </sql>
 </mapper>

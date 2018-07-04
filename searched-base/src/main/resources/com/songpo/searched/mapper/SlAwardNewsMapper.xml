@@ -5,10 +5,16 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="an_user_id" jdbcType="VARCHAR" property="anUserId" />
     <result column="an_number" jdbcType="INTEGER" property="anNumber" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, an_user_id, an_number, created_at, updated_at
+  </sql>
 </mapper>

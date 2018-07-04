@@ -42,15 +42,15 @@ public class SlRedPacket implements Serializable {
     private Boolean type;
 
     /**
-     * 红包类型  1.单聊红包   2.群红包
+     * 红包类型  1.单聊红包   2.群红包  3.消费红包(分享奖励商品)  4.分享红包(分享奖励商品)
      */
     @Column(name = "red_packet_type")
-    private Boolean redPacketType;
+    private Byte redPacketType;
 
     /**
-     * 红包结果  1.有效  2.已抢完  3.过期
+     * 红包结果  1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品)
      */
-    private Boolean result;
+    private Byte result;
 
     /**
      * 红包发送时间
@@ -81,6 +81,12 @@ public class SlRedPacket implements Serializable {
      */
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /**
+     * 分享-订单表的主键
+     */
+    @Column(name = "order_extend_id")
+    private String orderExtendId;
 
     private static final long serialVersionUID = 1L;
 
@@ -203,38 +209,38 @@ public class SlRedPacket implements Serializable {
     }
 
     /**
-     * 获取红包类型  1.单聊红包   2.群红包
+     * 获取红包类型  1.单聊红包   2.群红包  3.消费红包(分享奖励商品)  4.分享红包(分享奖励商品)
      *
-     * @return red_packet_type - 红包类型  1.单聊红包   2.群红包
+     * @return red_packet_type - 红包类型  1.单聊红包   2.群红包  3.消费红包(分享奖励商品)  4.分享红包(分享奖励商品)
      */
-    public Boolean getRedPacketType() {
+    public Byte getRedPacketType() {
         return redPacketType;
     }
 
     /**
-     * 设置红包类型  1.单聊红包   2.群红包
+     * 设置红包类型  1.单聊红包   2.群红包  3.消费红包(分享奖励商品)  4.分享红包(分享奖励商品)
      *
-     * @param redPacketType 红包类型  1.单聊红包   2.群红包
+     * @param redPacketType 红包类型  1.单聊红包   2.群红包  3.消费红包(分享奖励商品)  4.分享红包(分享奖励商品)
      */
-    public void setRedPacketType(Boolean redPacketType) {
+    public void setRedPacketType(Byte redPacketType) {
         this.redPacketType = redPacketType;
     }
 
     /**
-     * 获取红包结果  1.有效  2.已抢完  3.过期
+     * 获取红包结果  1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品)
      *
-     * @return result - 红包结果  1.有效  2.已抢完  3.过期
+     * @return result - 红包结果  1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品)
      */
-    public Boolean getResult() {
+    public Byte getResult() {
         return result;
     }
 
     /**
-     * 设置红包结果  1.有效  2.已抢完  3.过期
+     * 设置红包结果  1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品)
      *
-     * @param result 红包结果  1.有效  2.已抢完  3.过期
+     * @param result 红包结果  1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品)
      */
-    public void setResult(Boolean result) {
+    public void setResult(Byte result) {
         this.result = result;
     }
 
@@ -328,6 +334,24 @@ public class SlRedPacket implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * 获取分享-订单表的主键
+     *
+     * @return order_extend_id - 分享-订单表的主键
+     */
+    public String getOrderExtendId() {
+        return orderExtendId;
+    }
+
+    /**
+     * 设置分享-订单表的主键
+     *
+     * @param orderExtendId 分享-订单表的主键
+     */
+    public void setOrderExtendId(String orderExtendId) {
+        this.orderExtendId = orderExtendId == null ? null : orderExtendId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -348,6 +372,7 @@ public class SlRedPacket implements Serializable {
         sb.append(", timedTime=").append(timedTime);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", orderExtendId=").append(orderExtendId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

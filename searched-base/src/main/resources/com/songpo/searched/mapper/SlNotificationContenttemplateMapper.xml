@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.SlNotificationContenttemplateMapper">
-    <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlNotificationContenttemplate">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="templateText" jdbcType="VARCHAR" property="templatetext"/>
-        <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
-        <result column="updateUser" jdbcType="VARCHAR" property="updateuser"/>
-        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
-        <result column="createUser" jdbcType="VARCHAR" property="createuser"/>
-        <result column="type_id" jdbcType="VARCHAR" property="typeId"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        id, templateText, title, updateTime, updateUser, createTime, createUser, type_id
-    </sql>
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlNotificationContenttemplate">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="templateText" jdbcType="VARCHAR" property="templatetext" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateUser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createUser" jdbcType="VARCHAR" property="createuser" />
+    <result column="type_id" jdbcType="VARCHAR" property="typeId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, templateText, title, updateTime, updateUser, createTime, createUser, type_id
+  </sql>
 </mapper>

@@ -12,19 +12,20 @@
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="surplus_count" jdbcType="INTEGER" property="surplusCount" />
     <result column="type" jdbcType="BIT" property="type" />
-    <result column="red_packet_type" jdbcType="BIT" property="redPacketType" />
-    <result column="result" jdbcType="BIT" property="result" />
+    <result column="red_packet_type" jdbcType="TINYINT" property="redPacketType" />
+    <result column="result" jdbcType="TINYINT" property="result" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="timed_time" jdbcType="TIMESTAMP" property="timedTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="order_extend_id" jdbcType="VARCHAR" property="orderExtendId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, user_id, money, surplus_money, count, surplus_count, type, red_packet_type, result, 
-    create_time, end_time, timed_time, created_at, updated_at
+    create_time, end_time, timed_time, created_at, updated_at, order_extend_id
   </sql>
 </mapper>

@@ -49,10 +49,16 @@ public class SlProduct implements Serializable {
     private Integer commentNum;
 
     /**
-     * 销量
+     * 真实销量
      */
     @Column(name = "sales_volume")
     private Integer salesVolume;
+
+    /**
+     * 虚拟销量
+     */
+    @Column(name = "sales_virtual")
+    private Integer salesVirtual;
 
     /**
      * 店铺唯一标识符
@@ -107,7 +113,7 @@ public class SlProduct implements Serializable {
     /**
      * 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
      */
-    private Boolean ship;
+    private Integer ship;
 
     /**
      * （暂未使用）关键词
@@ -135,12 +141,6 @@ public class SlProduct implements Serializable {
      */
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    /**
-     * 虚拟销量
-     */
-    @Column(name = "sales_virtual")
-    private Integer salesVirtual;
 
     /**
      * 商品详情（存放商品的图文和详情图片 h5展示）
@@ -276,21 +276,39 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取销量
+     * 获取真实销量
      *
-     * @return sales_volume - 销量
+     * @return sales_volume - 真实销量
      */
     public Integer getSalesVolume() {
         return salesVolume;
     }
 
     /**
-     * 设置销量
+     * 设置真实销量
      *
-     * @param salesVolume 销量
+     * @param salesVolume 真实销量
      */
     public void setSalesVolume(Integer salesVolume) {
         this.salesVolume = salesVolume;
+    }
+
+    /**
+     * 获取虚拟销量
+     *
+     * @return sales_virtual - 虚拟销量
+     */
+    public Integer getSalesVirtual() {
+        return salesVirtual;
+    }
+
+    /**
+     * 设置虚拟销量
+     *
+     * @param salesVirtual 虚拟销量
+     */
+    public void setSalesVirtual(Integer salesVirtual) {
+        this.salesVirtual = salesVirtual;
     }
 
     /**
@@ -460,7 +478,7 @@ public class SlProduct implements Serializable {
      *
      * @return ship - 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
      */
-    public Boolean getShip() {
+    public Integer getShip() {
         return ship;
     }
 
@@ -469,7 +487,7 @@ public class SlProduct implements Serializable {
      *
      * @param ship 第二版运费修改  1.包邮2.部分地区不包邮(李鑫添加)
      */
-    public void setShip(Boolean ship) {
+    public void setShip(Integer ship) {
         this.ship = ship;
     }
 
@@ -564,24 +582,6 @@ public class SlProduct implements Serializable {
     }
 
     /**
-     * 获取虚拟销量
-     *
-     * @return sales_virtual - 虚拟销量
-     */
-    public Integer getSalesVirtual() {
-        return salesVirtual;
-    }
-
-    /**
-     * 设置虚拟销量
-     *
-     * @param salesVirtual 虚拟销量
-     */
-    public void setSalesVirtual(Integer salesVirtual) {
-        this.salesVirtual = salesVirtual;
-    }
-
-    /**
      * 获取商品详情（存放商品的图文和详情图片 h5展示）
      *
      * @return detail - 商品详情（存放商品的图文和详情图片 h5展示）
@@ -613,6 +613,7 @@ public class SlProduct implements Serializable {
         sb.append(", productTypeId=").append(productTypeId);
         sb.append(", commentNum=").append(commentNum);
         sb.append(", salesVolume=").append(salesVolume);
+        sb.append(", salesVirtual=").append(salesVirtual);
         sb.append(", shopId=").append(shopId);
         sb.append(", salesModeId=").append(salesModeId);
         sb.append(", creator=").append(creator);
@@ -628,7 +629,6 @@ public class SlProduct implements Serializable {
         sb.append(", remark=").append(remark);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", salesVirtual=").append(salesVirtual);
         sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

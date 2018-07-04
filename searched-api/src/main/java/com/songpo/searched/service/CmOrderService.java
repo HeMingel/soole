@@ -2526,16 +2526,28 @@ public class CmOrderService {
                         SlOrder slOrder = orderService.selectByPrimaryKey(slOrderDetail.getOrderId());
                          if (slOrder.getPaymentState() == 1 ) {
                              saveSlbBuy(slSlbType,slOrder,slOrderDetail);
-                             log.debug("给订单ID{}返回搜了贝成功",slOrderDetail.getOrderId());
-                         }
-                         //给邀请人返贝
-                         if (slOrderDetail.getInviterId() != null && slOrderDetail.getInviterId()!= 0 ) {
-                             SlUser user = userService.selectOne( new SlUser(){{
-                                 setUsername(slOrderDetail.getInviterId());
-                             }});
-                             BigDecimal slb = price.multiply(new BigDecimal(0.05));
-                             saveSlbInvite(user,slOrder,slSlbType,slb);
-                             log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
+                             log.debug("给订单ID{}返回搜了贝成功,该商品的订单支付状态为{}",slOrderDetail.getOrderId(),slOrder.getPaymentState());
+                             //给邀请人返贝
+                             if (slOrderDetail.getInviterId() != null && slOrderDetail.getInviterId()!= 0 ) {
+                                 SlUser user = userService.selectOne( new SlUser(){{
+                                     setUsername(slOrderDetail.getInviterId());
+                                 }});
+                                 //平台账号
+                                 SlUser platform = userService.selectOne( new SlUser(){{
+                                    setUsername(7777);
+                                 }});
+                                    if (user != null) {
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        saveSlbInvite(user,slOrder,slSlbType,slb);
+                                        log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
+                                    } else{
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        saveSlbInvite(platform,slOrder,slSlbType,slb);
+                                        log.debug("给邀请人{}返回搜了贝成功",platform.getUsername());
+                                    }
+
+
+                             }
                          }
                     }
                 }

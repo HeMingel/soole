@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_search_ring_news")
 public class SlSearchRingNews implements Serializable {
@@ -35,7 +35,7 @@ public class SlSearchRingNews implements Serializable {
     private Integer shareNum;
 
     /**
-     * 商品id（分享商品详情到搜圈时使用）
+     * 商品id（用户分享商品到搜圈时使用）
      */
     @Column(name = "product_id")
     private String productId;
@@ -158,18 +158,18 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
-     * 获取商品id（分享商品详情到搜圈时使用）
+     * 获取商品id（用户分享商品到搜圈时使用）
      *
-     * @return product_id - 商品id（分享商品详情到搜圈时使用）
+     * @return product_id - 商品id（用户分享商品到搜圈时使用）
      */
     public String getProductId() {
         return productId;
     }
 
     /**
-     * 设置商品id（分享商品详情到搜圈时使用）
+     * 设置商品id（用户分享商品到搜圈时使用）
      *
-     * @param productId 商品id（分享商品详情到搜圈时使用）
+     * @param productId 商品id（用户分享商品到搜圈时使用）
      */
     public void setProductId(String productId) {
         this.productId = productId == null ? null : productId.trim();

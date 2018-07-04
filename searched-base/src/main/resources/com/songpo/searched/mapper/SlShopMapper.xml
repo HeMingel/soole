@@ -21,6 +21,7 @@
     <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="coin" jdbcType="INTEGER" property="coin" />
     <result column="silver" jdbcType="INTEGER" property="silver" />
+    <result column="is_agreement" jdbcType="BIT" property="isAgreement" />
     <result column="rating" jdbcType="DOUBLE" property="rating" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="shop_type" jdbcType="INTEGER" property="shopType" />
@@ -33,6 +34,6 @@
     -->
     id, business_application_id, owner_id, product_type_id, quota_id, name, description, 
     image_url, logo_url, address, longitude, latitude, total_sales, money, coin, silver, 
-    rating, phone, shop_type, created_at, updated_at
+    is_agreement, rating, phone, shop_type, created_at, updated_at
   </sql>
 </mapper>

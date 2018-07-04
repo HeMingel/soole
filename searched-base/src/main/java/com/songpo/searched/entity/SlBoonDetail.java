@@ -1,8 +1,8 @@
 package com.songpo.searched.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sl_boon_detail")
 public class SlBoonDetail implements Serializable {
@@ -17,16 +17,22 @@ public class SlBoonDetail implements Serializable {
     private String boonId;
 
     /**
-     * 奖项类型  1.虚拟商品  2.实物商品
+     * 奖项类型 1.实物商品 2.虚拟商品
      */
     @Column(name = "prize_type")
     private Boolean prizeType;
 
     /**
-     * 奖励虚拟商品类别：0.奖励商品不是虚拟商品  1.金豆 2.银豆 3.券
+     * 奖励虚拟商品类别：1.奖励商品为实物商品 2.金豆 3.银豆 4.券
      */
     @Column(name = "deal_type")
     private String dealType;
+
+    /**
+     * 虚拟商品价值数量
+     */
+    @Column(name = "vir_value")
+    private Integer virValue;
 
     /**
      * 商品名称
@@ -40,13 +46,7 @@ public class SlBoonDetail implements Serializable {
     private String imageUrl;
 
     /**
-     * 奖励数量
-     */
-    @Column(name = "prize_count")
-    private Boolean prizeCount;
-
-    /**
-     * 抽奖商品总数量
+     * 该商品在本次活动中的总数量
      */
     private Integer count;
 
@@ -62,9 +62,33 @@ public class SlBoonDetail implements Serializable {
     private Integer result;
 
     /**
-     * 抽奖概率（百分比，例：50%）
+     * 抽奖概率，可以精确到0.01%（百分比，例：50%）
      */
     private Double chance;
+
+    /**
+     * 商品链接地址（针对实物商品）
+     */
+    @Column(name = "product_url")
+    private String productUrl;
+
+    /**
+     * 市场价格（针对实物商品）
+     */
+    @Column(name = "market_price")
+    private Double marketPrice;
+
+    /**
+     * 转盘价格最小值（针对实物商品）
+     */
+    @Column(name = "boon_little_price")
+    private Double boonLittlePrice;
+
+    /**
+     * 转盘价格最大值（针对实物商品）
+     */
+    @Column(name = "boon_big_price")
+    private Double boonBigPrice;
 
     /**
      * 创建时间
@@ -113,39 +137,57 @@ public class SlBoonDetail implements Serializable {
     }
 
     /**
-     * 获取奖项类型  1.虚拟商品  2.实物商品
+     * 获取奖项类型 1.实物商品 2.虚拟商品
      *
-     * @return prize_type - 奖项类型  1.虚拟商品  2.实物商品
+     * @return prize_type - 奖项类型 1.实物商品 2.虚拟商品
      */
     public Boolean getPrizeType() {
         return prizeType;
     }
 
     /**
-     * 设置奖项类型  1.虚拟商品  2.实物商品
+     * 设置奖项类型 1.实物商品 2.虚拟商品
      *
-     * @param prizeType 奖项类型  1.虚拟商品  2.实物商品
+     * @param prizeType 奖项类型 1.实物商品 2.虚拟商品
      */
     public void setPrizeType(Boolean prizeType) {
         this.prizeType = prizeType;
     }
 
     /**
-     * 获取奖励虚拟商品类别：0.奖励商品不是虚拟商品  1.金豆 2.银豆 3.券
+     * 获取奖励虚拟商品类别：1.奖励商品为实物商品 2.金豆 3.银豆 4.券
      *
-     * @return deal_type - 奖励虚拟商品类别：0.奖励商品不是虚拟商品  1.金豆 2.银豆 3.券
+     * @return deal_type - 奖励虚拟商品类别：1.奖励商品为实物商品 2.金豆 3.银豆 4.券
      */
     public String getDealType() {
         return dealType;
     }
 
     /**
-     * 设置奖励虚拟商品类别：0.奖励商品不是虚拟商品  1.金豆 2.银豆 3.券
+     * 设置奖励虚拟商品类别：1.奖励商品为实物商品 2.金豆 3.银豆 4.券
      *
-     * @param dealType 奖励虚拟商品类别：0.奖励商品不是虚拟商品  1.金豆 2.银豆 3.券
+     * @param dealType 奖励虚拟商品类别：1.奖励商品为实物商品 2.金豆 3.银豆 4.券
      */
     public void setDealType(String dealType) {
         this.dealType = dealType == null ? null : dealType.trim();
+    }
+
+    /**
+     * 获取虚拟商品价值数量
+     *
+     * @return vir_value - 虚拟商品价值数量
+     */
+    public Integer getVirValue() {
+        return virValue;
+    }
+
+    /**
+     * 设置虚拟商品价值数量
+     *
+     * @param virValue 虚拟商品价值数量
+     */
+    public void setVirValue(Integer virValue) {
+        this.virValue = virValue;
     }
 
     /**
@@ -185,36 +227,18 @@ public class SlBoonDetail implements Serializable {
     }
 
     /**
-     * 获取奖励数量
+     * 获取该商品在本次活动中的总数量
      *
-     * @return prize_count - 奖励数量
-     */
-    public Boolean getPrizeCount() {
-        return prizeCount;
-    }
-
-    /**
-     * 设置奖励数量
-     *
-     * @param prizeCount 奖励数量
-     */
-    public void setPrizeCount(Boolean prizeCount) {
-        this.prizeCount = prizeCount;
-    }
-
-    /**
-     * 获取抽奖商品总数量
-     *
-     * @return count - 抽奖商品总数量
+     * @return count - 该商品在本次活动中的总数量
      */
     public Integer getCount() {
         return count;
     }
 
     /**
-     * 设置抽奖商品总数量
+     * 设置该商品在本次活动中的总数量
      *
-     * @param count 抽奖商品总数量
+     * @param count 该商品在本次活动中的总数量
      */
     public void setCount(Integer count) {
         this.count = count;
@@ -257,21 +281,93 @@ public class SlBoonDetail implements Serializable {
     }
 
     /**
-     * 获取抽奖概率（百分比，例：50%）
+     * 获取抽奖概率，可以精确到0.01%（百分比，例：50%）
      *
-     * @return chance - 抽奖概率（百分比，例：50%）
+     * @return chance - 抽奖概率，可以精确到0.01%（百分比，例：50%）
      */
     public Double getChance() {
         return chance;
     }
 
     /**
-     * 设置抽奖概率（百分比，例：50%）
+     * 设置抽奖概率，可以精确到0.01%（百分比，例：50%）
      *
-     * @param chance 抽奖概率（百分比，例：50%）
+     * @param chance 抽奖概率，可以精确到0.01%（百分比，例：50%）
      */
     public void setChance(Double chance) {
         this.chance = chance;
+    }
+
+    /**
+     * 获取商品链接地址（针对实物商品）
+     *
+     * @return product_url - 商品链接地址（针对实物商品）
+     */
+    public String getProductUrl() {
+        return productUrl;
+    }
+
+    /**
+     * 设置商品链接地址（针对实物商品）
+     *
+     * @param productUrl 商品链接地址（针对实物商品）
+     */
+    public void setProductUrl(String productUrl) {
+        this.productUrl = productUrl == null ? null : productUrl.trim();
+    }
+
+    /**
+     * 获取市场价格（针对实物商品）
+     *
+     * @return market_price - 市场价格（针对实物商品）
+     */
+    public Double getMarketPrice() {
+        return marketPrice;
+    }
+
+    /**
+     * 设置市场价格（针对实物商品）
+     *
+     * @param marketPrice 市场价格（针对实物商品）
+     */
+    public void setMarketPrice(Double marketPrice) {
+        this.marketPrice = marketPrice;
+    }
+
+    /**
+     * 获取转盘价格最小值（针对实物商品）
+     *
+     * @return boon_little_price - 转盘价格最小值（针对实物商品）
+     */
+    public Double getBoonLittlePrice() {
+        return boonLittlePrice;
+    }
+
+    /**
+     * 设置转盘价格最小值（针对实物商品）
+     *
+     * @param boonLittlePrice 转盘价格最小值（针对实物商品）
+     */
+    public void setBoonLittlePrice(Double boonLittlePrice) {
+        this.boonLittlePrice = boonLittlePrice;
+    }
+
+    /**
+     * 获取转盘价格最大值（针对实物商品）
+     *
+     * @return boon_big_price - 转盘价格最大值（针对实物商品）
+     */
+    public Double getBoonBigPrice() {
+        return boonBigPrice;
+    }
+
+    /**
+     * 设置转盘价格最大值（针对实物商品）
+     *
+     * @param boonBigPrice 转盘价格最大值（针对实物商品）
+     */
+    public void setBoonBigPrice(Double boonBigPrice) {
+        this.boonBigPrice = boonBigPrice;
     }
 
     /**
@@ -320,13 +416,17 @@ public class SlBoonDetail implements Serializable {
         sb.append(", boonId=").append(boonId);
         sb.append(", prizeType=").append(prizeType);
         sb.append(", dealType=").append(dealType);
+        sb.append(", virValue=").append(virValue);
         sb.append(", name=").append(name);
         sb.append(", imageUrl=").append(imageUrl);
-        sb.append(", prizeCount=").append(prizeCount);
         sb.append(", count=").append(count);
         sb.append(", surplusCount=").append(surplusCount);
         sb.append(", result=").append(result);
         sb.append(", chance=").append(chance);
+        sb.append(", productUrl=").append(productUrl);
+        sb.append(", marketPrice=").append(marketPrice);
+        sb.append(", boonLittlePrice=").append(boonLittlePrice);
+        sb.append(", boonBigPrice=").append(boonBigPrice);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

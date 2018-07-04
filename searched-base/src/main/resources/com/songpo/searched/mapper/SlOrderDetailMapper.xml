@@ -34,8 +34,8 @@
     <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
     <result column="type" jdbcType="INTEGER" property="type" />
-      <result column="check_state" jdbcType="BIT" property="checkState"/>
-      <result column="check_name" jdbcType="VARCHAR" property="checkName"/>
+    <result column="check_state" jdbcType="BIT" property="checkState" />
+    <result column="check_name" jdbcType="VARCHAR" property="checkName" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -44,18 +44,20 @@
     <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
     <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
     <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
-      <result column="is_virtual_spell_group" jdbcType="TINYINT" property="isVirtualSpellGroup"/>
+    <result column="is_virtual_spell_group" jdbcType="TINYINT" property="isVirtualSpellGroup" />
+    <result column="inviter_id" jdbcType="INTEGER" property="inviterId" />
+    <result column="is_delayed" jdbcType="INTEGER" property="isDelayed" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-      id, order_id, serial_number, shop_id, repository_id, product_id, product_name, product_image_url,
-      product_detail_group_name, shipping_state, quantity, price, deduct_total_silver,
-      confirm_receipt_time, creator, create_time, post_fee, buyer_message, shipping_time,
-      ems_id, ship_number, group_people, presell_shipments_days, return_cash_money, place_order_return_pulse,
-      rewards_money, share_of_people_id, activity_product_id, type, check_state, check_name,
-      modifier, modification_time, created_at, updated_at, discount, rebate_pulse, return_cash_pulse,
-      deduct_total_gold, is_virtual_spell_group
+    id, order_id, serial_number, shop_id, repository_id, product_id, product_name, product_image_url, 
+    product_detail_group_name, shipping_state, quantity, price, deduct_total_silver, 
+    confirm_receipt_time, creator, create_time, post_fee, buyer_message, shipping_time, 
+    ems_id, ship_number, group_people, presell_shipments_days, return_cash_money, place_order_return_pulse, 
+    rewards_money, share_of_people_id, activity_product_id, type, check_state, check_name, 
+    modifier, modification_time, created_at, updated_at, discount, rebate_pulse, return_cash_pulse, 
+    deduct_total_gold, is_virtual_spell_group, inviter_id, is_delayed
   </sql>
 </mapper>
