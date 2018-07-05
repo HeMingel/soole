@@ -163,11 +163,12 @@
 
   <!-- 查询我的分享以及详情-->
   <select id="selectShareList" resultType="map">
-
     SELECT
     sl.is_failure,
     su.nick_name AS shareUser,
     suu.nick_name AS buyUser,
+    DATE_ADD(sl.created_at,INTERVAL 24 HOUR)-unix_timestamp(now())as plusTime ,
+    ap.activity_id as activityId,
     sp.*,
     sb.`name`,
     oe.*,
@@ -175,6 +176,7 @@
     FROM sl_sharing_links sl
     LEFT JOIN sl_user su ON sl.share_person_id=su.id
     LEFT JOIN sl_product sp ON sl.product_id=sp.id
+    LEFT JOIN sl_activity_product ap ON sp.id = ap.`product_id`
     LEFT JOIN sl_order_extend oe ON sl.id=oe.service_id
     LEFT JOIN sl_red_packet rp ON oe.id=rp.order_extend_id
     LEFT JOIN sl_order_detail od ON oe.order_id=od.order_id
