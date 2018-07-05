@@ -110,9 +110,11 @@ public class CmOrderService {
     @Autowired
     private SlSlbTransactionMapper slbTransactionMapper;
     @Autowired
-    private  SlTotalPoolMapper slTotalPoolMapper;
+    private SlTotalPoolMapper slTotalPoolMapper;
     @Autowired
-    private  SlTotalPoolDetailMapper slTotalPoolDetailMapper;
+    private SlTotalPoolDetailMapper slTotalPoolDetailMapper;
+    @Autowired
+    private CmTotalPoolService cmTotalPoolService;
 
 
     /**
@@ -2093,12 +2095,13 @@ public class CmOrderService {
         //更新USER表信息
         user.setCoin(user.getCoin() + award);
         userService.updateByPrimaryKeySelective(user);
+        //更新资金池信息
+        cmTotalPoolService.updatePool(award,null,null,2,null,user.getId(),3);
         //更新订单分享次数
         order.setShareCount(order.getShareCount() + 1);
         order.setCreatedAt(null);
         order.setUpdatedAt(null);
         orderService.updateByPrimaryKeySelective(order);
-
         message.setData(award);
         message.setSuccess(true);
         log.debug("userId = {}分享orderId = {}获取银豆奖励{}个", user.getId(), orderId, award);

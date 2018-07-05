@@ -39,6 +39,8 @@ public class AccountService {
     private AliPayService aliPayService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CmTotalPoolService cmTotalPoolService;
 
     /**
      * 余额充值
@@ -213,6 +215,9 @@ public class AccountService {
                 setCoin(finalCoin);
             }});
            if (result > 0) {
+               //资金池相应的豆数
+               Integer addAndSubtract = type == 0 ? 2 :1;
+               cmTotalPoolService.updatePool(coin,null,null,addAndSubtract,null,userId,6);
                //添加交易记录
                SlTransactionDetail transactionDetail = new SlTransactionDetail();
                transactionDetail.setTargetId(user.getId());
