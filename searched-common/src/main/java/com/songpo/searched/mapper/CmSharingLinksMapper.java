@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface  CmSharingLinksMapper {
 
-    List<Map<String ,Object>>  listByUserId (@Param("userId") String userId);
+    List<Map<String ,Object>>    listByUserId (@Param("userId") String userId);
 
     /**
      * 根查询商品列表

@@ -11,6 +11,7 @@ import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmUserMapper;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
+import com.songpo.searched.service.CmTotalPoolService;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.MemberService;
 import com.songpo.searched.service.UserService;
@@ -69,6 +70,8 @@ public class SystemController {
     @Autowired
     private CmUserMapper cmUserMapper;
 
+    @Autowired
+    private CmTotalPoolService cmTotalPoolService;
     /**
      * 登录
      *
@@ -903,6 +906,8 @@ public class SystemController {
         // 设置创建时间
         detail.setCreateTime(new Date());
 
+        //资金池扣除银豆
+        cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS,null,null,2,null,userId,1);
         this.slTransactionDetailMapper.insertSelective(detail);
     }
 

@@ -9,7 +9,9 @@
               sp.`name` product_name,
               sp.`image_url`,
               ap.`price`,
-              ap.`awward_money`
+              ap.`awward_money`,
+              ap.`activity_id` as activityId,
+             TIMESTAMPDIFF(SECOND,sl.`created_at`,NOW()) AS plusTime
             FROM
               `sl_sharing_links` sl
               LEFT JOIN

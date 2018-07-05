@@ -14,8 +14,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +32,8 @@ public class SignInService {
     private UserCache userCache;
     @Autowired
     private SlTransactionDetailMapper transactionDetailMapper;
+    @Autowired
+    private CmTotalPoolService cmTotalPoolService;
 
     public BusinessMessage addSignIn() {
         BusinessMessage message = new BusinessMessage();
@@ -134,6 +134,8 @@ public class SignInService {
                     // 收入
                     setTransactionType(2);
                 }});
+                //资金池扣除相应的银豆
+                cmTotalPoolService.updatePool(null,signIn.getAwardSilver(),null,2,null,user.getId(),2);
             } else {
                 message.setMsg("签到信息错误");
             }
