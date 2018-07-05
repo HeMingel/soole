@@ -1133,7 +1133,7 @@ public class CmOrderService {
             repositoryCache.put(repository.getId(), repository);
 
             //更新数据库该商品规格的库存
-            int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
+            int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), cou);
             if (updateCount > 0) {
                 message.setMsg("订单生成成功");
                 message.setSuccess(true);

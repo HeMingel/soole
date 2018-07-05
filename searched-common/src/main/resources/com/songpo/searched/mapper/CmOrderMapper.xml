@@ -130,7 +130,7 @@
     <!--</select>-->
     <update id="reduceNumber">
         UPDATE sl_product_repository
-        SET count = count - #{count}
+        SET count =  #{count}
         where id = #{id} and
         count > 0
     </update>
