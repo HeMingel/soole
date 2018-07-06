@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlSlbTypeMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlSlbType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="slb_type" jdbcType="INTEGER" property="slbType" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="present_num" jdbcType="DECIMAL" property="presentNum" />
+    <result column="lock_time" jdbcType="VARCHAR" property="lockTime" />
+    <result column="release_num" jdbcType="DECIMAL" property="releaseNum" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, slb_type, price, present_num, lock_time, release_num, create_at, update_at
+  </sql>
+</mapper>

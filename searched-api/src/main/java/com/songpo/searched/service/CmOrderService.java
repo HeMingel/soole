@@ -2543,11 +2543,13 @@ public class CmOrderService {
                                     setUsername(7777);
                                  }});
                                     if (user != null) {
-                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05)).
+                                                multiply(new BigDecimal(slOrderDetail.getQuantity()));
                                         saveSlbInvite(user,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
                                     } else{
-                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05)).
+                                                multiply(new BigDecimal(slOrderDetail.getQuantity()));
                                         saveSlbInvite(platform,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",platform.getUsername());
                                     }

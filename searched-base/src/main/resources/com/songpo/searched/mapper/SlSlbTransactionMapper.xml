@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlSlbTransactionMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlSlbTransaction">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
+    <result column="target_id" jdbcType="VARCHAR" property="targetId" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="slb_type" jdbcType="INTEGER" property="slbType" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="slb" jdbcType="DECIMAL" property="slb" />
+    <result column="transaction_type" jdbcType="INTEGER" property="transactionType" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, source_id, target_id, order_id, slb_type, type, slb, transaction_type, created_at, 
+    updated_at
+  </sql>
+</mapper>

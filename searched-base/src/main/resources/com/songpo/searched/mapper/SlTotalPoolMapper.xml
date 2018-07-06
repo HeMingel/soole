@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlTotalPoolMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlTotalPool">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="pool_coin" jdbcType="INTEGER" property="poolCoin" />
+    <result column="pool_silver" jdbcType="INTEGER" property="poolSilver" />
+    <result column="pool_slb" jdbcType="DECIMAL" property="poolSlb" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, pool_coin, pool_silver, pool_slb, created_at, updated_at
+  </sql>
+</mapper>
