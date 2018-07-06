@@ -230,4 +230,11 @@ public interface CmProductMapper{
      * @return 商品集合
      */
     List<SlProduct> selectPowerShopping();
+
+    /**
+     * 根据商品详情表ID 查询分享奖励佣金
+     * @param orderDetailId
+     * @return
+     */
+    double getAwayMoneyByOrderDettailId(@Param("orderDetailId") String orderDetailId);
 }

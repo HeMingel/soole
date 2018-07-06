@@ -12,6 +12,7 @@ import com.songpo.searched.entity.SlSharingLinks;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmSharingLinksMapper;
 import com.songpo.searched.mapper.SlOrderExtendMapper;
+import com.songpo.searched.mapper.SlRedPacketMapper;
 import com.songpo.searched.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.RollbackException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +37,14 @@ public class CmSharingLinksService {
 
     @Autowired
     private SharingLinksService sharingLinksService;
-
     @Autowired
     private CmSharingLinksMapper cmSharingLinksMapper;
-
     @Autowired
     private LoginUserService loginUserService;
     @Autowired
     private OrderService orderService;
     @Autowired
     private SlOrderExtendMapper slOrderExtendMapper;
-
     @Autowired
     private CmRedPacketMapper cmRedPacketMapper;
     @Autowired
@@ -53,6 +53,12 @@ public class CmSharingLinksService {
     private  OrderExtendService orderExtendService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderDetailService orderDetailService;
+    @Autowired
+    private CmProductService cmProductService;
+    @Autowired
+    private SlRedPacketMapper slRedPacketMapper;
 
     /**
      * 添加链接记录
@@ -275,7 +281,7 @@ public class CmSharingLinksService {
      * @param linksId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public BusinessMessage saveOrderExtend(String linksId, String orderId) {
         BusinessMessage message = new BusinessMessage();
         try {
@@ -292,7 +298,59 @@ public class CmSharingLinksService {
                         }
                     });
                     if (result > 0) {
+                        SlOrderExtend slOrderExtend = slOrderExtendMapper.selectOne( new SlOrderExtend(){{
+                            setServiceId(linksId);
+                            setServiceType((byte) 1);
+                            setOrderId(orderId);
+                        }});
                         message.setMsg("添加成功");
+                        //添加红包表信息-添加分享人分享红包信息
+                        SlSharingLinks links = sharingLinksService.selectByPrimaryKey(linksId);
+                        //消费人用户ID
+                        String consumeId = order.getUserId();
+                        //分享人用户ID
+                        String ShareUserId = links.getSharePersonId();
+                        //订单详情列表
+                        List<SlOrderDetail> detailList = orderDetailService.select(new SlOrderDetail() {{
+                            setOrderId(orderId);
+                        }});
+                        /**
+                         *佣金数 分享者 消费者 获得佣金比例 9:1
+                         */
+                        double awayMoney = 0.0;
+                        if (detailList.size() > 0) {
+                            //循环订单 获取总的佣金数
+                            for (SlOrderDetail slOrderDetail : detailList) {
+                                awayMoney += cmProductService.getAwayMoneyByOrderDettailId(slOrderDetail.getId());
+                            }
+                            if ( awayMoney > 0 ) {
+                                //添加消费者红包
+                                BigDecimal money = new BigDecimal(awayMoney);
+                                slRedPacketMapper.insertSelective( new SlRedPacket(){{
+                                    setUserId(consumeId);
+                                    setMoney(money.multiply(new BigDecimal(0.1)));
+                                    setSurplusMoney(money.multiply(new BigDecimal(0.1)));
+                                    setType(true);
+                                    setCount(1);
+                                    setSurplusCount(1);
+                                    setRedPacketType((byte)3);
+                                    setResult((byte)4);
+                                    setOrderExtendId(slOrderExtend.getId());
+                                }});
+                                //添加分享者红包
+                                slRedPacketMapper.insertSelective( new SlRedPacket(){{
+                                    setUserId(ShareUserId);
+                                    setMoney(money.multiply(new BigDecimal(0.9)));
+                                    setSurplusMoney(money.multiply(new BigDecimal(0.9)));
+                                    setType(true);
+                                    setCount(1);
+                                    setSurplusCount(1);
+                                    setRedPacketType((byte)4);
+                                    setResult((byte)4);
+                                    setOrderExtendId(slOrderExtend.getId());
+                                }});
+                            }
+                        }
                         message.setSuccess(true);
                     } else {
                         message.setMsg("添加失败");
