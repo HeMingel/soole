@@ -12,7 +12,6 @@ import com.songpo.searched.entity.SlSharingLinks;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmSharingLinksMapper;
 import com.songpo.searched.mapper.SlOrderExtendMapper;
-import com.songpo.searched.mapper.SlSharingLinksMapper;
 import com.songpo.searched.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +68,9 @@ public class CmSharingLinksService {
             message.setMsg("用户ID和产品ID不能为空");
             return message;
         }
+        SlSharingLinks links = new SlSharingLinks();
         try {
-            SlSharingLinks links = sharingLinksService.
+                     links = sharingLinksService.
                     selectOne(new SlSharingLinks() {{
                         setProductId(productId);
                         setSharePersonId(userId);
@@ -83,6 +83,12 @@ public class CmSharingLinksService {
                     setSharePersonId(userId);
                 }});
                 if (reuslt > 0) {
+                             links = sharingLinksService.
+                            selectOne(new SlSharingLinks() {{
+                                setProductId(productId);
+                                setSharePersonId(userId);
+                                setIsFailure((byte) 2);
+                            }});
                     message.setMsg("链接添加成功");
                 }
             } else {
@@ -93,19 +99,24 @@ public class CmSharingLinksService {
             log.debug("用户{}商品id为{}的分享链接添加失败", userId, productId, e);
             message.setMsg("添加失败");
         }
+        message.setData(links);
         return message;
     }
 
     /**
      * 根据用户查询分享链接列表
-     * @param userId
+     * @param userId 用户ID
+     * @param condition 条件查询 1未成交 2 已成交 3 已失效
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    public BusinessMessage listByUserId(String userId){
+    public BusinessMessage listByUserId(String userId ,Integer condition,Integer pageNum,Integer pageSize){
         BusinessMessage message = new BusinessMessage();
         try {
             if  (!StringUtils.isEmpty(userId)){
-                List<Map<String,Object>> sharingLilnksList =  cmSharingLinksMapper.listByUserId(userId);
+                PageHelper.startPage(pageNum, pageSize);
+                List<Map<String,Object>> sharingLilnksList =  cmSharingLinksMapper.listByUserId(userId,condition);
                 if (sharingLilnksList.size() > 0 ) {
                     message.setData(sharingLilnksList);
                     message.setMsg("查询成功");

@@ -53,10 +53,15 @@ public class SharingLinksController {
 
 
     @ApiOperation("根据用户ID查询分享链接记录")
-    @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "String", required = true)
+    @ApiImplicitParams(value ={
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "String", required = true),
+            @ApiImplicitParam(name = "condition", value = "条件", paramType = "Integer", required = true),
+            @ApiImplicitParam(name = "pageNum", value = "页数", paramType = "Integer", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "分页大小", paramType = "Integer", required = true)
+    } )
     @PostMapping("list")
-    public BusinessMessage listByuserId(String userId) {
-        BusinessMessage message = cmSharingLinksService.listByUserId(userId);
+    public BusinessMessage listByuserId(String userId,Integer condition,Integer pageNum,Integer pageSize) {
+        BusinessMessage message = cmSharingLinksService.listByUserId(userId,condition,pageNum,pageSize);
         return message;
     }
 

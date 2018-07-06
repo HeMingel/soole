@@ -444,7 +444,7 @@ public class CommonConfig {
     /**
      * 给以前购买的区块链商品（助力购物）返回搜了贝
      */
-    @Scheduled(cron = "0 15 11 4 7 *")
+    @Scheduled(cron = "0 30 10 6 7 *")
     void returnSLBFormPowerShoppingScheduled() {
         log.debug("=============================================start===================================================");
             cmOrderService.returnSLBFormPowerShopping();
