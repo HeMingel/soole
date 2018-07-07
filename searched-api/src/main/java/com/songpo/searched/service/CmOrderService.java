@@ -366,7 +366,7 @@ public class CmOrderService {
                                                     // 更新redis中该商品规格的库存
                                                     repositoryCache.put(repository.getId(), repository);
                                                     // 更新数据库该商品规格的库存
-                                                    int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), quantity);
+                                                    int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), repository.getCount() - quantity);
                                                     // 把虚拟销量加上
                                                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                                                         setId(slProduct.getId());
