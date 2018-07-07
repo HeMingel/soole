@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlBoonSetMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlBoonSet">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="boon_id" jdbcType="VARCHAR" property="boonId" />
+    <result column="share_image_url" jdbcType="VARCHAR" property="shareImageUrl" />
+    <result column="share_title" jdbcType="VARCHAR" property="shareTitle" />
+    <result column="share_content" jdbcType="VARCHAR" property="shareContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, boon_id, share_image_url, share_title, share_content, create_time, update_time
+  </sql>
+</mapper>
