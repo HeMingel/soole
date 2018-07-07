@@ -498,6 +498,17 @@
         ON p.sales_mode_id=sm.id
         where p.sales_mode_id=5 and p.del = 0
     </select>
+
+    <select id="getAwayMoneyByOrderDettailId" parameterType="String" resultType="double">
+        SELECT
+          ap.`awward_money`
+        FROM
+          `sl_activity_product` ap
+          LEFT JOIN `sl_order_detail` od
+            ON od.`activity_product_id` = ap.`id`
+        WHERE od.`id` = #{orderDetailId}
+        LIMIT 0, 1
+    </select>
 </mapper>
 
 

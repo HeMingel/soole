@@ -669,4 +669,13 @@ public class CmProductService {
                 message.setSuccess(true);
         return message;
     }
+
+    /**
+     * 根据商品详情表ID 查询分享奖励佣金
+     * @param orderDetailId
+     * @return
+     */
+    public double getAwayMoneyByOrderDettailId (String orderDetailId){
+        return cmProductMapper.getAwayMoneyByOrderDettailId(orderDetailId);
+    }
 }

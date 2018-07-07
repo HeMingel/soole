@@ -2467,7 +2467,8 @@ public class CmOrderService {
         }
 
         //资金池搜了贝修改以及搜了贝交易记录
-        savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
+        //savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
+        cmTotalPoolService.updatePool(null,null,slb,2,slOrder.getId(),slOrder.getUserId(),5);
     }
 
     /**
@@ -2494,7 +2495,9 @@ public class CmOrderService {
             setSlbType(slSlbType.getSlbType());
         }});
         if(null != slUserSlb1){
-            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{setSlb(slUserSlb1.getSlb().add(bean));}});
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(bean));}});
         }else {
             SlUserSlb slUserSlb = new SlUserSlb();
             slUserSlb.setUserId(slUser.getId());
@@ -2502,8 +2505,8 @@ public class CmOrderService {
             slUserSlb.setSlbType(slSlbType.getSlbType());
             userSlbService.insert(slUserSlb);
         }
-
-        savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
+        cmTotalPoolService.updatePool(null,null,bean,2,slOrder.getId(),slOrder.getUserId(),8);
+      //  savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
     }
     /**
      *
@@ -2540,11 +2543,13 @@ public class CmOrderService {
                                     setUsername(7777);
                                  }});
                                     if (user != null) {
-                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05)).
+                                                multiply(new BigDecimal(slOrderDetail.getQuantity()));
                                         saveSlbInvite(user,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
                                     } else{
-                                        BigDecimal slb = price.multiply(new BigDecimal(0.05));
+                                        BigDecimal slb = price.multiply(new BigDecimal(0.05)).
+                                                multiply(new BigDecimal(slOrderDetail.getQuantity()));
                                         saveSlbInvite(platform,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",platform.getUsername());
                                     }
@@ -2559,30 +2564,5 @@ public class CmOrderService {
             log.error("给订单返回搜了贝失败",e);
         }
 
-    }
-
-    /**
-     *
-     *  资金池搜了贝修改以及搜了贝交易记录
-     * @param slb
-     * @param userId
-     * @param orderId
-     * @param type
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void savePoolSlb(BigDecimal slb, String userId, String orderId, int type ){
-        SlTotalPool slTotalPool = slTotalPoolMapper.selectOne(new SlTotalPool(){{
-            setId(BaseConstant.TOTAL_POOL_ID);
-        }});
-
-        slTotalPool.setPoolSlb(slTotalPool.getPoolSlb().subtract(slb));
-        slTotalPoolMapper.updateByPrimaryKey(slTotalPool);
-
-        slTotalPoolDetailMapper.insert(new SlTotalPoolDetail(){{
-            setPdUserId(userId);
-            setPdOrderId(orderId);
-            setPdType(type);
-            setPdSlb(slb);
-        }});
     }
 }

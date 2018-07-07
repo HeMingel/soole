@@ -80,7 +80,8 @@ public class CmTotalPoolService {
                 slTotalPoolDetail.setPdSilver(silver);
             }
             if (slb != null && slb.compareTo(new BigDecimal(0)) == 1) {
-                slTotalPool.setPoolSlb(addAndSubtract == 1 ? (poolSlb.add(slb)) : (poolSlb.divide(slb)));
+                poolSlb = addAndSubtract == 1 ? (poolSlb.add(slb)) : (poolSlb.subtract(slb));
+                slTotalPool.setPoolSlb(poolSlb);
                 slTotalPoolDetail.setPdSlb(slb);
             }
             Integer result = slTotalPoolMapper.updateByPrimaryKeySelective(slTotalPool);

@@ -3,7 +3,8 @@
 <mapper namespace="com.songpo.searched.mapper.CmSharingLinksMapper">
     <!--  列表查询用户分享链接-->
     <select id="listByUserId" resultType="map">
-            SELECT
+        SELECT temp2.* FROM (
+        SELECT
               sl.*,
               IFNULL(temp.counts,0) order_counts,
               sp.`name` product_name,
@@ -30,7 +31,17 @@
                 ON ap.`product_id` = sp.`id`
             WHERE sp.`sales_mode_id` = 7
               AND sl.`share_person_id` = #{userId}
-             ORDER BY sl.`created_at` DESC
+           ) temp2 WHERE 1=1
+            <if test="condition == 1">
+                AND  temp2.order_counts = 0
+            </if>
+            <if test="condition == 2">
+                AND  temp2.order_counts > 0
+            </if>
+            <if test="condition == 3">
+                AND  temp2.order_counts = 0 AND  temp2.`is_failure` = 1
+            </if>
+             ORDER BY temp2.`created_at` DESC
     </select>
   <!-- 查询商品,模式 活动 分类 名称 ; 智能排序以及各种排序 -->
 

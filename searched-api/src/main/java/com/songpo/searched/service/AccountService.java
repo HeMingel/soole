@@ -217,7 +217,7 @@ public class AccountService {
            if (result > 0) {
                //资金池相应的豆数
                Integer addAndSubtract = type == 0 ? 2 :1;
-               cmTotalPoolService.updatePool(coin,null,null,addAndSubtract,null,userId,6);
+               cmTotalPoolService.updatePool(number,null,null,addAndSubtract,null,userId,6);
                //添加交易记录
                SlTransactionDetail transactionDetail = new SlTransactionDetail();
                transactionDetail.setTargetId(user.getId());

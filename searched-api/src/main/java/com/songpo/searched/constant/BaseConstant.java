@@ -22,7 +22,7 @@ public class BaseConstant {
     public static final int REGISTER_PEAS = 16;
 
     /**
-     * 资金池主键ID
+     * 资金池主键ID 8C0E7538-8796-E590-20D7-B98EB3AE61B2
      */
     public static final String  TOTAL_POOL_ID = "8C0E7538-8796-E590-20D7-B98EB3AE61B2";
 }
