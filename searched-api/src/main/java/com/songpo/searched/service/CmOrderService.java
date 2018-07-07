@@ -11,7 +11,6 @@ import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.ActivityConstant;
-import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.constant.VirtualUserConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -124,7 +123,7 @@ public class CmOrderService {
      * @param detail            商品1的规格id|商品1的商品数量|商品1买家留言|分享人id(如果是分享奖励的话)
      * @param shippingAddressId 当前用户选择的收货地址id
      * @param postFee           邮费
-     * @param inviterId             邀请人ID
+     * @param inviterId         邀请人ID
      * @return
      */
     @Transactional
@@ -348,9 +347,11 @@ public class CmOrderService {
                                                     // 商品总库存 - 本次加入订单的数量
                                                     int activityProductCount = slActivityProduct.getCount() - quantity;
                                                     this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
-                                                        if (activityProductCount == 0) {
+                                                       /**
+                                                        * 注释原因:商品库存为0不自动下架
+                                                       if (activityProductCount == 0) {
                                                             setEnabled(false);
-                                                        }
+                                                        }*/
                                                         //活动总商品上架数量 - 本次购买的数量
                                                         setCount(slActivityProduct.getCount() - quantity);
                                                     }}, example);
@@ -1114,9 +1115,14 @@ public class CmOrderService {
                     .andGreaterThan("count", 0)
                     .andEqualTo("id", activityProduct.getId());
             this.activityProductMapper.updateByExampleSelective(new SlActivityProduct() {{
+
+                /**
+                 *注释原因： 商品库存为0不要自动下架
+                 * 2018年7月7日13:42:07
                 if (activityProductCount == 0) {
                     setEnabled(false);
                 }
+                 */
                 //活动总商品上架数量 - 本次购买的数量
                 setCount(activityProductCount);
             }}, example);
