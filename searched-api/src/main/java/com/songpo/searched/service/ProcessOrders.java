@@ -357,12 +357,14 @@ public class ProcessOrders {
                     //2.2 保存购买人搜了币交易明细
                     cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
                 }
-                /**
-                 * 极光推送
-                 */
-                String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
-                        "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
-                sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
+                if (5 != slOrder.getPaymentChannel()){
+                    /**
+                     * 极光推送
+                     */
+                    String content = "尊敬的队长,"+loginUserService.getCurrentLoginUser().getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
+                            "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
+                    sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
+                }
             }
 
         } catch (Exception e) {

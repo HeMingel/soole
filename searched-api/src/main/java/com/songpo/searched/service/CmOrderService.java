@@ -11,6 +11,7 @@ import com.songpo.searched.cache.ProductCache;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.ActivityConstant;
+import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.constant.VirtualUserConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -2570,5 +2571,99 @@ public class CmOrderService {
             log.error("给订单返回搜了贝失败",e);
         }
 
+    }
+    /**
+     * A轮订单录入
+     *
+     * @param id          搜了ID
+     * @param totalAmount 订单总金额
+     * @param quantity    购买数量
+     * @param inviterId   邀请人ID
+     * @param payTime     支付时间
+     * @param checkName   审核人
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String payTime, String checkName ) {
+        log.debug(" id = [" + id + "], totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
+        BusinessMessage message = new BusinessMessage();
+
+        //支付时间 yyyy-mm-dd 改为 yyyy-mm-dd HH:mm:dd
+        payTime = payTime+" 00:00:00";
+        //购买人信息
+        SlUser slUserBuy = userService.selectOne(new SlUser() {{
+            setUsername(id);
+        }});
+        //邀请人信息
+        Integer finalInviterId = inviterId;
+        SlUser slUserInvite = userService.selectOne(new SlUser() {{
+            setUsername(finalInviterId);
+        }});
+        //如果邀请人不存在 使用公司账号7777
+        if (null == slUserInvite){
+            inviterId = 7777;
+        }
+        //生成订单号
+        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+        //获取商品信息
+        SlProduct slProduct = productService.selectByPrimaryKey(BaseConstant.PRODUCT_ID_A);
+        //获取活动信息
+        SlActivityProduct slActivityProduct = activityProductMapper.selectByPrimaryKey(BaseConstant.ACTIVITY_ID_A);
+        //获取规格信息
+        SlProductRepository slProductRepository = productRepositoryService.selectByPrimaryKey(BaseConstant.REPOSITORY_ID_A);
+        if(null != slUserBuy){
+            //订单表 数据保存
+            String finalPayTime = payTime;
+            Integer result = orderService.insertSelective(new SlOrder(){{
+                setSerialNumber(orderNum);
+                setUserId(slUserBuy.getId());
+                setTotalAmount(new BigDecimal(totalAmount));
+                setPaymentState(1);
+                setPaymentChannel(5);
+                setPayTime(finalPayTime);
+                setPayTimeStamp(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
+                setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            }});
+            SlOrder slOrder = orderService.selectOne(new SlOrder(){{
+                setSerialNumber(orderNum);
+                setUserId(slUserBuy.getId());
+            }});
+            Integer finalInviterId1 = inviterId;
+            //订单明细表 数据保存
+            orderDetailService.insertSelective(new SlOrderDetail(){{
+                setId(formatUUID32());
+                setOrderId(slOrder.getId());
+                setSerialNumber(OrderNumGeneration.getOrderIdByUUId());
+                setShopId(slProduct.getShopId());
+                setRepositoryId(slProductRepository.getId());
+                setProductId(slProduct.getId());
+                setProductName(slProduct.getName());
+                setProductImageUrl(slProduct.getImageUrl());
+                setProductDetailGroupName(slProductRepository.getProductDetailGroupName());
+                setShippingState(6);
+                setQuantity(quantity);
+                setPrice(slActivityProduct.getPrice());
+                setCreator(slUserBuy.getId());
+                setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                setActivityProductId(slActivityProduct.getId());
+                setType(4);
+                setCheckState((byte)2);
+                setCheckName(checkName);
+                setInviterId(finalInviterId1);
+            }});
+            //订单表插入成功后 给邀请人返10%金额+5%搜了贝
+            if(result>0){
+                processOrders.fanMoney(slOrder.getId());
+            }
+            log.debug("订单录入成功");
+            message.setMsg("订单录入成功");
+            message.setSuccess(true);
+        }else{
+            log.debug("购买人不存在");
+            message.setMsg("购买人不存在");
+            message.setSuccess(false);
+            return message;
+        }
+        return message;
     }
 }
