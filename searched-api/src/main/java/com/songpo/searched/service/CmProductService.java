@@ -642,10 +642,13 @@ public class CmProductService {
             // 商品标识
             String productId = key.substring(key.lastIndexOf(":") + 1);
             if (StringUtils.isNotBlank(productId)) {
+
+                /**
+                 * 注释原因：库存为0不自动下架
                 activityProductMapper.updateByPrimaryKeySelective(new SlActivityProduct() {{
                     setId(productId);
                     setEnabled(false);
-                }});
+                }});*/
                 this.slProductMapper.updateByPrimaryKeySelective(new SlProduct(){{
                     setId(productId);
                     setSoldOut(false);
