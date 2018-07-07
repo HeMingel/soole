@@ -2587,6 +2587,16 @@ public class CmOrderService {
     public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String payTime, String checkName ) {
         log.debug(" id = [" + id + "], totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
         BusinessMessage message = new BusinessMessage();
+        if (id == null ) {
+            message.setMsg("购买人搜了ID不能为空");
+            message.setSuccess(false);
+            return message;
+        }
+        if (inviterId == null)  {
+            message.setMsg("邀请人搜了ID不能为空");
+            message.setSuccess(false);
+            return message;
+        }
 
         //支付时间 yyyy-mm-dd 改为 yyyy-mm-dd HH:mm:dd
         payTime = payTime+" 00:00:00";
