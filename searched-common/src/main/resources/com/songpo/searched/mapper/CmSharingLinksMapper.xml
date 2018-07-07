@@ -12,7 +12,7 @@
               ap.`price`,
               ap.`awward_money`,
               ap.`activity_id` as activityId,
-             TIMESTAMPDIFF(SECOND,sl.`created_at`,NOW()) AS plusTime
+              TIMESTAMPDIFF(SECOND,DATE_SUB(NOW(), INTERVAL 1 DAY),sl.`created_at`) AS plusTime
             FROM
               `sl_sharing_links` sl
               LEFT JOIN
