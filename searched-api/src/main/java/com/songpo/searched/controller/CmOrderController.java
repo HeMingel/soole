@@ -593,7 +593,7 @@ public class CmOrderController {
             @ApiImplicitParam(name = "checkName", value = "审核人 ", paramType = "form", required = true)
     })
     @PostMapping("enter-order")
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String payTime, String checkName) {
+    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  payTime, String checkName) {
         log.debug("A轮订单录入，id = {}, totalAmount = {}, quantity = {}, inviterId = {}, payTime = {}, checkName = {}",
                 id, totalAmount, quantity, inviterId, payTime, checkName);
         BusinessMessage message = new BusinessMessage();

@@ -2584,7 +2584,7 @@ public class CmOrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String payTime, String checkName ) {
+    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  payTime, String checkName ) {
         log.debug(" id = [" + id + "], totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
         BusinessMessage message = new BusinessMessage();
         if (id == null ) {
