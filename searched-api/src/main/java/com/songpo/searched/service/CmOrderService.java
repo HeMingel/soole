@@ -356,13 +356,14 @@ public class CmOrderService {
                                                         //活动总商品上架数量 - 本次购买的数量
                                                         setCount(slActivityProduct.getCount() - quantity);
                                                     }}, example);
-
+                                                    /**
                                                     this.productService.updateByPrimaryKeySelective(new SlProduct(){{
                                                         setId(slProduct.getId());
                                                         if (activityProductCount == 0) {
                                                             setSoldOut(false);
                                                         }
                                                     }});
+                                                     */
                                                     // 当前库存 - 本次该商品规格下单库存
                                                     repository.setCount(repository.getCount() - quantity);
                                                     // 更新redis中该商品规格的库存
@@ -1127,14 +1128,15 @@ public class CmOrderService {
                 //活动总商品上架数量 - 本次购买的数量
                 setCount(activityProductCount);
             }}, example);
-
+            /**
             this.productService.updateByPrimaryKeySelective(new SlProduct(){{
                 setId(slProduct.getId());
+
                 if (activityProductCount == 0) {
                     setSoldOut(false);
                 }
             }});
-
+            */
             // 当前库存 - 本次该商品规格下单库存
             int cou = repository.getCount() - quantity;
             repository.setCount(cou);
