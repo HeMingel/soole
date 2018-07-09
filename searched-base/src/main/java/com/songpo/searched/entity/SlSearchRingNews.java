@@ -35,6 +35,11 @@ public class SlSearchRingNews implements Serializable {
     private Integer shareNum;
 
     /**
+     * 0.默认  1.水果竞猜
+     */
+    private Byte type;
+
+    /**
      * 商品id（用户分享商品到搜圈时使用）
      */
     @Column(name = "product_id")
@@ -158,6 +163,24 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
+     * 获取0.默认  1.水果竞猜
+     *
+     * @return type - 0.默认  1.水果竞猜
+     */
+    public Byte getType() {
+        return type;
+    }
+
+    /**
+     * 设置0.默认  1.水果竞猜
+     *
+     * @param type 0.默认  1.水果竞猜
+     */
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
+    /**
      * 获取商品id（用户分享商品到搜圈时使用）
      *
      * @return product_id - 商品id（用户分享商品到搜圈时使用）
@@ -276,6 +299,7 @@ public class SlSearchRingNews implements Serializable {
         sb.append(", commentNum=").append(commentNum);
         sb.append(", goodsNum=").append(goodsNum);
         sb.append(", shareNum=").append(shareNum);
+        sb.append(", type=").append(type);
         sb.append(", productId=").append(productId);
         sb.append(", createTime=").append(createTime);
         sb.append(", editTime=").append(editTime);
