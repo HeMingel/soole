@@ -56,10 +56,5 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE");
     }
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-            registry.addViewController("/test").setViewName("/test");
-    }
-
 
 }
