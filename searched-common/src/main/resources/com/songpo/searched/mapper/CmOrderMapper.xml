@@ -200,9 +200,9 @@
         srd.user_id userId
         from sl_returns_detail srd
         WHERE srd.`user_id` = #{userId}
-        <if test="status != null and status != 2">
+        <!--<if test="status != null and status != 2">-->
             and srd.returned_status = #{status}
-        </if>
+        <!--</if>-->
         and srd.`confirm_receipt` = false
         and srd.completed = false
         GROUP BY srd.`order_id`

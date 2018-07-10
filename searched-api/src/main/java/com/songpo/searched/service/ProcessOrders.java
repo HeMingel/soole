@@ -333,7 +333,7 @@ public class ProcessOrders {
                     //给邀请人余额打钱
                     userService.updateByPrimaryKey(slUser);
                     //在order表的reMark字段记录
-                    slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "乐豆");
+                    slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "搜了贝");
                     orderService.updateByPrimaryKey(slOrder);
                     //1.保存金钱交易明细
                     SlTransactionDetail detail = new SlTransactionDetail();
