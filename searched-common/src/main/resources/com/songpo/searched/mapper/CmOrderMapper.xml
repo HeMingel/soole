@@ -209,4 +209,22 @@
         order by srd.`return_time` ASC
     </select>
 
+    <update id="changeSlbScheduled" parameterType="com.songpo.searched.entity.SlSlbType">
+        UPDATE sl_slb_type
+        SET present_num = (
+            CASE slb_type
+            WHEN 2 THEN
+                47400
+            WHEN 3 THEN
+                15800
+            WHEN 4 THEN
+                1975
+            ELSE
+                592.5
+            END
+        )
+        WHERE
+            slb_type IN (2, 3, 4, 5);
+</update>
+
 </mapper>

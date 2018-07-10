@@ -1289,7 +1289,6 @@ public class CmOrderService {
                     List<SlOrderDetail> detailList = this.orderDetailService.select(new SlOrderDetail() {{
                         setType(3);
                         setCreator(user.getId());
-                        setShippingState(0);
                     }});
                     if (detailList.size() > 0) {
                         for (SlOrderDetail detail : detailList) {
@@ -2785,5 +2784,18 @@ public class CmOrderService {
             return message;
         }
         return message;
+    }
+    /**
+     * 定时转换sl_slb_type搜了贝数
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public  void  changeSlbScheduled () {
+        try {
+            this.cmOrderMapper.changeSlbScheduled();
+            log.debug("转换sl_slb_type搜了贝数成功");
+        } catch (Exception e) {
+            log.error("转换sl_slb_type搜了贝数失败",e);
+        }
+
     }
 }
