@@ -34,7 +34,7 @@
     <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
     <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="check_state" jdbcType="BIT" property="checkState" />
+    <result column="check_state" jdbcType="TINYINT" property="checkState" />
     <result column="check_name" jdbcType="VARCHAR" property="checkName" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />

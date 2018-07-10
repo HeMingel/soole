@@ -63,7 +63,7 @@ public class SlOrderDetail implements Serializable {
     private String productDetailGroupName;
 
     /**
-     * 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
+     * 0.未成功/失效 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     @Column(name = "shipping_state")
     private Integer shippingState;
@@ -187,7 +187,7 @@ public class SlOrderDetail implements Serializable {
      * 财务审核确认订单时使用1待确认2已确认
      */
     @Column(name = "check_state")
-    private Boolean checkState;
+    private Byte checkState;
 
     /**
      * 财务审核人员信息
@@ -424,18 +424,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
+     * 获取0.未成功/失效 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      *
-     * @return shipping_state - 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
+     * @return shipping_state - 0.未成功/失效 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     public Integer getShippingState() {
         return shippingState;
     }
 
     /**
-     * 设置3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
+     * 设置0.未成功/失效 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      *
-     * @param shippingState 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
+     * @param shippingState 0.未成功/失效 3:待发货 4:待收货/已发货 5:已完成/未评价 6:已评价 7:申请售后8:延期收货
      */
     public void setShippingState(Integer shippingState) {
         this.shippingState = shippingState;
@@ -808,7 +808,7 @@ public class SlOrderDetail implements Serializable {
      *
      * @return check_state - 财务审核确认订单时使用1待确认2已确认
      */
-    public Boolean getCheckState() {
+    public Byte getCheckState() {
         return checkState;
     }
 
@@ -817,7 +817,7 @@ public class SlOrderDetail implements Serializable {
      *
      * @param checkState 财务审核确认订单时使用1待确认2已确认
      */
-    public void setCheckState(Boolean checkState) {
+    public void setCheckState(Byte checkState) {
         this.checkState = checkState;
     }
 

@@ -2,19 +2,18 @@ package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.CmTotalPoolService;
-import io.swagger.annotations.Api;
+import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 
-@Api(description = "测试接口")
-@RestController
+//@Api(description = "测试接口")
+@Controller
 @CrossOrigin
-@RequestMapping("/api/common/v1/showTest")
+@RequestMapping("/showTest")
 public class TestController {
     @Autowired
     private CmTotalPoolService cmTotalPoolService;
@@ -26,4 +25,13 @@ public class TestController {
         String order = "0fb09e6e758a4e2095cbeb8fe31c8074";*/
        return  cmTotalPoolService.updatePool(coin,silver,slb,addAndSubtract,orderId,userId,type);
     }
+
+    @ResponseBody
+    @GetMapping("testHtml")
+    public String testHtml(HttpServletRequest request){
+        //request.setAttribute("key", "hello world");
+        return "/test";
+    }
+
+
 }
