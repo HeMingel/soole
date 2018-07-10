@@ -60,9 +60,6 @@ public class CmOrderController {
         BusinessMessage message = new BusinessMessage();
         try {
             message = this.cmOrderService.addOrder(request, detail, shippingAddressId, postFee,inviterId);
-//            message.setData(message.getData());
-//            message.setMsg(message.getMsg());
-//            message.setSuccess(message.getSuccess());
         } catch (Exception e) {
             message.setMsg("添加订单失败");
             log.error("新增订单失败 {}", e);
