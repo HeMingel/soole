@@ -1228,7 +1228,7 @@ public class CmOrderService {
                     pageSize = 10;
                 }
                 // 设置分页参数
-//                PageHelper.startPage(pageNum, pageSize);
+                PageHelper.startPage(pageNum, pageSize);
                 /**
                  * 重写筛选条件
                  */
@@ -1326,6 +1326,9 @@ public class CmOrderService {
                         }
                     }
                 }
+                message.setMsg("查询成功");
+                message.setSuccess(true);
+                message.setData(new PageInfo<>(mapList));
             }else {
                 message.setMsg("用户不存在");
                 log.error("用户不存在");
