@@ -124,7 +124,9 @@ public class SystemController {
                         user.setPassword(passwordEncoder.encode(password));
 
                         // 天降洪福，100乐豆（银豆）
-                        user.setSilver(100);
+                       // user.setSilver(100);
+                        //改送16金豆
+                        user.setCoin(BaseConstant.REGISTER_PEAS);
 
                         // 定义生成字符串范围
                         char[][] pairs = {{'a', 'z'}, {'A', 'Z'}, {'0', '9'}};
@@ -138,7 +140,7 @@ public class SystemController {
 //                        userService.insertSelective(user);
                         this.userInsert(user);
 
-                        // 天降洪福，100乐豆（银豆）
+                        // 天降洪福，
                         sendRegisterGiftToNewUser(user.getId());
 
                         JSONObject data = new JSONObject();
@@ -947,8 +949,9 @@ public class SystemController {
         member.setUserId(userId);
         memberService.delete(member);
 
-        SlTransactionDetail detail = new SlTransactionDetail();
+      /*  SlTransactionDetail detail = new SlTransactionDetail();
         detail.setTargetId(userId);
         slTransactionDetailMapper.delete(detail);
+       */
     }
 }
