@@ -12,7 +12,8 @@
               ap.`price`,
               ap.`awward_money`,
               ap.`activity_id` as activityId,
-              TIMESTAMPDIFF(SECOND,DATE_SUB(NOW(), INTERVAL 1 DAY),sl.`created_at`) AS plusTime
+              TIMESTAMPDIFF(SECOND,DATE_SUB(NOW(), INTERVAL 1 DAY),sl.`created_at`) AS plusTime,
+              pr.`product_detail_group_name`
             FROM
               `sl_sharing_links` sl
               LEFT JOIN
@@ -29,6 +30,8 @@
                 ON sp.id = sl.`product_id`
               LEFT JOIN `sl_activity_product` ap
                 ON ap.`product_id` = sp.`id`
+                LEFT JOIN 	`sl_product_repository` pr
+                ON pr.`product_id` = sp.`id`
             WHERE sp.`sales_mode_id` = 7
               AND sl.`share_person_id` = #{userId}
            ) temp2 WHERE 1=1
