@@ -382,10 +382,9 @@ public class ProcessOrders {
      * @param title 推送消息标题
      */
     public void  sendPush(String username ,String content,int type ,String title ) {
-        SlUser slUser = loginUserService.getCurrentLoginUser();
-        if (slUser == null) {
-            log.debug("推送失败，用户不存在");
-        }else{
+             SlUser slUser = userService.selectOne( new SlUser(){{
+                 setUsername(Integer.parseInt(username));
+             }});
             try {
                 URL url = new URL(environment.getProperty("push.php.url"));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -419,7 +418,7 @@ public class ProcessOrders {
                 log.error("推送用户ID{}消息失败",slUser.getId(),e);
                 e.printStackTrace();
             }
-        }
+
 
     }
 }

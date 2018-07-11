@@ -283,12 +283,22 @@ public class CmSharingLinksService {
     @Transactional(rollbackFor = Exception.class)
     public BusinessMessage saveOrderExtend(String linksId, String orderId) {
         BusinessMessage message = new BusinessMessage();
+        SlOrderExtend slOrderExtend = null;
         try {
             SlOrder order = orderService.selectByPrimaryKey(orderId);
             if (order == null) {
                 message.setMsg("订单不存在");
             } else {
                 if (order.getPaymentState() == 1) {
+                     slOrderExtend = slOrderExtendMapper.selectOne( new SlOrderExtend(){{
+                        setServiceId(linksId);
+                        setServiceType((byte) 1);
+                        setOrderId(orderId);
+                    }});
+                    if (slOrderExtend != null) {
+                        message.setMsg("已经存在这条记录");
+                        return  message;
+                    }
                     int result = slOrderExtendMapper.insertSelective(new SlOrderExtend() {
                         {
                             setServiceId(linksId);
@@ -297,7 +307,7 @@ public class CmSharingLinksService {
                         }
                     });
                     if (result > 0) {
-                        SlOrderExtend slOrderExtend = slOrderExtendMapper.selectOne( new SlOrderExtend(){{
+                         slOrderExtend = slOrderExtendMapper.selectOne( new SlOrderExtend(){{
                             setServiceId(linksId);
                             setServiceType((byte) 1);
                             setOrderId(orderId);
@@ -325,7 +335,8 @@ public class CmSharingLinksService {
                             if ( awayMoney > 0 ) {
                                 //添加消费者红包
                                 BigDecimal money = new BigDecimal(awayMoney);
-                                slRedPacketMapper.insertSelective( new SlRedPacket(){{
+                                SlOrderExtend finalSlOrderExtend = slOrderExtend;
+                                slRedPacketMapper.insertSelective(new SlRedPacket(){{
                                     setUserId(consumeId);
                                     setMoney(money.multiply(new BigDecimal(0.1)));
                                     setSurplusMoney(money.multiply(new BigDecimal(0.1)));
@@ -334,7 +345,7 @@ public class CmSharingLinksService {
                                     setSurplusCount(1);
                                     setRedPacketType((byte)3);
                                     setResult((byte)4);
-                                    setOrderExtendId(slOrderExtend.getId());
+                                    setOrderExtendId(finalSlOrderExtend.getId());
                                 }});
                                 //添加分享者红包
                                 slRedPacketMapper.insertSelective( new SlRedPacket(){{
@@ -346,7 +357,7 @@ public class CmSharingLinksService {
                                     setSurplusCount(1);
                                     setRedPacketType((byte)4);
                                     setResult((byte)4);
-                                    setOrderExtendId(slOrderExtend.getId());
+                                    setOrderExtendId(finalSlOrderExtend.getId());
                                 }});
                             }
                         }

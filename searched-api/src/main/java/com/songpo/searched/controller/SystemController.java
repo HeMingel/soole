@@ -904,7 +904,7 @@ public class SystemController {
         // 交易类型 1.支出 2.收入
         detail.setTransactionType(2);
         // 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
-        detail.setDealType(6);
+        detail.setDealType(5);
         // 设置创建时间
         detail.setCreateTime(new Date());
 
