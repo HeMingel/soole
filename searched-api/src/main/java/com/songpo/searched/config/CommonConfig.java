@@ -440,17 +440,17 @@ public class CommonConfig {
     /**
      * 给以前购买的区块链商品（助力购物）返回搜了贝
      */
- /*  @Scheduled(cron = "0 54 17 11 7 *")
+   @Scheduled(cron = "0 3 0 12 7 *")
     void returnSLBFormPowerShoppingScheduled() {
         log.debug("=============================================start===================================================");
             cmOrderService.returnSLBFormPowerShopping();
         log.debug("=============================================end===================================================");
-    }*/
+    }
 
     /**
      * 定时转换sl_slb_type搜了贝数
      */
-    @Scheduled(cron = "0 0 0 12 7 *")
+    @Scheduled(cron = "0 7 0 12 7 *")
     void changeSlbScheduled() {
         log.debug("转换sl_slb_type搜了贝数开始");
             cmOrderService.changeSlbScheduled();
