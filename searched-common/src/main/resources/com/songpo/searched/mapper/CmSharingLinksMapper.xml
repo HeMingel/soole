@@ -11,7 +11,7 @@
               sp.`image_url`,
               ap.`price`,
               ap.`awward_money`,
-              ap.`activity_id` as activityId,
+              ap.`activity_id`
               TIMESTAMPDIFF(SECOND,DATE_SUB(NOW(), INTERVAL 1 DAY),sl.`created_at`) AS plusTime
             FROM
               `sl_sharing_links` sl
