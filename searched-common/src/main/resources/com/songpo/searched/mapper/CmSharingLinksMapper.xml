@@ -148,7 +148,7 @@
       sp.*
       FROM
       sl_red_packet srp
-      LEFT JOIN sl_order_extend soe ON srp.order_extend_id=soe.order_id
+      LEFT JOIN sl_order_extend soe ON srp.order_extend_id=soe.id
       LEFT JOIN sl_sharing_links sl ON sl.id=soe.service_id
       LEFT JOIN sl_product sp ON sl.product_id = sp.id
     <where>
@@ -181,9 +181,9 @@
     DATE_ADD(sl.created_at,INTERVAL 24 HOUR)-unix_timestamp(now())as plusTime ,
     ap.activity_id as activityId,
     sp.*,
-    sb.`name`,
-    oe.*,
-    rp.money
+      sb.`name`,
+      oe.*,
+      rp.money
     FROM sl_sharing_links sl
     LEFT JOIN sl_user su ON sl.share_person_id=su.id
     LEFT JOIN sl_product sp ON sl.product_id=sp.id
