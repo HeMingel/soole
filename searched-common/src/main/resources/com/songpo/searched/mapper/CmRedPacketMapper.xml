@@ -8,7 +8,7 @@
             FROM
               `sl_red_packet` rp
             WHERE rp.`order_extend_id` = #{orderExtendId}
-               AND rp.`type` IN (3.4)
+              AND rp.`red_packet_type` IN (3,4)
     </select>
 
 
