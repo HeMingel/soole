@@ -225,6 +225,6 @@
         )
         WHERE
             slb_type IN (2, 3, 4, 5);
-</update>
+    </update>
 
 </mapper>
