@@ -19,7 +19,7 @@
     </select>
     <!--查询总搜了贝-->
     <select id="selectSumSlb" resultType="map">
-        SELECT ifnull(sum(usb.slb),0.00) slbSum
+        SELECT sum(slb) slbSum
         FROM sl_user_slb usb
         WHERE usb.user_id = #{userId}
 

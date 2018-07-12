@@ -17,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yinsl
@@ -124,7 +127,18 @@ public class CmUserSlbService {
         }});
         data.put("slbList", list);
         List listSum = cmUserSlbMapper.selectSumSlb(user.getId());
-        data.put("slbSum",listSum);
+
+        if (null == listSum.get(0)) {
+            listSum.set(0, "0");
+            Map map = new HashMap();
+            map.put("slbSum", listSum.get(0));
+            List list1 = new ArrayList();
+            list1.add(map);
+            data.put("slbSum",list1);
+        }else {
+            data.put("slbSum",listSum);
+        }
+
         message.setData(data);
         message.setMsg("查询搜了贝成功");
         message.setSuccess(true);
