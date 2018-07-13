@@ -177,31 +177,36 @@
 
   <!-- 查询我的分享以及详情-->
   <select id="selectShareList" resultType="map">
-    SELECT
-    sl.is_failure,
-    su.nick_name AS shareUser,
-    suu.nick_name AS buyUser,
-    DATE_ADD(sl.created_at,INTERVAL 24 HOUR)-unix_timestamp(now())as plusTime ,
-    ap.activity_id as activityId,
-    sp.*,
-      sb.`name`,
-      oe.*,
-      rp.money
-    FROM sl_sharing_links sl
-    LEFT JOIN sl_user su ON sl.share_person_id=su.id
-    LEFT JOIN sl_product sp ON sl.product_id=sp.id
-    LEFT JOIN sl_activity_product ap ON sp.id = ap.`product_id`
-    LEFT JOIN sl_order_extend oe ON sl.id=oe.service_id
-    LEFT JOIN sl_red_packet rp ON oe.id=rp.order_extend_id
-    LEFT JOIN sl_order_detail od ON oe.order_id=od.order_id
-    LEFT JOIN sl_order so ON oe.order_id=so.id
-    LEFT JOIN sl_user suu ON so.user_id= suu.id
-    LEFT JOIN sl_base_payment sb ON sb.id=so.payment_channel
+      SELECT
+      od.product_name productName,
+      od.price price,
+      od.quantity quantity,
+      suu.nick_name AS buyUser,
+      so.total_amount totalAmount,
+      sb.`name` paymentName,
+      od.shipping_state shippingState,
+      od.type type,
+      so.id id,
+      rp.money money,
+      rpd.create_time createdTime
+
+      FROM
+      sl_order_extend oe
+      LEFT JOIN sl_sharing_links sl ON oe.service_id = sl.id
+      LEFT JOIN sl_order_detail od ON oe.order_id = od.order_id
+      LEFT JOIN sl_order so ON oe.order_id = so.id
+      LEFT JOIN sl_base_payment sb ON sb.id = so.payment_channel
+      LEFT JOIN sl_product sp ON sl.product_id = sp.id
+      LEFT JOIN sl_activity_product ap ON sp.id = ap.`product_id`
+      LEFT JOIN sl_user suu ON so.user_id = suu.id
+      LEFT JOIN sl_red_packet rp ON oe.id = rp.order_extend_id
+      LEFT JOIN sl_red_packet_detail rpd ON rp.id = rpd.red_packet_id
   <where>
-      su.id = #{userId}
+      suu.id = #{userId}
       <if test="shareId != '' and shareId != null ">
           and sl.id= #{shareId}
       </if>
+      AND rp.red_packet_type=4
   </where>
   </select>
 
@@ -219,6 +224,7 @@
                 and sl.id= #{shareId}
             </if>
         </where>
+        AND rp.red_packet_type=4
     </select>
 
 </mapper>
