@@ -142,6 +142,7 @@
       srp.money,
       srp.red_packet_type,
       srp.result,
+      srp.id AS red_packet_id,
       sl.share_person_id,
       u.username shareId,
       u.nick_name shareName,
