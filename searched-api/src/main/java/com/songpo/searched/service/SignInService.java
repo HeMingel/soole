@@ -134,8 +134,8 @@ public class SignInService {
                     // 收入
                     setTransactionType(2);
                 }});
-                //资金池扣除相应的银豆
-                cmTotalPoolService.updatePool(null,signIn.getAwardSilver(),null,2,null,user.getId(),2);
+                //资金池扣除相应的金豆
+                cmTotalPoolService.updatePool(signIn.getAwardSilver(),null,null,2,null,user.getId(),2);
             } else {
                 message.setMsg("签到信息错误");
             }
