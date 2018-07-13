@@ -5,14 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
-import com.songpo.searched.mapper.CmRedPacketMapper;
+import com.songpo.searched.mapper.*;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderExtend;
 import com.songpo.searched.entity.SlSharingLinks;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.CmSharingLinksMapper;
-import com.songpo.searched.mapper.SlOrderExtendMapper;
-import com.songpo.searched.mapper.SlRedPacketMapper;
 import com.songpo.searched.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +56,11 @@ public class CmSharingLinksService {
     private CmProductService cmProductService;
     @Autowired
     private SlRedPacketMapper slRedPacketMapper;
+    @Autowired
+    private SlRedPacketDetailMapper slRedPacketDetailMapper;
+    @Autowired
+    private TransactionDetailService transactionDetailService;
+
 
     /**
      * 添加链接记录
@@ -442,4 +445,64 @@ public class CmSharingLinksService {
 
         return  message;
     }
+
+    /**
+     * 获取分享链接红包
+     * @param redPacketId
+     * @return
+     */
+    public BusinessMessage getRedPacket(String redPacketId) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        if (user == null) {
+            message.setMsg("需要用户token授权");
+            return message;
+        }
+        SlRedPacket slRedPacket = slRedPacketMapper.selectOne(new SlRedPacket() {{
+            setId(redPacketId);
+            setUserId(user.getId());
+            setResult((byte) 5);
+        }});
+        if (null == slRedPacket) {
+            message.setMsg("红包不存在或者红包暂时不可领取");
+            return message;
+        }
+
+        BigDecimal money = slRedPacket.getMoney();
+        try { //更新slRedPacket实体
+            slRedPacket.setSurplusMoney(slRedPacket.getSurplusMoney().subtract(money));
+            slRedPacket.setResult((byte) 6);
+            slRedPacket.setEndTime(new Date());
+            slRedPacketMapper.updateByPrimaryKey(slRedPacket);
+            //添加红包领取记录
+            slRedPacketDetailMapper.insertSelective(new SlRedPacketDetail() {{
+                setRedPacketId(slRedPacket.getId());
+                setMoney(money);
+                setUserId(slRedPacket.getUserId());
+                setType((byte) 1);
+                setCreateTime(new Date());
+            }});
+            //更新用户余额
+            user.setMoney(user.getMoney().add(money));
+            userService.updateByPrimaryKeySelective(user);
+            //更新交易明细
+            SlTransactionDetail detail = new SlTransactionDetail();
+            detail.setTargetId(user.getId());
+            detail.setRedPacketId(redPacketId);
+            detail.setType(4);
+            detail.setMoney(money);
+            detail.setDealType(1);
+            detail.setTransactionType(2);
+            detail.setCreateTime(new Date());
+            transactionDetailService.insertSelective(detail);
+
+            message.setSuccess(true);
+            message.setMsg("领取红包成功");
+        } catch (Exception e) {
+            log.error("领取红包失败", e);
+            message.setMsg("领取红包失败");
+        }
+        return message;
+    }
+
 }

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
+import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlSharingLinksMapper;
 import com.songpo.searched.service.CmSharingLinksService;
+import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -228,4 +230,19 @@ public class SharingLinksController {
         log.debug("用户ID: {}, 分享ID: {}", userId, shareId);
         return this.cmSharingLinksService.selectShareList(userId, shareId);
     }
+
+    /**
+     * 获取分享奖励的红包
+     * @param redPacketId
+     * @return
+     */
+    @ApiOperation(value="获取分享奖励的红包")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "redPacketId",value = "红包ID",paramType = "form")
+    })
+    @PostMapping("get-red-packet")
+    public BusinessMessage getRedPacket(String redPacketId) {
+        return cmSharingLinksService.getRedPacket(redPacketId);
+    }
+
 }

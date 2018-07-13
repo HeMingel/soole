@@ -2425,8 +2425,8 @@ public class CmOrderService {
                     if (redPacketList != null) {
                         for (SlRedPacket slRedPacket : redPacketList) {
                             redPacketService.updateByPrimaryKeySelective(new SlRedPacket() {{
-                                setId(slRedPacket.getId());
-                                setResult((byte) 5);
+                                    setId(slRedPacket.getId());
+                                    setResult((byte) 5);
                             }});
                         }
                         log.debug("更新红包状态成功,订单ID：{}",detail.getOrderId());
