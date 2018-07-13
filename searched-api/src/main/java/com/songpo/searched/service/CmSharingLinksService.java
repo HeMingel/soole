@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -436,9 +437,14 @@ public class CmSharingLinksService {
 
             List list = this.cmSharingLinksMapper.selectShareMoney(userId, shareId);
             if (null == list.get(0)){
-                data.put("sumMoney","0");
+                list.set(0, "0");
+                Map map = new HashMap();
+                map.put("slbSum", list.get(0));
+                List list1 = new ArrayList();
+                list1.add(map);
+                data.put("slbSum",list1);
             }else {
-                data.put("sumMoney",list.get(0).toString());
+                data.put("sumMoney",list);
             }
             message.setData(data);
             message.setMsg("获取我的分享以及详情成功");
