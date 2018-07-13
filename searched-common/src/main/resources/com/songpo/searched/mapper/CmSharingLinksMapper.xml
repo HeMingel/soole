@@ -186,10 +186,9 @@
       sb.`name` paymentName,
       od.shipping_state shippingState,
       od.type type,
-      so.id id,
+      so.id orderId,
       rp.money money,
-      rpd.create_time createdTime
-
+      so.pay_time payTime
       FROM
       sl_order_extend oe
       LEFT JOIN sl_sharing_links sl ON oe.service_id = sl.id
@@ -200,7 +199,6 @@
       LEFT JOIN sl_activity_product ap ON sp.id = ap.`product_id`
       LEFT JOIN sl_user suu ON so.user_id = suu.id
       LEFT JOIN sl_red_packet rp ON oe.id = rp.order_extend_id
-      LEFT JOIN sl_red_packet_detail rpd ON rp.id = rpd.red_packet_id
   <where>
       suu.id = #{userId}
       <if test="shareId != '' and shareId != null ">
