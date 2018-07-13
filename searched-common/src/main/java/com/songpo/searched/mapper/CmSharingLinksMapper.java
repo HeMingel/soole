@@ -77,4 +77,12 @@ public interface  CmSharingLinksMapper {
      */
     List<Map<String, Object>> selectShareList(@Param("userId") String userId,
                                                       @Param("shareId") String shareId);
+    /**
+     *查询一个分享获取的佣金
+     * @param userId
+     * @param shareId
+     * @return
+     */
+    List<Map<String, Object>> selectShareMoney(@Param("userId") String userId,
+                                              @Param("shareId") String shareId);
 }

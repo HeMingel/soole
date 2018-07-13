@@ -430,8 +430,17 @@ public class CmSharingLinksService {
      */
     public BusinessMessage selectShareList(String userId, String shareId){
         BusinessMessage message = new BusinessMessage();
+        JSONObject data = new JSONObject();
         try {
-            message.setData(this.cmSharingLinksMapper.selectShareList(userId, shareId));
+            data.put("shareList",this.cmSharingLinksMapper.selectShareList(userId, shareId));
+
+            List list = this.cmSharingLinksMapper.selectShareMoney(userId, shareId);
+            if (null == list.get(0)){
+                data.put("sumMoney","0");
+            }else {
+                data.put("sumMoney",list.get(0).toString());
+            }
+            message.setData(data);
             message.setMsg("获取我的分享以及详情成功");
             message.setSuccess(true);
         }catch (Exception e){
