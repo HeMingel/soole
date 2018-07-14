@@ -138,23 +138,23 @@
   <!-- 根据红包结果状态 查询红包信息-->
   <select id="selectRedPacketByResult" resultType="map">
       SELECT
-      srp.user_id,
-      srp.money,
       srp.red_packet_type,
       srp.result,
-      srp.id AS red_packet_id,
-      sl.share_person_id,
-      u.username shareId,
-      u.nick_name shareName,
-      sl.product_id,
+      u.id userId,
+      u.username ,
+      u.nick_name,
+      sp.`name` ,
       sl.is_failure,
-      sp.*
+      srp.money,
+      rpd.create_time
       FROM
       sl_red_packet srp
+      LEFT JOIN sl_red_packet_detail rpd ON srp.id = red_packet_id
       LEFT JOIN sl_order_extend soe ON srp.order_extend_id = soe.id
+      LEFT JOIN sl_order so ON soe.order_id = so.id
       LEFT JOIN sl_sharing_links sl ON sl.id = soe.service_id
       LEFT JOIN sl_product sp ON sl.product_id = sp.id
-      LEFT JOIN sl_user u ON sl.share_person_id=u.id
+      LEFT JOIN sl_user u ON so.user_id = u.id
     <where>
       srp.user_id = #{userId}
       <choose>
