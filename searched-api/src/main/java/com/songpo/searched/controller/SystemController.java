@@ -736,8 +736,8 @@ public class SystemController {
                         }
                         phoneUser.setType(user.getType());
                         //修补错误数据，原来的微信用户中的金豆银豆转移
-                        phoneUser.setSilver(phoneUser.getSilver() + ((user.getSilver() - 100) < 0 ? 0 : (user.getSilver() - 100)));
-                        phoneUser.setCoin(phoneUser.getCoin() + user.getCoin());
+                        phoneUser.setSilver(phoneUser.getSilver() + user.getSilver());
+                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin()-BaseConstant.REGISTER_PEAS)<0?0:(user.getCoin()-BaseConstant.REGISTER_PEAS))); 
                         // 更新
                         userService.updateByPrimaryKeySelective(phoneUser);
                         // 更新缓存
