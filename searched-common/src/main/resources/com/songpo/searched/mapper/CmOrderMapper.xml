@@ -29,8 +29,7 @@
         sod.ems_id emsId,
         sod.ship_number shipNumber,
         sod.is_delayed isDelayed,
-        sap.activity_id activityId,
-        sod.inviter_id inviterId
+        sap.activity_id activityId
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
@@ -99,7 +98,8 @@
         sod.deduct_total_silver pulse,
         sod.is_delayed isDelayed,
         sa.id activityId,
-        sp.sales_mode_id salesModeId
+        sp.sales_mode_id salesModeId,
+        sod.inviter_id inviterId
         from sl_order so
         LEFT JOIN sl_order_detail sod on so.id = sod.order_id AND so.serial_number = sod.serial_number
         LEFT JOIN sl_activity_product sap ON sap.id = sod.activity_product_id
