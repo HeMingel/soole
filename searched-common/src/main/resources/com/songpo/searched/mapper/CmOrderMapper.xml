@@ -29,7 +29,8 @@
         sod.ems_id emsId,
         sod.ship_number shipNumber,
         sod.is_delayed isDelayed,
-        sap.activity_id activityId
+        sap.activity_id activityId,
+        sod.inviter_id inviterId
         from sl_order_detail sod
         LEFT JOIN sl_order so ON so.id = sod.order_id
         LEFT JOIN sl_product sp ON sod.product_id = sp.id
