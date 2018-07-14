@@ -33,7 +33,7 @@ public class OrderNumGeneration {
         // 0 代表前面补充0
         // 4 代表长度为4
         // d 代表参数为正数型
-        return machineId + String.format("%016d", hashCodeV);
+        return machineId + String.format("%016d", hashCodeV) + com.songpo.searched.util.StringUtils.getDataTime().replace("-","");
     }
 
     /**
