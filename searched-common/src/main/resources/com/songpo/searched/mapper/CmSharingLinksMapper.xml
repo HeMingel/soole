@@ -33,7 +33,7 @@
               AND sl.`share_person_id` = #{userId}
            ) temp2 WHERE 1=1
             <if test="condition == 1">
-                AND  temp2.order_counts = 0
+                AND  temp2.order_counts = 0 AND temp2.`is_failure` = 2
             </if>
             <if test="condition == 2">
                 AND  temp2.order_counts > 0
