@@ -146,7 +146,9 @@
       sp.`name` ,
       sl.is_failure,
       srp.money,
-      rpd.create_time
+      rpd.create_time,
+      srp.id red_packet_id,
+      so.id orderId
       FROM
       sl_red_packet srp
       LEFT JOIN sl_red_packet_detail rpd ON srp.id = red_packet_id
@@ -170,9 +172,9 @@
 
   <!-- 获取红包数 已领红包金额-->
   <select id="selectRedByUserId" resultType="map">
-   SELECT count(rp.id) AS redNum, ifnull((CASE rp.type WHEN 6 THEN SUM(rp.money) ELSE SUM(0) END),0)AS moneyNum
+   SELECT count(rp.id) AS redNum, ifnull(sum(CASE rp.result WHEN 6 THEN rp.money ELSE 0 END),0)AS moneyNum
    FROM sl_red_packet rp
-   WHERE rp.type in (4,5,6)
+   WHERE rp.result in (4,5,6)
    and  rp.user_id = #{userId}
   </select>
 
