@@ -35,7 +35,7 @@ public class SlSearchRingNews implements Serializable {
     private Integer shareNum;
 
     /**
-     * 0.默认  1.水果竞猜
+     * 0.默认 1.水果竞猜  3.分享奖励商品
      */
     private Byte type;
 
@@ -163,18 +163,18 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
-     * 获取0.默认  1.水果竞猜
+     * 获取0.默认 1.水果竞猜  3.分享奖励商品
      *
-     * @return type - 0.默认  1.水果竞猜
+     * @return type - 0.默认 1.水果竞猜  3.分享奖励商品
      */
     public Byte getType() {
         return type;
     }
 
     /**
-     * 设置0.默认  1.水果竞猜
+     * 设置0.默认 1.水果竞猜  3.分享奖励商品
      *
-     * @param type 0.默认  1.水果竞猜
+     * @param type 0.默认 1.水果竞猜  3.分享奖励商品
      */
     public void setType(Byte type) {
         this.type = type;

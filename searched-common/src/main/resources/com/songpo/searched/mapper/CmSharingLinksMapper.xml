@@ -146,7 +146,9 @@
       sp.`name` ,
       sl.is_failure,
       srp.money,
-      rpd.create_time
+      rpd.create_time,
+      srp.id red_packet_id,
+      so.id orderId
       FROM
       sl_red_packet srp
       LEFT JOIN sl_red_packet_detail rpd ON srp.id = red_packet_id

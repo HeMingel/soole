@@ -9,7 +9,7 @@
     <result column="red_packet_id" jdbcType="VARCHAR" property="redPacketId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="money" jdbcType="DECIMAL" property="money" />
-    <result column="type" jdbcType="BIT" property="type" />
+    <result column="type" jdbcType="TINYINT" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />

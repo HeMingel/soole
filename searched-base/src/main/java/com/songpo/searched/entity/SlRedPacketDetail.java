@@ -31,7 +31,7 @@ public class SlRedPacketDetail implements Serializable {
     /**
      * 红包类型  1.余额  2.金豆
      */
-    private Boolean type;
+    private Byte type;
 
     /**
      * 抢红包时间
@@ -126,7 +126,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @return type - 红包类型  1.余额  2.金豆
      */
-    public Boolean getType() {
+    public Byte getType() {
         return type;
     }
 
@@ -135,7 +135,7 @@ public class SlRedPacketDetail implements Serializable {
      *
      * @param type 红包类型  1.余额  2.金豆
      */
-    public void setType(Boolean type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
