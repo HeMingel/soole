@@ -564,7 +564,6 @@ public class SystemController {
             @ApiImplicitParam(name = "sex", value = "性别1.男 2.女", paramType = "form" , required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form" , required = true),
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form" , required = true),
-            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form" , required = true),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form", required = true),
             @ApiImplicitParam(name = "verificationCode", value = "短信验证码", paramType = "form", required = true),
             @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
@@ -603,6 +602,7 @@ public class SystemController {
      * @param fromUser  微信网页登录唯一标识
      * @return
      */
+    @ApiOperation(value = "微信网页登录")
     @PostMapping("wx-web-login")
     @ApiImplicitParam(name = "fromUser", value = "微信网页登录唯一标识", paramType = "form", required = true)
     public BusinessMessage  wxWeblogin(String fromUser) {

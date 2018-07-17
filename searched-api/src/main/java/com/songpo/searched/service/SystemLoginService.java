@@ -78,6 +78,11 @@ public class SystemLoginService {
                 userService.updateByPrimaryKeySelective(user);
                 this.userCache.put(fromUser, user,86400L);
                 message.setMsg("用户账号合并成功");
+                JSONObject data = new JSONObject();
+                data.put("userId", user.getId());
+                data.put("clientId", user.getClientId());
+                data.put("clientSecret", user.getClientSecret());
+                message.setData(data);
                 message.setSuccess(true);
             }
         }else{
