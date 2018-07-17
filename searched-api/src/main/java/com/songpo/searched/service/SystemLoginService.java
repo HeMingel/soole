@@ -43,7 +43,7 @@ public class SystemLoginService {
     private UserCache userCache;
 
     /**
-     * 注册
+     * 微信网页第三方注册
      * @param fromUser
      * @param nickname
      * @param avatar
@@ -76,7 +76,6 @@ public class SystemLoginService {
             } else {
                 user.setFromUser(fromUser);
                 userService.updateByPrimaryKeySelective(user);
-                this.userCache.put(fromUser, user,86400L);
                 message.setMsg("用户账号合并成功");
                 JSONObject data = new JSONObject();
                 data.put("userId", user.getId());
@@ -109,8 +108,6 @@ public class SystemLoginService {
             this.sendRegisterGiftToNewUser(user.getId());
             // 清除验证码
             this.smsPasswordCache.evict(phone);
-            //添加缓存(一天)
-            this.userCache.put(fromUser, user,86400L);
             JSONObject data = new JSONObject();
             data.put("userId", user.getId());
             data.put("clientId", user.getClientId());
@@ -123,7 +120,7 @@ public class SystemLoginService {
     }
 
     /**
-     * 登录
+     * 微信网页第三方登录
      * @param fromUser
      * @return
      */
@@ -131,12 +128,9 @@ public class SystemLoginService {
     public BusinessMessage wxWeblogin(String fromUser) {
         BusinessMessage message = new BusinessMessage<>();
         //根据微信网页唯一标识查询
-        SlUser user = userCache.get(fromUser);
-        if (null == user) {
-            user = userService.selectOne(new SlUser() {{
+        SlUser user = userService.selectOne(new SlUser() {{
             setFromUser(fromUser);
         }});
-        }
         if (null == user) {
             message.setMsg("用户不存在");
         } else {
