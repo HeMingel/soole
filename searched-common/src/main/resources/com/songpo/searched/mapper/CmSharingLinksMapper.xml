@@ -72,6 +72,7 @@
       p.sold_out = 1
       and ap.enabled = 1
       and p.del = 0
+      AND ap.end_time>NOW()
       <if test="salesModeId != '' and salesModeId != null">
         AND p.sales_mode_id = #{salesModeId}
       </if>
