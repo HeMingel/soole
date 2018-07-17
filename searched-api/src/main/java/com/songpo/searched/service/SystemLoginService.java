@@ -145,7 +145,8 @@ public class SystemLoginService {
             message.setData(user);
             //更新登录信息
             user.setLastLogin(new Date());
-            user.setLoginCount(user.getLoginCount()+1);
+            Integer loginCount = user.getLoginCount() == null? 0 :user.getLoginCount() ;
+            user.setLoginCount(loginCount+1);
             userService.updateByPrimaryKeySelective(user);
         }
         return message;
