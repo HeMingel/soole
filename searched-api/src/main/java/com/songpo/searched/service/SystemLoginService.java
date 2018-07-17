@@ -71,7 +71,7 @@ public class SystemLoginService {
         }});
         //如果数据库存在这个手机号用户
         if (null != user) {
-            if (null != user.getFromUser()) {
+            if (!StringUtils.isNotEmpty( user.getFromUser())) {
                 message.setMsg("用户已注册");
             } else {
                 user.setFromUser(fromUser);
