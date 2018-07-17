@@ -71,7 +71,7 @@ public class SystemLoginService {
         }});
         //如果数据库存在这个手机号用户
         if (null != user) {
-            if (!StringUtils.isNotEmpty( user.getFromUser())) {
+            if (!com.songpo.searched.util.StringUtils.isEmpty(user.getFromUser())) {
                 message.setMsg("用户已注册");
             } else {
                 user.setFromUser(fromUser);
@@ -86,6 +86,7 @@ public class SystemLoginService {
                 message.setSuccess(true);
             }
         }else{
+            user = new SlUser();
             String address = province+ " " +city;
             user.setFromUser(fromUser);
             user.setType(3);
