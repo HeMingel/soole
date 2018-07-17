@@ -7,11 +7,9 @@ import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlMember;
-import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.CmUserMapper;
-import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.service.*;
+import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -546,14 +544,17 @@ public class SystemController {
 
 
 
-
     /**
      * 微信网页第三方注册
-     * @param fromUser  微信网页登录唯一标识
+     * @param fromUser 微信网页登录唯一标识
      * @param nickname 昵称
-     * @param avatar   头像地址
-     *
+     * @param avatar 头像地址
      * @param phone 手机号
+     * @param city  城市
+     * @param province 省份
+     * @param sex 性别1.男 2.女
+     * @param verificationCode 短信验证码
+     * @param zone  地区
      * @return 用户信息
      */
     @ApiOperation(value = "微信网页注册")
@@ -567,7 +568,6 @@ public class SystemController {
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form", required = true),
             @ApiImplicitParam(name = "verificationCode", value = "短信验证码", paramType = "form", required = true),
             @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
-
     })
     @PostMapping("wx-web-register")
     public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar, String phone,
@@ -959,5 +959,62 @@ public class SystemController {
         detail.setTargetId(userId);
         slTransactionDetailMapper.delete(detail);
        */
+    }
+
+    /**
+     * 第三方微信登录（新）
+     * @param openId 微信的openId
+     * @return code : 1 openId 异常
+     * @date 2018年7月17日16:17:56
+     */
+    @ApiOperation(value = "微信第三方登录（新）")
+    @ApiImplicitParam(name = "openId", value = "微信登录唯一标识", paramType = "form", required = true)
+    @PostMapping("third-party-wx-login")
+    public BusinessMessage thirdPartyLoginByWx(String openId) {
+        log.debug("微信用户openId:{} 开始登录",openId);
+        BusinessMessage message = new BusinessMessage();
+      if (SLStringUtils.isEmpty(openId)) {
+          message.setMsg("微信openId为空");
+          message.setCode("1");
+      }else{
+          message = systemLoginService.wxlogin(openId);
+      }
+        return message;
+    }
+
+    @Transactional
+    @ApiOperation(value = "第三方注册")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "微信开放账号唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true),
+            @ApiImplicitParam(name = "type", value = "登录类型 1：微信 2：QQ 3微信网页", paramType = "form", required = true),
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
+    })
+    @PostMapping("third-party-wx-register")
+    public BusinessMessage wxRegister(String openId, String nickname, String avatar, Integer type,
+                                      String phone,String zone,String code ) {
+        BusinessMessage message = new BusinessMessage();
+        log.debug("微信用户openId:{} 开始注册",openId);
+        if (SLStringUtils.isEmpty(openId)) {
+            message.setMsg("开放账号唯一标识为空");
+        } else if (SLStringUtils.isEmpty(nickname)) {
+            message.setMsg("昵称为空");
+        }else if (SLStringUtils.isEmpty(avatar)) {
+            message.setMsg("头像地址为空");
+        } else if (null == type) {
+            message.setMsg("登录类型为空");
+        }else if (SLStringUtils.isEmpty(phone)) {
+            message.setMsg("手机号码为空");
+        } else if (SLStringUtils.isEmpty(code)) {
+            message.setMsg("验证码为空");
+        }else if (SLStringUtils.isEmpty(zone)) {
+            message.setMsg("地区为空");
+        }else {
+            message = systemLoginService.wxRegister(openId, nickname, avatar, type, phone, zone, code);
+        }
+        return message;
     }
 }

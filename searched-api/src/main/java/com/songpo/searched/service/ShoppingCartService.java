@@ -218,7 +218,7 @@ public class ShoppingCartService {
                                     goods.setCounts(count);
                                 }
                                 //  修改规格
-//                        if (!StringUtils.isEmpty(repositoryId)) {
+//                        if (!SLStringUtils.isEmpty(repositoryId)) {
 //                            goods.setRepositoryId(repositoryId);
 //                            SlProductRepository repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
 //                                setId(repositoryId);

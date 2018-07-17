@@ -10,7 +10,7 @@ import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderExtend;
 import com.songpo.searched.entity.SlSharingLinks;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.util.StringUtils;
+import com.songpo.searched.util.SLStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ public class CmSharingLinksService {
     @Transactional
     public BusinessMessage insert(String userId, String productId) {
         BusinessMessage message = new BusinessMessage();
-        if (StringUtils.isEmpty(userId)|| StringUtils.isEmpty(productId)) {
+        if (SLStringUtils.isEmpty(userId)|| SLStringUtils.isEmpty(productId)) {
             message.setMsg("用户ID和产品ID不能为空");
             return message;
         }
@@ -123,7 +123,7 @@ public class CmSharingLinksService {
     public BusinessMessage listByUserId(String userId ,Integer condition,Integer pageNum,Integer pageSize){
         BusinessMessage message = new BusinessMessage();
         try {
-            if  (!StringUtils.isEmpty(userId)){
+            if  (!SLStringUtils.isEmpty(userId)){
                 PageHelper.startPage(pageNum, pageSize);
                 List<Map<String,Object>> sharingLilnksList =  cmSharingLinksMapper.listByUserId(userId,condition);
                 if (sharingLilnksList.size() > 0 ) {

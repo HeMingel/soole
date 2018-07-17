@@ -179,7 +179,7 @@ public class CmOrderService {
                             //查询redis
 //                            SlProductRepository repository = repositoryCache.get(repositoryId);
 //                            //如果redis中没有这个仓库信息
-//                            if (StringUtils.isEmpty(repository)) {
+//                            if (SLStringUtils.isEmpty(repository)) {
 //                                // 根据仓库ID 去查询商品的详细信息(选好规格的价格,金豆等等)
 //                                repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
 //                                    setId(repositoryId);
@@ -195,7 +195,7 @@ public class CmOrderService {
                                 //查询redis中有没有这个商品信息
 //                                SlProduct slProduct = productCache.get(repository.getProductId());
 //                                //如果没有 就查一遍
-//                                if (StringUtils.isEmpty(slProduct)) {
+//                                if (SLStringUtils.isEmpty(slProduct)) {
 //                                    SlProductRepository finalRepository1 = repository;
 //                                    slProduct = this.productService.selectOne(new SlProduct() {{
 //                                        setId(finalRepository1.getProductId());
@@ -494,7 +494,7 @@ public class CmOrderService {
 //                //1.先从redis中去取该商品规格的详细参数
 //                repository = this.repositoryCache.get(repositoryId);
 //                //2.如果repository为null就去数据库中查询一遍放入repository对象中
-//                if (StringUtils.isEmpty(repository)) {
+//                if (SLStringUtils.isEmpty(repository)) {
 //                    repository = this.productRepositoryService.selectOne(new SlProductRepository() {{
 //                        setId(repositoryId);
 //                    }});
@@ -510,7 +510,7 @@ public class CmOrderService {
 //                    //5.先从redis中取商品信息的详情
 //                    slProduct = this.productCache.get(repository.getProductId());
 //                    //6.如果为空就从数据库中查询一下商品信息
-//                    if (StringUtils.isEmpty(slProduct)) {
+//                    if (SLStringUtils.isEmpty(slProduct)) {
 //                        SlProductRepository finalRepository = repository;
 //                        slProduct = this.productService.selectOne(new SlProduct() {{
 //                            setId(finalRepository.getProductId());
