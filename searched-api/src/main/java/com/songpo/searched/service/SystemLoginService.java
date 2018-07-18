@@ -67,8 +67,15 @@ public class SystemLoginService {
             message.setMsg("验证码已过期，请重试");
             return message;
         }
+        SlUser userTemp = userService.selectOne(new SlUser() {{
+            setFromUser(fromUser);
+        }});
+        if (userTemp != null) {
+            message.setMsg("用户标识已存在");
+            return message;
+        }
         //根据手机号查询
-        SlUser user =  userService.selectOne( new SlUser(){{
+        SlUser  user = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});
         //如果数据库存在这个手机号用户
@@ -86,11 +93,11 @@ public class SystemLoginService {
                 message.setData(data);
                 message.setSuccess(true);
             }
-        }else{
+        } else {
             user = new SlUser();
             String address = "";
             if (!SLStringUtils.isEmpty(province) && !SLStringUtils.isEmpty(city)) {
-               address = province+ " " +city;
+                address = province + " " + city;
             }
             user.setFromUser(fromUser);
             user.setType(3);
