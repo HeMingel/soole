@@ -2,13 +2,11 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.SmsPasswordCache;
-import com.songpo.searched.cache.UserCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlMember;
-import com.songpo.searched.entity.SlTransactionDetail;
-import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmUserMapper;
+import com.songpo.searched.mapper.SlSlbTransactionMapper;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.util.SLStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.songpo.searched.cache.BaseCache.log;
@@ -42,7 +41,9 @@ public class SystemLoginService {
     @Autowired
     private CmUserMapper cmUserMapper;
     @Autowired
-    private UserCache userCache;
+    private UserSlbService userSlbService;
+    @Autowired
+    private SlSlbTransactionMapper slSlbTransactionMapper;
 
     /**
      * 微信网页第三方注册
@@ -62,7 +63,7 @@ public class SystemLoginService {
                                                      String city, String province, Integer sex,String verificationCode,String zone) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         //验证短信验证码
-        String code = this.smsPasswordCache.get(phone);
+       String code = this.smsPasswordCache.get(phone);
         if (StringUtils.isBlank(code) || !code.contentEquals(verificationCode)) {
             message.setMsg("验证码已过期，请重试");
             return message;
@@ -120,6 +121,8 @@ public class SystemLoginService {
             this.sendRegisterGiftToNewUser(user.getId());
             // 清除验证码
             this.smsPasswordCache.evict(phone);
+            //微信网页注册用户赠送B轮的1枚SLB
+            this.signUpBonusForSlb(user,2,new BigDecimal(1));
             JSONObject data = new JSONObject();
             data.put("userId", user.getId());
             data.put("clientId", user.getClientId());
@@ -288,7 +291,6 @@ public class SystemLoginService {
         detail.setDealType(5);
         // 设置创建时间
         detail.setCreateTime(new Date());
-
         //资金池扣除银豆
         cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS,null,null,2,null,userId,1);
         this.slTransactionDetailMapper.insertSelective(detail);
@@ -315,5 +317,41 @@ public class SystemLoginService {
         SlMember member = new SlMember();
         member.setUserId(user.getId());
         memberService.insertSelective(member);
+    }
+
+    /**
+     * 注册赠送SLB
+     * @param user  用户
+     * @param type 轮数 1 A轮 2 B轮 3 C轮 4 D轮 5 E轮
+     * @param slb  贝数
+     */
+    public  boolean  signUpBonusForSlb(SlUser user, Integer type, BigDecimal slb){
+        boolean flag  = false;
+        if (user == null){
+            return flag;
+        }
+        try {
+            //添加用户SLB基本信息
+            userSlbService.insertSelective( new SlUserSlb(){{
+                log.debug("微信注册赠送SLB开始");
+                setSlbType(type);
+                setUserId(user.getId());
+                setSlb(slb);
+            }});
+            //添加SLB 交易信息
+            slSlbTransactionMapper.insertSelective( new SlSlbTransaction(){{
+                setSlb(slb);
+                setSlbType(type);
+                setTargetId(user.getId());
+                setType(4);
+                setTransactionType(2);
+            }});
+            //更新资金池信息
+            cmTotalPoolService.updatePool(null,null,slb,2,null,user.getId(),9);
+            flag = true;
+        }catch (Exception e){
+            log.error("用户注册赠送SLB失败",e);
+        }
+        return flag;
     }
 }
