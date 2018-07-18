@@ -563,8 +563,8 @@ public class SystemController {
             @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form" , required = true),
             @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form" , required = true),
             @ApiImplicitParam(name = "sex", value = "性别1.男 2.女", paramType = "form" , required = true),
-            @ApiImplicitParam(name = "city", value = "城市", paramType = "form" , required = true),
-            @ApiImplicitParam(name = "province", value = "省份", paramType = "form" , required = true),
+            @ApiImplicitParam(name = "city", value = "城市", paramType = "form"),
+            @ApiImplicitParam(name = "province", value = "省份", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form", required = true),
             @ApiImplicitParam(name = "verificationCode", value = "短信验证码", paramType = "form", required = true),
             @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
@@ -575,21 +575,17 @@ public class SystemController {
         log.debug("微信网页注册，开放账号唯一标识：{}，昵称：{}，头像地址：{}", fromUser, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
 
-        if (StringUtils.isBlank(fromUser)) {
+        if (SLStringUtils.isEmpty(fromUser)) {
             message.setMsg("开放账号唯一标识为空");
-        } else if (StringUtils.isBlank(nickname)) {
+        } else if (SLStringUtils.isEmpty(nickname)) {
             message.setMsg("昵称为空");
-        } else if (StringUtils.isBlank(avatar)) {
+        } else if (SLStringUtils.isEmpty(avatar)) {
             message.setMsg("头像地址为空");
-        } else if (StringUtils.isBlank(avatar)){
+        } else if (SLStringUtils.isEmpty(avatar)){
             message.setMsg("手机号为空");
-        } else if (StringUtils.isBlank(city)){
-            message.setMsg("城市为空");
-        } else if (StringUtils.isBlank(province)){
-            message.setMsg("省份为空");
-        }else if (null == sex) {
+        } else if (null == sex) {
             message.setMsg("性别为空");
-        }else if (StringUtils.isBlank(zone)){
+        }else if (SLStringUtils.isEmpty(zone)){
             message.setMsg("地区为空");
         }else {
           message =  systemLoginService.wxWebRegister(fromUser,nickname,avatar,phone,city,province,sex,verificationCode,zone);

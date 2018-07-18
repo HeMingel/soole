@@ -88,7 +88,10 @@ public class SystemLoginService {
             }
         }else{
             user = new SlUser();
-            String address = province+ " " +city;
+            String address = "";
+            if (!SLStringUtils.isEmpty(province) && !SLStringUtils.isEmpty(city)) {
+               address = province+ " " +city;
+            }
             user.setFromUser(fromUser);
             user.setType(3);
             user.setPhone(phone);
