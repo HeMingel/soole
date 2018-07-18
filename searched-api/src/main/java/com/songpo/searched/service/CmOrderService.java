@@ -2652,7 +2652,7 @@ public class CmOrderService {
                 setProductName(slProduct.getName());
                 setProductImageUrl(slProduct.getImageUrl());
                 setProductDetailGroupName(slProductRepository.getProductDetailGroupName());
-                setShippingState(6);
+                setShippingState(3);
                 setQuantity(quantity);
                 setPrice(slActivityProduct.getPrice());
                 setCreator(slUserBuy.getId());

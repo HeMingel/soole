@@ -56,7 +56,7 @@ public class SlUser implements Serializable {
     /**
      * 1.男  2.女
      */
-    private Boolean sex;
+    private Byte sex;
 
     /**
      * 生日
@@ -130,12 +130,18 @@ public class SlUser implements Serializable {
     private String openId;
 
     /**
+     * 微信网页端登录OpenId
+     */
+    @Column(name = "from_user")
+    private String fromUser;
+
+    /**
      * 区块链团队长1否2是
      */
     private Integer captain;
 
     /**
-     * 1：微信  2：QQ  登录方式
+     * 1：微信  2：QQ  登录方式 3 微信网页
      */
     private Integer type;
 
@@ -330,7 +336,7 @@ public class SlUser implements Serializable {
      *
      * @return sex - 1.男  2.女
      */
-    public Boolean getSex() {
+    public Byte getSex() {
         return sex;
     }
 
@@ -339,7 +345,7 @@ public class SlUser implements Serializable {
      *
      * @param sex 1.男  2.女
      */
-    public void setSex(Boolean sex) {
+    public void setSex(Byte sex) {
         this.sex = sex;
     }
 
@@ -592,6 +598,24 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取微信网页端登录OpenId
+     *
+     * @return from_user - 微信网页端登录OpenId
+     */
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    /**
+     * 设置微信网页端登录OpenId
+     *
+     * @param fromUser 微信网页端登录OpenId
+     */
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser == null ? null : fromUser.trim();
+    }
+
+    /**
      * 获取区块链团队长1否2是
      *
      * @return captain - 区块链团队长1否2是
@@ -610,18 +634,18 @@ public class SlUser implements Serializable {
     }
 
     /**
-     * 获取1：微信  2：QQ  登录方式
+     * 获取1：微信  2：QQ  登录方式 3 微信网页
      *
-     * @return type - 1：微信  2：QQ  登录方式
+     * @return type - 1：微信  2：QQ  登录方式 3 微信网页
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置1：微信  2：QQ  登录方式
+     * 设置1：微信  2：QQ  登录方式 3 微信网页
      *
-     * @param type 1：微信  2：QQ  登录方式
+     * @param type 1：微信  2：QQ  登录方式 3 微信网页
      */
     public void setType(Integer type) {
         this.type = type;
@@ -782,6 +806,7 @@ public class SlUser implements Serializable {
         sb.append(", clientId=").append(clientId);
         sb.append(", clientSecret=").append(clientSecret);
         sb.append(", openId=").append(openId);
+        sb.append(", fromUser=").append(fromUser);
         sb.append(", captain=").append(captain);
         sb.append(", type=").append(type);
         sb.append(", status=").append(status);
