@@ -214,19 +214,33 @@ public class SystemLoginService {
             message.setMsg("用户已注册");
             return message;
         }
-        //验证手机号是否被注册
-        user = userService.selectOne(new SlUser() {{
-            setPhone(phone);
-        }});
-        if (user != null) {
-            message.setMsg("手机号已注册");
-            return message;
-        }
         //验证短信验证码
         String verificationCode = this.smsPasswordCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
             message.setMsg("验证码已过期，请重试");
+            return message;
+        }
+        //验证手机号是否被注册
+        user = userService.selectOne(new SlUser() {{
+            setPhone(phone);
+        }});
+        if (user != null ) {
+            //如果微信APP端未注册，通过手机和微信网页注册过  更新openId字段
+            if (SLStringUtils.isEmpty(user.getOpenId())) {
+                user.setOpenId(openId);
+                user.setAvatar(avatar);
+                user.setNickName(nickname);
+                userService.updateByPrimaryKeySelective(user);
+                message.setSuccess(true);
+                message.setMsg("手机号存在，合并成功");
+                // 清除验证码
+                this.smsPasswordCache.evict(phone);
+            } else {
+                message.setMsg("手机号已注册");
+            }
+            return message;
         } else {
+            //用户第一次注册
             user = new SlUser();
             user.setOpenId(openId);
             user.setType(type);
@@ -255,14 +269,41 @@ public class SystemLoginService {
     }
 
     /**
-     * TODO
+     * 微信登录-绑定手机号接口（只针对以前通过微信注册没有绑定手机号的用户）
      * @param openId
      * @param phone
      * @param code
      * @return
      */
-    public BusinessMessage bindPhoneForWxLogin(String openId,String phone ,String code){
+    public BusinessMessage bindPhoneForWxLogin(String openId,String phone ,String code,String zone){
         BusinessMessage message = new BusinessMessage();
+        //验证短信验证码
+        String verificationCode = this.smsPasswordCache.get(phone);
+        if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
+            message.setMsg("验证码已过期，请重试");
+            return message;
+        }
+        SlUser userTemp  = userService.selectOne(new SlUser(){{
+            setPhone(phone);
+        }});
+        if (userTemp != null ) {
+            message.setMsg("手机号已经被注册");
+            return message;
+        }
+        SlUser user  = userService.selectOne(new SlUser(){{
+            setOpenId(openId);
+        }});
+        if (SLStringUtils.isEmpty(user.getPhone())) {
+            user.setPhone(phone);
+            user.setZone(zone);
+            userService.updateByPrimaryKeySelective(user);
+            message.setSuccess(true);
+            message.setMsg("绑定手机号码成功，请重新登录");
+        }else {
+            message.setMsg("绑定失败，改用户已经绑定手机号");
+        }
+        // 清除验证码
+        this.smsPasswordCache.evict(phone);
         return  message;
     }
 

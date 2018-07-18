@@ -960,7 +960,7 @@ public class SystemController {
     /**
      * 第三方微信登录（新）
      * @param openId 微信的openId
-     * @return code : 1 openId 异常
+     * @return code : 1 openId 异常 2 用户未注册 3 用户未绑定手机号 4 登录成功
      * @date 2018年7月17日16:17:56
      */
     @ApiOperation(value = "微信第三方登录（新）")
@@ -978,8 +978,19 @@ public class SystemController {
         return message;
     }
 
+    /**
+     * 微信 第三方注册 (新)
+     * @param openId
+     * @param nickname
+     * @param avatar
+     * @param type
+     * @param phone
+     * @param zone
+     * @param code
+     * @return
+     */
     @Transactional
-    @ApiOperation(value = "第三方注册")
+    @ApiOperation(value = "微信 第三方注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "微信开放账号唯一标识", paramType = "form", required = true),
             @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form", required = true),
@@ -1001,7 +1012,7 @@ public class SystemController {
         }else if (SLStringUtils.isEmpty(avatar)) {
             message.setMsg("头像地址为空");
         } else if (null == type) {
-            message.setMsg("登录类型为空");
+            message.setMsg("注册登录类型为空");
         }else if (SLStringUtils.isEmpty(phone)) {
             message.setMsg("手机号码为空");
         } else if (SLStringUtils.isEmpty(code)) {
@@ -1010,6 +1021,40 @@ public class SystemController {
             message.setMsg("地区为空");
         }else {
             message = systemLoginService.wxRegister(openId, nickname, avatar, type, phone, zone, code);
+        }
+        return message;
+    }
+
+    /**
+     *微信登录-绑定手机号接口（只针对以前通过微信注册没有绑定手机号的用户）
+     * @param openId
+     * @param phone
+     * @param code
+     * @param zone
+     * @return
+     */
+    @Transactional
+    @ApiOperation(value = "微信 绑定手机号接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "微信开放账号唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "phone", value = "手机号码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
+    })
+    @PostMapping("wx-bind-phone-final")
+    public BusinessMessage bindPhoneForWxLogin(String openId,String phone ,String code,String zone) {
+        BusinessMessage message = new BusinessMessage();
+        log.debug("微信用户openId:{} 开始绑定",openId);
+        if (SLStringUtils.isEmpty(openId)) {
+            message.setMsg("微信唯一标识为空");
+        }else if (SLStringUtils.isEmpty(phone)) {
+            message.setMsg("用户手机号码为空");
+        } else if (SLStringUtils.isEmpty(code)) {
+            message.setMsg("输入验证码为空");
+        }else if (SLStringUtils.isEmpty(zone)) {
+            message.setMsg("地区为空");
+        }else {
+            message = systemLoginService.bindPhoneForWxLogin(openId, phone, code, zone);
         }
         return message;
     }
