@@ -13,7 +13,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="card_type" jdbcType="BIT" property="cardType" />
     <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="sex" jdbcType="BIT" property="sex" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="birthday" jdbcType="VARCHAR" property="birthday" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
@@ -28,6 +28,7 @@
     <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="from_user" jdbcType="VARCHAR" property="fromUser" />
     <result column="captain" jdbcType="INTEGER" property="captain" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -44,7 +45,7 @@
     -->
     id, username, password, pay_password, nick_name, name, card_type, card_number, sex, 
     birthday, phone, email, avatar, signature, address, industry, group_var, coin, silver, 
-    money, client_id, client_secret, open_id, captain, type, status, circle_state, login_count, 
-    last_login, created_at, updated_at, zone
+    money, client_id, client_secret, open_id, from_user, captain, type, status, circle_state, 
+    login_count, last_login, created_at, updated_at, zone
   </sql>
 </mapper>
