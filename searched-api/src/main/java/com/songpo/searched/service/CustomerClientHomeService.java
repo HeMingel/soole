@@ -144,6 +144,10 @@ public class CustomerClientHomeService {
         BusinessMessage  message = this.cmSharingLinksService.selectRedPacketByResult("4");
         data.put("redPacket", message);
 
+        //6个销量最多的商品
+        List<SlProduct> salesProducts = this.cmProductMapper.selectSalesProducts();
+        data.put("salesProducts", salesProducts);
+
         // 海南之家
         List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
             setType(ArticleTypeEnum.HOMES_HAINAN.getValue());

@@ -509,6 +509,29 @@
         WHERE od.`id` = #{orderDetailId}
         LIMIT 0, 1
     </select>
+
+    <!--查询6个虚拟销量最高商品-->
+    <select id="selectSalesProducts" resultType="com.songpo.searched.entity.SlProduct">
+        SELECT
+        *
+        FROM sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON ap.product_id = p.id
+        ORDER BY p.sales_virtual DESC
+		LIMIT 6
+    </select>
+
+    <!--查询商品按销量排序-->
+    <select id="selectSalesProductsByPage" resultType="Map">
+         SELECT
+        *
+        FROM sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON ap.product_id = p.id
+        ORDER BY p.sales_virtual DESC
+    </select>
+
+
 </mapper>
 
 

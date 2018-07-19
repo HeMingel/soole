@@ -682,4 +682,35 @@ public class CmProductService {
     public double getAwayMoneyByOrderDettailId (String orderDetailId){
         return cmProductMapper.getAwayMoneyByOrderDettailId(orderDetailId);
     }
+
+    /**
+     * 查询商品按销量排序
+     * @param pageNum        商品当前页
+     * @param pageSize       每页容量
+     * @return 商品列表
+     */
+    public BusinessMessage selectSalesProductsByPage(Integer pageNum, Integer pageSize) {
+        log.debug("查询商品按销量排序 页数:{},条数:{}", pageNum, pageSize);
+        BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(false);
+        try {
+            PageHelper.startPage(pageNum == null || pageNum == 0 ? 1 : pageNum, pageSize == null ? 10 : pageSize);
+
+                List<Map<String, Object>> list = this.mapper.selectSalesProductsByPage();
+
+                if (list.size() > 0) {
+                        businessMessage.setMsg("查询成功");
+                        businessMessage.setSuccess(true);
+                        businessMessage.setData(new PageInfo<>(list));
+                } else {
+                    businessMessage.setMsg("查询无数据!");
+                    businessMessage.setSuccess(true);
+                }
+
+        } catch (Exception e) {
+            businessMessage.setMsg("查询异常");
+            log.error("查询商品异常", e);
+        }
+        return businessMessage;
+    }
 }

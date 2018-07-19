@@ -248,6 +248,23 @@ public class ProductController {
         log.debug("查询助力购物商品");
         return this.productService.selectPowerShopping();
     }
+
+    /**
+     * 查询商品按销量排序
+     * @param pageNum  页码
+     * @param pageSize 容量
+     * @return 商品列表
+     */
+    @ApiOperation(value = "查询商品按销量排序")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "pageNum", value = "页码，从1开始", paramType = "form"),
+            @ApiImplicitParam(name = "pageSize", value = "数量，必须大于0", paramType = "form")
+    })
+    @GetMapping("products_by_page")
+    public BusinessMessage selectSalesProductsByPage(Integer pageNum, Integer pageSize) {
+        log.debug("分页查询商品，页码：{}，数量：{},",  pageNum, pageSize);
+        return this.productService.selectSalesProductsByPage(pageNum, pageSize);
+    }
 }
 
 

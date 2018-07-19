@@ -237,4 +237,17 @@ public interface CmProductMapper{
      * @return
      */
     double getAwayMoneyByOrderDettailId(@Param("orderDetailId") String orderDetailId);
+
+    /**
+     * 查询销量最多的6个商品
+     *@return
+     */
+    List<SlProduct> selectSalesProducts();
+
+    /**
+     * 查询商品按销量排序
+     * @return 商品列表
+     */
+    List<Map<String, Object>> selectSalesProductsByPage();
+
 }
