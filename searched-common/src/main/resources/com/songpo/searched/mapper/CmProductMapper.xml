@@ -531,6 +531,17 @@
         ORDER BY p.sales_virtual DESC
     </select>
 
+    <!--查询优质店铺-->
+    <select id="selectGroomShop" resultType="Map">
+        SELECT COUNT(mc.collection_id) AS collectionSum,ss.* FROM sl_my_collection mc
+        LEFT JOIN sl_shop ss ON mc.collection_id = ss.id
+        WHERE mc.type=1
+        AND ss.groom =2
+        GROUP BY mc.collection_id
+        ORDER BY collectionSum DESC
+        LIMIT 3
+    </select>
+
 
 </mapper>
 

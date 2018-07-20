@@ -250,4 +250,11 @@ public interface CmProductMapper{
      */
     List<Map<String, Object>> selectSalesProductsByPage();
 
+    /**
+     * 查询优质店铺
+     * @return 店铺列表
+     */
+
+    List<Map<String,Object>> selectGroomShop();
+
 }

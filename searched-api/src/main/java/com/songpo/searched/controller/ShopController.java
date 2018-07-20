@@ -86,5 +86,13 @@ public class ShopController {
         }
         return businessMessage;
     }
-
+    /**
+     * 查询优质店铺
+     * @return
+     */
+    @ApiOperation(value = "查询优质店铺")
+    @GetMapping("find-groom-shop")
+    public BusinessMessage selectGroomShop() {
+        return this.cmShopService.selectGroomShop();
+    }
 }

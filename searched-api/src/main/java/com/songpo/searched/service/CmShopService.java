@@ -166,4 +166,26 @@ public class CmShopService {
             return false;
         }
     }
+
+    /**
+     * 查询优质店铺
+     * @return 店铺商品
+     */
+
+    public BusinessMessage selectGroomShop() {
+        log.debug("查询优质店铺");
+
+        BusinessMessage<Object> businessMessage = new BusinessMessage<>();
+        businessMessage.setSuccess(false);
+        try{
+            businessMessage.setData(this.mapper.selectGroomShop());
+            businessMessage.setSuccess(true);
+            businessMessage.setMsg("查询成功");
+
+        }catch (Exception e){
+            businessMessage.setMsg("查询失败");
+            log.error("商铺查询失败:{}",e);
+        }
+        return businessMessage;
+    }
 }
