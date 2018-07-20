@@ -47,18 +47,6 @@ public class NotifyController {
         return this.wxPayNotify(request);
     }
 
-    @PostMapping("wxpay-notify-new")
-    public String wxPayNotifyNew(HttpServletRequest request) {
-        log.debug("微信支付通知New接口开始调用");
-        return this.paymentService.wxPayNotify(request);
-    }
-
-    @GetMapping("wxpay-notify-new")
-    public String wxPayNotifyGetNew(HttpServletRequest request) {
-        log.debug("微信支付通知New-GET接口开始调用");
-        return this.wxPayNotify(request);
-    }
-
     /**
      * 支付宝支付通知处理接口
      *
