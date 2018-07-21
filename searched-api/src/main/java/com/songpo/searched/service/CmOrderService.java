@@ -2581,12 +2581,12 @@ public class CmOrderService {
      * @param totalAmount 订单总金额
      * @param quantity    购买数量
      * @param inviterId   邀请人ID
-     * @param payTime     支付时间
+     * @param date        支付时间
      * @param checkName   审核人
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  payTime, String checkName ) {
+    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName ) {
         log.debug(" id = [" + id + "], totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
         BusinessMessage message = new BusinessMessage();
         if (id == null ) {
@@ -2599,9 +2599,8 @@ public class CmOrderService {
             message.setSuccess(false);
             return message;
         }
-
         //支付时间 yyyy-mm-dd 改为 yyyy-mm-dd HH:mm:dd
-        payTime = payTime+" 00:00:00";
+        String payTime = date+" 00:00:00";
         //购买人信息
         SlUser slUserBuy = userService.selectOne(new SlUser() {{
             setUsername(id);
@@ -2615,7 +2614,7 @@ public class CmOrderService {
         if (null == slUserInvite){
             inviterId = 7777;
         }
-        //生成订单号
+//        生成订单号
         String orderNum = OrderNumGeneration.getOrderIdByUUId();
         //获取商品信息
         SlProduct slProduct = productService.selectByPrimaryKey(BaseConstant.PRODUCT_ID_A);
@@ -2633,7 +2632,7 @@ public class CmOrderService {
                 setPaymentState(1);
                 setPaymentChannel(5);
                 setPayTime(finalPayTime);
-                setPayTimeStamp(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
+                setPayTimeStamp(LocalDateTimeUtils.stringToDate(payTime).getTime()/1000);
                 setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             }});
             SlOrder slOrder = orderService.selectOne(new SlOrder(){{
@@ -2656,12 +2655,13 @@ public class CmOrderService {
                 setQuantity(quantity);
                 setPrice(slActivityProduct.getPrice());
                 setCreator(slUserBuy.getId());
-                setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                setCreateTime(payTime);
                 setActivityProductId(slActivityProduct.getId());
                 setType(4);
                 setCheckState((byte)2);
                 setCheckName(checkName);
                 setInviterId(finalInviterId1);
+                setCreatedAt(LocalDateTimeUtils.stringToDate(payTime));
             }});
             //订单表插入成功后 给邀请人返10%金额+5%搜了贝
             if(result>0){

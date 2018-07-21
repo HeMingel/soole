@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Map;
 
 @Api(description = "订单管理")
@@ -576,7 +577,7 @@ public class CmOrderController {
      * @param totalAmount 订单总金额
      * @param quantity    购买数量
      * @param inviterId   邀请人ID
-     * @param payTime     支付时间
+     * @param date     支付时间
      * @param checkName   审核人
      * @return
      */
@@ -590,13 +591,13 @@ public class CmOrderController {
             @ApiImplicitParam(name = "checkName", value = "审核人 ", paramType = "form", required = true)
     })
     @PostMapping("enter-order")
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  payTime, String checkName) {
+    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName) {
         log.debug("A轮订单录入，id = {}, totalAmount = {}, quantity = {}, inviterId = {}, payTime = {}, checkName = {}",
-                id, totalAmount, quantity, inviterId, payTime, checkName);
+                id, totalAmount, quantity, inviterId, date, checkName);
         BusinessMessage message = new BusinessMessage();
 
         try {
-            message = cmOrderService.enterOrder(id,totalAmount,quantity,inviterId, payTime, checkName);
+            message = cmOrderService.enterOrder(id,totalAmount,quantity,inviterId, date, checkName);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("A轮订单录入失败", e);
