@@ -597,7 +597,7 @@ public class CmOrderController {
         BusinessMessage message = new BusinessMessage();
 
         try {
-            message = cmOrderService.enterOrder(id,totalAmount,quantity,inviterId, date, checkName);
+          // message = cmOrderService.enterOrder(id,totalAmount,quantity,inviterId, date, checkName);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("A轮订单录入失败", e);
