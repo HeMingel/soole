@@ -520,4 +520,22 @@ public class CmSharingLinksService {
         return message;
     }
 
+    /**
+     * H5 领取红包以及详情
+     * @return
+     */
+    public BusinessMessage selectRedList(){
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message.setData(this.cmSharingLinksMapper.selectRedList());
+            message.setMsg("获取H5 领取红包以及详情成功");
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("获取H5 领取红包以及详情失败", e);
+            message.setSuccess(false);
+            message.setMsg("查询失败");
+        }
+
+        return  message;
+    }
 }

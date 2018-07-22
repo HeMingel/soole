@@ -239,4 +239,15 @@ public class SharingLinksController {
         return cmSharingLinksService.getRedPacket(redPacketId);
     }
 
+    /**
+     * H5 领取红包以及详情
+     * @return
+     */
+    @ApiOperation(value = "H5 领取红包以及详情")
+    @GetMapping("red_list")
+    public BusinessMessage selectRedList() {
+        log.debug("H5 领取红包以及详情" );
+        return this.cmSharingLinksService.selectRedList();
+    }
+
 }

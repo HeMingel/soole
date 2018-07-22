@@ -85,4 +85,10 @@ public interface  CmSharingLinksMapper {
      */
     List<Map<String, Object>> selectShareMoney(@Param("userId") String userId,
                                               @Param("shareId") String shareId);
+    /**
+     *H5 领取红包以及详情
+     * @param userId
+     * @return
+     */
+    List<Map<String, Object>> selectRedList();
 }

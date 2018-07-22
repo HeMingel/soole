@@ -169,6 +169,7 @@
         </otherwise>
       </choose>
     </where>
+      ORDER BY  so.pay_time DESC
   </select>
 
   <!-- 获取红包数 已领红包金额-->
@@ -227,6 +228,38 @@
             </if>
         </where>
         AND rp.red_packet_type=4
+    </select>
+
+    <!-- H5 我的已领取红包以及详情-->
+    <select id="selectRedList" resultType="map">
+        SELECT
+        od.product_name productName,
+        od.price price,
+        od.quantity quantity,
+        suu.nick_name AS buyUser,
+        so.total_amount totalAmount,
+        sb.`name` paymentName,
+        od.shipping_state shippingState,
+        od.type type,
+        so.id orderId,
+        rp.money money,
+        so.pay_time payTime
+        FROM
+        sl_order_extend oe
+        LEFT JOIN sl_sharing_links sl ON oe.service_id = sl.id
+        LEFT JOIN sl_order_detail od ON oe.order_id = od.order_id
+        LEFT JOIN sl_order so ON oe.order_id = so.id
+        LEFT JOIN sl_base_payment sb ON sb.id = so.payment_channel
+        LEFT JOIN sl_product sp ON sl.product_id = sp.id
+        LEFT JOIN sl_activity_product ap ON sp.id = ap.`product_id`
+        LEFT JOIN sl_user suu ON so.user_id = suu.id
+        LEFT JOIN sl_red_packet rp ON oe.id = rp.order_extend_id
+        where
+             rp.red_packet_type = 4
+            AND rp.result = 6
+            ORDER BY so.pay_time DESC
+            LIMIT 20
+
     </select>
 
 </mapper>
