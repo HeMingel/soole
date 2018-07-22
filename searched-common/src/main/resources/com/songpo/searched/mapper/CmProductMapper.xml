@@ -517,6 +517,7 @@
         FROM sl_product p
         LEFT JOIN sl_activity_product ap
         ON ap.product_id = p.id
+        WHERE p.sales_mode_id = 5
         ORDER BY p.sales_virtual DESC
 		LIMIT 6
     </select>
@@ -528,6 +529,7 @@
         FROM sl_product p
         LEFT JOIN sl_activity_product ap
         ON ap.product_id = p.id
+        WHERE p.sales_mode_id = 5
         ORDER BY p.sales_virtual DESC
     </select>
 
