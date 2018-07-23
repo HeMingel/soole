@@ -1,17 +1,21 @@
 package com.songpo.searched.controller;
 
+import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.service.CmOrderService;
+import com.songpo.searched.service.OrderService;
+import com.songpo.searched.service.ProcessOrders;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.Map;
 
 @Api(description = "订单管理")
@@ -24,7 +28,12 @@ public class CmOrderController {
 
     @Autowired
     private CmOrderService cmOrderService;
-
+    @Autowired
+    private ProcessOrders processOrders;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private Environment env;
     /**
      * 多商品订单
      *
@@ -603,5 +612,36 @@ public class CmOrderController {
             log.error("A轮订单录入失败", e);
         }
         return message;
+    }
+
+    @PostMapping("process-order")
+    @ApiOperation("手动处理订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单", paramType = "form", required = true),
+            @ApiImplicitParam(name = "type", value = "支付类型", paramType = "form", required = true),
+            @ApiImplicitParam(name = "key", value = "秘钥", paramType = "form", required = true)
+    })
+    public BusinessMessage changePaySatus(String orderId,Integer type,String key) {
+        BusinessMessage message = new BusinessMessage();
+        if (!env.getProperty("sp.pay.wxpay.apiKey").equals(key)){
+            message.setMsg("支付秘钥不对");
+            return message;
+        }
+        SlOrder order = orderService.selectByPrimaryKey(orderId);
+        if (order == null) {
+            message.setMsg("订单不存在");
+            return message;
+        }
+        if (order.getPaymentState() == 2) {
+            log.debug("======================================订单ID{} 的支付宝手动处理订单开始}：",orderId+"===============================");
+            processOrders.processOrders(orderId, type);
+            message.setMsg("处理成功");
+            message.setSuccess(true);
+        }else {
+            log.debug("订单 {} 不处于未支付状态",order.getId());
+            message.setMsg("订单"+order.getId()+" 不处于未支付状态");
+        }
+        return message;
+
     }
 }
