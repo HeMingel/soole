@@ -205,7 +205,7 @@
       LEFT JOIN sl_user suu ON so.user_id = suu.id
       LEFT JOIN sl_red_packet rp ON oe.id = rp.order_extend_id
   <where>
-      suu.id = #{userId}
+      sl.share_person_id = #{userId}
       <if test="shareId != '' and shareId != null ">
           and sl.id= #{shareId}
       </if>
