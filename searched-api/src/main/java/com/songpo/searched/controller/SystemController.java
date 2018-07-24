@@ -964,16 +964,19 @@ public class SystemController {
      * @date 2018年7月17日16:17:56
      */
     @ApiOperation(value = "微信第三方登录（新）")
-    @ApiImplicitParam(name = "openId", value = "微信登录唯一标识", paramType = "form", required = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "微信登录唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "unionId", value = "微信unionId标识", paramType = "form", required = true)
+    })
     @PostMapping("third-party-wx-login")
-    public BusinessMessage thirdPartyLoginByWx(String openId) {
+    public BusinessMessage thirdPartyLoginByWx(String openId,String unionId) {
         log.debug("微信用户openId:{} 开始登录",openId);
         BusinessMessage message = new BusinessMessage();
       if (SLStringUtils.isEmpty(openId)) {
           message.setMsg("微信openId为空");
           message.setCode("1");
       }else{
-          message = systemLoginService.wxlogin(openId);
+          message = systemLoginService.wxlogin(openId,unionId);
       }
         return message;
     }

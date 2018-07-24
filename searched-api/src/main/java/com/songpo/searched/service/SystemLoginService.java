@@ -165,11 +165,22 @@ public class SystemLoginService {
     /**
      * 微信第三方登录
      * @param openId
+     * @param  unionId unionId 针对以前IOS端 openId 实际传入的为 unionId 的错误
      * @return code : 1 openId 异常 2 用户未注册 3 用户未绑定手机号 4 登录成功
      */
     @Transactional
-    public BusinessMessage wxlogin(String openId) {
+    public BusinessMessage wxlogin(String openId,String unionId) {
         BusinessMessage message = new BusinessMessage<>();
+        //根据unionId查询
+        SlUser userTemp = userService.selectOne(new SlUser() {{
+            setOpenId(unionId);
+        }});
+        //如果是以前的错误录入数据,更新
+        if (userTemp != null) {
+            userTemp.setOpenId(openId);
+            userTemp.setUnionid(unionId);
+            userService.updateByPrimaryKeySelective(userTemp);
+        }
         //根据微信openId唯一标识查询
         SlUser user = userService.selectOne(new SlUser() {{
             setOpenId(openId);
@@ -300,7 +311,7 @@ public class SystemLoginService {
             message.setSuccess(true);
             message.setMsg("绑定手机号码成功，请重新登录");
         }else {
-            message.setMsg("绑定失败，改用户已经绑定手机号");
+            message.setMsg("绑定失败，该用户已经绑定手机号");
         }
         // 清除验证码
         this.smsPasswordCache.evict(phone);
