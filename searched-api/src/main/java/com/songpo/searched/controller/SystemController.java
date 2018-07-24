@@ -55,6 +55,7 @@ public class SystemController {
     private SmsPasswordCache smsPasswordCache;
     @Autowired
     private SystemLoginService systemLoginService;
+
     /**
      * 登录
      *
@@ -107,7 +108,7 @@ public class SystemController {
                         user.setPassword(passwordEncoder.encode(password));
 
                         // 天降洪福，100乐豆（银豆）
-                       // user.setSilver(100);
+                        // user.setSilver(100);
                         //改送16金豆
                         user.setCoin(BaseConstant.REGISTER_PEAS);
 
@@ -143,7 +144,7 @@ public class SystemController {
                         // 是否设置支付密码
                         data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                         //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
-                        data.put("circleState",user.getCircleState());
+                        data.put("circleState", user.getCircleState());
                         message.setData(data);
                         message.setSuccess(true);
                     } else {
@@ -169,7 +170,7 @@ public class SystemController {
                         // 是否设置支付密码
                         data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                         //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
-                        data.put("circleState",user.getCircleState());
+                        data.put("circleState", user.getCircleState());
                         message.setData(data);
                         message.setSuccess(true);
                     }
@@ -489,7 +490,7 @@ public class SystemController {
                 user.setType(type);
 
                 // 天降洪福，100乐豆（银豆）
-               // user.setSilver(BaseConstant.REGISTER_PEAS);
+                // user.setSilver(BaseConstant.REGISTER_PEAS);
                 /**
                  * 2018年7月2日
                  * 改为赠送送金豆
@@ -535,7 +536,7 @@ public class SystemController {
             data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
             data.put("loginCount", user.getLoginCount());
             //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
-            data.put("circleState",user.getCircleState());
+            data.put("circleState", user.getCircleState());
             message.setData(data);
             message.setSuccess(true);
         }
@@ -543,26 +544,26 @@ public class SystemController {
     }
 
 
-
     /**
      * 微信网页第三方注册
-     * @param fromUser 微信网页登录唯一标识
-     * @param nickname 昵称
-     * @param avatar 头像地址
-     * @param phone 手机号
-     * @param city  城市
-     * @param province 省份
-     * @param sex 性别1.男 2.女
+     *
+     * @param fromUser         微信网页登录唯一标识
+     * @param nickname         昵称
+     * @param avatar           头像地址
+     * @param phone            手机号
+     * @param city             城市
+     * @param province         省份
+     * @param sex              性别1.男 2.女
      * @param verificationCode 短信验证码
-     * @param zone  地区
+     * @param zone             地区
      * @return 用户信息
      */
     @ApiOperation(value = "微信网页注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "fromUser", value = "微信网页登录唯一标识", paramType = "form", required = true),
-            @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form" , required = true),
-            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form" , required = true),
-            @ApiImplicitParam(name = "sex", value = "性别1.男 2.女", paramType = "form" , required = true),
+            @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form", required = true),
+            @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true),
+            @ApiImplicitParam(name = "sex", value = "性别1.男 2.女", paramType = "form", required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form"),
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form", required = true),
@@ -571,7 +572,7 @@ public class SystemController {
     })
     @PostMapping("wx-web-register")
     public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar, String phone,
-                                                        String city,String province,Integer sex,String verificationCode,String zone) {
+                                                     String city, String province, Integer sex, String verificationCode, String zone) {
         log.debug("微信网页注册，开放账号唯一标识：{}，昵称：{}，头像地址：{}", fromUser, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
 
@@ -581,27 +582,28 @@ public class SystemController {
             message.setMsg("昵称为空");
         } else if (SLStringUtils.isEmpty(avatar)) {
             message.setMsg("头像地址为空");
-        } else if (SLStringUtils.isEmpty(avatar)){
+        } else if (SLStringUtils.isEmpty(avatar)) {
             message.setMsg("手机号为空");
         } else if (null == sex) {
             message.setMsg("性别为空");
-        }else if (SLStringUtils.isEmpty(zone)){
+        } else if (SLStringUtils.isEmpty(zone)) {
             message.setMsg("地区为空");
-        }else {
-          message =  systemLoginService.wxWebRegister(fromUser,nickname,avatar,phone,city,province,sex,verificationCode,zone);
+        } else {
+            message = systemLoginService.wxWebRegister(fromUser, nickname, avatar, phone, city, province, sex, verificationCode, zone);
         }
         return message;
     }
 
     /**
      * 微信网页第三方登录
-     * @param fromUser  微信网页登录唯一标识
+     *
+     * @param fromUser 微信网页登录唯一标识
      * @return
      */
     @ApiOperation(value = "微信网页登录")
     @PostMapping("wx-web-login")
     @ApiImplicitParam(name = "fromUser", value = "微信网页登录唯一标识", paramType = "form", required = true)
-    public BusinessMessage  wxWeblogin(String fromUser) {
+    public BusinessMessage wxWeblogin(String fromUser) {
         BusinessMessage message = new BusinessMessage();
         log.debug("微信网页登录，开放账号唯一标识：{}", fromUser);
         if (StringUtils.isBlank(fromUser)) {
@@ -611,6 +613,7 @@ public class SystemController {
         }
         return message;
     }
+
     /**
      * 登录
      *
@@ -625,7 +628,7 @@ public class SystemController {
             @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
     })
     @PostMapping("sms-login")
-    public BusinessMessage<JSONObject> smsLogin(String phone, String password ,String zone) {
+    public BusinessMessage<JSONObject> smsLogin(String phone, String password, String zone) {
         log.debug("短信登录，账号：{}，密码：{}", phone, password);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(phone)) {
@@ -653,7 +656,7 @@ public class SystemController {
                         user.setPhone(phone);
                         user.setZone(zone);
                         // 天降洪福，乐豆（银豆）
-                       // user.setSilver(BaseConstant.REGISTER_PEAS);
+                        // user.setSilver(BaseConstant.REGISTER_PEAS);
                         /**
                          * 2018年7月2日
                          * 改为赠送送金豆
@@ -702,7 +705,7 @@ public class SystemController {
                     data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                     data.put("loginCount", user.getLoginCount());
                     //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
-                    data.put("circleState",user.getCircleState());
+                    data.put("circleState", user.getCircleState());
 
                     // 清除验证码
                     this.smsPasswordCache.evict(phone);
@@ -865,9 +868,9 @@ public class SystemController {
             message.setMsg("手机号码为空");
         } else if (StringUtils.isBlank(code)) {
             message.setMsg("验证码为空");
-        } else if (StringUtils.isBlank(zone)){
+        } else if (StringUtils.isBlank(zone)) {
             message.setMsg("地区为空");
-        }else {
+        } else {
             // 校验短信验证码
             String cacheCode = this.smsVerifyCodeCache.get(phone);
             if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
@@ -907,7 +910,7 @@ public class SystemController {
                         phoneUser.setZone(zone);
                         phoneUser.setType(user.getType());
                         //修补错误数据，原来的微信用户中的金豆银豆转移
-                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin()-BaseConstant.REGISTER_PEAS)<0?0:(user.getCoin()-BaseConstant.REGISTER_PEAS)));
+                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin() - BaseConstant.REGISTER_PEAS) < 0 ? 0 : (user.getCoin() - BaseConstant.REGISTER_PEAS)));
                         // 更新
                         userService.updateByPrimaryKeySelective(phoneUser);
                         // 更新缓存
@@ -935,9 +938,6 @@ public class SystemController {
     }
 
 
-
-
-
     /**
      * 删除用户信息
      * 需要删除的表：sl_user、sl_member、sl_transaction_detail
@@ -959,6 +959,7 @@ public class SystemController {
 
     /**
      * 第三方微信登录（新）
+     *
      * @param openId 微信的openId
      * @return code : 1 openId 异常 2 用户未注册 3 用户未绑定手机号 4 登录成功
      * @date 2018年7月17日16:17:56
@@ -969,20 +970,21 @@ public class SystemController {
             @ApiImplicitParam(name = "unionId", value = "微信unionId标识", paramType = "form", required = true)
     })
     @PostMapping("third-party-wx-login")
-    public BusinessMessage thirdPartyLoginByWx(String openId,String unionId) {
-        log.debug("微信用户openId:{} 开始登录",openId);
+    public BusinessMessage thirdPartyLoginByWx(String openId, String unionId) {
+        log.debug("微信用户openId:{} 开始登录", openId);
         BusinessMessage message = new BusinessMessage();
-      if (SLStringUtils.isEmpty(openId)) {
-          message.setMsg("微信openId为空");
-          message.setCode("1");
-      }else{
-          message = systemLoginService.wxlogin(openId,unionId);
-      }
+        if (SLStringUtils.isEmpty(openId)) {
+            message.setMsg("微信openId为空");
+            message.setCode("1");
+        } else {
+            message = systemLoginService.wxlogin(openId, unionId);
+        }
         return message;
     }
 
     /**
      * 微信 第三方注册 (新)
+     *
      * @param openId
      * @param nickname
      * @param avatar
@@ -996,6 +998,7 @@ public class SystemController {
     @ApiOperation(value = "微信 第三方注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "微信开放账号唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "unionId", value = "微信unionId", paramType = "form", required = true),
             @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "form", required = true),
             @ApiImplicitParam(name = "avatar", value = "头像地址", paramType = "form", required = true),
             @ApiImplicitParam(name = "type", value = "登录类型 1：微信 2：QQ 3微信网页", paramType = "form", required = true),
@@ -1004,32 +1007,35 @@ public class SystemController {
             @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
     })
     @PostMapping("third-party-wx-register")
-    public BusinessMessage wxRegister(String openId, String nickname, String avatar, Integer type,
-                                      String phone,String zone,String code ) {
+    public BusinessMessage wxRegister(String openId, String unionId, String nickname, String avatar, Integer type,
+                                      String phone, String zone, String code) {
         BusinessMessage message = new BusinessMessage();
-        log.debug("微信用户openId:{} 开始注册",openId);
+        log.debug("微信用户openId:{} 开始注册", openId);
         if (SLStringUtils.isEmpty(openId)) {
             message.setMsg("开放账号唯一标识为空");
+        } else if (SLStringUtils.isEmpty(unionId)) {
+            message.setMsg("unionId为空");
         } else if (SLStringUtils.isEmpty(nickname)) {
             message.setMsg("昵称为空");
-        }else if (SLStringUtils.isEmpty(avatar)) {
+        } else if (SLStringUtils.isEmpty(avatar)) {
             message.setMsg("头像地址为空");
         } else if (null == type) {
             message.setMsg("注册登录类型为空");
-        }else if (SLStringUtils.isEmpty(phone)) {
+        } else if (SLStringUtils.isEmpty(phone)) {
             message.setMsg("手机号码为空");
         } else if (SLStringUtils.isEmpty(code)) {
             message.setMsg("验证码为空");
-        }else if (SLStringUtils.isEmpty(zone)) {
+        } else if (SLStringUtils.isEmpty(zone)) {
             message.setMsg("地区为空");
-        }else {
-            message = systemLoginService.wxRegister(openId, nickname, avatar, type, phone, zone, code);
+        } else {
+            message = systemLoginService.wxRegister(openId, unionId, nickname, avatar, type, phone, zone, code);
         }
         return message;
     }
 
     /**
-     *微信登录-绑定手机号接口（只针对以前通过微信注册没有绑定手机号的用户）
+     * 微信登录-绑定手机号接口（只针对以前通过微信注册没有绑定手机号的用户）
+     *
      * @param openId
      * @param phone
      * @param code
@@ -1045,18 +1051,18 @@ public class SystemController {
             @ApiImplicitParam(name = "code", value = "验证码", paramType = "form", required = true),
     })
     @PostMapping("wx-bind-phone-final")
-    public BusinessMessage bindPhoneForWxLogin(String openId,String phone ,String code,String zone) {
+    public BusinessMessage bindPhoneForWxLogin(String openId, String phone, String code, String zone) {
         BusinessMessage message = new BusinessMessage();
-        log.debug("微信用户openId:{} 开始绑定",openId);
+        log.debug("微信用户openId:{} 开始绑定", openId);
         if (SLStringUtils.isEmpty(openId)) {
             message.setMsg("微信唯一标识为空");
-        }else if (SLStringUtils.isEmpty(phone)) {
+        } else if (SLStringUtils.isEmpty(phone)) {
             message.setMsg("用户手机号码为空");
         } else if (SLStringUtils.isEmpty(code)) {
             message.setMsg("输入验证码为空");
-        }else if (SLStringUtils.isEmpty(zone)) {
+        } else if (SLStringUtils.isEmpty(zone)) {
             message.setMsg("地区为空");
-        }else {
+        } else {
             message = systemLoginService.bindPhoneForWxLogin(openId, phone, code, zone);
         }
         return message;

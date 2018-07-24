@@ -24,7 +24,8 @@ import static org.apache.commons.text.CharacterPredicates.LETTERS;
 
 /**
  * 系统登录注册
- * @author  heming
+ *
+ * @author heming
  */
 @Service
 public class SystemLoginService {
@@ -47,6 +48,7 @@ public class SystemLoginService {
 
     /**
      * 微信网页第三方注册
+     *
      * @param fromUser
      * @param nickname
      * @param avatar
@@ -59,11 +61,11 @@ public class SystemLoginService {
      * @return
      */
     @Transactional
-    public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar,String phone,
-                                                     String city, String province, Integer sex,String verificationCode,String zone) {
+    public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar, String phone,
+                                                     String city, String province, Integer sex, String verificationCode, String zone) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         //验证短信验证码
-       String code = this.smsPasswordCache.get(phone);
+        String code = this.smsPasswordCache.get(phone);
         if (StringUtils.isBlank(code) || !code.contentEquals(verificationCode)) {
             message.setMsg("验证码已过期，请重试");
             return message;
@@ -76,7 +78,7 @@ public class SystemLoginService {
             return message;
         }
         //根据手机号查询
-        SlUser  user = userService.selectOne(new SlUser() {{
+        SlUser user = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});
         //如果数据库存在这个手机号用户
@@ -122,7 +124,7 @@ public class SystemLoginService {
             // 清除验证码
             this.smsPasswordCache.evict(phone);
             //微信网页注册用户赠送B轮的1枚SLB
-            this.signUpBonusForSlb(user,2,new BigDecimal(1));
+            this.signUpBonusForSlb(user, 2, new BigDecimal(1));
             JSONObject data = new JSONObject();
             data.put("userId", user.getId());
             data.put("clientId", user.getClientId());
@@ -137,6 +139,7 @@ public class SystemLoginService {
 
     /**
      * 微信网页第三方登录
+     *
      * @param fromUser
      * @return
      */
@@ -155,8 +158,8 @@ public class SystemLoginService {
             message.setData(user);
             //更新登录信息
             user.setLastLogin(new Date());
-            Integer loginCount = user.getLoginCount() == null? 0 :user.getLoginCount() ;
-            user.setLoginCount(loginCount+1);
+            Integer loginCount = user.getLoginCount() == null ? 0 : user.getLoginCount();
+            user.setLoginCount(loginCount + 1);
             userService.updateByPrimaryKeySelective(user);
         }
         return message;
@@ -164,12 +167,13 @@ public class SystemLoginService {
 
     /**
      * 微信第三方登录
+     *
      * @param openId
-     * @param  unionId unionId 针对以前IOS端 openId 实际传入的为 unionId 的错误
+     * @param unionId unionId 针对以前IOS端 openId 实际传入的为 unionId 的错误
      * @return code : 1 openId 异常 2 用户未注册 3 用户未绑定手机号 4 登录成功
      */
     @Transactional
-    public BusinessMessage wxlogin(String openId,String unionId) {
+    public BusinessMessage wxlogin(String openId, String unionId) {
         BusinessMessage message = new BusinessMessage<>();
         //根据unionId查询
         SlUser userTemp = userService.selectOne(new SlUser() {{
@@ -185,35 +189,50 @@ public class SystemLoginService {
         SlUser user = userService.selectOne(new SlUser() {{
             setOpenId(openId);
         }});
+        if (user == null) {
+            user = userService.selectOne(new SlUser() {{
+                setUnionid(unionId);
+            }});
+        }
         //用户未注册
-        if (null == user ) {
+        if (null == user) {
             message.setMsg("用户未注册");
             message.setCode("2");
-            log.debug("微信用户openId:{} 登录失败，该用户未注册 ",openId);
-        }else {
+            log.debug("微信用户openId:{} 登录失败，该用户未注册 ", openId);
+        } else {
             //用户没有手机号
             if (SLStringUtils.isEmpty(user.getPhone())) {
                 message.setMsg("用户未绑定手机号");
                 message.setCode("3");
-                log.debug("微信用户openId:{} 登录失败，该用户未绑定手机号 ",openId);
+                log.debug("微信用户openId:{} 登录失败，该用户未绑定手机号 ", openId);
             } else {
                 message.setMsg("用户登录成功");
                 message.setData(user);
                 message.setCode("4");
                 message.setSuccess(true);
-                log.debug("微信用户openId:{} 登录成功",openId);
+                //如果用户没有unionId
+                if (SLStringUtils.isEmpty(user.getUnionid())) {
+                    user.setUnionid(unionId);
+                }
+                //用户登录信息
+                user.setLastLogin(new Date());
+                Integer loginCount = user.getLoginCount() == null ? 0 : user.getLoginCount();
+                user.setLoginCount(loginCount + 1);
+                userService.updateByPrimaryKeySelective(user);
+                log.debug("微信用户openId:{} 登录成功", openId);
             }
         }
-        return  message;
+        return message;
     }
 
     /**
      * 微信第三方注册
+     *
      * @param openId
      * @return
      */
     @Transactional
-    public BusinessMessage wxRegister(String openId, String nickname, String avatar, Integer type,
+    public BusinessMessage wxRegister(String openId, String unionId, String nickname, String avatar, Integer type,
                                       String phone, String zone, String code) {
         BusinessMessage message = new BusinessMessage<>();
         //根据微信openId唯一标识查询
@@ -222,7 +241,16 @@ public class SystemLoginService {
         }});
         //用户已经注册
         if (user != null) {
-            message.setMsg("用户已注册");
+            message.setMsg("用户已注册,openId已存在");
+            return message;
+        }
+        //根据微信unionId唯一标识查询
+        user = userService.selectOne(new SlUser() {{
+            setUnionid(unionId);
+        }});
+        //用户已经注册
+        if (user != null) {
+            message.setMsg("用户已注册,union已存在");
             return message;
         }
         //验证短信验证码
@@ -235,12 +263,13 @@ public class SystemLoginService {
         user = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});
-        if (user != null ) {
+        if (user != null) {
             //如果微信APP端未注册，通过手机和微信网页注册过  更新openId字段
             if (SLStringUtils.isEmpty(user.getOpenId())) {
                 user.setOpenId(openId);
                 user.setAvatar(avatar);
                 user.setNickName(nickname);
+                user.setUnionid(unionId);
                 userService.updateByPrimaryKeySelective(user);
                 message.setSuccess(true);
                 message.setMsg("手机号存在，合并成功");
@@ -254,6 +283,7 @@ public class SystemLoginService {
             //用户第一次注册
             user = new SlUser();
             user.setOpenId(openId);
+            user.setUnionid(unionId);
             user.setType(type);
             user.setPhone(phone);
             user.setNickName(nickname);
@@ -281,12 +311,13 @@ public class SystemLoginService {
 
     /**
      * 微信登录-绑定手机号接口（只针对以前通过微信注册没有绑定手机号的用户）
+     *
      * @param openId
      * @param phone
      * @param code
      * @return
      */
-    public BusinessMessage bindPhoneForWxLogin(String openId,String phone ,String code,String zone){
+    public BusinessMessage bindPhoneForWxLogin(String openId, String phone, String code, String zone) {
         BusinessMessage message = new BusinessMessage();
         //验证短信验证码
         String verificationCode = this.smsPasswordCache.get(phone);
@@ -294,14 +325,14 @@ public class SystemLoginService {
             message.setMsg("验证码已过期，请重试");
             return message;
         }
-        SlUser userTemp  = userService.selectOne(new SlUser(){{
+        SlUser userTemp = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});
-        if (userTemp != null ) {
+        if (userTemp != null) {
             message.setMsg("手机号已经被注册");
             return message;
         }
-        SlUser user  = userService.selectOne(new SlUser(){{
+        SlUser user = userService.selectOne(new SlUser() {{
             setOpenId(openId);
         }});
         if (SLStringUtils.isEmpty(user.getPhone())) {
@@ -310,12 +341,12 @@ public class SystemLoginService {
             userService.updateByPrimaryKeySelective(user);
             message.setSuccess(true);
             message.setMsg("绑定手机号码成功，请重新登录");
-        }else {
+        } else {
             message.setMsg("绑定失败，该用户已经绑定手机号");
         }
         // 清除验证码
         this.smsPasswordCache.evict(phone);
-        return  message;
+        return message;
     }
 
     /**
@@ -344,7 +375,7 @@ public class SystemLoginService {
         // 设置创建时间
         detail.setCreateTime(new Date());
         //资金池扣除银豆
-        cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS,null,null,2,null,userId,1);
+        cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS, null, null, 2, null, userId, 1);
         this.slTransactionDetailMapper.insertSelective(detail);
     }
 
@@ -373,25 +404,26 @@ public class SystemLoginService {
 
     /**
      * 注册赠送SLB
-     * @param user  用户
+     *
+     * @param user 用户
      * @param type 轮数 1 A轮 2 B轮 3 C轮 4 D轮 5 E轮
      * @param slb  贝数
      */
-    public  boolean  signUpBonusForSlb(SlUser user, Integer type, BigDecimal slb){
-        boolean flag  = false;
-        if (user == null){
+    public boolean signUpBonusForSlb(SlUser user, Integer type, BigDecimal slb) {
+        boolean flag = false;
+        if (user == null) {
             return flag;
         }
         try {
             //添加用户SLB基本信息
-            userSlbService.insertSelective( new SlUserSlb(){{
+            userSlbService.insertSelective(new SlUserSlb() {{
                 log.debug("微信注册赠送SLB开始");
                 setSlbType(type);
                 setUserId(user.getId());
                 setSlb(slb);
             }});
             //添加SLB 交易信息
-            slSlbTransactionMapper.insertSelective( new SlSlbTransaction(){{
+            slSlbTransactionMapper.insertSelective(new SlSlbTransaction() {{
                 setSlb(slb);
                 setSlbType(type);
                 setTargetId(user.getId());
@@ -399,10 +431,10 @@ public class SystemLoginService {
                 setTransactionType(2);
             }});
             //更新资金池信息
-            cmTotalPoolService.updatePool(null,null,slb,2,null,user.getId(),9);
+            cmTotalPoolService.updatePool(null, null, slb, 2, null, user.getId(), 9);
             flag = true;
-        }catch (Exception e){
-            log.error("用户注册赠送SLB失败",e);
+        } catch (Exception e) {
+            log.error("用户注册赠送SLB失败", e);
         }
         return flag;
     }
