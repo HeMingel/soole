@@ -2,6 +2,7 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.cache.SmsPasswordCache;
+import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
@@ -45,6 +46,8 @@ public class SystemLoginService {
     private UserSlbService userSlbService;
     @Autowired
     private SlSlbTransactionMapper slSlbTransactionMapper;
+    @Autowired
+    private SmsVerifyCodeCache smsVerifyCodeCache;
 
     /**
      * 微信网页第三方注册
@@ -175,25 +178,28 @@ public class SystemLoginService {
     @Transactional
     public BusinessMessage wxlogin(String openId, String unionId) {
         BusinessMessage message = new BusinessMessage<>();
-        //根据unionId查询
-        SlUser userTemp = userService.selectOne(new SlUser() {{
-            setOpenId(unionId);
-        }});
-        //如果是以前的错误录入数据,更新
-        if (userTemp != null) {
-            userTemp.setOpenId(openId);
-            userTemp.setUnionid(unionId);
-            userService.updateByPrimaryKeySelective(userTemp);
-        }
         //根据微信openId唯一标识查询
         SlUser user = userService.selectOne(new SlUser() {{
             setOpenId(openId);
         }});
         if (user == null) {
+            //根据unionId查询
+            SlUser userTemp = userService.selectOne(new SlUser() {{
+                setOpenId(unionId);
+            }});
+            //如果是以前的错误录入数据,更新
+            if (userTemp != null) {
+                userTemp.setOpenId(openId);
+                userTemp.setUnionid(unionId);
+                userService.updateByPrimaryKey(userTemp);
+                //  userService.updateByPrimaryKeySelective(userTemp);
+            }
             user = userService.selectOne(new SlUser() {{
                 setUnionid(unionId);
             }});
         }
+
+
         //用户未注册
         if (null == user) {
             message.setMsg("用户未注册");
@@ -207,6 +213,9 @@ public class SystemLoginService {
                 log.debug("微信用户openId:{} 登录失败，该用户未绑定手机号 ", openId);
             } else {
                 message.setMsg("用户登录成功");
+                if (SLStringUtils.isEmpty(user.getPayPassword())){
+                    user.setPayPassword("");
+                }
                 message.setData(user);
                 message.setCode("4");
                 message.setSuccess(true);
@@ -254,7 +263,7 @@ public class SystemLoginService {
             return message;
         }
         //验证短信验证码
-        String verificationCode = this.smsPasswordCache.get(phone);
+        String verificationCode = this.smsVerifyCodeCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
             message.setMsg("验证码已过期，请重试");
             return message;
