@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmSeckillRemindMapper">
+    <!--添加限时抢购提醒-->
+    <insert id="insertSeckillRemind"  useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO sl_seckill_remind(user_id,product_old_id,remind_time)
+        values(#{arg0},#{arg1},#{arg2})
+
+    </insert>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(description = "商品管理")
@@ -333,6 +334,20 @@ public class ProductController {
             businessMessage.setMsg("查询是否已设置限时抢购提醒失败" + e.getMessage());
         }
         return businessMessage;
+    }
+    /**
+     * 取消限时抢购提醒
+     * @param id 主键id
+     * @return
+     */
+    @ApiOperation(value = "取消限时抢购提醒")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "id",value = "主键ID",paramType = "form",required = true)
+    })
+    @GetMapping("cancel-limit-time")
+    public BusinessMessage cancelLimitTime(String id ) {
+        log.debug("取消限时抢购提醒");
+        return this.productService.cancelLimitTime(id);
     }
 }
 
