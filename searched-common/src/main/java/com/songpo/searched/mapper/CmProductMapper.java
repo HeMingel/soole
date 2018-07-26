@@ -257,4 +257,15 @@ public interface CmProductMapper{
 
     List<Map<String,Object>> selectGroomShop();
 
+    /**
+     * 查询限时秒杀抢购中商品
+     * @return 商品集合
+     */
+    List<Map<String, Object>> limitTimeProductsDay();
+
+    /**
+     * 查询限时秒杀明日预告商品商品
+     * @return 商品集合
+     */
+    List<Map<String, Object>> limitTimeProductsTomo();
 }
