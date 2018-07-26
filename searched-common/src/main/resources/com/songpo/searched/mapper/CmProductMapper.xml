@@ -554,6 +554,63 @@
         LIMIT 3
     </select>
 
+    <!--查询限时秒杀抢购中商品-->
+    <select id="limitTimeProductsDay" resultType="Map">
+        SELECT
+        p.name,
+        p.image_url,
+        p.comment_num,
+        p.sales_volume,
+        p.`sales_mode_id`,
+        p.`introduction`,
+        p.sales_virtual,
+		sa.seckill_price,
+        ap.*
+        FROM
+        sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON p.id = ap.`product_id`
+        LEFT JOIN sl_shop s
+        ON p.`shop_id` = s.`id`
+		LEFT JOIN sl_activity_seckill sa
+		ON p.id = sa.product_old_id
+        where
+            p.sold_out = 1
+            and ap.enabled = 1
+            and p.del = 0
+            AND p.sales_mode_id = 8
+            AND TO_DAYS( sa.start_time) = TO_DAYS(NOW( ))
+        ORDER BY ap.count desc
+    </select>
+
+    <!--查询限时秒杀明日预告商品-->
+    <select id="limitTimeProductsTomo" resultType="Map">
+        SELECT
+        p.name,
+        p.image_url,
+        p.comment_num,
+        p.sales_volume,
+        p.`sales_mode_id`,
+        p.`introduction`,
+        p.sales_virtual,
+		sa.seckill_price,
+        ap.*
+        FROM
+        sl_product p
+        LEFT JOIN sl_activity_product ap
+        ON p.id = ap.`product_id`
+        LEFT JOIN sl_shop s
+        ON p.`shop_id` = s.`id`
+		LEFT JOIN sl_activity_seckill sa
+		ON p.id = sa.product_old_id
+        where
+            p.sold_out = 1
+            and ap.enabled = 1
+            and p.del = 0
+            AND p.sales_mode_id = 8
+            AND TO_DAYS( sa.start_time) - TO_DAYS(NOW( )) = 1
+        ORDER BY ap.count desc
+    </select>
 
 </mapper>
 

@@ -7,12 +7,10 @@ import com.songpo.searched.constant.ActivityConstant;
 import com.songpo.searched.constant.SalesModeConstant;
 import com.songpo.searched.constant.VirtualUserConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlActivityProduct;
-import com.songpo.searched.entity.SlMyCollection;
-import com.songpo.searched.entity.SlPresellReturnedRecord;
-import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.typehandler.ProductEnum;
+import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.util.OrderNumGeneration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,6 +49,10 @@ public class CmProductService {
     private SlProductTypeMapper slProductTypeMapper;
     @Autowired
     private SlMyCollectionMapper slMyCollectionMapper;
+    @Autowired
+    private SlSeckillRemindMapper slSeckillRemindMapper;
+    @Autowired
+    private  SlActivitySeckillMapper slActivitySeckillMapper;
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -712,5 +714,101 @@ public class CmProductService {
             log.error("查询商品异常", e);
         }
         return businessMessage;
+    }
+
+    /**
+     * 查询限时秒杀商品
+     *
+     * @param type         1抢购中商品  2明日预告商品
+     * @param pageNum      页码
+     * @param pageSize     容量
+     * @return 限时秒杀商品分页列表
+     */
+    public PageInfo limitTimeProducts(Integer pageNum, Integer pageSize, Integer type) {
+        if (null == pageNum || pageNum <= 1) {
+            pageNum = 1;
+        }
+
+        if (null == pageSize || pageSize <= 1) {
+            pageSize = 10;
+        }
+        List<Map<String, Object>> list = new ArrayList<>();
+        // 设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        try {
+            //抢购中商品
+            if (1 == type){
+                list = this.mapper.limitTimeProductsDay();
+            }
+            // 明日预购商品
+            if (2 == type){
+                list = this.mapper.limitTimeProductsTomo();
+            }
+            // 执行查询
+        }catch (Exception e){
+            log.error("查询限时秒杀商品异常", e);
+        }
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 添加限时抢购提醒
+     * @param userId  用户ID
+     * @param productId  产品ID
+     * @return
+     */
+    public BusinessMessage insertLimitRemind(String userId, String productId) {
+        BusinessMessage message = new BusinessMessage();
+        if (null == userId) {
+            message.setMsg("用户ID不能为空");
+            message.setSuccess(false);
+            return message;
+        }
+        if (null == productId) {
+            message.setMsg("商品ID不能为空");
+            message.setSuccess(false);
+            return message;
+        }
+
+        try {
+            SlActivitySeckill slActivitySeckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
+                setProductOldId(productId);
+                setEnable(true);
+            }});
+
+            slSeckillRemindMapper.insert(new SlSeckillRemind(){{
+                setProductOldId(productId);
+                setUserId(userId);
+                setRemindTime(LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3));
+                setEnable(true);
+            }});
+
+            message.setSuccess(true);
+            message.setMsg("添加限时抢购提醒成功");
+        }catch (Exception e){
+            log.error("添加限时抢购提醒异常", e);
+            message.setMsg("添加限时抢购提醒");
+            message.setSuccess(false);
+        }
+        return message;
+    }
+
+    /**
+     * 查询是否设置限时抢购提醒
+     * @param userId 用户ID
+     * @param productId 商品ID
+     * @return
+     */
+    public boolean isLimitTime(String userId,String productId) {
+
+        List<SlSeckillRemind> slSeckillReminds = this.slSeckillRemindMapper.select(new SlSeckillRemind(){{
+            setUserId(userId);
+            setProductOldId(productId);
+        }});
+        if(slSeckillReminds.size()>0){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -264,6 +261,78 @@ public class ProductController {
     public BusinessMessage selectSalesProductsByPage(Integer pageNum, Integer pageSize) {
         log.debug("分页查询商品，页码：{}，数量：{},",  pageNum, pageSize);
         return this.productService.selectSalesProductsByPage(pageNum, pageSize);
+    }
+
+    /**
+     * 查询限时秒杀商品
+     *
+     * @param type         1抢购中商品  2明日预告商品
+     * @param pageNum      页码
+     * @param pageSize     容量
+     * @return 限时秒杀商品分页列表
+     */
+    @ApiOperation(value = "查询限时秒杀商品")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "type", value = "1抢购中商品  2明日预告商品", paramType = "form")
+    })
+    @GetMapping("limit-time-products")
+    public BusinessMessage<PageInfo<Map<String, Object>>> limitTimeProducts(Integer type,
+                                                                            Integer pageNum,
+                                                                            Integer pageSize) {
+        log.debug("查询限时秒杀商品，页码：{}，容量：{}, 商品时间标识：{}", pageNum, pageSize, type);
+        BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
+        message.setSuccess(false);
+        try {
+            PageInfo data = this.productService.limitTimeProducts( pageNum, pageSize, type);
+            message.setData(data);
+            message.setSuccess(true);
+        } catch (Exception e) {
+            log.error("查询限时秒杀商品失败，{}", e);
+
+            message.setMsg("查询限时秒杀商品失败，请重试");
+        }
+        return message;
+    }
+
+    /**
+     * 添加限时抢购提醒
+     * @param userId 用户ID
+     * @param productId 产品ID
+     * @return
+     */
+    @ApiOperation(value = "添加限时抢购提醒")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "form"),
+            @ApiImplicitParam(name = "productId", value = "商品ID", paramType = "form")
+    })
+    @PostMapping("insert-limit-time")
+    public BusinessMessage insertLimitRemind(String userId, String productId){
+        return this.productService.insertLimitRemind(userId, productId);
+    }
+
+    /**
+     * 查询是否设置限时抢购提醒
+     * @param userId 用户ID
+     * @param productId 商品ID
+     * @return
+     */
+    @ApiOperation(value = "查询是否设置限时抢购提醒")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "userId",value = "用户Id",paramType = "form",required = true),
+            @ApiImplicitParam(name = "productId",value = "商品Id",paramType = "form",required = true)
+    })
+    @GetMapping("is-limit-time")
+    public BusinessMessage isLimitTime(String userId,String productId ) {
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try {
+            businessMessage.setSuccess(true);
+            businessMessage.setData(this.productService.isLimitTime(userId, productId));
+        } catch (Exception e) {
+            log.error("查询是否已设置限时抢购提醒失败");
+            businessMessage.setMsg("查询是否已设置限时抢购提醒失败" + e.getMessage());
+        }
+        return businessMessage;
     }
 }
 
