@@ -74,6 +74,9 @@
             <property name="selectAllOrderByClause" value="true"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+        <table tableName="sl_activity_seckill">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
     </context>
 
 
