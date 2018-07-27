@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.CmActivitySeckillMapper">
+    <resultMap id="SlActivitySeckill" type="com.songpo.searched.entity.SlActivitySeckill">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="product_old_id" jdbcType="VARCHAR" property="productOldId" />
+        <result column="product_id" jdbcType="INTEGER" property="productId" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="seckill_price" jdbcType="DECIMAL" property="seckillPrice" />
+        <result column="enable" jdbcType="BIT" property="enable" />
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    </resultMap>
+    <!--  列表查询过期-->
+    <select id="listOutOfDate" resultMap="SlActivitySeckill"  parameterType="String">
+        SELECT
+        t.*
+        FROM
+        `sl_activity_seckill` t
+        WHERE  t.`end_time` &lt;= #{outDate}
+        AND t.`enable` = 1
+
+    </select>
+</mapper>

@@ -1,7 +1,5 @@
 package com.songpo.searched.config;
 
-import com.alipay.api.response.AlipayTradeCustomsQueryResponse;
-import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -9,6 +7,7 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.service.*;
 import com.songpo.searched.util.LocalDateTimeUtils;
+import com.songpo.searched.util.SLStringUtils;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +50,19 @@ public class CommonConfig {
     @Autowired
     private SharingLinksService sharingLinksService;
     @Autowired
-    private AliPayService aliPayService;
+    private CmActivitySeckillMapper cmActivitySeckillMapper;
+    @Autowired
+    private SlActivitySeckillMapper slActivitySeckillMapper;
+    @Autowired
+    private SlProductMapper slProductMapper;
+    @Autowired
+    private SlSeckillRemindMapper slSeckillRemindMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CmSeckillRemindMapper cmSeckillRemindMapper;
+
+
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
         updSignState();
@@ -273,12 +285,6 @@ public class CommonConfig {
                         continue;
                     }
                 }
-                //****** 更新支付宝支付订单支付状态 ******//
-//                if( order.getPaymentChannel() == 2 && order.getPaymentState() == 2) {
-//                    AlipayTradeCustomsQueryResponse reulst = aliPayService.query(order.getId(),"");
-//                    log.debug("======================================订单ID 的支付支付状态为{}：",order.getId(),reulst.getSubCode());
-//
-//                }
             }
         }
 
@@ -448,6 +454,7 @@ public class CommonConfig {
         }
     }
 
+
     /**
      * 给以前购买的区块链商品（助力购物）返回搜了贝
      */
@@ -467,4 +474,57 @@ public class CommonConfig {
 //            cmOrderService.changeSlbScheduled();
 //        log.debug("转换sl_slb_type搜了贝数结束");
 //    }
+
+    /**
+     * 每天凌晨限时秒杀过期商品设置成普通商品
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+      void setSeckillEnable() {
+        log.debug("定时任务---限时秒杀开始----->");
+        //获取当前日期前一天
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date beginDate = new Date();
+        Calendar date = Calendar.getInstance();
+        date.setTime(beginDate);
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        //查询所有过期的限时秒杀活动列表
+        List<SlActivitySeckill> seckills =  cmActivitySeckillMapper.listOutOfDate(df.format(date.getTime()));
+        for (SlActivitySeckill seckill :seckills) {
+            //更新商品品销售模式为普通商品
+            log.debug("商品ID {} 由限时秒杀更改为普通商品",seckill.getProductOldId());
+            slProductMapper.updateByPrimaryKeySelective(new SlProduct(){{
+                setId(seckill.getProductOldId());
+                setSalesModeId("6");
+            }});
+            //失效
+            seckill.setEnable(false);
+            slActivitySeckillMapper.updateByPrimaryKeySelective(seckill);
+
+        }
+        log.debug("定时任务---限时秒杀结束----->");
+    }
+
+    /**
+     * 每天23：57推送
+     */
+    @Scheduled(cron = "0 57 23 * * ?")
+    void sendRemindForSeckill(){
+        log.debug("定时任务---限时秒杀推送提醒开始----->");
+        String currentDate = SLStringUtils.getDataTime();
+        List<SlSeckillRemind> list = cmSeckillRemindMapper.listRemind(currentDate);
+        for (SlSeckillRemind remind:list){
+            SlProduct product =  slProductMapper.selectByPrimaryKey(remind.getProductOldId());
+            SlUser user =  userService.selectByPrimaryKey(remind.getUserId());
+            String content = "尊敬的搜了会员 "+user.getNickName()+" ，你关注的限时秒杀商品 "+product.getName()+ " 还有三分钟就开始发售了，千万别错过哦";
+            String title="限时秒杀";
+            processOrders.sendPush(user.getUsername().toString(),content,1,title);
+        }
+        log.debug("定时任务---限时秒杀推送提醒结束----->");
+
+    }
+
+
+
 }
