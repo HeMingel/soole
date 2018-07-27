@@ -643,4 +643,94 @@ public class CmOrderController {
         return message;
 
     }
+
+    /**
+     * 多商品订单 限时秒杀
+     *
+     * @param shippingAddressId
+     * @param detail
+     * @return
+     */
+    @ApiOperation(value = "多商品订单 限时秒杀", authorizations = {
+            @Authorization(value = "application", scopes = {
+                    @AuthorizationScope(scope = "read", description = "allows reading resources"),
+                    @AuthorizationScope(scope = "write", description = "allows modifying resources")
+            })
+    }, tags = {"limit-time-order",})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "shippingAddressId", value = "地址Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "repositoryId", value = "店铺仓库唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "quantity", value = "订单商品数量", paramType = "form", required = true),
+            @ApiImplicitParam(name = "paymentState", value = "支付状态(0：待支付1：支付成功 2：支付失败)", paramType = "form"),
+            @ApiImplicitParam(name = "type", value = "订单类型(1：普通订单 2：拼团订单3:预售订单 4:一元购 5:消费奖励 6:豆赚)", paramType = "form", required = true),
+            @ApiImplicitParam(name = "paymentChannel", value = "支付类型(1：微信支付 2：支付宝支付 3：厦门银行支付)", paramType = "form"),
+            @ApiImplicitParam(name = "payTime", value = "支付时间", paramType = "form"),
+            @ApiImplicitParam(name = "buyerMessage", value = "买家留言", paramType = "form"),
+            @ApiImplicitParam(name = "price", value = "单个商品的价格", paramType = "form"),
+            @ApiImplicitParam(name = "deductPulse", value = "单个商品需扣除的金豆", paramType = "form"),
+            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form"),
+            @ApiImplicitParam(name = "productId", value = "商品id", paramType = "form", required = true)
+    })
+    @PostMapping("limit-time-order")
+    public BusinessMessage limitTimeOrder(HttpServletRequest request,
+                                    String[] detail,
+                                    @RequestParam(value = "shippingAddressId") String shippingAddressId,String postFee) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.limitTimeOrder(request, detail, shippingAddressId, postFee);
+        } catch (Exception e) {
+            message.setMsg("添加限时秒杀订单失败");
+            log.error("新增限时秒杀订单失败 {}", e);
+        }
+        return message;
+    }
+    /**
+     * 单商品下单 限时秒杀
+     *
+     * @param repositoryId
+     * @param quantity
+     * @return
+     */
+    @ApiOperation(value = "单商品下单 限时秒杀", authorizations = {
+            @Authorization(value = "application", scopes = {
+                    @AuthorizationScope(scope = "read", description = "allows reading resources"),
+                    @AuthorizationScope(scope = "write", description = "allows modifying resources")
+            })
+    }, tags = {"cm-order-controller",})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "repositoryId", value = "店铺仓库唯一标识", paramType = "form", required = true),
+            @ApiImplicitParam(name = "quantity", value = "订单商品数量", paramType = "form", required = true),
+            @ApiImplicitParam(name = "shareOfPeopleId", value = "分享人id", paramType = "form"),
+            @ApiImplicitParam(name = "serialNumber", value = "订单编号", paramType = "form"),
+            @ApiImplicitParam(name = "groupMaster", value = "开团团长", paramType = "form"),
+            @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
+            @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
+            @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form"),
+            @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true)
+    })
+    @PostMapping("limit-time-order-only")
+    public BusinessMessage limitTimeOrderOnly(HttpServletRequest request, HttpServletResponse response,
+                                            @RequestParam(value = "repositoryId") String repositoryId,
+                                            @RequestParam(value = "quantity") Integer quantity,
+                                            String shareOfPeopleId,
+                                            String serialNumber,
+                                            String groupMaster,
+                                            @RequestParam(value = "shippingAddressId") String shippingAddressId,
+                                            String buyerMessage,
+                                            @RequestParam(value = "activityProductId") String activityProductId,
+                                            int spellGroupType,
+                                            @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
+                                            String  postFee) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.limitTimeOrderOnly(request, response, repositoryId, quantity, shareOfPeopleId, shippingAddressId, buyerMessage, activityProductId,postFee);
+        } catch (Exception e) {
+            message.setMsg("添加限时秒杀订单失败");
+            log.error("新增限时秒杀订单失败 {}", e);
+        }
+        return message;
+    }
 }

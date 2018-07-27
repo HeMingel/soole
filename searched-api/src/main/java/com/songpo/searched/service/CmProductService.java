@@ -55,6 +55,10 @@ public class CmProductService {
     private  SlActivitySeckillMapper slActivitySeckillMapper;
     @Autowired
     private CmSeckillRemindMapper cmSeckillRemindMapper;
+    @Autowired
+    private  CmActivitySeckillMapper cmActivitySeckillMapper;
+    @Autowired
+    private  SlShopMapper slShopMapper;
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -722,11 +726,12 @@ public class CmProductService {
      * 查询限时秒杀商品
      *
      * @param type         1抢购中商品  2明日预告商品
+     * @param userId        用户ID
      * @param pageNum      页码
      * @param pageSize     容量
      * @return 限时秒杀商品分页列表
      */
-    public PageInfo limitTimeProducts(Integer pageNum, Integer pageSize, Integer type) {
+    public PageInfo limitTimeProducts(Integer pageNum, Integer pageSize, Integer type, String userId) {
         if (null == pageNum || pageNum <= 1) {
             pageNum = 1;
         }
@@ -734,23 +739,72 @@ public class CmProductService {
         if (null == pageSize || pageSize <= 1) {
             pageSize = 10;
         }
-        List<Map<String, Object>> list = new ArrayList<>();
         // 设置分页参数
-        PageHelper.startPage(pageNum, pageSize);
+//        PageHelper.startPage(pageNum, pageSize);
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
         try {
             //抢购中商品
             if (1 == type){
-                list = this.mapper.limitTimeProductsDay();
+                //获取限时秒杀活动
+                List<SlActivitySeckill> activitySeckills = this.cmActivitySeckillMapper.limitTimeProductsDay();
+                for (SlActivitySeckill slActivitySeckill : activitySeckills){
+                    map.put("slActivitySeckill",slActivitySeckill);
+                    //获取商品
+                    SlProduct slProduct = slProductMapper.selectOne(new SlProduct(){{
+                        setId(slActivitySeckill.getProductOldId());
+                        setSoldOut(true);
+                        setDel(false);
+                        setSalesModeId("8");
+                    }});
+                    map.put("slProduct",slProduct);
+                    //获取之前的商品活动
+                    List<SlActivityProduct> slActivityProduct = activityProductMapper.select(new SlActivityProduct(){{
+                        setProductId(slProduct.getId());
+                    }});
+                    map.put("slActivityProduct",slActivityProduct);
+
+                    map.put("isRemind", false);
+                    mapList.add(map);
+                }
             }
             // 明日预购商品
             if (2 == type){
-                list = this.mapper.limitTimeProductsTomo();
+                //获取限时秒杀活动
+                List<SlActivitySeckill> activitySeckills = this.cmActivitySeckillMapper.limitTimeProductsTomo();
+                for (SlActivitySeckill slActivitySeckill : activitySeckills){
+                    map.put("slActivitySeckill",slActivitySeckill);
+                    //获取商品
+                    SlProduct slProduct = slProductMapper.selectOne(new SlProduct(){{
+                        setId(slActivitySeckill.getProductOldId());
+                        setSoldOut(true);
+                        setDel(false);
+                        setSalesModeId("8");
+                    }});
+                    map.put("slProduct",slProduct);
+                    //获取之前的商品活动
+                    List<SlActivityProduct> slActivityProduct = activityProductMapper.select(new SlActivityProduct(){{
+                        setProductId(slProduct.getId());
+                    }});
+                    map.put("slActivityProduct",slActivityProduct);
+
+                    if (null != userId){
+                        List<SlSeckillRemind> slSeckillReminds = this.slSeckillRemindMapper.select(new SlSeckillRemind(){{
+                            setUserId(userId);
+                            setProductOldId(slActivitySeckill.getProductOldId());
+                        }});
+                        map.put("isRemind", slSeckillReminds.size()>0?true:false);
+                    }else {
+                        map.put("isRemind", false);
+                    }
+                    mapList.add(map);
+                }
             }
             // 执行查询
         }catch (Exception e){
             log.error("查询限时秒杀商品异常", e);
         }
-        return new PageInfo<>(list);
+        return new PageInfo<>(mapList);
     }
 
     /**
@@ -793,13 +847,6 @@ public class CmProductService {
             //添加限时秒杀提醒
             Date remindTime = LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3);
             cmSeckillRemindMapper.insertSeckillRemind(userId, productId, remindTime);
-
-//            slSeckillRemindMapper.insertSelective(new SlSeckillRemind(){{
-//                setProductOldId(productId);
-//                setUserId(userId);
-//                setRemindTime(LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3));
-//                setEnable(true);
-//            }});
 
             message.setSuccess(true);
             message.setMsg("添加限时抢购提醒成功");

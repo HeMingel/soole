@@ -268,6 +268,7 @@ public class ProductController {
      * 查询限时秒杀商品
      *
      * @param type         1抢购中商品  2明日预告商品
+     * @param userId        用户ID
      * @param pageNum      页码
      * @param pageSize     容量
      * @return 限时秒杀商品分页列表
@@ -279,12 +280,13 @@ public class ProductController {
     @GetMapping("limit-time-products")
     public BusinessMessage<PageInfo<Map<String, Object>>> limitTimeProducts(Integer type,
                                                                             Integer pageNum,
-                                                                            Integer pageSize) {
+                                                                            Integer pageSize,
+                                                                            String userId) {
         log.debug("查询限时秒杀商品，页码：{}，容量：{}, 商品时间标识：{}", pageNum, pageSize, type);
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         message.setSuccess(false);
         try {
-            PageInfo data = this.productService.limitTimeProducts( pageNum, pageSize, type);
+            PageInfo data = this.productService.limitTimeProducts( pageNum, pageSize, type, userId);
             message.setData(data);
             message.setSuccess(true);
         } catch (Exception e) {

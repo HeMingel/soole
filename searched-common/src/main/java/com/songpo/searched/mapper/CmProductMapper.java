@@ -1,6 +1,7 @@
 package com.songpo.searched.mapper;
 
 import com.songpo.searched.domain.CmProduct;
+import com.songpo.searched.entity.SlActivitySeckill;
 import com.songpo.searched.entity.SlProduct;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -256,16 +257,4 @@ public interface CmProductMapper{
      */
 
     List<Map<String,Object>> selectGroomShop();
-
-    /**
-     * 查询限时秒杀抢购中商品
-     * @return 商品集合
-     */
-    List<Map<String, Object>> limitTimeProductsDay();
-
-    /**
-     * 查询限时秒杀明日预告商品商品
-     * @return 商品集合
-     */
-    List<Map<String, Object>> limitTimeProductsTomo();
 }
