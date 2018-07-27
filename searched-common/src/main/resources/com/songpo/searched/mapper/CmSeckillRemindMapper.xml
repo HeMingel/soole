@@ -18,7 +18,6 @@
     <select id="listRemind" resultMap="SlSeckillRemind"  parameterType="String">
        SELECT t.* FROM `sl_seckill_remind` t WHERE  DATE_FORMAT(t.`remind_time`,'%Y-%m-%d') = #{remindTime}
     </select>
-</mapper>
     <!--添加限时抢购提醒-->
     <insert id="insertSeckillRemind"  useGeneratedKeys="true" keyProperty="id">
 
