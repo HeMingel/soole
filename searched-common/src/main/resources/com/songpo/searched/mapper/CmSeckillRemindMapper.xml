@@ -19,3 +19,29 @@
        SELECT t.* FROM `sl_seckill_remind` t WHERE  DATE_FORMAT(t.`remind_time`,'%Y-%m-%d') = #{remindTime}
     </select>
 </mapper>
+    <!--添加限时抢购提醒-->
+    <insert id="insertSeckillRemind"  useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO sl_seckill_remind(user_id,product_old_id,remind_time)
+        values(#{arg0},#{arg1},#{arg2})
+
+    </insert>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

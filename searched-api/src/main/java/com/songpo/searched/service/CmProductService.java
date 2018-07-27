@@ -53,6 +53,8 @@ public class CmProductService {
     private SlSeckillRemindMapper slSeckillRemindMapper;
     @Autowired
     private  SlActivitySeckillMapper slActivitySeckillMapper;
+    @Autowired
+    private CmSeckillRemindMapper cmSeckillRemindMapper;
 
     /**
      * 根据活动唯一标识符分页查询商品列表
@@ -758,6 +760,7 @@ public class CmProductService {
      * @return
      */
     public BusinessMessage insertLimitRemind(String userId, String productId) {
+        log.debug("添加限时抢购提醒 用户ID:{},产品ID:{}", userId, productId);
         BusinessMessage message = new BusinessMessage();
         if (null == userId) {
             message.setMsg("用户ID不能为空");
@@ -769,25 +772,40 @@ public class CmProductService {
             message.setSuccess(false);
             return message;
         }
-
+        //查询商品
+        SlProduct slProduct = slProductMapper.selectByPrimaryKey(productId);
+        if (null == slProduct) {
+            message.setMsg("商品不存在");
+            message.setSuccess(false);
+            return message;
+        }
         try {
+            //根据商品ID 查询限时秒杀活动
             SlActivitySeckill slActivitySeckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
                 setProductOldId(productId);
                 setEnable(true);
             }});
+            if (null == slActivitySeckill){
+                message.setMsg("活动不存在");
+                message.setSuccess(false);
+                return message;
+            }
+            //添加限时秒杀提醒
+            Date remindTime = LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3);
+            cmSeckillRemindMapper.insertSeckillRemind(userId, productId, remindTime);
 
-            slSeckillRemindMapper.insert(new SlSeckillRemind(){{
-                setProductOldId(productId);
-                setUserId(userId);
-                setRemindTime(LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3));
-                setEnable(true);
-            }});
+//            slSeckillRemindMapper.insertSelective(new SlSeckillRemind(){{
+//                setProductOldId(productId);
+//                setUserId(userId);
+//                setRemindTime(LocalDateTimeUtils.addMinute(slActivitySeckill.getStartTime(),-3));
+//                setEnable(true);
+//            }});
 
             message.setSuccess(true);
             message.setMsg("添加限时抢购提醒成功");
         }catch (Exception e){
             log.error("添加限时抢购提醒异常", e);
-            message.setMsg("添加限时抢购提醒");
+            message.setMsg("添加限时抢购提醒失败");
             message.setSuccess(false);
         }
         return message;
@@ -799,16 +817,37 @@ public class CmProductService {
      * @param productId 商品ID
      * @return
      */
-    public boolean isLimitTime(String userId,String productId) {
+    public List isLimitTime(String userId,String productId) {
 
         List<SlSeckillRemind> slSeckillReminds = this.slSeckillRemindMapper.select(new SlSeckillRemind(){{
             setUserId(userId);
             setProductOldId(productId);
         }});
-        if(slSeckillReminds.size()>0){
-            return true;
-        }else {
-            return false;
-        }
+        return slSeckillReminds;
     }
+    /**
+     * 取消限时抢购提醒
+     * @param id 主键ID
+     * @return
+     */
+    public BusinessMessage cancelLimitTime(String id) {
+
+        BusinessMessage businessMessage = new BusinessMessage();
+        businessMessage.setSuccess(false);
+        try {
+            Integer result = this.slSeckillRemindMapper.deleteByPrimaryKey(id);
+            if (result>0){
+                businessMessage.setSuccess(true);
+                businessMessage.setMsg("取消提醒成功");
+            }else {
+                businessMessage.setMsg("取消提醒失败,请重试");
+            }
+
+        } catch (Exception e) {
+            log.error("取消限时抢购提醒失败");
+            businessMessage.setMsg("取消限时抢购提醒失败" + e.getMessage());
+        }
+        return businessMessage;
+    }
+
 }
