@@ -792,6 +792,7 @@ public class CmProductService {
                         List<SlSeckillRemind> slSeckillReminds = this.slSeckillRemindMapper.select(new SlSeckillRemind(){{
                             setUserId(userId);
                             setProductOldId(slActivitySeckill.getProductOldId());
+                            setEnable(true);
                         }});
                         map.put("isRemind", slSeckillReminds.size()>0?true:false);
                     }else {
@@ -874,15 +875,20 @@ public class CmProductService {
     }
     /**
      * 取消限时抢购提醒
-     * @param id 主键ID
+     * @param userId 用户ID
+     * @param productId 产品ID
      * @return
      */
-    public BusinessMessage cancelLimitTime(String id) {
+    public BusinessMessage cancelLimitTime(String userId,String productId ) {
 
         BusinessMessage businessMessage = new BusinessMessage();
         businessMessage.setSuccess(false);
         try {
-            Integer result = this.slSeckillRemindMapper.deleteByPrimaryKey(id);
+            Integer result = this.slSeckillRemindMapper.delete(new SlSeckillRemind(){{
+                setProductOldId(productId);
+                setUserId(userId);
+                setEnable(true);
+            }});
             if (result>0){
                 businessMessage.setSuccess(true);
                 businessMessage.setMsg("取消提醒成功");

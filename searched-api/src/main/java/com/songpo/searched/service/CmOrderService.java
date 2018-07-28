@@ -2753,18 +2753,23 @@ public class CmOrderService {
                                     //查询活动商品信息
                                     SlActivitySeckill slActivitySeckill = this.slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
                                         setProductOldId(repository.getProductId());
+                                        setEnable(true);
                                     }});
                                     SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), activityProductId);
                                     if (null != slActivitySeckill) {
                                         // 算出失效时间 活动结束时间 - 当前时间
-                                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                        LocalDate ldt = LocalDate.parse(slActivitySeckill.getEndTime().toString(), df);
-                                        ZoneId zone = ZoneId.systemDefault();
-                                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
-                                        Date date = Date.from(instant);
+//                                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                                        LocalDate ldt = LocalDate.parse(slActivitySeckill.getEndTime().toString(), df);
+//                                        ZoneId zone = ZoneId.systemDefault();
+//                                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
+//                                        Date date = Date.from(instant);
+                                        // 把查询出来的商品信息放入redis中 插入失效时间
+//                                        productCache.put(slProduct.getId(), slProduct);
+//                                        productCache.expireAt(slProduct.getId(), date);
+                                        Long plusTime = slActivitySeckill.getEndTime().getTime() - System.currentTimeMillis();
                                         // 把查询出来的商品信息放入redis中 插入失效时间
                                         productCache.put(slProduct.getId(), slProduct);
-                                        productCache.expireAt(slProduct.getId(), date);
+                                        productCache.expire(slProduct.getId(),plusTime,TimeUnit.SECONDS);
                                         // 判断当前活动是否在有效期内
                                         if (productCache.hasKey(slProduct.getId())) {
                                             // 查询当前用户该商品的已生成订单的商品数量之和
@@ -2984,18 +2989,23 @@ public class CmOrderService {
                     //查询活动商品信息
                     SlActivitySeckill slActivitySeckill = this.slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
                         setProductOldId(repository.getProductId());
+                        setEnable(true);
                     }});
                     SlActivityProduct activityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repositoryId, activityProductId);
                     if (null != slActivitySeckill) {
                         // 算出失效时间 活动结束时间 - 当前时间
                         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        LocalDate ldt = LocalDate.parse(slActivitySeckill.getEndTime().toString(), df);
-                        ZoneId zone = ZoneId.systemDefault();
-                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
-                        Date date = Date.from(instant);
+//                        Long hao = slActivitySeckill.getEndTime().getTime() - System.currentTimeMillis();
+//                        LocalDate ldt = LocalDate.parse(slActivitySeckill.getEndTime().toString(), df);
+//                        ZoneId zone = ZoneId.systemDefault();
+//                        Instant instant = ldt.atStartOfDay().atZone(zone).toInstant();
+//                        Date date = Date.from(instant);
+                        Date date = new Date(slActivitySeckill.getEndTime().getTime() - System.currentTimeMillis());
+                        Long plusTime = slActivitySeckill.getEndTime().getTime() - System.currentTimeMillis();
                         // 把查询出来的商品信息放入redis中 插入失效时间
                         productCache.put(slProduct.getId(), slProduct);
-                        productCache.expireAt(slProduct.getId(), date);
+//                        productCache.expireAt(slProduct.getId(), date);
+                        productCache.expire(slProduct.getId(),plusTime,TimeUnit.SECONDS);
                         // 判断当前活动是否在有效期内
                         if (productCache.hasKey(slProduct.getId())) {
                             // 此活动商品当前用户的下单商品数量
@@ -3015,7 +3025,7 @@ public class CmOrderService {
                                     // 订单号
                                     slOrder.setSerialNumber(orderNum);
                                     // 该商品的规格价格 * 加入购物车中的数量 = 该用户本次加入商品的价格
-                                    double price = slActivitySeckill.getSeckillPrice().doubleValue();
+                                    double price = repository.getSeckillPrice().doubleValue();
                                     Double d = price * quantity;
                                     BigDecimal money = new BigDecimal(d.toString());
                                     if (slProduct.getPostage().doubleValue() > 0) {

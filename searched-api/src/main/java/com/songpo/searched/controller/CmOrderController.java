@@ -697,18 +697,14 @@ public class CmOrderController {
                     @AuthorizationScope(scope = "read", description = "allows reading resources"),
                     @AuthorizationScope(scope = "write", description = "allows modifying resources")
             })
-    }, tags = {"cm-order-controller",})
+    }, tags = {"limit-time-order-only",})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "repositoryId", value = "店铺仓库唯一标识", paramType = "form", required = true),
             @ApiImplicitParam(name = "quantity", value = "订单商品数量", paramType = "form", required = true),
-            @ApiImplicitParam(name = "shareOfPeopleId", value = "分享人id", paramType = "form"),
-            @ApiImplicitParam(name = "serialNumber", value = "订单编号", paramType = "form"),
             @ApiImplicitParam(name = "groupMaster", value = "开团团长", paramType = "form"),
             @ApiImplicitParam(name = "shippingAddressId", value = "加入订单的地址id", paramType = "form", required = true),
             @ApiImplicitParam(name = "buyerMessage", value = "用户留言", paramType = "form"),
-            @ApiImplicitParam(name = "spellGroupType", value = "价格选取", paramType = "form"),
             @ApiImplicitParam(name = "activityProductId", value = "商品规格Id", paramType = "form", required = true),
-            @ApiImplicitParam(name = "virtualOpen", value = "虚拟用户开团", paramType = "form"),
             @ApiImplicitParam(name = "postFee", value = "邮费", paramType = "form", required = true)
     })
     @PostMapping("limit-time-order-only")
@@ -716,13 +712,9 @@ public class CmOrderController {
                                             @RequestParam(value = "repositoryId") String repositoryId,
                                             @RequestParam(value = "quantity") Integer quantity,
                                             String shareOfPeopleId,
-                                            String serialNumber,
-                                            String groupMaster,
                                             @RequestParam(value = "shippingAddressId") String shippingAddressId,
                                             String buyerMessage,
                                             @RequestParam(value = "activityProductId") String activityProductId,
-                                            int spellGroupType,
-                                            @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
                                             String  postFee) {
         BusinessMessage message = new BusinessMessage();
         try {

@@ -339,17 +339,19 @@ public class ProductController {
     }
     /**
      * 取消限时抢购提醒
-     * @param id 主键id
+     * @param userId 用户ID
+     * @param productId 产品ID
      * @return
      */
     @ApiOperation(value = "取消限时抢购提醒")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id",value = "主键ID",paramType = "form",required = true)
+            @ApiImplicitParam(name = "userId",value = "用户ID",paramType = "form",required = true),
+            @ApiImplicitParam(name = "productId",value = "产品ID",paramType = "form",required = true)
     })
     @GetMapping("cancel-limit-time")
-    public BusinessMessage cancelLimitTime(String id ) {
+    public BusinessMessage cancelLimitTime(String userId, String productId) {
         log.debug("取消限时抢购提醒");
-        return this.productService.cancelLimitTime(id);
+        return this.productService.cancelLimitTime(userId, productId);
     }
 }
 
