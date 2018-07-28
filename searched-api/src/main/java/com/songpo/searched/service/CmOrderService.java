@@ -115,6 +115,10 @@ public class CmOrderService {
     private SlTotalPoolDetailMapper slTotalPoolDetailMapper;
     @Autowired
     private CmTotalPoolService cmTotalPoolService;
+    @Autowired
+    private SlActivitySeckillMapper slActivitySeckillMapper;
+    @Autowired
+    private SlProductRepositoryMapper slProductRepositoryMapper;
 
 
     /**
@@ -232,10 +236,25 @@ public class CmOrderService {
                                             int counts = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), slActivityProduct.getId());
                                             //单用户购买限制数量 - 他已经下单的商品数量 >= 这次加入订单的数量
                                             if (slActivityProduct.getRestrictCount() - counts >= quantity) {
+                                                SlActivitySeckill seckill = null;
+                                                if (slProduct.getSalesModeId().equals("8")){
+                                                    //秒杀表总库存
+                                                     seckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
+                                                        setProductOldId(slProduct.getId());
+                                                    }});
+                                                    if (seckill.getTotalCount() - quantity < 0) {
+                                                        log.error("当前秒杀库存不足");
+                                                        message.setMsg(slProduct.getName() + "当前秒杀库存不足");
+                                                        message.setSuccess(false);
+                                                        break outer;
+                                                    }
+                                                }
                                                 //库存的数量 > 他这次加入订单的数量
                                                 if (repository.getCount() - quantity >= 0) {
+                                                    //修改价格 如果是限时秒杀就改成秒杀价
+                                                    BigDecimal price = slProduct.getSalesModeId().equals("8") ? repository.getSeckillPrice() : repository.getPrice();
                                                     // 钱相加 用于统计和添加到订单表扣除总钱里边
-                                                    money += repository.getPrice().doubleValue() * quantity;
+                                                    money += price.doubleValue() * quantity;
                                                     // 如果邮费不为空
 //                                                    if (slProduct.getPostage().doubleValue() > 0) {
 //                                                        money = money + slProduct.getPostage().doubleValue();
@@ -249,6 +268,7 @@ public class CmOrderService {
                                                     }
 //                                                SlProductRepository finalRepository = repository;
                                                     int finalInviterId1 = inviterId;
+
                                                     orderDetailService.insertSelective(new SlOrderDetail() {{
                                                         setId(formatUUID32());
                                                         setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -267,7 +287,7 @@ public class CmOrderService {
                                                         // 商品数量
                                                         setQuantity(quantity);
                                                         // 单个商品价格
-                                                        setPrice(repository.getPrice());
+                                                        setPrice(price);
                                                         // 商品规格名称
                                                         setProductDetailGroupName(repository.getProductDetailGroupName());
                                                         // 活动id
@@ -302,6 +322,9 @@ public class CmOrderService {
                                                                 break;
                                                             case SalesModeConstant.SALES_MODE_NORMAL:
                                                                 setType(1);
+                                                                break;
+                                                            case SalesModeConstant.SALES_MODE_SECKILL:
+                                                                setType(8);
                                                                 break;
                                                             case SalesModeConstant.SALES_MODE_SHARE:
                                                                 setType(7);
@@ -366,10 +389,23 @@ public class CmOrderService {
                                                      */
                                                     // 当前库存 - 本次该商品规格下单库存
                                                     repository.setCount(repository.getCount() - quantity);
+                                                    //更新限时秒杀的库存
+                                                    if (slProduct.getSalesModeId().equals("8")){
+                                                        //更新秒杀表总库存
+                                                        seckill.setTotalCount(seckill.getTotalCount()-quantity);
+                                                        slActivitySeckillMapper.updateByPrimaryKey(seckill);
+                                                        //设置规格表库存
+                                                        repository.setSekillCount(repository.getSekillCount()-quantity);
+                                                        slProductRepositoryMapper.updateByPrimaryKeySelective( new SlProductRepository(){{
+                                                            setId(repository.getId());
+                                                            setSekillCount(repository.getSekillCount());
+                                                        }});
+                                                    }
                                                     // 更新redis中该商品规格的库存
                                                     repositoryCache.put(repository.getId(), repository);
                                                     // 更新数据库该商品规格的库存
                                                     int updateCount = this.cmOrderMapper.reduceNumber(repository.getId(), repository.getCount());
+
                                                     // 把虚拟销量加上
                                                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                                                         setId(slProduct.getId());

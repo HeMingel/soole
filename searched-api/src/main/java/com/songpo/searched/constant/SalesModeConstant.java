@@ -33,4 +33,8 @@ public class SalesModeConstant {
      * 销售模式--分享奖励
      */
     public static final int SALES_MODE_SHARE = 7;
+    /**
+     * 限时秒杀
+     */
+    public static final int SALES_MODE_SECKILL = 8;
 }

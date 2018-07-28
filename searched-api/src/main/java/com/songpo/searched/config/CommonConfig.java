@@ -63,6 +63,7 @@ public class CommonConfig {
     private CmSeckillRemindMapper cmSeckillRemindMapper;
 
 
+
     @Scheduled(cron = "0 0 0 * * *")
     public void aTask() {
         updSignState();
@@ -419,8 +420,13 @@ public class CommonConfig {
                 this.productRepositoryService.updateByPrimaryKeySelective(new SlProductRepository() {{
                     setId(repository.getId());
                     setCount(repository.getCount() + detail.getQuantity());
+                    //限时秒杀返回库存
+                    if (detail.getType().equals("8")){
+                        setSekillCount(repository.getSekillCount() + detail.getQuantity());
+                    }
                 }});
                 repository.setCount(repository.getCount() + detail.getQuantity());
+
                 //更新redis
                 this.repositoryCache.put(repository.getId(), repository);
             }
@@ -479,7 +485,7 @@ public class CommonConfig {
      * 每天凌晨限时秒杀过期商品设置成普通商品
      */
     @Scheduled(cron = "0 0 0 * * ?")
-      void setSeckillEnable() {
+    void setSeckillEnable() {
         log.debug("定时任务---限时秒杀开始----->");
         //获取当前日期前一天
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -490,19 +496,22 @@ public class CommonConfig {
         date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
         //查询所有过期的限时秒杀活动列表
-        List<SlActivitySeckill> seckills =  cmActivitySeckillMapper.listOutOfDate(df.format(date.getTime()));
-        for (SlActivitySeckill seckill :seckills) {
-            //更新商品品销售模式为普通商品
-            log.debug("商品ID {} 由限时秒杀更改为普通商品",seckill.getProductOldId());
-            slProductMapper.updateByPrimaryKeySelective(new SlProduct(){{
-                setId(seckill.getProductOldId());
-                setSalesModeId("6");
-            }});
-            //失效
-            seckill.setEnable(false);
-            slActivitySeckillMapper.updateByPrimaryKeySelective(seckill);
+        List<SlActivitySeckill> seckills = cmActivitySeckillMapper.listOutOfDate(df.format(date.getTime()));
+        if (seckills.size() > 0) {
+            for (SlActivitySeckill seckill : seckills) {
+                //更新商品品销售模式为普通商品
+                log.debug("商品ID {} 由限时秒杀更改为普通商品", seckill.getProductOldId());
+                slProductMapper.updateByPrimaryKeySelective(new SlProduct() {{
+                    setId(seckill.getProductOldId());
+                    setSalesModeId("6");
+                }});
+                //失效
+                seckill.setEnable(false);
+                slActivitySeckillMapper.updateByPrimaryKeySelective(seckill);
 
+            }
         }
+
         log.debug("定时任务---限时秒杀结束----->");
     }
 
@@ -510,21 +519,30 @@ public class CommonConfig {
      * 每天23：57推送
      */
     @Scheduled(cron = "0 57 23 * * ?")
-    void sendRemindForSeckill(){
+    void sendRemindForSeckill() {
         log.debug("定时任务---限时秒杀推送提醒开始----->");
         String currentDate = SLStringUtils.getDataTime();
         List<SlSeckillRemind> list = cmSeckillRemindMapper.listRemind(currentDate);
-        for (SlSeckillRemind remind:list){
-            SlProduct product =  slProductMapper.selectByPrimaryKey(remind.getProductOldId());
-            SlUser user =  userService.selectByPrimaryKey(remind.getUserId());
-            String content = "尊敬的搜了会员 "+user.getNickName()+" ，你关注的限时秒杀商品 "+product.getName()+ " 还有三分钟就开始发售了，千万别错过哦";
-            String title="限时秒杀";
-            processOrders.sendPush(user.getUsername().toString(),content,1,title);
+        if (list.size() > 0) {
+            for (SlSeckillRemind remind : list) {
+                try {
+                    SlProduct product = slProductMapper.selectByPrimaryKey(remind.getProductOldId());
+                    SlUser user = userService.selectByPrimaryKey(remind.getUserId());
+                    String content = "尊敬的搜了会员 " + user.getNickName() + " ，你关注的限时秒杀商品 " + product.getName() + " 还有三分钟就开始发售了，千万别错过哦";
+                    String title = "限时秒杀";
+                    processOrders.sendPush(user.getUsername().toString(), content, 1, title);
+                } catch (Exception e) {
+                    log.error("限时秒杀推送异常", e);
+                }
+                //修改提醒失效
+                finally {
+                    remind.setEnable(false);
+                    slSeckillRemindMapper.updateByPrimaryKey(remind);
+                }
+
+            }
         }
         log.debug("定时任务---限时秒杀推送提醒结束----->");
 
     }
-
-
-
 }
