@@ -149,9 +149,13 @@ public class CustomerClientHomeService {
         data.put("salesProducts", salesProducts);
 
         // 海南之家
-        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
-            setType(ArticleTypeEnum.HOMES_HAINAN.getValue());
-        }});
+        Example homesHanNanExample = new Example(SlArticle.class);
+        homesHanNanExample.createCriteria().andEqualTo("type",ArticleTypeEnum.HOMES_HAINAN.getValue());
+        homesHanNanExample.setOrderByClause("art_sort desc");
+        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.selectByExample(homesHanNanExample);
+//        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
+//            setType(ArticleTypeEnum.HOMES_HAINAN.getValue());
+//        }});
         data.put("homesHaiNanArticles", homesHanNanArticleList);
 
         // 搜了头条
