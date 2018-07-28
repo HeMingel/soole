@@ -8,6 +8,7 @@
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
         <result column="seckill_price" jdbcType="DECIMAL" property="seckillPrice" />
+        <result column="total_count" jdbcType="INTEGER" property="totalCount" />
         <result column="enable" jdbcType="BIT" property="enable" />
         <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
         <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
@@ -21,5 +22,29 @@
         WHERE  t.`end_time` &lt;= #{outDate}
         AND t.`enable` = 1
 
+    </select>
+
+    <!--查询限时秒杀抢购中商品-->
+    <select id="limitTimeProductsDay" resultMap="SlActivitySeckill">
+        SELECT
+        sa.*
+        FROM
+        sl_activity_seckill sa
+        where
+            sa.enable = 1
+            AND TO_DAYS( sa.start_time) = TO_DAYS(NOW( ))
+        ORDER BY sa.total_count desc
+    </select>
+
+    <!--查询限时秒杀明日预告商品-->
+    <select id="limitTimeProductsTomo" resultMap="SlActivitySeckill">
+        SELECT
+        sa.*
+        FROM
+        sl_activity_seckill sa
+        where
+            sa.enable = 1
+            AND TO_DAYS( sa.start_time) - TO_DAYS(NOW( )) = 1
+        ORDER BY sa.total_count desc
     </select>
 </mapper>
