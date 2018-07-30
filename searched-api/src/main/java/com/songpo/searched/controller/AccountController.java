@@ -2,8 +2,10 @@ package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.CmUserMapper;
 import com.songpo.searched.service.AccountService;
 import com.songpo.searched.service.LoginUserService;
+import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Api(description = "账户管理")
@@ -29,6 +32,8 @@ public class AccountController {
     private LoginUserService loginUserService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private CmUserMapper cmUserMapper ;
 
     /**
      * 余额充值
@@ -129,4 +134,23 @@ public class AccountController {
         BusinessMessage  message = accountService.operateCoinById(userId,number,type);
         return message;
     }
+
+    /**
+     * 将以前的用户数据导入用户中心
+     * @return
+     */
+    @ApiOperation(value="用户数据导入用户中心")
+    @GetMapping("insert-user-center")
+    public void  insertUserCenter(){
+        List<Map<String, Object>> list = cmUserMapper.listForUserCenter();
+        for (Map map : list) {
+            String phone = (String) map.get("phone");
+            String nickName = (String) map.get("nick_name");
+            String avatar = (String) map.get("avatar");
+            if (!SLStringUtils.isEmpty(phone)) {
+                accountService.insertUserCenter(phone, nickName, avatar);
+            }
+        }
+    }
+
 }

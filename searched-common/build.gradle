@@ -38,7 +38,8 @@ dependencies {
 
     // Web组件
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-
+    //http工具类
+    compile("org.apache.httpcomponents:httpclient:4.5.5")
     // 系统端点
     compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 

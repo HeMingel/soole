@@ -42,4 +42,8 @@
     <select id="selectMaxUserName" resultType="java.lang.Integer">
         select max(username) from sl_user
     </select>
+
+    <select id="listForUserCenter" resultType="map" >
+       SELECT `phone`,`avatar`,`nick_name` FROM `sl_user` WHERE `phone` IS NOT NULL AND `username` != 10088
+    </select>
 </mapper>

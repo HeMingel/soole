@@ -64,7 +64,7 @@ public class SystemLoginService {
      * @return
      */
     @Transactional
-    public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar, String phone,
+    public BusinessMessage<JSONObject> wxWebRegister(String fromUser,String unionId, String  nickname, String avatar, String phone,
                                                      String city, String province, Integer sex, String verificationCode, String zone) {
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         //验证短信验证码
@@ -90,6 +90,7 @@ public class SystemLoginService {
                 message.setMsg("用户已注册");
             } else {
                 user.setFromUser(fromUser);
+                user.setUnionid(unionId);
                 userService.updateByPrimaryKeySelective(user);
                 message.setMsg("用户账号合并成功");
                 JSONObject data = new JSONObject();
@@ -251,6 +252,7 @@ public class SystemLoginService {
         //用户已经注册
         if (user != null) {
             message.setMsg("用户已注册,openId已存在");
+            message.setSuccess(true);
             return message;
         }
         //根据微信unionId唯一标识查询
@@ -265,7 +267,7 @@ public class SystemLoginService {
         //验证短信验证码
         String verificationCode = this.smsVerifyCodeCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
-            message.setMsg("验证码已过期，请重试");
+            message.setMsg("验证码错误，请重试");
             return message;
         }
         //验证手机号是否被注册

@@ -8,15 +8,28 @@ import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.typehandler.*;
 import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.ClientIPUtil;
+import com.songpo.searched.util.HttpRequest;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +54,10 @@ public class AccountService {
     private UserService userService;
     @Autowired
     private CmTotalPoolService cmTotalPoolService;
+    @Autowired
+    private HttpRequest httpRequest;
+    @Autowired
+    private Environment env;
 
     /**
      * 余额充值
@@ -242,5 +259,52 @@ public class AccountService {
             message.setMsg("用户ID不能为空");
         }
         return message;
+    }
+
+    /**
+     *
+     * 用户中心
+     * @return
+     */
+    public void insertUserCenter(String phone, String nickName, String avatar) {
+        String josnStr = "{nickName:" + nickName + ",avatar:" + avatar + "}";
+        String responseBody = null;
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("phone", phone);
+            obj.put("content", josnStr);
+            obj.put("type", 1);
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(env.getProperty("user.center.url"));
+            httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
+            // 解决中文乱码问题
+            StringEntity stringEntity = new StringEntity(obj.toString(), "UTF-8");
+            stringEntity.setContentEncoding("UTF-8");
+            httpPost.setEntity(stringEntity);
+            // CloseableHttpResponse response =
+            // httpclient.execute(httpPost);
+            // Create a custom response handler
+            ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+                @Override
+                public String handleResponse(final HttpResponse response)
+                        throws ClientProtocolException, IOException {//
+                    int status = response.getStatusLine().getStatusCode();
+                    if (status >= 200 && status < 300) {
+
+                        HttpEntity entity = response.getEntity();
+
+                        return entity != null ? EntityUtils.toString(entity) : null;
+                    } else {
+                        throw new ClientProtocolException(
+                                "Unexpected response status: " + status);
+                    }
+                }
+            };
+            responseBody = httpclient.execute(httpPost, responseHandler);
+            log.debug("用户中心库返回结果{}", responseBody);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 }

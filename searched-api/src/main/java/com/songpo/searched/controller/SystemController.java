@@ -571,7 +571,7 @@ public class SystemController {
             @ApiImplicitParam(name = "zone", value = "地区", paramType = "form", required = true)
     })
     @PostMapping("wx-web-register")
-    public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String nickname, String avatar, String phone,
+    public BusinessMessage<JSONObject> wxWebRegister(String fromUser, String unionId,String nickname, String avatar, String phone,
                                                      String city, String province, Integer sex, String verificationCode, String zone) {
         log.debug("微信网页注册，开放账号唯一标识：{}，昵称：{}，头像地址：{}", fromUser, nickname, avatar);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
@@ -589,7 +589,7 @@ public class SystemController {
         } else if (SLStringUtils.isEmpty(zone)) {
             message.setMsg("地区为空");
         } else {
-            message = systemLoginService.wxWebRegister(fromUser, nickname, avatar, phone, city, province, sex, verificationCode, zone);
+            message = systemLoginService.wxWebRegister(fromUser,unionId, nickname, avatar, phone, city, province, sex, verificationCode, zone);
         }
         return message;
     }
