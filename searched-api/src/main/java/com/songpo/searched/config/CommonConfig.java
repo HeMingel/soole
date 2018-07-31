@@ -241,7 +241,7 @@ public class CommonConfig {
      * 24小时内订单，调用微信订单查询接口，查询订单支付状态，并处理系统订单
      * 来源 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_2&index=4
      */
-    @Scheduled(cron = "0/10 * *  * * ? ")
+    @Scheduled(cron = "0 0/1 *  * * ? ")
     void updateOrderPayStatus() {
         List<SlOrder> orderList = orderService.select(new SlOrder() {{
             setPaymentState(2);
