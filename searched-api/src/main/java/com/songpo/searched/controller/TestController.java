@@ -6,7 +6,7 @@ import com.songpo.searched.service.ProcessOrders;
 import com.songpo.searched.service.UserService;
 import com.songpo.searched.util.*;
 import io.swagger.annotations.Api;
-
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
 
 @Api(description = "测试")
 @RestController
@@ -170,8 +169,8 @@ public class TestController {
         String lockEndDate = "20190101";
         String releaseNum = "10";
         String releasePercent = "1";
-        String transfAmount = "1000000";
-        String orderSn = "201807300000000";
+        String transfAmount = "7777777777777";
+        String orderSn = "2018073000000362";
         String batchType = "A";
 
         //公钥加密随机串
@@ -213,6 +212,7 @@ public class TestController {
         String result = HttpUtil.doPost(url, params);
         System.out.println(result);
     }
+
     @GetMapping("test5")
     public void Test5() throws ParseException {
         //手机号
@@ -233,7 +233,12 @@ public class TestController {
         params.put("noteStr", noteStr);
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
-        System.out.println(result);
+        System.out.println(result);  JSONObject jsonObject = JSONObject.parseObject(result);
+        System.out.println("json:============"+jsonObject.toJSONString());
+        Map map = (Map<String,String>)jsonObject.get("data");
+        System.out.println(map.get("exist"));
+
+
     }
 
 }
