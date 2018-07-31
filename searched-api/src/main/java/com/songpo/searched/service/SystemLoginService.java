@@ -285,7 +285,7 @@ public class SystemLoginService {
                 message.setSuccess(true);
                 message.setMsg("手机号存在，合并成功");
                 // 清除验证码
-                this.smsPasswordCache.evict(phone);
+                this.smsVerifyCodeCache.evict(phone);
             } else {
                 message.setMsg("手机号已注册");
             }
@@ -312,7 +312,7 @@ public class SystemLoginService {
             // 天降洪福 乐豆（银豆）
             this.sendRegisterGiftToNewUser(user.getId());
             // 清除验证码
-            this.smsPasswordCache.evict(phone);
+            this.smsVerifyCodeCache.evict(phone);
             message.setMsg("用户注册成功");
             message.setSuccess(true);
             log.debug("微信用户openId:{} 注册账号成功", openId);
@@ -331,9 +331,9 @@ public class SystemLoginService {
     public BusinessMessage bindPhoneForWxLogin(String openId, String phone, String code, String zone) {
         BusinessMessage message = new BusinessMessage();
         //验证短信验证码
-        String verificationCode = this.smsPasswordCache.get(phone);
+        String verificationCode = this.smsVerifyCodeCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
-            message.setMsg("验证码已过期，请重试");
+            message.setMsg("验证码错误，请重试");
             return message;
         }
         SlUser userTemp = userService.selectOne(new SlUser() {{
@@ -356,7 +356,7 @@ public class SystemLoginService {
             message.setMsg("绑定失败，该用户已经绑定手机号");
         }
         // 清除验证码
-        this.smsPasswordCache.evict(phone);
+        this.smsVerifyCodeCache.evict(phone);
         return message;
     }
 
