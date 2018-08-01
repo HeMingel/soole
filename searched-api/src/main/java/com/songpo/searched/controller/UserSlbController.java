@@ -3,6 +3,7 @@ package com.songpo.searched.controller;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.CmOrderService;
 import com.songpo.searched.service.CmUserSlbService;
+import com.songpo.searched.service.ThirdPartyWalletService;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class UserSlbController {
 
     @Autowired
     private CmUserSlbService cmUserSlbService;
+    @Autowired
+    private ThirdPartyWalletService thirdPartyWalletService;
 
 
     /**
@@ -51,7 +54,8 @@ public class UserSlbController {
     @ApiOperation(value = "查询搜了贝 ")
     @GetMapping("select-slb")
     public BusinessMessage selectUserSlb() {
-        return this.cmUserSlbService.selectUserSlb();
+//        return this.cmUserSlbService.selectUserSlb();
+        return  thirdPartyWalletService.getSlbScAmount();
     }
 
     /**
