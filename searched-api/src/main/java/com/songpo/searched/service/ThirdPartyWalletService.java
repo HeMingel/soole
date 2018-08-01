@@ -4,7 +4,9 @@ package com.songpo.searched.service;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
+import com.songpo.searched.entity.SlPhoneZone;
 import com.songpo.searched.entity.SlUser;
+import com.songpo.searched.mapper.SlPhoneZoneMapper;
 import com.songpo.searched.util.AESUtils;
 
 
@@ -18,11 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
+import java.util.*;
 
 
 /**
@@ -39,6 +37,8 @@ public class ThirdPartyWalletService {
     public Environment env;
     @Autowired
     private  LoginUserService loginUserService;
+    @Autowired
+    private SlPhoneZoneMapper slPhoneZoneMapper;
 
     /**
      * 获取 加密随机串
@@ -91,10 +91,10 @@ public class ThirdPartyWalletService {
             String result = HttpUtil.doPost(url, params);
             //返回值处理
             JSONObject jsonObject = JSONObject.parseObject(result);
-            Map codeMap = (Map<String, String>) jsonObject.get("resultCode");
-            Map messageMap = (Map<String, String>) jsonObject.get("message");
-            log.debug(messageMap.get("message").toString());
-            returnStr = codeMap.get("resultCode").toString();
+            String  codeMap =  jsonObject.get("resultCode").toString();
+            String  messageMap =  jsonObject.get("message").toString();
+            log.debug(messageMap);
+            returnStr = codeMap;
         } catch (Exception e ) {
             log.error("钱包APP注册出错",e);
         }
@@ -149,10 +149,10 @@ public class ThirdPartyWalletService {
         String result = HttpUtil.doPost(url, params);
         //返回值处理
         JSONObject jsonObject = JSONObject.parseObject(result);
-        Map codeMap = (Map<String, String>) jsonObject.get("resultCode");
-        Map messageMap = (Map<String, String>) jsonObject.get("message");
-        log.debug(messageMap.get("message").toString());
-        returnStr = codeMap.get("resultCode").toString();
+        String codeMap = jsonObject.get("resultCode").toString();
+        String messageMap = jsonObject.get("message").toString();
+        log.debug(messageMap);
+        returnStr = codeMap;
         return returnStr;
     }
     /**
@@ -242,20 +242,29 @@ public class ThirdPartyWalletService {
     public BusinessMessage getSlbScAmount(){
         SlUser user = loginUserService.getCurrentLoginUser();
         BusinessMessage message = new BusinessMessage();
-        if (null != user){
-            String mobile = user.getPhone();
-            System.out.println("@@@@@@@@@@@@"+mobile);
-            if (checkUserRegister(mobile)){
-                System.out.println("#################我已经注册");
-                message = retunObject(mobile);
-            }else {
-                //todo 注册
-                //注册完 返回搜了贝
-                System.out.println("#################我没有注册");
-                message = retunObject(mobile);
+        try {
+            if (null != user){
+                String mobile = user.getPhone();
+                System.out.println("@@@@@@@@@@@@"+mobile);
+                if (checkUserRegister(mobile)){
+                    System.out.println("#################我已经注册");
+                    message = retunObject(mobile);
+                }else {
+                    // 注册 String mobile, String pwd, String moblieArea
+                    SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                        setZone(user.getZone());
+                    }});
+                   String res = UserRegister(mobile, BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
+                    System.out.println("#$#$#$#$#$#$#$#"+res);
+                   //注册完 返回搜了贝
+                    System.out.println("#################我没有注册");
+                    message = retunObject(mobile);
+                }
             }
-        }
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return  message;
     }
