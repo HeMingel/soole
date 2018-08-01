@@ -192,12 +192,14 @@ public class SystemLoginService {
             if (userTemp != null) {
                 userTemp.setOpenId(openId);
                 userTemp.setUnionid(unionId);
+                log.debug("微信用户登录,手机号：{} ",userTemp.getPhone());
                 userService.updateByPrimaryKey(userTemp);
                 //  userService.updateByPrimaryKeySelective(userTemp);
             }
             user = userService.selectOne(new SlUser() {{
                 setUnionid(unionId);
             }});
+            log.debug("微信用户登录,手机号： {}",user.getPhone());
         }
 
 
@@ -331,11 +333,11 @@ public class SystemLoginService {
     public BusinessMessage bindPhoneForWxLogin(String openId, String phone, String code, String zone) {
         BusinessMessage message = new BusinessMessage();
         //验证短信验证码
-        String verificationCode = this.smsVerifyCodeCache.get(phone);
+        /*String verificationCode = this.smsVerifyCodeCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
             message.setMsg("验证码错误，请重试");
             return message;
-        }
+        }*/
         SlUser userTemp = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});

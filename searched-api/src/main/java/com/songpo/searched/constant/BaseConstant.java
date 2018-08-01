@@ -38,4 +38,35 @@ public class BaseConstant {
      * A轮规格主键ID C731B072-CE81-2D7A-C701-457B2160F17D
      */
     public static final String  REPOSITORY_ID_A = "C731B072-CE81-2D7A-C701-457B2160F17D";
+
+    /**
+     * 钱包平台查询用户是否注册接口
+     */
+    public static final String WALLET_API_CHECKUSERREGISTER = "/wallet/externalWallet/checkUserRegister.htm";
+
+    /**
+     * 钱包平台用户注册接口
+     */
+    public static final String WALLET_API_USERREGISTER = "/wallet/externalWallet/userRegister.htm";
+
+    /**
+     * 获得钱包列表
+     */
+    public static final String WALLET_API_GETWALLETLIST = "/wallet/externalWallet/getWalletList.htm";
+
+    /**
+     * 查询钱包总SLB锁仓余额
+     */
+    public static final String WALLET_API_GETSLBSCAMOUNT = "/wallet/externalWallet/getSlbScAmount.htm";
+
+    /**
+     * SLB锁仓资产转入
+     */
+    public static final String WALLET_API_TRANSFERTOSLBSC = "/wallet/externalWallet/transferToSlbSc.htm";
+
+    /**
+     * 平台登录密码
+     */
+    public static final String WALLET_DEFAULT_LOGIN_PASSWORD  = "111111";
+
 }
