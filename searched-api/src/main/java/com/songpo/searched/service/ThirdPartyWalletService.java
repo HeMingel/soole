@@ -54,8 +54,8 @@ public class ThirdPartyWalletService {
      * 公钥加密随机串
      * @return
      */
-    public String getEncodedNoteStr(){
-        String encodedNoteStr = RSAUtils.encryptByPublicKey(getNoteStr(), env.getProperty("wallet.publicKey"));
+    public String getEncodedNoteStr(String noteStr){
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, env.getProperty("wallet.publicKey"));
         return encodedNoteStr;
     }
     //公钥加密随机串
@@ -69,14 +69,15 @@ public class ThirdPartyWalletService {
      * @return
      */
     public String UserRegister (String mobile, String pwd, String moblieArea){
-        String  loginPwd = AESUtils.encode(pwd, getNoteStr());
+        String noteStr = getNoteStr();
+        String  loginPwd = AESUtils.encode(pwd, noteStr);
         String returnStr = "";
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
         packageParams.put("loginPwd", loginPwd);
         packageParams.put("mobileArea",  moblieArea);
-        packageParams.put("noteStr", getEncodedNoteStr());
+        packageParams.put("noteStr", getEncodedNoteStr(noteStr));
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
         //拼接URL
         String url =  env.getProperty("wallet.url")+BaseConstant.WALLET_API_USERREGISTER;
@@ -85,7 +86,7 @@ public class ThirdPartyWalletService {
         params.put("mobile", mobile);
         params.put("loginPwd", loginPwd);
         params.put("mobileArea", moblieArea);
-        params.put("noteStr", getEncodedNoteStr());
+        params.put("noteStr", getEncodedNoteStr(noteStr));
         params.put("sign", sign);
         try {
             String result = HttpUtil.doPost(url, params);
@@ -117,7 +118,8 @@ public class ThirdPartyWalletService {
     public String transferToSlbSc (String walletAddress,String lockBeginDate,String lockEndDate,String releaseNum,
                                    String releasePercent,String transfAmount,String orderSn,String batchType){
         String returnStr = "";
-        String endcodePaltTransPwd = AESUtils.encode(env.getProperty("wallet.platTransPwd"), getEncodedNoteStr());
+       String  noteStr =  getNoteStr();
+        String endcodePaltTransPwd = AESUtils.encode(env.getProperty("wallet.platTransPwd"), getEncodedNoteStr(noteStr));
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("walletAddress", walletAddress);
@@ -127,10 +129,10 @@ public class ThirdPartyWalletService {
         packageParams.put("releaseNum", releaseNum);
         packageParams.put("releasePercent", releasePercent);
         packageParams.put("transfAmount", transfAmount);
-        packageParams.put("noteStr", getEncodedNoteStr());
+        packageParams.put("noteStr", getEncodedNoteStr(noteStr));
         packageParams.put("orderSn", orderSn);
         packageParams.put("batchType", batchType);
-        packageParams.put("noteStr", getEncodedNoteStr());
+        packageParams.put("noteStr", getEncodedNoteStr(noteStr));
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
         String url =  env.getProperty("wallet.url")+BaseConstant.WALLET_API_TRANSFERTOSLBSC;
         Map<String,Object> params = new HashMap<String,Object>();
@@ -141,10 +143,10 @@ public class ThirdPartyWalletService {
         params.put("releaseNum", releaseNum);
         params.put("releasePercent", releasePercent);
         params.put("transfAmount", transfAmount);
-        params.put("noteStr", getEncodedNoteStr());
+        params.put("noteStr", getEncodedNoteStr(noteStr));
         params.put("orderSn", orderSn);
         params.put("batchType", batchType);
-        params.put("noteStr", getEncodedNoteStr());
+        params.put("noteStr", getEncodedNoteStr(noteStr));
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
         //返回值处理
