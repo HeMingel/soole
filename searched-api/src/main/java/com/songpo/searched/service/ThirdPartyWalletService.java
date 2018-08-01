@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static com.songpo.searched.constant.BaseConstant.WALLET_API_CHECKUSERREGISTER;
-import static com.songpo.searched.constant.BaseConstant.WALLET_API_GETSLBSCAMOUNT;
-import static com.songpo.searched.constant.BaseConstant.WALLET_API_GETWALLETLIST;
 
 
 /**
@@ -172,7 +169,7 @@ public class ThirdPartyWalletService {
         packageParams.put("noteStr", noteStr);
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
         //第三方钱包接口地址
-        String url = env.getProperty("wallet.url")+WALLET_API_CHECKUSERREGISTER;
+        String url = env.getProperty("wallet.url")+BaseConstant.WALLET_API_CHECKUSERREGISTER;
         //
         // 接口所需参数
         Map<String,Object> params = new HashMap<String,Object>();
@@ -219,7 +216,7 @@ public class ThirdPartyWalletService {
         packageParams.put("noteStr", encodedNoteStr);
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
-        String url = env.getProperty("wallet.url") + WALLET_API_GETWALLETLIST;
+        String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_GETWALLETLIST;
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
@@ -283,7 +280,7 @@ public class ThirdPartyWalletService {
 
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
-        String url = env.getProperty("wallet.url") + WALLET_API_GETSLBSCAMOUNT;
+        String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_GETSLBSCAMOUNT;
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
