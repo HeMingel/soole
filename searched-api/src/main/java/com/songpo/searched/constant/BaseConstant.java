@@ -42,27 +42,27 @@ public class BaseConstant {
     /**
      * 钱包平台查询用户是否注册接口
      */
-    public static final String WALLET_API_CHECKUSERREGISTER = "/wallet/externalWallet/checkUserRegister.htm";
+    public static final String WALLET_API_CHECKUSERREGISTER = "wallet/externalWallet/checkUserRegister.htm";
 
     /**
      * 钱包平台用户注册接口
      */
-    public static final String WALLET_API_USERREGISTER = "/wallet/externalWallet/userRegister.htm";
+    public static final String WALLET_API_USERREGISTER = "wallet/externalWallet/userRegister.htm";
 
     /**
      * 获得钱包列表
      */
-    public static final String WALLET_API_GETWALLETLIST = "/wallet/externalWallet/getWalletList.htm";
+    public static final String WALLET_API_GETWALLETLIST = "wallet/externalWallet/getWalletList.htm";
 
     /**
      * 查询钱包总SLB锁仓余额
      */
-    public static final String WALLET_API_GETSLBSCAMOUNT = "/wallet/externalWallet/getSlbScAmount.htm";
+    public static final String WALLET_API_GETSLBSCAMOUNT = "wallet/externalWallet/getSlbScAmount.htm";
 
     /**
      * SLB锁仓资产转入
      */
-    public static final String WALLET_API_TRANSFERTOSLBSC = "/wallet/externalWallet/transferToSlbSc.htm";
+    public static final String WALLET_API_TRANSFERTOSLBSC = "wallet/externalWallet/transferToSlbSc.htm";
 
     /**
      * 平台登录密码
