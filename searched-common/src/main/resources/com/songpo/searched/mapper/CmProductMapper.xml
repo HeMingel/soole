@@ -554,6 +554,23 @@
         LIMIT 3
     </select>
 
+    <!--搜索限时秒杀商品表基础信息-->
+    <select id="limitGoodsBaseInfo" parameterType="String" resultType="Map">
+      SELECT
+          p.`id` AS goodsId,p.`sales_mode_id`,ap.*,p.name,p.comment_num,p.sales_volume,p.introduction,p.remark,p.image_url,p.shop_id,
+          p.postage postAge,ap.price as activityPrice,p.sales_virtual,p.ship,ap.awward_money awardMoney,
+          ss.seckill_price,ss.start_time startTime,ss.end_time endTime
+        FROM
+          sl_product p
+          LEFT JOIN sl_activity_product ap
+            ON p.id = ap.product_id
+          LEFT JOIN sl_activity_seckill ss ON p.id = ss.product_old_id
+             WHERE p.`id` =#{goodsId} and ap.activity_id = #{activityId}
+             and p.`sold_out`=1 and p.del = 0
+           AND ap.enabled = 1
+
+    </select>
+
 </mapper>
 
 

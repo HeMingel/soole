@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -253,15 +254,14 @@ public class ThirdPartyWalletService {
      *查询钱包总SLB锁仓余额
      * @return
      */
+    @Transactional
     public BusinessMessage getSlbScAmount(){
         SlUser user = loginUserService.getCurrentLoginUser();
         BusinessMessage message = new BusinessMessage();
         try {
             if (null != user){
                 String mobile = user.getPhone();
-                System.out.println("@@@@@@@@@@@@"+mobile);
                 if (checkUserRegister(mobile)){
-                    System.out.println("#################我已经注册");
                     message = retunObject(mobile);
                 }else {
                     // 注册 String mobile, String pwd, String moblieArea
@@ -269,9 +269,6 @@ public class ThirdPartyWalletService {
                         setZone(user.getZone());
                     }});
                    String res = UserRegister(mobile, BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                    System.out.println("#$#$#$#$#$#$#$#"+res);
-                   //注册完 返回搜了贝
-                    System.out.println("#################我没有注册");
                     message = retunObject(mobile);
                 }
             }

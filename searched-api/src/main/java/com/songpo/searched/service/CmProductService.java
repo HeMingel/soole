@@ -287,7 +287,14 @@ public class CmProductService {
             Map<String, Object> goodsBaseInfo = this.mapper.goodsBaseInfo(goodsId, activityId);
             if (goodsBaseInfo != null) {
                 Integer salesModeId =  Integer.parseInt(goodsBaseInfo.get("sales_mode_id").toString());
-                data.put("goodsBaseInfo", goodsBaseInfo);
+                //如果是限时秒杀商品 重新查基础商品信息
+                if (salesModeId == SalesModeConstant.SALES_MODE_SECKILL){
+                    //查询商品列表信息
+                    Map<String, Object> limtGoodsBaseInfo = this.mapper.limitGoodsBaseInfo(goodsId, activityId);
+                    data.put("goodsBaseInfo", limtGoodsBaseInfo);
+                }else {
+                    data.put("goodsBaseInfo", goodsBaseInfo);
+                }
                 //商品图片
                 List<Map<String, Object>> mapImageUrls = this.mapper.goodsImageUrl(goodsId);
                 data.put("productImages", mapImageUrls);

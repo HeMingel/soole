@@ -257,4 +257,12 @@ public interface CmProductMapper{
      */
 
     List<Map<String,Object>> selectGroomShop();
+
+    /**
+     * 查询限时秒杀商品基础信息
+     * @param goodsId 商品ID
+     * @param activityId 活动Id
+     * @return 商品product 表相关信息
+     */
+    Map<String,Object> limitGoodsBaseInfo(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
 }
