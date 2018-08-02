@@ -568,6 +568,7 @@
              WHERE p.`id` =#{goodsId} and ap.activity_id = #{activityId}
              and p.`sold_out`=1 and p.del = 0
            AND ap.enabled = 1
+           AND ss.`enable`=1
 
     </select>
 
