@@ -241,6 +241,7 @@ public class CmOrderService {
                                                     //秒杀表总库存
                                                      seckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
                                                         setProductOldId(slProduct.getId());
+                                                         setEnable(true);
                                                     }});
                                                     if (seckill.getTotalCount() - quantity < 0) {
                                                         log.error("当前秒杀库存不足");
@@ -588,6 +589,20 @@ public class CmOrderService {
                             int count = this.cmOrderMapper.selectOrdersCount(slProduct.getId(), user.getId(), activityProduct.getId());
                             // 本次下单的商品数量 + 当前用户的该商品下单量 <= 商品限制购买单数
                             if (quantity + count <= activityProduct.getRestrictCount()) {
+                                SlActivitySeckill seckill = null;
+                                if (slProduct.getSalesModeId().equals("8")){
+                                    //秒杀表总库存
+                                    seckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
+                                        setProductOldId(slProduct.getId());
+                                        setEnable(true);
+                                    }});
+                                    if (seckill.getTotalCount() - quantity < 0) {
+                                        log.error("当前秒杀库存不足");
+                                        message.setMsg(slProduct.getName() + "当前秒杀库存不足");
+                                        message.setSuccess(false);
+                                        return message;
+                                    }
+                                }
                                 // 本规格下的库存 >= 本次下单的商品数量
                                 if (repository.getCount() >= quantity) {
                                     //  ====== 拼团订单 ======
@@ -678,6 +693,11 @@ public class CmOrderService {
                                         //生成订单号
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 7, buyerMessage, 1, inviterId,virtualOpen);
+                                    }
+                                    else if (saleModes  == SalesModeConstant.SALES_MODE_SECKILL) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 8, buyerMessage, 1, inviterId,virtualOpen);
                                     }
                                     if (message.getSuccess() == false) {
                                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -1024,6 +1044,11 @@ public class CmOrderService {
         if(2==virtualOpen){
             slOrder.setVirtualOpen(2);
         }
+        //修改价格 如果是限时秒杀就改成秒杀价
+        if (slProduct.getSalesModeId().equals("8")){
+            price = repository.getSeckillPrice().doubleValue();
+        }
+
         Double d = price * quantity;
         BigDecimal money = new BigDecimal(d.toString());
         if (slProduct.getPostage().doubleValue() > 0) {
@@ -1058,6 +1083,7 @@ public class CmOrderService {
             // 插入订单明细表
 //            SlProductRepository finalRepository1 = repository;
 //            SlProduct finalSlProduct = slProduct;
+            double finalPrice = price;
             orderDetailService.insertSelective(new SlOrderDetail() {{
                 //邀请人ID
                 setInviterId(inviterId);
@@ -1074,11 +1100,7 @@ public class CmOrderService {
                 // 邮费
                 setPostFee(slProduct.getPostage());
                 // 单个商品价格
-                if (spellGroupType == 1) {
-                    setPrice(repository.getPrice());
-                } else {
-                    setPrice(repository.getPersonalPrice());
-                }
+                setPrice(new BigDecimal(finalPrice));
                 // 商品ID
                 setProductId(slProduct.getId());
                 // 店铺唯一标识
@@ -1173,6 +1195,23 @@ public class CmOrderService {
                 }
             }});
             */
+
+            //更新限时秒杀的库存
+            if (slProduct.getSalesModeId().equals("8")){
+                SlActivitySeckill  seckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
+                    setProductOldId(slProduct.getId());
+                    setEnable(true);
+                }});
+                //更新秒杀表总库存
+                seckill.setTotalCount(seckill.getTotalCount()-quantity);
+                slActivitySeckillMapper.updateByPrimaryKey(seckill);
+                //设置规格表库存
+                repository.setSekillCount(repository.getSekillCount()-quantity);
+                slProductRepositoryMapper.updateByPrimaryKeySelective( new SlProductRepository(){{
+                    setId(repository.getId());
+                    setSekillCount(repository.getSekillCount());
+                }});
+            }
             // 当前库存 - 本次该商品规格下单库存
             int cou = repository.getCount() - quantity;
             repository.setCount(cou);
