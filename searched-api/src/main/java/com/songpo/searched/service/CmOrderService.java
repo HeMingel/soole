@@ -119,7 +119,12 @@ public class CmOrderService {
     private SlActivitySeckillMapper slActivitySeckillMapper;
     @Autowired
     private SlProductRepositoryMapper slProductRepositoryMapper;
-
+    @Autowired
+    private ThirdPartyWalletService thirdPartyWalletService;
+    @Autowired
+    private SlPhoneZoneMapper slPhoneZoneMapper;
+    @Autowired
+    private SlOrderHandleMapper slOrderHandleMapper;
 
     /**
      * 多商品下单
@@ -2596,6 +2601,7 @@ public class CmOrderService {
     /**
      *
      * 给以前购买的区块链商品（助力购物）返回搜了贝
+     *
      */
     @Transactional(rollbackFor = Exception.class)
     public  void  returnSLBFormPowerShopping () {
@@ -2647,6 +2653,105 @@ public class CmOrderService {
             }
         } catch (Exception e) {
             log.error("给订单返回搜了贝失败",e);
+        }
+    }
+
+    /**
+     * TODO
+     * 给以前购买的区块链商品（助力购物）导入钱包APP中的搜了贝
+     *
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public  void  transferSlbToWallet () {
+        try {
+            //获取已经购买搜了贝商品集合1 7-12凌晨之前
+            List<SlOrderDetail> detailList1 = cmOrderMapper.getSlbOrderDetail("1");
+            /*for (SlOrderDetail detail : detailList1) {
+                SlUser user = userService.selectByPrimaryKey(detail.getCreator());
+                if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                    //查询用户是否注册钱包APP接口
+                    Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                    if (!isRegister) {
+                        //查询用户手机号地区代码
+                       SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                            setZone(user.getZone());
+                        }});
+                        String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                        Integer code = Integer.parseInt(codeStr);
+                        if (code != 0) {
+                            slOrderHandleMapper.insert( new SlOrderHandle(){{
+                                setOrderId(detail.getOrderId());
+                                setUserId(user.getId());
+                                setMessage("用户注册失败");
+                            }});
+                        }else {
+
+                        }
+                    }
+                }
+            }*/
+            //获取已经购买搜了贝商品集合2 7-12凌晨之后
+            List<SlOrderDetail> detailList2 = cmOrderMapper.getSlbOrderDetail("2");
+
+
+        }catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+    }
+
+    public void dealWithOrder(List<SlOrderDetail> lists,String compareDate){
+        for (SlOrderDetail detail : lists) {
+            //用户
+            SlUser user = userService.selectByPrimaryKey(detail.getCreator());
+            //邀请人
+            SlUser inviter =  userService.selectOne( new SlUser(){{
+                setUsername(detail.getInviterId());
+            }});
+            //给消费者
+            if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                //查询用户是否注册钱包APP接口
+                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                //没有用户就开始注册
+                if (!isRegister) {
+                    //查询用户手机号地区代码
+                    SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                        setZone(user.getZone());
+                    }});
+                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                    Integer code = Integer.parseInt(codeStr);
+                    if (code != 0) {
+                        slOrderHandleMapper.insert( new SlOrderHandle(){{
+                            setOrderId(detail.getOrderId()+"1");
+                            setUserId(user.getId());
+                            setMessage("用户注册失败");
+                        }});
+                        continue;
+                    }
+                }
+                //获取用户钱包接口
+                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone());
+                if (!SLStringUtils.isEmpty(userWallet)){
+                    //如果是7.12凌晨之前
+                    if (compareDate.equals("1")){
+                        BigDecimal amount = new BigDecimal(0);
+                        Integer quantity = detail.getQuantity() == null ? 0 : detail.getQuantity();
+                       String price =  detail.getPrice().stripTrailingZeros().toPlainString();
+                       if (price.equals("20000")){
+                           amount = new BigDecimal(400000).multiply(new BigDecimal(quantity));
+                       }
+                        String lockBeginDate = LocalDateTimeUtils.stringToDateYMD(detail.getCreatedAt());
+
+                        //thirdPartyWalletService.transferToSlbSc(userWallet);
+                    }
+                }else {
+                    slOrderHandleMapper.insert( new SlOrderHandle(){{
+                        setOrderId(detail.getOrderId()+"1");
+                        setUserId(user.getId());
+                        setMessage("用户获取钱包地址失败");
+                    }});
+                    continue;
+                }
+            }
         }
 
     }

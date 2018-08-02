@@ -1,7 +1,9 @@
 package com.songpo.searched.controller;
 
 
+import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.mapper.*;
+import com.songpo.searched.service.CmOrderService;
 import com.songpo.searched.service.ProcessOrders;
 import com.songpo.searched.service.UserService;
 import com.songpo.searched.util.*;
@@ -16,19 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
+import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Api(description = "测试")
 @RestController
 @CrossOrigin
 @RequestMapping("/api/common/v1/test")
 public class TestController {
-    @Autowired
+   /* @Autowired
     private CmActivitySeckillMapper cmActivitySeckillMapper;
     @Autowired
     private SlActivitySeckillMapper slActivitySeckillMapper;
@@ -237,8 +237,41 @@ public class TestController {
         System.out.println("json:============"+jsonObject.toJSONString());
         Map map = (Map<String,String>)jsonObject.get("data");
         System.out.println(map.get("exist"));
-
-
+    }*/
+    @Autowired
+    private CmOrderService cmOrderService;
+    @GetMapping("test6")
+    public BusinessMessage Test6(String nowDate) throws Exception {
+        BusinessMessage message = new BusinessMessage();
+       // cmOrderService.transferSlbToWallet();
+        Date now = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+        Date beginTime1 = null;
+        Date endTime1 = null;
+        Date beginTime2 = null;
+        Date endTime2 = null;
+        try {
+            now = df.parse(nowDate);
+            beginTime1 = df.parse("2018-08-03 13:59:59");
+            endTime1 = df.parse("2018-08-03 21:01:00");
+            beginTime2 = df.parse("2018-08-05 13:59:59");
+            endTime2 = df.parse("2018-08-05 21:01:00");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Boolean flag1 = LocalDateTimeUtils.belongCalendar(now, beginTime1, endTime1);
+        Boolean flag2 = LocalDateTimeUtils.belongCalendar(now, beginTime2, endTime2);
+        if (flag1 || flag2) {
+            System.out.println("bingo!bingo!bingo!bingo!bingo!bingo!bingo!bingo!bingo!bingo!");
+            message.setSuccess(true);
+            message.setMsg("bingo");
+        }else {
+            message.setMsg("当前日期不在时间段内");
+        }
+        return message;
     }
+
+
+   
 
 }

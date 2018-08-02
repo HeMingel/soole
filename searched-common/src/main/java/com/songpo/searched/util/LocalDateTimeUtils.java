@@ -21,6 +21,7 @@ public class LocalDateTimeUtils {
     public static final String DATE_FULL_STR = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_SMALL_STR = "yyyy-MM-dd";
     public static final String DATE_KEY_STR = "yyMMddHHmmss";
+    public static final String DATE_KEY_YMD = "yyyyMMdd";
 
 
     /**
@@ -174,19 +175,7 @@ public class LocalDateTimeUtils {
      * @return
      */
     public static boolean belongCalendar(Date nowTime, Date beginTime, Date endTime) {
-        Calendar date = Calendar.getInstance();
-        date.setTime(nowTime);
-
-        Calendar begin = Calendar.getInstance();
-        begin.setTime(beginTime);
-
-        Calendar end = Calendar.getInstance();
-        end.setTime(endTime);
-
-        if (date.after(begin) && date.before(end)) {
-            return true;
-        } else {
-            return false;
-        }
+        return nowTime.getTime() >= beginTime.getTime() && nowTime.getTime() <= endTime.getTime();
     }
+
 }

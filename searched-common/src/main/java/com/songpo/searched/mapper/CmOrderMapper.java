@@ -1,6 +1,7 @@
 package com.songpo.searched.mapper;
 
 import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlReturnsDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +36,12 @@ public interface CmOrderMapper {
     int reduceNumber(@Param("id")String id, @Param("count")int count);
 
     void changeSlbScheduled();
+
+    /**
+     * 查询已购买的区块链商品订单
+     * @return
+     * 1 7-12之前
+     * 2 7-12 之后
+     */
+    List<SlOrderDetail> getSlbOrderDetail(@Param("compareDate") String compareDate);
 }

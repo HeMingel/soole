@@ -67,7 +67,7 @@ public class ThirdPartyWalletService {
      * @param mobile
      * @param pwd
      * @param moblieArea
-     * @return
+     * @return 0:成功  小于0：操作不成功
      */
     public String UserRegister (String mobile, String pwd, String moblieArea){
 

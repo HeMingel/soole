@@ -227,5 +227,64 @@
         WHERE
             slb_type IN (2, 3, 4, 5);
     </update>
+    <!--查询已购买的区块链商品订单-->
+    <select id="getSlbOrderDetail" resultType="com.songpo.searched.entity.SlOrderDetail">
+        SELECT
+          `id`,
+          `order_id`,
+          `serial_number`,
+          `shop_id`,
+          `repository_id`,
+          `product_id`,
+          `product_name`,
+          `product_image_url`,
+          `product_detail_group_name`,
+          `shipping_state`,
+          `quantity`,
+          `price`,
+          `deduct_total_silver`,
+          `confirm_receipt_time`,
+          `creator`,
+          `create_time`,
+          `post_fee`,
+          `buyer_message`,
+          `shipping_time`,
+          `ems_id`,
+          `ship_number`,
+          `group_people`,
+          `presell_shipments_days`,
+          `return_cash_money`,
+          `place_order_return_pulse`,
+          `rewards_money`,
+          `share_of_people_id`,
+          `activity_product_id`,
+          `type`,
+          `confirm`,
+         `confirm_date`,
+         `check_state`,
+         `check_name`,
+         `modifier`,
+         `modification_time`,
+         `created_at`,
+         `updated_at`,
+         `discount`,
+         `rebate_pulse`,
+         `return_cash_pulse`,
+         `deduct_total_gold`,
+         `is_virtual_spell_group`,
+         `inviter_id`,
+         `is_delayed`
+        FROM
+          `sl_order_detail`
+        WHERE `type` = 4
+          AND `shipping_state` &gt; 2
+          <if test="compareDate == 1">
+              AND `created_at` &lt; '2018-07-12 00:05:00'
+          </if>
+         <if test="compareDate == 2">
+            AND `created_at` &gt;= '2018-07-12 00:05:00'
+         </if>
+
+    </select>
 
 </mapper>
