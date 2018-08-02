@@ -193,14 +193,12 @@ public class SystemLoginService {
             if (userTemp != null) {
                 userTemp.setOpenId(openId);
                 userTemp.setUnionid(unionId);
-                log.debug("微信用户登录,手机号：{} ",userTemp.getPhone());
                 userService.updateByPrimaryKey(userTemp);
                 //  userService.updateByPrimaryKeySelective(userTemp);
             }
             user = userService.selectOne(new SlUser() {{
                 setUnionid(unionId);
             }});
-            log.debug("微信用户登录,手机号： {}",user.getPhone());
         }
 
 
