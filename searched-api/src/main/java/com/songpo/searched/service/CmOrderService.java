@@ -2284,7 +2284,7 @@ public class CmOrderService {
                 SlProduct slProduct = this.productService.selectOne(new SlProduct(){{setId(productId);}});
                 if(null !=slProduct){
                     //判断是否包邮 1.包邮 2.部分地区不包邮
-                    if (2==ship){
+                    if (2==slProduct.getShip()){
 
                         SlUserAddress slUserAddress = this.slUserAddressMapper.selectOne(new SlUserAddress(){{setId(id);}});
                         //获取不包邮的地区
@@ -2296,10 +2296,11 @@ public class CmOrderService {
                                     break;
                                 }
                             }
-                        }else{
-                            //不包邮地区不存在 邮费选择默认
-                            postFee=Arith.add(slProduct.getPostage().doubleValue(),postFee);
                         }
+                    }
+
+                    if (null == slProduct.getShip().toString()){
+                        postFee=Arith.add(slProduct.getPostage().doubleValue(),postFee);
                     }
                 }else {
                     log.debug("该商品不存在");
