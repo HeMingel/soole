@@ -267,12 +267,15 @@ public class AccountService {
      * @return
      */
     public void insertUserCenter(String phone, String nickName, String avatar) {
-        String josnStr = "{nickName:" + nickName + ",avatar:" + avatar + "}";
+        //String josnStr = "{nickName:" + nickName + ",avatar:" + avatar + "}";
+        JSONObject json = new JSONObject();
+        json.put("nickName",nickName);
+        json.put("avatar",avatar);
         String responseBody = null;
         try {
             JSONObject obj = new JSONObject();
             obj.put("phone", phone);
-            obj.put("content", josnStr);
+            obj.put("content", json);
             obj.put("type", 1);
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost(env.getProperty("user.center.url"));
@@ -300,7 +303,7 @@ public class AccountService {
                     }
                 }
             };
-            responseBody = httpclient.execute(httpPost, responseHandler);
+           // responseBody = httpclient.execute(httpPost, responseHandler);
             log.debug("用户中心库返回结果{}", responseBody);
         } catch (Exception e) {
             System.out.println(e);
