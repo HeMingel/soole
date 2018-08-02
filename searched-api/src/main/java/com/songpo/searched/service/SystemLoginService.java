@@ -110,6 +110,7 @@ public class SystemLoginService {
             user.setType(3);
             user.setPhone(phone);
             user.setNickName(nickname);
+            user.setUnionid(unionId);
             user.setZone(zone);
             user.setAvatar(avatar);
             user.setAddress(address);
