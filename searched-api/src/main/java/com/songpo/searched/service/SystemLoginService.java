@@ -9,6 +9,7 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.CmUserMapper;
 import com.songpo.searched.mapper.SlSlbTransactionMapper;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
+import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.util.SLStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.songpo.searched.cache.BaseCache.log;
@@ -128,15 +130,37 @@ public class SystemLoginService {
             this.sendRegisterGiftToNewUser(user.getId());
             // 清除验证码
             this.smsPasswordCache.evict(phone);
-            //微信网页注册用户赠送B轮的1枚SLB
-            this.signUpBonusForSlb(user, 2, new BigDecimal(1));
-            JSONObject data = new JSONObject();
-            data.put("userId", user.getId());
-            data.put("clientId", user.getClientId());
-            data.put("clientSecret", user.getClientSecret());
-            message.setData(data);
-            message.setMsg("用户注册成功");
-            message.setSuccess(true);
+            //特定时间内 微信网页注册用户赠送B轮的1枚SLB
+            Date now = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+            Date beginTime1 = null;
+            Date endTime1 = null;
+            Date beginTime2 = null;
+            Date endTime2 = null;
+            try {
+                now = df.parse(df.format(now));
+                beginTime1 = df.parse("2018-08-03 13:59:59");
+                endTime1 = df.parse("2018-08-03 21:01:00");
+                beginTime2 = df.parse("2018-08-05 13:59:59");
+                endTime2 = df.parse("2018-08-05 21:01:00");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                Boolean flag1 = LocalDateTimeUtils.belongCalendar(now, beginTime1, endTime1);
+                Boolean flag2 = LocalDateTimeUtils.belongCalendar(now, beginTime2, endTime2);
+                if (flag1 || flag2) {
+                    this.signUpBonusForSlb(user, 2, new BigDecimal(1));
+                }
+                JSONObject data = new JSONObject();
+                data.put("userId", user.getId());
+                data.put("clientId", user.getClientId());
+                data.put("clientSecret", user.getClientSecret());
+                message.setData(data);
+                message.setMsg("用户注册成功");
+                message.setSuccess(true);
+            }
+
         }
         return message;
 
