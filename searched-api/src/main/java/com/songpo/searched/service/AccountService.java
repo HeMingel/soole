@@ -303,7 +303,7 @@ public class AccountService {
                     }
                 }
             };
-           // responseBody = httpclient.execute(httpPost, responseHandler);
+            responseBody = httpclient.execute(httpPost, responseHandler);
             log.debug("用户中心库返回结果{}", responseBody);
         } catch (Exception e) {
             System.out.println(e);
