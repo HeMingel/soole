@@ -46,6 +46,12 @@ public class SlSearchRingNews implements Serializable {
     private String productId;
 
     /**
+     * （针对分享奖励）分享奖励获取金额
+     */
+    @Column(name = "share_reward_money")
+    private String shareRewardMoney;
+
+    /**
      * 发表时间
      */
     @Column(name = "create_time")
@@ -199,6 +205,24 @@ public class SlSearchRingNews implements Serializable {
     }
 
     /**
+     * 获取（针对分享奖励）分享奖励获取金额
+     *
+     * @return share_reward_money - （针对分享奖励）分享奖励获取金额
+     */
+    public String getShareRewardMoney() {
+        return shareRewardMoney;
+    }
+
+    /**
+     * 设置（针对分享奖励）分享奖励获取金额
+     *
+     * @param shareRewardMoney （针对分享奖励）分享奖励获取金额
+     */
+    public void setShareRewardMoney(String shareRewardMoney) {
+        this.shareRewardMoney = shareRewardMoney == null ? null : shareRewardMoney.trim();
+    }
+
+    /**
      * 获取发表时间
      *
      * @return create_time - 发表时间
@@ -301,6 +325,7 @@ public class SlSearchRingNews implements Serializable {
         sb.append(", shareNum=").append(shareNum);
         sb.append(", type=").append(type);
         sb.append(", productId=").append(productId);
+        sb.append(", shareRewardMoney=").append(shareRewardMoney);
         sb.append(", createTime=").append(createTime);
         sb.append(", editTime=").append(editTime);
         sb.append(", createdAt=").append(createdAt);

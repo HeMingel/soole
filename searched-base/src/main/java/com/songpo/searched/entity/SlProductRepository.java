@@ -50,6 +50,18 @@ public class SlProductRepository implements Serializable {
     private BigDecimal personalPrice;
 
     /**
+     * 秒杀价格
+     */
+    @Column(name = "seckill_price")
+    private BigDecimal seckillPrice;
+
+    /**
+     * 秒杀库存
+     */
+    @Column(name = "sekill_count")
+    private Integer sekillCount;
+
+    /**
      * 全返金额比例(限消费返利销售模式按商品价格)
      */
     @Column(name = "return_cash_ratio")
@@ -316,6 +328,42 @@ public class SlProductRepository implements Serializable {
      */
     public void setPersonalPrice(BigDecimal personalPrice) {
         this.personalPrice = personalPrice;
+    }
+
+    /**
+     * 获取秒杀价格
+     *
+     * @return seckill_price - 秒杀价格
+     */
+    public BigDecimal getSeckillPrice() {
+        return seckillPrice;
+    }
+
+    /**
+     * 设置秒杀价格
+     *
+     * @param seckillPrice 秒杀价格
+     */
+    public void setSeckillPrice(BigDecimal seckillPrice) {
+        this.seckillPrice = seckillPrice;
+    }
+
+    /**
+     * 获取秒杀库存
+     *
+     * @return sekill_count - 秒杀库存
+     */
+    public Integer getSekillCount() {
+        return sekillCount;
+    }
+
+    /**
+     * 设置秒杀库存
+     *
+     * @param sekillCount 秒杀库存
+     */
+    public void setSekillCount(Integer sekillCount) {
+        this.sekillCount = sekillCount;
     }
 
     /**
@@ -781,6 +829,8 @@ public class SlProductRepository implements Serializable {
         sb.append(", productDetailGroupName=").append(productDetailGroupName);
         sb.append(", price=").append(price);
         sb.append(", personalPrice=").append(personalPrice);
+        sb.append(", seckillPrice=").append(seckillPrice);
+        sb.append(", sekillCount=").append(sekillCount);
         sb.append(", returnCashRatio=").append(returnCashRatio);
         sb.append(", returnCashMoney=").append(returnCashMoney);
         sb.append(", count=").append(count);

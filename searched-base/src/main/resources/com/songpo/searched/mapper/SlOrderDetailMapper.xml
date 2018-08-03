@@ -34,6 +34,8 @@
     <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
     <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="confirm" jdbcType="INTEGER" property="confirm" />
+    <result column="confirm_date" jdbcType="VARCHAR" property="confirmDate" />
     <result column="check_state" jdbcType="TINYINT" property="checkState" />
     <result column="check_name" jdbcType="VARCHAR" property="checkName" />
     <result column="modifier" jdbcType="VARCHAR" property="modifier" />
@@ -56,8 +58,9 @@
     product_detail_group_name, shipping_state, quantity, price, deduct_total_silver, 
     confirm_receipt_time, creator, create_time, post_fee, buyer_message, shipping_time, 
     ems_id, ship_number, group_people, presell_shipments_days, return_cash_money, place_order_return_pulse, 
-    rewards_money, share_of_people_id, activity_product_id, type, check_state, check_name, 
-    modifier, modification_time, created_at, updated_at, discount, rebate_pulse, return_cash_pulse, 
-    deduct_total_gold, is_virtual_spell_group, inviter_id, is_delayed
+    rewards_money, share_of_people_id, activity_product_id, type, confirm, confirm_date, 
+    check_state, check_name, modifier, modification_time, created_at, updated_at, discount, 
+    rebate_pulse, return_cash_pulse, deduct_total_gold, is_virtual_spell_group, inviter_id, 
+    is_delayed
   </sql>
 </mapper>
