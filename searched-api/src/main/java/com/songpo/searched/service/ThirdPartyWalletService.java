@@ -1,6 +1,7 @@
 package com.songpo.searched.service;
 
 ;
+import com.alibaba.fastjson.JSONArray;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
@@ -244,9 +245,12 @@ public class ThirdPartyWalletService {
         Integer code =  jsonObject.getInteger("resultCode");
         //操作成功
         if (code >= 0){
-            Map map = (Map<String,String>)jsonObject.get("data");
-            //用户已注册
-            walletAddress = map.get("walletAddress").toString();
+            JSONArray jsonArray = (JSONArray) jsonObject.get("data");
+            if(jsonArray.size() > 0) {
+                Map map = (Map<String,String>)jsonArray.get(0);
+                //用户已注册
+                walletAddress = map.get("walletAddress").toString();
+            }
         }
         return  walletAddress;
     }
