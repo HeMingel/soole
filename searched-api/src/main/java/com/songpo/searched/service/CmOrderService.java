@@ -2544,10 +2544,12 @@ public class CmOrderService {
                     saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
                 }else {
                     Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                    Date end = LocalDateTimeUtils.addHour(begin,slSlbType.getReleaseBatch());
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                    String lockBeginDate = sf.format(begin);
+                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+                    String lockEndDate =  sf.format(endDate);
                     //SLB锁仓资产转入
-                    String code = thirdPartyWalletService.transferToSlbSc(walletList,LocalDateTimeUtils.parse(begin.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),
-                            LocalDateTimeUtils.parse(end.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),slSlbType.getReleaseBatch().toString(),
+                    String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
                             slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
                     if (Integer.valueOf(code)<0){
                         saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
@@ -2567,10 +2569,12 @@ public class CmOrderService {
                         saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
                     }else {
                         Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                        Date end = LocalDateTimeUtils.addHour(begin,slSlbType.getReleaseBatch());
+                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                        String lockBeginDate = sf.format(begin);
+                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+                        String lockEndDate =  sf.format(endDate);
                         //SLB锁仓资产转入
-                        String code = thirdPartyWalletService.transferToSlbSc(walletList,LocalDateTimeUtils.parse(begin.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),
-                                LocalDateTimeUtils.parse(end.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),slSlbType.getReleaseBatch().toString(),
+                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
                                 slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
                         if (Integer.valueOf(code)<0){
                             saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
@@ -2635,10 +2639,12 @@ public class CmOrderService {
                     saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
                 }else {
                     Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                    Date end = LocalDateTimeUtils.addHour(begin,slSlbType.getReleaseBatch());
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                    String lockBeginDate = sf.format(begin);
+                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+                    String lockEndDate =  sf.format(endDate);
                     //SLB锁仓资产转入
-                   String code =  thirdPartyWalletService.transferToSlbSc(walletList,LocalDateTimeUtils.parse(begin.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),
-                            LocalDateTimeUtils.parse(end.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),slSlbType.getReleaseBatch().toString(),
+                   String code =  thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
                             slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
                     if (Integer.valueOf(code)<0){
                         saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
@@ -2658,10 +2664,12 @@ public class CmOrderService {
                         saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
                     }else {
                         Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                        Date end = LocalDateTimeUtils.addHour(begin,slSlbType.getReleaseBatch());
+                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                        String lockBeginDate = sf.format(begin);
+                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+                        String lockEndDate =  sf.format(endDate);
                         //SLB锁仓资产转入
-                        String code = thirdPartyWalletService.transferToSlbSc(walletList,LocalDateTimeUtils.parse(begin.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),
-                                LocalDateTimeUtils.parse(end.toString(),LocalDateTimeUtils.DATE_MIDDLE_STR).toString(),slSlbType.getReleaseBatch().toString(),
+                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate, slSlbType.getReleaseBatch().toString(),
                                 slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
                         if (Integer.valueOf(code)<0){
                             saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
