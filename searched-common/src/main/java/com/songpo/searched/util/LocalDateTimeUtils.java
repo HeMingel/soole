@@ -21,8 +21,12 @@ public class LocalDateTimeUtils {
     public static final String DATE_FULL_STR = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_SMALL_STR = "yyyy-MM-dd";
     public static final String DATE_KEY_STR = "yyMMddHHmmss";
+<<<<<<< HEAD
     public static final String DATE_KEY_YMD = "yyyyMMdd";
 
+=======
+    public static final String DATE_MIDDLE_STR = "yyyyMMdd";
+>>>>>>> origin/master
 
     /**
      * 使用预设格式提取字符串日期
@@ -150,6 +154,20 @@ public class LocalDateTimeUtils {
         calendar.add(Calendar.MINUTE, minute);
         return calendar.getTime();
     }
+    /**
+     * 增加月数
+     *
+     * @param date 时间
+     * @param month 要增加的月数，可以为负数
+     * @return
+     */
+    public static Date addMonth(Date date, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, month);
+        return calendar.getTime();
+    }
+
     /**
      * 字符串转date
      * @param str 字符串

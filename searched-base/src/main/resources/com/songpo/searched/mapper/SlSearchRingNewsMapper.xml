@@ -12,6 +12,7 @@
     <result column="share_num" jdbcType="INTEGER" property="shareNum" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="share_reward_money" jdbcType="VARCHAR" property="shareRewardMoney" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -27,8 +28,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, comment_num, goods_num, share_num, type, product_id, create_time, edit_time, 
-    created_at, updated_at
+    id, user_id, comment_num, goods_num, share_num, type, product_id, share_reward_money, 
+    create_time, edit_time, created_at, updated_at
   </sql>
   <sql id="Blob_Column_List">
     <!--

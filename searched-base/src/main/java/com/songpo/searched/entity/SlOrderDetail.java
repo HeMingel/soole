@@ -179,9 +179,20 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
      */
     private Integer type;
+
+    /**
+     * 财务确认状态(未支付给商家)1待确认2已确认
+     */
+    private Integer confirm;
+
+    /**
+     * 财务确认时间
+     */
+    @Column(name = "confirm_date")
+    private String confirmDate;
 
     /**
      * 财务审核确认订单时使用1待确认2已确认
@@ -771,14 +782,14 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
      *
      * @return type - 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
      */
     public Integer getType() {
         return type;
@@ -790,17 +801,53 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
      *
      * @param type 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
      */
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    /**
+     * 获取财务确认状态(未支付给商家)1待确认2已确认
+     *
+     * @return confirm - 财务确认状态(未支付给商家)1待确认2已确认
+     */
+    public Integer getConfirm() {
+        return confirm;
+    }
+
+    /**
+     * 设置财务确认状态(未支付给商家)1待确认2已确认
+     *
+     * @param confirm 财务确认状态(未支付给商家)1待确认2已确认
+     */
+    public void setConfirm(Integer confirm) {
+        this.confirm = confirm;
+    }
+
+    /**
+     * 获取财务确认时间
+     *
+     * @return confirm_date - 财务确认时间
+     */
+    public String getConfirmDate() {
+        return confirmDate;
+    }
+
+    /**
+     * 设置财务确认时间
+     *
+     * @param confirmDate 财务确认时间
+     */
+    public void setConfirmDate(String confirmDate) {
+        this.confirmDate = confirmDate == null ? null : confirmDate.trim();
     }
 
     /**
@@ -1072,6 +1119,8 @@ public class SlOrderDetail implements Serializable {
         sb.append(", shareOfPeopleId=").append(shareOfPeopleId);
         sb.append(", activityProductId=").append(activityProductId);
         sb.append(", type=").append(type);
+        sb.append(", confirm=").append(confirm);
+        sb.append(", confirmDate=").append(confirmDate);
         sb.append(", checkState=").append(checkState);
         sb.append(", checkName=").append(checkName);
         sb.append(", modifier=").append(modifier);

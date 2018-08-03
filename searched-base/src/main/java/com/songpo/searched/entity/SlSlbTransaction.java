@@ -39,7 +39,7 @@ public class SlSlbTransaction implements Serializable {
     private Integer slbType;
 
     /**
-     * 消费方式 1转账 2购物 3邀请人获得
+     * 消费方式 1转账 2购物 3邀请人获得 4微信网页注册赠送
      */
     private Integer type;
 
@@ -159,18 +159,18 @@ public class SlSlbTransaction implements Serializable {
     }
 
     /**
-     * 获取消费方式 1转账 2购物 3邀请人获得
+     * 获取消费方式 1转账 2购物 3邀请人获得 4微信网页注册赠送
      *
-     * @return type - 消费方式 1转账 2购物 3邀请人获得
+     * @return type - 消费方式 1转账 2购物 3邀请人获得 4微信网页注册赠送
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置消费方式 1转账 2购物 3邀请人获得
+     * 设置消费方式 1转账 2购物 3邀请人获得 4微信网页注册赠送
      *
-     * @param type 消费方式 1转账 2购物 3邀请人获得
+     * @param type 消费方式 1转账 2购物 3邀请人获得 4微信网页注册赠送
      */
     public void setType(Integer type) {
         this.type = type;

@@ -15,6 +15,12 @@ public class SlSlbType implements Serializable {
     private String id;
 
     /**
+     * slb名字
+     */
+    @Column(name = "slb_state")
+    private String slbState;
+
+    /**
      * 类别 1:A轮 2:B轮 3:C轮  
      */
     @Column(name = "slb_type")
@@ -32,16 +38,34 @@ public class SlSlbType implements Serializable {
     private BigDecimal presentNum;
 
     /**
-     * 锁仓时间
+     * 锁仓开始时间
      */
-    @Column(name = "lock_time")
-    private String lockTime;
+    @Column(name = "lock_begin_date")
+    private String lockBeginDate;
+
+    /**
+     * 锁仓结束时间
+     */
+    @Column(name = "lock_end_date")
+    private String lockEndDate;
 
     /**
      * 释放个数/月
      */
     @Column(name = "release_num")
     private BigDecimal releaseNum;
+
+    /**
+     * 每次释放比例(单位%)
+     */
+    @Column(name = "release_percent")
+    private BigDecimal releasePercent;
+
+    /**
+     * 释放批次
+     */
+    @Column(name = "release_batch")
+    private Integer releaseBatch;
 
     /**
      * 创建时间
@@ -73,6 +97,24 @@ public class SlSlbType implements Serializable {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取slb名字
+     *
+     * @return slb_state - slb名字
+     */
+    public String getSlbState() {
+        return slbState;
+    }
+
+    /**
+     * 设置slb名字
+     *
+     * @param slbState slb名字
+     */
+    public void setSlbState(String slbState) {
+        this.slbState = slbState == null ? null : slbState.trim();
     }
 
     /**
@@ -130,21 +172,39 @@ public class SlSlbType implements Serializable {
     }
 
     /**
-     * 获取锁仓时间
+     * 获取锁仓开始时间
      *
-     * @return lock_time - 锁仓时间
+     * @return lock_begin_date - 锁仓开始时间
      */
-    public String getLockTime() {
-        return lockTime;
+    public String getLockBeginDate() {
+        return lockBeginDate;
     }
 
     /**
-     * 设置锁仓时间
+     * 设置锁仓开始时间
      *
-     * @param lockTime 锁仓时间
+     * @param lockBeginDate 锁仓开始时间
      */
-    public void setLockTime(String lockTime) {
-        this.lockTime = lockTime == null ? null : lockTime.trim();
+    public void setLockBeginDate(String lockBeginDate) {
+        this.lockBeginDate = lockBeginDate == null ? null : lockBeginDate.trim();
+    }
+
+    /**
+     * 获取锁仓结束时间
+     *
+     * @return lock_end_date - 锁仓结束时间
+     */
+    public String getLockEndDate() {
+        return lockEndDate;
+    }
+
+    /**
+     * 设置锁仓结束时间
+     *
+     * @param lockEndDate 锁仓结束时间
+     */
+    public void setLockEndDate(String lockEndDate) {
+        this.lockEndDate = lockEndDate == null ? null : lockEndDate.trim();
     }
 
     /**
@@ -163,6 +223,42 @@ public class SlSlbType implements Serializable {
      */
     public void setReleaseNum(BigDecimal releaseNum) {
         this.releaseNum = releaseNum;
+    }
+
+    /**
+     * 获取每次释放比例(单位%)
+     *
+     * @return release_percent - 每次释放比例(单位%)
+     */
+    public BigDecimal getReleasePercent() {
+        return releasePercent;
+    }
+
+    /**
+     * 设置每次释放比例(单位%)
+     *
+     * @param releasePercent 每次释放比例(单位%)
+     */
+    public void setReleasePercent(BigDecimal releasePercent) {
+        this.releasePercent = releasePercent;
+    }
+
+    /**
+     * 获取释放批次
+     *
+     * @return release_batch - 释放批次
+     */
+    public Integer getReleaseBatch() {
+        return releaseBatch;
+    }
+
+    /**
+     * 设置释放批次
+     *
+     * @param releaseBatch 释放批次
+     */
+    public void setReleaseBatch(Integer releaseBatch) {
+        this.releaseBatch = releaseBatch;
     }
 
     /**
@@ -208,11 +304,15 @@ public class SlSlbType implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", slbState=").append(slbState);
         sb.append(", slbType=").append(slbType);
         sb.append(", price=").append(price);
         sb.append(", presentNum=").append(presentNum);
-        sb.append(", lockTime=").append(lockTime);
+        sb.append(", lockBeginDate=").append(lockBeginDate);
+        sb.append(", lockEndDate=").append(lockEndDate);
         sb.append(", releaseNum=").append(releaseNum);
+        sb.append(", releasePercent=").append(releasePercent);
+        sb.append(", releaseBatch=").append(releaseBatch);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

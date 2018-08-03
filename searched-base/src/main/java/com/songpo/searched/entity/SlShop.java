@@ -113,6 +113,11 @@ public class SlShop implements Serializable {
     private String phone;
 
     /**
+     * 推荐店铺1未推荐2推荐
+     */
+    private Integer groom;
+
+    /**
      * 1、普通店铺2、高级店铺
      */
     @Column(name = "shop_type")
@@ -475,6 +480,24 @@ public class SlShop implements Serializable {
     }
 
     /**
+     * 获取推荐店铺1未推荐2推荐
+     *
+     * @return groom - 推荐店铺1未推荐2推荐
+     */
+    public Integer getGroom() {
+        return groom;
+    }
+
+    /**
+     * 设置推荐店铺1未推荐2推荐
+     *
+     * @param groom 推荐店铺1未推荐2推荐
+     */
+    public void setGroom(Integer groom) {
+        this.groom = groom;
+    }
+
+    /**
      * 获取1、普通店铺2、高级店铺
      *
      * @return shop_type - 1、普通店铺2、高级店铺
@@ -553,6 +576,7 @@ public class SlShop implements Serializable {
         sb.append(", isAgreement=").append(isAgreement);
         sb.append(", rating=").append(rating);
         sb.append(", phone=").append(phone);
+        sb.append(", groom=").append(groom);
         sb.append(", shopType=").append(shopType);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);

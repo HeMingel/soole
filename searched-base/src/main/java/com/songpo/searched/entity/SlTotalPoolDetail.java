@@ -35,7 +35,7 @@ public class SlTotalPoolDetail implements Serializable {
 5交易购物(针对购买的搜了贝)  
 6水果竞猜(金豆)  
 7券兑换银豆(银豆)
-8给邀请人发送搜了贝
+8给邀请人发送搜了贝9微信网页注册赠送SLB
      */
     @Column(name = "pd_type")
     private Integer pdType;
@@ -135,7 +135,7 @@ public class SlTotalPoolDetail implements Serializable {
 5交易购物(针对购买的搜了贝)  
 6水果竞猜(金豆)  
 7券兑换银豆(银豆)
-8给邀请人发送搜了贝
+8给邀请人发送搜了贝9微信网页注册赠送SLB
      *
      * @return pd_type - 交易类型(针对纯系统产生的豆和贝) 
 1用户注册(银豆)  
@@ -145,7 +145,7 @@ public class SlTotalPoolDetail implements Serializable {
 5交易购物(针对购买的搜了贝)  
 6水果竞猜(金豆)  
 7券兑换银豆(银豆)
-8给邀请人发送搜了贝
+8给邀请人发送搜了贝9微信网页注册赠送SLB
      */
     public Integer getPdType() {
         return pdType;
@@ -160,7 +160,7 @@ public class SlTotalPoolDetail implements Serializable {
 5交易购物(针对购买的搜了贝)  
 6水果竞猜(金豆)  
 7券兑换银豆(银豆)
-8给邀请人发送搜了贝
+8给邀请人发送搜了贝9微信网页注册赠送SLB
      *
      * @param pdType 交易类型(针对纯系统产生的豆和贝) 
 1用户注册(银豆)  
@@ -170,7 +170,7 @@ public class SlTotalPoolDetail implements Serializable {
 5交易购物(针对购买的搜了贝)  
 6水果竞猜(金豆)  
 7券兑换银豆(银豆)
-8给邀请人发送搜了贝
+8给邀请人发送搜了贝9微信网页注册赠送SLB
      */
     public void setPdType(Integer pdType) {
         this.pdType = pdType;

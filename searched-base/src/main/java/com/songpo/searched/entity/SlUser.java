@@ -136,6 +136,11 @@ public class SlUser implements Serializable {
     private String fromUser;
 
     /**
+     * 微信unionid
+     */
+    private String unionid;
+
+    /**
      * 区块链团队长1否2是
      */
     private Integer captain;
@@ -616,6 +621,24 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取微信unionid
+     *
+     * @return unionid - 微信unionid
+     */
+    public String getUnionid() {
+        return unionid;
+    }
+
+    /**
+     * 设置微信unionid
+     *
+     * @param unionid 微信unionid
+     */
+    public void setUnionid(String unionid) {
+        this.unionid = unionid == null ? null : unionid.trim();
+    }
+
+    /**
      * 获取区块链团队长1否2是
      *
      * @return captain - 区块链团队长1否2是
@@ -807,6 +830,7 @@ public class SlUser implements Serializable {
         sb.append(", clientSecret=").append(clientSecret);
         sb.append(", openId=").append(openId);
         sb.append(", fromUser=").append(fromUser);
+        sb.append(", unionid=").append(unionid);
         sb.append(", captain=").append(captain);
         sb.append(", type=").append(type);
         sb.append(", status=").append(status);

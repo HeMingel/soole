@@ -12,6 +12,8 @@
     <result column="product_detail_group_name" jdbcType="VARCHAR" property="productDetailGroupName" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="personal_price" jdbcType="DECIMAL" property="personalPrice" />
+    <result column="seckill_price" jdbcType="DECIMAL" property="seckillPrice" />
+    <result column="sekill_count" jdbcType="INTEGER" property="sekillCount" />
     <result column="return_cash_ratio" jdbcType="REAL" property="returnCashRatio" />
     <result column="return_cash_money" jdbcType="DECIMAL" property="returnCashMoney" />
     <result column="count" jdbcType="INTEGER" property="count" />
@@ -43,10 +45,10 @@
       WARNING - @mbg.generated
     -->
     id, shop_id, product_id, product_name, product_detail_group_name, price, personal_price, 
-    return_cash_ratio, return_cash_money, count, weight, ship, silver, place_order_return_pulse_pt, 
-    place_order_return_pulse, rewards_money, rewards_money_ratio, first_order_pulse_pt, 
-    first_order_pulse, people_num, gold, cost_price, score, state, reference_price, discount, 
-    product_profit_money, product_profit_ratio, remark, product_image_url, created_at, 
-    updated_at
+    seckill_price, sekill_count, return_cash_ratio, return_cash_money, count, weight, 
+    ship, silver, place_order_return_pulse_pt, place_order_return_pulse, rewards_money, 
+    rewards_money_ratio, first_order_pulse_pt, first_order_pulse, people_num, gold, cost_price, 
+    score, state, reference_price, discount, product_profit_money, product_profit_ratio, 
+    remark, product_image_url, created_at, updated_at
   </sql>
 </mapper>
