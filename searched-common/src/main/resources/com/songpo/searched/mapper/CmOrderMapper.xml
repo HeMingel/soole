@@ -333,7 +333,7 @@
          <if test="compareDate == 2">
             AND `created_at` &gt;= '2018-07-12 00:05:00'
          </if>
-
+        LIMIT 0,1
     </select>
 
 </mapper>

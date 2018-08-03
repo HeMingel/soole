@@ -115,11 +115,11 @@ public class TestController {
         System.out.println(result);
 
     }
-
+*/
     @GetMapping("test3")
-    public void Test3() throws ParseException {
+    public void Test3(String phone) throws ParseException {
         //钱包地址
-        String mobile = "17611230000";
+        String mobile = phone;
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
@@ -170,7 +170,7 @@ public class TestController {
         String releaseNum = "10";
         String releasePercent = "1";
         String transfAmount = "7777777777777";
-        String orderSn = "2018073000000362";
+        String orderSn = "2018080300000001";
         String batchType = "A";
 
         //公钥加密随机串
@@ -212,7 +212,7 @@ public class TestController {
         String result = HttpUtil.doPost(url, params);
         System.out.println(result);
     }
-
+/**
     @GetMapping("test5")
     public void Test5() throws ParseException {
         //手机号
@@ -271,7 +271,26 @@ public class TestController {
         return message;
     }
 
+    @GetMapping("test7")
+    public void Test7() throws Exception {
+        //cmOrderService.transferSlbToWallet();
+    }
 
-   
+    @GetMapping("test8")
+    public void Test8() {
+        String payTime = "2018-08-02 16:30:00";
+        Date payDate = LocalDateTimeUtils.stringToDate(payTime);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+        String paystr = sf.format(payDate);
+        System.out.println("payDate---------------------->>>>>>>>>>>>>>>>>"+payDate.toString());
+        System.out.println("paystr----------------------->>>>>>>>>>>>>>>>>"+paystr);
+       // String lockBeginDate =  LocalDateTimeUtils.parse(paystr,"yyyyMMdd").toString();
+       Date endDate = LocalDateTimeUtils.addMonth(payDate,24);
+
+        String lockEndDate =  sf.format(endDate);
+        System.out.println("lockEndDate----------------------->>>>>>>>>>>>>>>>>"+lockEndDate);
+    }
+
+
 
 }

@@ -217,15 +217,15 @@ public class SystemLoginService {
             if (userTemp != null) {
                 userTemp.setOpenId(openId);
                 userTemp.setUnionid(unionId);
-                userService.updateByPrimaryKey(userTemp);
-                //  userService.updateByPrimaryKeySelective(userTemp);
+                 userService.updateByPrimaryKey(userTemp);
+                //userService.updateByPrimaryKeySelective(userTemp);
+                user = userTemp;
+            }else {
+                user = userService.selectOne(new SlUser() {{
+                    setUnionid(unionId);
+                }});
             }
-            user = userService.selectOne(new SlUser() {{
-                setUnionid(unionId);
-            }});
         }
-
-
         //用户未注册
         if (null == user) {
             message.setMsg("用户未注册");
@@ -356,11 +356,11 @@ public class SystemLoginService {
     public BusinessMessage bindPhoneForWxLogin(String openId, String phone, String code, String zone) {
         BusinessMessage message = new BusinessMessage();
         //验证短信验证码
-        /*String verificationCode = this.smsVerifyCodeCache.get(phone);
+        String verificationCode = this.smsVerifyCodeCache.get(phone);
         if (SLStringUtils.isEmpty(verificationCode) || !verificationCode.contentEquals(code)) {
             message.setMsg("验证码错误，请重试");
             return message;
-        }*/
+        }
         SlUser userTemp = userService.selectOne(new SlUser() {{
             setPhone(phone);
         }});

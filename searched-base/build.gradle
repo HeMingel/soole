@@ -61,9 +61,9 @@ mbg {
     generatorFile = "src/main/resources/generatorConfig.xml"
     jdbc{
         driver = "com.mysql.jdbc.Driver"
-        url    = "jdbc:mysql://rm-2zend88t7j7w34bo8jo.mysql.rds.aliyuncs.com:3306/searched?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
-        username = "searched"
-        password = "ZEROaxmfq2TglFgGOWM5pXinR3Fqakdo"
+        url    = "jdbc:mysql://rm-2zend88t7j7w34bo8jo.mysql.rds.aliyuncs.com:3306/searched-prod?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+        username = "searched_prod"
+        password = "Z2N8bj46YLHSF7MrnSd7oeo8vclr8r1O"
     }
     xml{
         tableName = 'sl'
