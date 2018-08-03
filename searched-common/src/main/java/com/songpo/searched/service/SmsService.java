@@ -95,12 +95,12 @@ public class SmsService {
                 if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
                     //请求成功
                     log.debug("短信验证码发送成功，验证码：{}", code);
-
                     // 将验证码加入缓存
                     this.smsVerifyCodeCache.put(mobile, code, 5L, TimeUnit.MINUTES);
-
                     message.setData(sendSmsResponse);
                     message.setSuccess(true);
+                } else {
+                    message.setMsg(sendSmsResponse.getMessage());
                 }
             } catch (Exception e) {
                 log.error("发送短信验证码失败，{}", e);
@@ -178,6 +178,8 @@ public class SmsService {
 
                     message.setData(sendSmsResponse);
                     message.setSuccess(true);
+                }else {
+                    message.setMsg(sendSmsResponse.getMessage());
                 }
             } catch (Exception e) {
                 log.error("发送短信登录密码失败，{}", e);
