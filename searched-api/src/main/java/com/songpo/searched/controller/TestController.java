@@ -273,7 +273,7 @@ public class TestController {
 
     @GetMapping("test7")
     public void Test7() throws Exception {
-        //cmOrderService.transferSlbToWallet();
+        cmOrderService.transferSlbToWallet();
     }
 
     @GetMapping("test8")
