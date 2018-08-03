@@ -127,7 +127,7 @@ public class CmOrderService {
     @Autowired
     public Environment env;
     @Autowired
-    private  SlOrderHandleMapper slOrderHandleMapper;
+    private SlOrderHandleMapper slOrderHandleMapper;
 
     /**
      * 多商品下单
@@ -2756,6 +2756,142 @@ public class CmOrderService {
             }
         } catch (Exception e) {
             log.error("给订单返回搜了贝失败",e);
+        }
+    }
+
+    /**
+     *
+     * 给以前购买的区块链商品（助力购物）导入钱包APP中的搜了贝
+     *
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public  void  transferSlbToWallet () {
+        try {
+            //获取已经购买搜了贝商品集合1 7-12凌晨之前
+            List<SlOrderDetail> detailList1 = cmOrderMapper.getSlbOrderDetail("1");
+            dealWithOldOrder(detailList1,"1");
+            //获取已经购买搜了贝商品集合2 7-12凌晨之后
+            List<SlOrderDetail> detailList2 = cmOrderMapper.getSlbOrderDetail("2");
+            dealWithOldOrder(detailList2,"2");
+        }catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+    }
+
+    /**
+     * 处理之前区块链订单，给购买这和消费返SLB到钱包
+     * @param lists 区块链订单集合
+     * @param compareDate 时间段
+     */
+    public void dealWithOldOrder(List<SlOrderDetail> lists,String compareDate){
+        for (SlOrderDetail detail : lists) {
+            //用户
+            SlUser user = userService.selectByPrimaryKey(detail.getCreator());
+            //邀请人
+            SlUser inviter =  userService.selectOne( new SlUser(){{
+                setUsername(detail.getInviterId());
+            }});
+            SlOrder order = orderService.selectByPrimaryKey(detail.getOrderId());
+           //SLB参数表
+            SlSlbType slSlbType = slSlbTypeService.selectOne( new SlSlbType(){{
+                setPrice(detail.getPrice());
+            }});
+            //转入SLB返回代码
+            String returnCode = null;
+            //给邀请人返的SLB
+            BigDecimal bean = order.getTotalAmount().multiply(new BigDecimal(0.05));
+            //给消费者
+            if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                //查询用户是否注册钱包APP接口
+                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                //没有用户就开始注册
+                if (!isRegister) {
+                    //查询用户手机号地区代码
+                    SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                        setZone(user.getZone());
+                    }});
+                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                    Integer code = Integer.parseInt(codeStr);
+                    if (code != 0) {
+                        slOrderHandleMapper.insert( new SlOrderHandle(){{
+                            setOrderId(detail.getOrderId()+"1");
+                            setUserId(user.getId());
+                            setMessage("用户注册失败");
+                        }});
+                        continue;
+                    }
+                }
+                //获取用户钱包接口
+                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone());
+                if (!SLStringUtils.isEmpty(userWallet)){
+                    //SLB总额
+                    BigDecimal amount = new BigDecimal(0);
+                    //类型
+                    String  batchType = null;
+                    //购买数量
+                    Integer quantity = detail.getQuantity() == null ? 0 : detail.getQuantity();
+                    //开始日期
+                    String payTime = order.getPayTime();
+                    Date payDate = LocalDateTimeUtils.stringToDate(payTime);
+                    String lockBeginDate =  LocalDateTimeUtils.parse(payTime,"yyyyMMdd").toString();
+                    String str1 = LocalDateTimeUtils.addMonth(payDate,24).toString();
+                    String lockEndDate =  LocalDateTimeUtils.parse(str1,"yyyyMMdd").toString();
+                    //订单sn
+                    String  orderSn = detail.getOrderId()+"1";
+                    String price =  detail.getPrice().stripTrailingZeros().toPlainString();
+                    //如果是7.12凌晨之前
+                    if (compareDate.equals("1")){
+                        if (price.equals("20000")) {
+                            amount = new BigDecimal(400000).multiply(new BigDecimal(quantity));
+                        } else if (price.equals("10000")) {
+                            amount = new BigDecimal(125000).multiply(new BigDecimal(quantity));
+                        } else if (price.equals("5000")) {
+                            amount = new BigDecimal(31250).multiply(new BigDecimal(quantity));
+                        } else if (price.equals("1000")) {
+                            amount = new BigDecimal(3030).multiply(new BigDecimal(quantity));
+                        } else if (price.equals("500")) {
+                            amount = new BigDecimal(892).multiply(new BigDecimal(quantity));
+                        } else {
+                            continue;
+                        }
+                        returnCode = thirdPartyWalletService.transferToSlbSc(userWallet,lockBeginDate,lockEndDate,
+                                slSlbType.getReleaseBatch().toString(),slSlbType.getReleasePercent().toPlainString(),
+                                amount.stripTrailingZeros().toPlainString(),orderSn,slSlbType.getSlbState());
+                    }
+                    //如果是7.12凌晨之后
+                    else if (compareDate.equals("2")){
+                        if (slSlbType != null){
+                            amount = slSlbType.getPresentNum().multiply(new BigDecimal(detail.getQuantity()));
+                            returnCode =  thirdPartyWalletService.transferToSlbSc(userWallet,lockBeginDate,lockEndDate,
+                                    slSlbType.getReleaseBatch().toString(),slSlbType.getReleasePercent().toPlainString(),
+                                    amount.stripTrailingZeros().toPlainString(),orderSn,slSlbType.getSlbState());
+                        }else {
+                            continue;
+                        }
+                    }
+
+                }else {
+                    slOrderHandleMapper.insert( new SlOrderHandle(){{
+                        setOrderId(detail.getOrderId()+"1");
+                        setUserId(user.getId());
+                        setMessage("用户获取钱包地址失败");
+                    }});
+                    continue;
+                }
+            }
+            //给邀请人返贝
+            if (inviter != null && !SLStringUtils.isEmpty(inviter.getPhone())) {
+                saveSlbInvite(inviter,order,slSlbType,bean);
+            }
+            if (returnCode.equals("0") ){
+                log.debug("用户装入SLB成功-----------------用户id：{}",user == null ? "用户为空": user.getId());
+            }else {
+                slOrderHandleMapper.insert( new SlOrderHandle(){{
+                    setOrderId(detail.getOrderId()+"1");
+                    setUserId(user.getId());
+                    setMessage("用户转入SLB到钱包失败");
+                }});
+            }
         }
 
     }

@@ -2,6 +2,55 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.songpo.searched.mapper.CmOrderMapper">
 
+    <resultMap id="SlOrderDetailResultMap" type="com.songpo.searched.entity.SlOrderDetail">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+        <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+        <result column="repository_id" jdbcType="VARCHAR" property="repositoryId" />
+        <result column="product_id" jdbcType="VARCHAR" property="productId" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_image_url" jdbcType="VARCHAR" property="productImageUrl" />
+        <result column="product_detail_group_name" jdbcType="VARCHAR" property="productDetailGroupName" />
+        <result column="shipping_state" jdbcType="INTEGER" property="shippingState" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="deduct_total_silver" jdbcType="INTEGER" property="deductTotalSilver" />
+        <result column="confirm_receipt_time" jdbcType="VARCHAR" property="confirmReceiptTime" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+        <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
+        <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
+        <result column="shipping_time" jdbcType="VARCHAR" property="shippingTime" />
+        <result column="ems_id" jdbcType="VARCHAR" property="emsId" />
+        <result column="ship_number" jdbcType="VARCHAR" property="shipNumber" />
+        <result column="group_people" jdbcType="INTEGER" property="groupPeople" />
+        <result column="presell_shipments_days" jdbcType="INTEGER" property="presellShipmentsDays" />
+        <result column="return_cash_money" jdbcType="DECIMAL" property="returnCashMoney" />
+        <result column="place_order_return_pulse" jdbcType="INTEGER" property="placeOrderReturnPulse" />
+        <result column="rewards_money" jdbcType="DECIMAL" property="rewardsMoney" />
+        <result column="share_of_people_id" jdbcType="VARCHAR" property="shareOfPeopleId" />
+        <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="confirm" jdbcType="INTEGER" property="confirm" />
+        <result column="confirm_date" jdbcType="VARCHAR" property="confirmDate" />
+        <result column="check_state" jdbcType="TINYINT" property="checkState" />
+        <result column="check_name" jdbcType="VARCHAR" property="checkName" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modification_time" jdbcType="VARCHAR" property="modificationTime" />
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+        <result column="discount" jdbcType="INTEGER" property="discount" />
+        <result column="rebate_pulse" jdbcType="INTEGER" property="rebatePulse" />
+        <result column="return_cash_pulse" jdbcType="INTEGER" property="returnCashPulse" />
+        <result column="deduct_total_gold" jdbcType="INTEGER" property="deductTotalGold" />
+        <result column="is_virtual_spell_group" jdbcType="TINYINT" property="isVirtualSpellGroup" />
+        <result column="inviter_id" jdbcType="INTEGER" property="inviterId" />
+        <result column="is_delayed" jdbcType="INTEGER" property="isDelayed" />
+    </resultMap>
     <select id="findList" parameterType="String" resultType="java.util.Map">
         select
         ss.name shopName,
@@ -227,5 +276,64 @@
         WHERE
             slb_type IN (2, 3, 4, 5);
     </update>
+    <!--查询已购买的区块链商品订单-->
+    <select id="getSlbOrderDetail" resultMap="SlOrderDetailResultMap">
+        SELECT
+          `id`,
+          `order_id`,
+          `serial_number`,
+          `shop_id`,
+          `repository_id`,
+          `product_id`,
+          `product_name`,
+          `product_image_url`,
+          `product_detail_group_name`,
+          `shipping_state`,
+          `quantity`,
+          `price`,
+          `deduct_total_silver`,
+          `confirm_receipt_time`,
+          `creator`,
+          `create_time`,
+          `post_fee`,
+          `buyer_message`,
+          `shipping_time`,
+          `ems_id`,
+          `ship_number`,
+          `group_people`,
+          `presell_shipments_days`,
+          `return_cash_money`,
+          `place_order_return_pulse`,
+          `rewards_money`,
+          `share_of_people_id`,
+          `activity_product_id`,
+          `type`,
+          `confirm`,
+         `confirm_date`,
+         `check_state`,
+         `check_name`,
+         `modifier`,
+         `modification_time`,
+         `created_at`,
+         `updated_at`,
+         `discount`,
+         `rebate_pulse`,
+         `return_cash_pulse`,
+         `deduct_total_gold`,
+         `is_virtual_spell_group`,
+         `inviter_id`,
+         `is_delayed`
+        FROM
+          `sl_order_detail`
+        WHERE `type` = 4
+          AND `shipping_state` &gt; 2
+          <if test="compareDate == 1">
+              AND `created_at` &lt; '2018-07-12 00:05:00'
+          </if>
+         <if test="compareDate == 2">
+            AND `created_at` &gt;= '2018-07-12 00:05:00'
+         </if>
+
+    </select>
 
 </mapper>
