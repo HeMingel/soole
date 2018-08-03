@@ -133,7 +133,8 @@ public class ThirdPartyWalletService {
         //公钥
         String publicKey = env.getProperty("wallet.publicKey");
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        String endcodePaltTransPwd = AESUtils.encode(env.getProperty("wallet.platTransPwd"), encodedNoteStr);
+        String  platTransPwd = env.getProperty("wallet.platTransPwd");
+        String endcodePaltTransPwd = AESUtils.encode(platTransPwd, noteStr);
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("walletAddress", walletAddress);
