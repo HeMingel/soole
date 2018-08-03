@@ -2834,11 +2834,8 @@ public class CmOrderService {
                     String payTime = order.getPayTime();
                     Date payDate = LocalDateTimeUtils.stringToDate(payTime);
                     String lockBeginDate =  LocalDateTimeUtils.parse(payTime,"yyyyMMdd").toString();
-                    String lockEndDate =  LocalDateTimeUtils.parse(LocalDateTimeUtils.addMonth(payDate,24).toString(),"yyyyMMdd").toString();
-                    //释放批次
-                    String releaseNum = null;
-                    //每次释放比例
-                    String releasePercent = null;
+                    String str1 = LocalDateTimeUtils.addMonth(payDate,24).toString();
+                    String lockEndDate =  LocalDateTimeUtils.parse(str1,"yyyyMMdd").toString();
                     //订单sn
                     String  orderSn = detail.getOrderId()+"1";
                     String price =  detail.getPrice().stripTrailingZeros().toPlainString();

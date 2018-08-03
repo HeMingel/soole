@@ -21,12 +21,8 @@ public class LocalDateTimeUtils {
     public static final String DATE_FULL_STR = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_SMALL_STR = "yyyy-MM-dd";
     public static final String DATE_KEY_STR = "yyMMddHHmmss";
-<<<<<<< HEAD
-    public static final String DATE_KEY_YMD = "yyyyMMdd";
-
-=======
     public static final String DATE_MIDDLE_STR = "yyyyMMdd";
->>>>>>> origin/master
+
 
     /**
      * 使用预设格式提取字符串日期
