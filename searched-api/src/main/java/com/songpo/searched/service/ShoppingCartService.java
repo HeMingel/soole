@@ -148,7 +148,7 @@ public class ShoppingCartService {
                                     cmGoods.setSilver(repository.getSilver());// 了豆(银豆,目前只扣除银豆)
                                     cmGoods.setSaleType(Integer.parseInt(slProduct.getSalesModeId()));// 销售类型前端根据销售类型去拼接两个字段
                                     //价格 如果是限时秒杀 价格为秒杀价
-                                    BigDecimal price = slProduct.getSalesModeId().equals(8) ? repository.getSeckillPrice() : repository.getPrice();
+                                    BigDecimal price = slProduct.getSalesModeId().equals("8") ? repository.getSeckillPrice() : repository.getPrice();
                                     cmGoods.setPrice(price);// 商品价格
                                     cmGoods.setSpecificationName(repository.getProductDetailGroupName());// 查询组合规格名称
                                     cmGoods.setRemainingqty(repository.getCount());// 商品剩余数量 返回0的话 前台就显示失效
