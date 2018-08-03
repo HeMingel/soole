@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -2833,9 +2834,10 @@ public class CmOrderService {
                     //开始日期
                     String payTime = order.getPayTime();
                     Date payDate = LocalDateTimeUtils.stringToDate(payTime);
-                    String lockBeginDate =  LocalDateTimeUtils.parse(payTime,"yyyyMMdd").toString();
-                    String str1 = LocalDateTimeUtils.addMonth(payDate,24).toString();
-                    String lockEndDate =  LocalDateTimeUtils.parse(str1,"yyyyMMdd").toString();
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                    String lockBeginDate =  sf.format(payDate);
+                    Date endDate  = LocalDateTimeUtils.addMonth(payDate,24);
+                    String lockEndDate =sf.format(endDate);
                     //订单sn
                     String  orderSn = detail.getOrderId()+"1";
                     String price =  detail.getPrice().stripTrailingZeros().toPlainString();
