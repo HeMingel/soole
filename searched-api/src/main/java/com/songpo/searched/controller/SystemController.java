@@ -603,13 +603,13 @@ public class SystemController {
     @ApiOperation(value = "微信网页登录")
     @PostMapping("wx-web-login")
     @ApiImplicitParam(name = "fromUser", value = "微信网页登录唯一标识", paramType = "form", required = true)
-    public BusinessMessage wxWeblogin(String fromUser) {
+    public BusinessMessage wxWeblogin(String fromUser,String unionId) {
         BusinessMessage message = new BusinessMessage();
         log.debug("微信网页登录，开放账号唯一标识：{}", fromUser);
         if (StringUtils.isBlank(fromUser)) {
             message.setMsg("开放账号唯一标识为空");
         } else {
-            message = systemLoginService.wxWeblogin(fromUser);
+            message = systemLoginService.wxWeblogin(fromUser,unionId);
         }
         return message;
     }

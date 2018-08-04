@@ -78,6 +78,11 @@ public class SystemLoginService {
         SlUser userTemp = userService.selectOne(new SlUser() {{
             setFromUser(fromUser);
         }});
+        if (userTemp == null) {
+            userTemp = userService.selectOne(new SlUser() {{
+                setUnionid(unionId);
+            }});
+        }
         if (userTemp != null) {
             message.setMsg("用户标识已存在");
             return message;
@@ -173,11 +178,11 @@ public class SystemLoginService {
      * @return
      */
     @Transactional
-    public BusinessMessage wxWeblogin(String fromUser) {
+    public BusinessMessage wxWeblogin(String fromUser,String unionId ) {
         BusinessMessage message = new BusinessMessage<>();
         //根据微信网页唯一标识查询
         SlUser user = userService.selectOne(new SlUser() {{
-            setFromUser(fromUser);
+            setUnionid(unionId);
         }});
         if (null == user) {
             message.setMsg("用户不存在");
