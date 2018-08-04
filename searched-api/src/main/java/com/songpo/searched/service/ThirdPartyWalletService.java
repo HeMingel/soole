@@ -128,6 +128,7 @@ public class ThirdPartyWalletService {
      */
     public String transferToSlbSc (String walletAddress,String lockBeginDate,String lockEndDate,String releaseNum,
                                    String releasePercent,String transfAmount,String orderSn,String batchType){
+        log.debug("钱包 {} 开始转入{}slb ",walletAddress,transfAmount);
         String returnStr = "";
        String  noteStr =  getNoteStr();
         //公钥

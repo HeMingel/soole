@@ -2893,9 +2893,9 @@ public class CmOrderService {
             if (inviter != null && !SLStringUtils.isEmpty(inviter.getPhone())) {
                 saveSlbInvite(inviter,order,slSlbType,bean);
             }
-            if (returnCode.equals("0") ){
+            if ("0".equals(returnCode) ){
                 log.debug("用户装入SLB成功-----------------用户id：{}",user == null ? "用户为空": user.getId());
-            }else {
+            } else {
                 slOrderHandleMapper.insertSelective( new SlOrderHandle(){{
                     setOrderId(detail.getOrderId()+"1");
                     setUserId(user.getId());
