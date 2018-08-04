@@ -129,7 +129,10 @@ public class CmOrderService {
     public Environment env;
     @Autowired
     private SlOrderHandleMapper slOrderHandleMapper;
-
+    @Autowired
+    private  CmOrderHandleMapper cmOrderHandleMapper;
+    @Autowired
+    private  CmSlbTransactionMapper cmSlbTransactionMapper;
     /**
      * 多商品下单
      *
@@ -2782,6 +2785,9 @@ public class CmOrderService {
             //获取已经购买搜了贝商品集合2 7-12凌晨之后
             List<SlOrderDetail> detailList2 = cmOrderMapper.getSlbOrderDetail("2");
             dealWithOldOrder(detailList2,"2");
+            //获取网页注册的用户得到的搜了贝
+            List<SlSlbTransaction> slSlbTransactions = cmSlbTransactionMapper.selectSlb();
+            dealWebOldSlb(slSlbTransactions);
         }catch (Exception e) {
             log.error("给订单返回搜了贝失败",e);
         }
@@ -2822,11 +2828,7 @@ public class CmOrderService {
                     String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
                     Integer code = Integer.parseInt(codeStr);
                     if (code != 0) {
-                        slOrderHandleMapper.insert( new SlOrderHandle(){{
-                            setOrderId(detail.getOrderId()+"1");
-                            setUserId(user.getId());
-                            setMessage("用户注册失败");
-                        }});
+                        saveOrderHandle(detail.getOrderId()+"1", user.getId(), "用户注册失败");
                         continue;
                     }
                 }
@@ -2881,11 +2883,7 @@ public class CmOrderService {
                     }
 
                 }else {
-                    slOrderHandleMapper.insert( new SlOrderHandle(){{
-                        setOrderId(detail.getOrderId()+"1");
-                        setUserId(user.getId());
-                        setMessage("用户获取钱包地址失败");
-                    }});
+                    saveOrderHandle(detail.getOrderId()+"1", user.getId(), "用户获取钱包地址失败");
                     continue;
                 }
             }
@@ -2896,14 +2894,67 @@ public class CmOrderService {
             if ("0".equals(returnCode) ){
                 log.debug("用户装入SLB成功-----------------用户id：{}",user == null ? "用户为空": user.getId());
             } else {
-                slOrderHandleMapper.insertSelective( new SlOrderHandle(){{
-                    setOrderId(detail.getOrderId()+"1");
-                    setUserId(user.getId());
-                    setMessage("用户转入SLB到钱包失败");
-                }});
+                saveOrderHandle(detail.getOrderId()+"1", user.getId(), "用户转入SLB到钱包失败");
             }
         }
 
+    }
+    /**
+     * 处理之前web网页注册赠送的搜了贝
+     * @param slSlbTransactions 页注册赠送的搜了贝集合
+     */
+    public void dealWebOldSlb(List<SlSlbTransaction> slSlbTransactions){
+        for (SlSlbTransaction slSlbTransaction : slSlbTransactions) {
+            //用户
+            SlUser user = userService.selectByPrimaryKey(slSlbTransaction.getTargetId());
+
+            //SLB参数表
+            SlSlbType slSlbType = slSlbTypeService.selectOne( new SlSlbType(){{
+                setSlbType(2);
+            }});
+            //生成订单号
+            String  orderId = formatUUID32()+"B";
+            //给消费者
+            if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                //查询用户是否注册钱包APP接口
+                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                //没有用户就开始注册
+                if (!isRegister) {
+                    //查询用户手机号地区代码
+                    SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                        setZone(user.getZone());
+                    }});
+                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                    Integer code = Integer.parseInt(codeStr);
+                    if (code != 0) {
+                        saveOrderHandle(orderId,user.getId(),"用户注册失败");
+                        continue;
+                    }
+                }
+                //获取用户钱包接口
+                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone());
+                if (!SLStringUtils.isEmpty(userWallet)){
+                    //开始日期
+                    Date payDate = slSlbTransaction.getCreatedAt();
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+                    String lockBeginDate =  sf.format(payDate);
+                    Date endDate  = LocalDateTimeUtils.addMonth(payDate,24);
+                    String lockEndDate =sf.format(endDate);
+                    String  returnCode = thirdPartyWalletService.transferToSlbSc(userWallet,lockBeginDate,lockEndDate,
+                            slSlbType.getReleaseBatch().toString(),slSlbType.getReleasePercent().toPlainString(),
+                            "1",orderId,slSlbType.getSlbState());
+                    if (!"0".equals(returnCode)){
+                        saveOrderHandle(orderId,user.getId(),"SLB资产装入失败");
+                    }
+                }else {
+                    saveOrderHandle(orderId,user.getId(),"获取用户钱包地址失败");
+                }
+
+            }else {
+                saveOrderHandle(orderId,user.getId(),"手机号没有绑定");
+                continue;
+            }
+        }
     }
     /**
      * A轮订单录入

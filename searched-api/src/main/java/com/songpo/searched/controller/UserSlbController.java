@@ -54,8 +54,8 @@ public class UserSlbController {
     @ApiOperation(value = "查询搜了贝 ")
     @GetMapping("select-slb")
     public BusinessMessage selectUserSlb() {
-        return this.cmUserSlbService.selectUserSlb();
-//        return  thirdPartyWalletService.getSlbScAmount();
+//        return this.cmUserSlbService.selectUserSlb();
+        return  thirdPartyWalletService.getSlbScAmount();
     }
 
     /**
