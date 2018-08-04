@@ -88,7 +88,8 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.activation/activation
     compile group: 'javax.activation', name: 'activation', version: '1.1.1'
 
-
+    //腾讯云短信
+    compile group: 'com.github.qcloudsms', name: 'qcloudsms',version: '1.0.2'
     // 正式打包时，请移除该注释
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 

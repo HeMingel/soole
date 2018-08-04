@@ -10,6 +10,8 @@ import com.aliyuncs.profile.IClientProfile;
 import com.songpo.searched.cache.SmsPasswordCache;
 import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlPhoneZone;
+import com.songpo.searched.mapper.SlPhoneZoneMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
@@ -34,6 +36,11 @@ public class SmsService {
 
     @Autowired
     private SmsPasswordCache smsPasswordCache;
+
+    @Autowired
+    private QcloudSmsService qcloudSmsService;
+    @Autowired
+    private SlPhoneZoneMapper slPhoneZoneMapper;
 
     /**
      * 发送短信验证码
@@ -100,12 +107,36 @@ public class SmsService {
                     message.setData(sendSmsResponse);
                     message.setSuccess(true);
                 } else {
-                    message.setMsg(sendSmsResponse.getMessage());
+                    log.debug("阿里云短信登录密码发送失败 {}",sendSmsResponse.getMessage());
+                    //启用腾讯云短信备用通道
+                    SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                        setZone(zone);
+                    }});
+                    String phone [] = new String []{mobile};
+                    message = qcloudSmsService.sendQcTemple(phone,slPhoneZone.getMobilearea().toString(),code);
+                    if ("0".equals(message.getCode())) {
+                        //请求成功
+                        log.debug("腾讯云短信登录密码发送成功，登录密码：{}", code);
+                        // 将登录密码加入缓存
+                        this.smsVerifyCodeCache.put(mobile, code, 5L, TimeUnit.MINUTES);
+                    }
                 }
             } catch (Exception e) {
-                log.error("发送短信验证码失败，{}", e);
-
-                message.setMsg("发送短信验证码失败，请重试");
+                log.error("发送阿里云短信验证码失败，{}", e);
+                //启用腾讯云短信备用通道
+                SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                    setZone(zone);
+                }});
+                String phone [] = new String []{mobile};
+                message = qcloudSmsService.sendQcTemple(phone,slPhoneZone.getMobilearea().toString(),code);
+                if ("0".equals(message.getCode())) {
+                    //请求成功
+                    log.debug("腾讯云短信登录密码发送成功，登录密码：{}", code);
+                    // 将登录密码加入缓存
+                    this.smsVerifyCodeCache.put(mobile, code, 5L, TimeUnit.MINUTES);
+                }else {
+                    log.debug("腾讯云短信登录密码发送失败：{}", e);
+                }
             }
         }
         return message;
@@ -171,7 +202,7 @@ public class SmsService {
                 SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
                 if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
                     //请求成功
-                    log.debug("短信登录密码发送成功，登录密码：{}", code);
+                    log.debug("阿里云短信登录密码发送成功，登录密码：{}", code);
 
                     // 将登录密码加入缓存
                     this.smsPasswordCache.put(mobile, code, 5L, TimeUnit.MINUTES);
@@ -179,12 +210,36 @@ public class SmsService {
                     message.setData(sendSmsResponse);
                     message.setSuccess(true);
                 }else {
-                    message.setMsg(sendSmsResponse.getMessage());
+                    log.debug("阿里云短信登录密码发送失败 {}",sendSmsResponse.getMessage());
+                   //启用腾讯云短信备用通道
+                    SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                        setZone(zone);
+                    }});
+                    String phone [] = new String []{mobile};
+                        message = qcloudSmsService.sendQcTemple(phone,slPhoneZone.getMobilearea().toString(),code);
+                        if ("0".equals(message.getCode())) {
+                            //请求成功
+                            log.debug("腾讯云短信登录密码发送成功，登录密码：{}", code);
+                            // 将登录密码加入缓存
+                            this.smsPasswordCache.put(mobile, code, 5L, TimeUnit.MINUTES);
+                        }
                 }
             } catch (Exception e) {
-                log.error("发送短信登录密码失败，{}", e);
-
-                message.setMsg("发送短信登录密码失败，请重试");
+                log.error("发送阿里云短信登录密码失败，{}", e);
+                //启用腾讯云短信备用通道
+                SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                    setZone(zone);
+                }});
+                String phone [] = new String []{mobile};
+                message = qcloudSmsService.sendQcTemple(phone,slPhoneZone.getMobilearea().toString(),code);
+                if ("0".equals(message.getCode())) {
+                    //请求成功
+                    log.debug("腾讯云短信登录密码发送成功，登录密码：{}", code);
+                    // 将登录密码加入缓存
+                    this.smsPasswordCache.put(mobile, code, 5L, TimeUnit.MINUTES);
+                }else{
+                    log.debug("腾讯云短信登录密码发送失败：{}",e );
+                }
             }
         }
         return message;

@@ -5,6 +5,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.service.CmOrderService;
 import com.songpo.searched.service.ProcessOrders;
+import com.songpo.searched.service.QcloudSmsService;
 import com.songpo.searched.service.UserService;
 import com.songpo.searched.util.*;
 import io.swagger.annotations.Api;
@@ -28,6 +29,7 @@ import java.util.*;
 @CrossOrigin
 @RequestMapping("/api/common/v1/test")
 public class TestController {
+
    /* @Autowired
     private CmActivitySeckillMapper cmActivitySeckillMapper;
     @Autowired
@@ -156,7 +158,8 @@ public class TestController {
     public void Test4() throws ParseException {
         //钱包地址
         //String walletAddress = "1C4RU377vWRcAFKuH88tiyTZqYrnjkFqQu";
-        String walletAddress = "1Au5bQqw36wrD4YDKUDy1BQ491y8F6F5DR";
+      //  String walletAddress = "1Au5bQqw36wrD4YDKUDy1BQ491y8F6F5DR";
+        String walletAddress = "1CuEogXPvQPu7MTHQbFuFE8mU77gSwWeKn";
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
@@ -170,8 +173,8 @@ public class TestController {
         String releaseNum = "10";
         String releasePercent = "1";
         String transfAmount = "7777777777777";
-        String orderSn = "2018080300000001";
-        String batchType = "A";
+        String orderSn = "786e9336278b049d59991beefa51f94b11";
+        String batchType = "E";
 
         //公钥加密随机串
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
@@ -291,6 +294,17 @@ public class TestController {
         System.out.println("lockEndDate----------------------->>>>>>>>>>>>>>>>>"+lockEndDate);
     }
 
+
+
+
+    @Autowired
+    private QcloudSmsService qcloudSmsService;
+    @GetMapping("testSendQcTemple")
+    public BusinessMessage test9(String phone ,String zoneCode){
+        String[] moblie = new String[]{phone};
+        BusinessMessage message = qcloudSmsService.sendQcTemple(moblie,"86","我是数字");
+        return  message;
+    }
 
 
 }
