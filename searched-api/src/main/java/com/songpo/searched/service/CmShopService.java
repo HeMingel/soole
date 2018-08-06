@@ -33,6 +33,8 @@ public class CmShopService {
     private CmProductMapper mapper;
     @Autowired
     private SlMyCollectionMapper slMyCollectionMapper;
+    @Autowired
+    private  SlActivitySeckillMapper slActivitySeckillMapper;
 
     /**
      * 根据店铺Id查询店铺详情和商品
@@ -106,6 +108,16 @@ public class CmShopService {
                     List<Map<String,Object>> avatarList = this.mapper.selectGroupAvatar(map.get("goods_id").toString());
                     if (avatarList.size() >0){
                         map.put("avatarList",avatarList);
+                    }
+                }
+                //如果是显示秒杀商品
+                if (Integer.parseInt(map.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_SECKILL) {
+                    List<SlActivitySeckill> slActivitySeckills = this.slActivitySeckillMapper.select(new SlActivitySeckill(){{
+                        setProductOldId(map.get("goods_id").toString());
+                        setEnable(true);
+                    }});
+                    if (slActivitySeckills.size()>0){
+                        map.put("slActivitySeckills",slActivitySeckills);
                     }
                 }
             }
