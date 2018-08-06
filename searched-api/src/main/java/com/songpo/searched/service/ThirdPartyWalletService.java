@@ -71,7 +71,8 @@ public class ThirdPartyWalletService {
      * @return 0:成功  小于0：操作不成功
      */
     public String UserRegister (String mobile, String pwd, String moblieArea){
-
+        //截取指定的电话号码
+        mobile = subPhone(mobile);
         String returnStr = "";
         //公钥
         String publicKey = env.getProperty("wallet.publicKey");
@@ -178,6 +179,10 @@ public class ThirdPartyWalletService {
      * @param mobile 手机号
      */
     public  Boolean checkUserRegister(String mobile){
+
+        //截取指定的电话号码
+        mobile = subPhone(mobile);
+
         Boolean bool = false;
         //获取加密随机串
         String noteStr =  getNoteStr();
@@ -215,6 +220,10 @@ public class ThirdPartyWalletService {
      * @return walletAddress
      */
     public String getWalletList(String mobile){
+
+        //截取指定的电话号码
+        mobile = subPhone(mobile);
+
         String walletAddress = "";
         //公钥
         String publicKey =env.getProperty("wallet.publicKey") ;
@@ -286,6 +295,10 @@ public class ThirdPartyWalletService {
         return  message;
     }
     public BusinessMessage retunObject(String mobile){
+
+        //截取指定的电话号码
+        mobile = subPhone(mobile);
+
         BusinessMessage businessMessage = new BusinessMessage();
         //公钥
         String publicKey = env.getProperty("wallet.publicKey");
@@ -325,5 +338,13 @@ public class ThirdPartyWalletService {
            businessMessage.setSuccess(false);
        }
        return  businessMessage;
+    }
+
+    //截取指定长度的手机号
+    public String subPhone(String mobile){
+        if (mobile.length() == 13){
+            mobile = mobile.substring(mobile.length()-8, mobile.length());
+        }
+        return mobile;
     }
 }

@@ -81,7 +81,6 @@ public class ThirdPartyPayController {
         message.setSuccess(false);
         message.setMsg("退款失败");
         AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundFee,refundDesc,null,null,null,null);
-       System.out.println("@@@@@@@@@@@@@@@@@@@:"+response);
         String strResponse = response.getCode();
         if ("10000".equals(strResponse)) {
             message.setSuccess(true);

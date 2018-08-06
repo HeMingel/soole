@@ -3602,11 +3602,7 @@ public class CmOrderService {
     public void saveOrderHandle(String orderId, String userId, String message){
         log.debug("保存钱包异常订单开始啦");
         try {
-            slOrderHandleMapper.insertSelective(new SlOrderHandle(){{
-                setOrderId(orderId);
-                setUserId(userId);
-                setMessage(message);
-            }});
+            cmOrderHandleMapper.insertOrderHandle(orderId, userId, message);
         }catch (Exception e){
             log.error("存钱包异常订单异常:", e);
         }
