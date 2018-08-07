@@ -114,7 +114,7 @@ public class CmShopService {
                 }
                 //如果是显示秒杀商品
                 if (Integer.parseInt(map.get("sales_mode_id").toString()) == SalesModeConstant.SALES_MODE_SECKILL) {
-                    List<SlActivitySeckill> slActivitySeckills = this.cmActivitySeckillMapper.limitTimeProductsDay();
+                    List<SlActivitySeckill> slActivitySeckills = this.cmActivitySeckillMapper.selectActivitySeckill(map.get("goods_id").toString());
                     if (slActivitySeckills.size()>0){
                         map.put("slActivitySeckills",slActivitySeckills);
                     }

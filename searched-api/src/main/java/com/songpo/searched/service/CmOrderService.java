@@ -2537,10 +2537,13 @@ public class CmOrderService {
     public void saveSlbBuy(SlSlbType slSlbType,SlOrder slOrder,SlOrderDetail orderDetail){
         BigDecimal slb = slSlbType.getPresentNum().multiply(BigDecimal.valueOf(orderDetail.getQuantity()));
         SlUser slUser = userService.selectByPrimaryKey(slOrder.getUserId());
+        SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+            setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
+        }});
         //用户信息里存在手机号
         if (null != slUser.getPhone()){
             //查看用户是否注册 true:已经注册 false:没有注册
-            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone())){
+            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
                 //获取钱包地址
                 String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
                 if ("".equals(walletList)){
@@ -2560,9 +2563,6 @@ public class CmOrderService {
                 }
             }else {
                 //用户钱包注册
-                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                    setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
-                }});
                 String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
                 //注册成功
                 if ("0".equals(res)){
@@ -2632,10 +2632,13 @@ public class CmOrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void saveSlbInvite( SlUser slUser, SlOrder slOrder,SlSlbType slSlbType,BigDecimal bean){
+        SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+            setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
+        }});
         //用户信息里存在手机号
         if (null != slUser.getPhone()){
             //查看用户是否注册 true:已经注册 false:没有注册
-            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone())){
+            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
                 //获取钱包地址
                 String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
                 if ("".equals(walletList)){
@@ -2655,9 +2658,6 @@ public class CmOrderService {
                 }
             }else {
                 //用户钱包注册
-                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                    setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
-                }});
                 String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
                 //注册成功
                 if ("0".equals(res)){
@@ -2817,14 +2817,14 @@ public class CmOrderService {
             BigDecimal bean = order.getTotalAmount().multiply(new BigDecimal(0.05));
             //给消费者
             if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setZone(user.getZone());
+                }});
                 //查询用户是否注册钱包APP接口
-                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone(), slPhoneZone.getMobilearea().toString());
                 //没有用户就开始注册
                 if (!isRegister) {
                     //查询用户手机号地区代码
-                    SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                        setZone(user.getZone());
-                    }});
                     String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
                     Integer code = Integer.parseInt(codeStr);
                     if (code != 0) {
@@ -2916,14 +2916,14 @@ public class CmOrderService {
             String  orderId = formatUUID32()+"B";
             //给消费者
             if (user != null && !SLStringUtils.isEmpty(user.getPhone())) {
+                SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setZone(user.getZone());
+                }});
                 //查询用户是否注册钱包APP接口
-                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone());
+                Boolean isRegister = thirdPartyWalletService.checkUserRegister(user.getPhone(), slPhoneZone.getMobilearea().toString());
                 //没有用户就开始注册
                 if (!isRegister) {
                     //查询用户手机号地区代码
-                    SlPhoneZone slPhoneZone =  slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                        setZone(user.getZone());
-                    }});
                     String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
                     Integer code = Integer.parseInt(codeStr);
                     if (code != 0) {

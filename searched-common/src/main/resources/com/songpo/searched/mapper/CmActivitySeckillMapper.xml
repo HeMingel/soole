@@ -47,4 +47,17 @@
             AND TO_DAYS( sa.start_time) - TO_DAYS(NOW( )) = 1
         ORDER BY sa.total_count desc
     </select>
+
+    <!--查询限时秒杀今日商品-->
+    <select id="selectActivitySeckill" resultMap="SlActivitySeckill">
+        SELECT
+        sa.*
+        FROM
+        sl_activity_seckill sa
+        where
+            sa.enable = 1
+            AND TO_DAYS( sa.start_time) = TO_DAYS(NOW( ))
+            AND sa.product_old_id = #{productId}
+        ORDER BY sa.total_count desc
+    </select>
 </mapper>

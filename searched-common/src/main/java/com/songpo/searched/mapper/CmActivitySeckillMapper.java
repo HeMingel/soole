@@ -21,8 +21,15 @@ public interface CmActivitySeckillMapper {
    List<SlActivitySeckill> limitTimeProductsDay();
 
    /**
-    * 查询限时秒杀明日预告商品商品
+    * 查询限时秒杀明日预告商品
     * @return 商品集合
     */
    List<SlActivitySeckill> limitTimeProductsTomo();
+
+   /**
+    * 查询限时秒杀今日商品
+    * @param productId
+    * @return 商品集合
+    */
+   List<SlActivitySeckill> selectActivitySeckill(String productId);
 }

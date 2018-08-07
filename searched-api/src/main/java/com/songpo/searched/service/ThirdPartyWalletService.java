@@ -73,6 +73,7 @@ public class ThirdPartyWalletService {
     public String UserRegister (String mobile, String pwd, String moblieArea){
         //截取指定的电话号码
         mobile = subPhone(mobile);
+
         String returnStr = "";
         //公钥
         String publicKey = env.getProperty("wallet.publicKey");
@@ -178,7 +179,7 @@ public class ThirdPartyWalletService {
      * 查询用户是否注册
      * @param mobile 手机号
      */
-    public  Boolean checkUserRegister(String mobile){
+    public  Boolean checkUserRegister(String mobile, String mobileArea){
 
         //截取指定的电话号码
         mobile = subPhone(mobile);
@@ -189,6 +190,7 @@ public class ThirdPartyWalletService {
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
+        packageParams.put("mobileArea", mobileArea);
         packageParams.put("noteStr", noteStr);
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
         //第三方钱包接口地址
@@ -197,6 +199,7 @@ public class ThirdPartyWalletService {
         // 接口所需参数
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
+        params.put("mobileArea", mobileArea);
         params.put("noteStr", noteStr);
         params.put("sign", sign);
         //获取返回值
@@ -276,13 +279,14 @@ public class ThirdPartyWalletService {
         try {
             if (null != user){
                 String mobile = user.getPhone();
-                if (checkUserRegister(mobile)){
+                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setZone(user.getZone());
+                }});
+                if (checkUserRegister(mobile, slPhoneZone.getMobilearea().toString())){
                     message = retunObject(mobile);
                 }else {
                     // 注册 String mobile, String pwd, String moblieArea
-                    SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                        setZone(user.getZone());
-                    }});
+
                    String res = UserRegister(mobile, BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
                     message = retunObject(mobile);
                 }
