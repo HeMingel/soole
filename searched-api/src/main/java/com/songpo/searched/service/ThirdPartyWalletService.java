@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.entity.SlPhoneZone;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlPhoneZoneMapper;
+import com.songpo.searched.mapper.SlUserMapper;
 import com.songpo.searched.util.AESUtils;
 
 
@@ -41,6 +42,8 @@ public class ThirdPartyWalletService {
     private  LoginUserService loginUserService;
     @Autowired
     private SlPhoneZoneMapper slPhoneZoneMapper;
+    @Autowired
+    private SlUserMapper slUserMapper;
 
     /**
      * 获取 加密随机串
@@ -275,8 +278,11 @@ public class ThirdPartyWalletService {
      * @return
      */
     @Transactional
-    public BusinessMessage getSlbScAmount(){
-        SlUser user = loginUserService.getCurrentLoginUser();
+    public BusinessMessage getSlbScAmount(String phone){
+//        SlUser user = loginUserService.getCurrentLoginUser();
+        SlUser user = slUserMapper.selectOne(new SlUser(){{
+            setPhone(phone);
+        }});
         BusinessMessage message = new BusinessMessage();
         try {
             if (null != user){
