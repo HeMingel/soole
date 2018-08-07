@@ -248,7 +248,7 @@ public class CommonConfig {
             setStatus(1);
         }});
         //时间分隔点
-        Date compareDate = LocalDateTimeUtils.addHour(new Date(), -24);
+        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -30);
         //支付超时时间列表
         List<SlOrder> payOverTimeOrderList = new ArrayList<>();
         //移除不需要的订单

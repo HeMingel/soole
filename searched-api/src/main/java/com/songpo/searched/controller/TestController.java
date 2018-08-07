@@ -3,10 +3,7 @@ package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.mapper.*;
-import com.songpo.searched.service.CmOrderService;
-import com.songpo.searched.service.ProcessOrders;
-import com.songpo.searched.service.QcloudSmsService;
-import com.songpo.searched.service.UserService;
+import com.songpo.searched.service.*;
 import com.songpo.searched.util.*;
 import io.swagger.annotations.Api;
 import com.alibaba.fastjson.JSONObject;
@@ -30,7 +27,7 @@ import java.util.*;
 @RequestMapping("/api/common/v1/test")
 public class TestController {
 
-   /* @Autowired
+   @Autowired
     private CmActivitySeckillMapper cmActivitySeckillMapper;
     @Autowired
     private SlActivitySeckillMapper slActivitySeckillMapper;
@@ -51,14 +48,14 @@ public class TestController {
     @GetMapping("test1")
     public void Test1() throws ParseException {
             //手机号
-            String mobile = "17611230000";
+            String mobile = "62710650";
             //公钥
             String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
             //生成加密随机串
             String noteStr =  String.valueOf(System.currentTimeMillis());
             noteStr = StringUtils.leftPad(noteStr, 16,  "0");
             //加密登录密码
-            String loginPwd = "111111";
+            String loginPwd = "123456";
             loginPwd = AESUtils.encode(loginPwd, noteStr);
 
             //公钥加密随机串
@@ -68,7 +65,7 @@ public class TestController {
             SortedMap<String, String> packageParams = new TreeMap<String, String>();
             packageParams.put("mobile", mobile);
             packageParams.put("loginPwd", loginPwd);
-            packageParams.put("mobileArea", "86");
+            packageParams.put("mobileArea", "853");
             packageParams.put("noteStr", encodedNoteStr);
             String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
@@ -76,7 +73,7 @@ public class TestController {
             Map<String,Object> params = new HashMap<String,Object>();
             params.put("mobile", mobile);
             params.put("loginPwd", loginPwd);
-            params.put("mobileArea", "86");
+            params.put("mobileArea", "853");
             params.put("noteStr", encodedNoteStr);
             params.put("sign", sign);
             String result = HttpUtil.doPost(url, params);
@@ -117,7 +114,7 @@ public class TestController {
         System.out.println(result);
 
     }
-*/
+
     @GetMapping("test3")
     public void Test3(String phone) throws ParseException {
         //钱包地址
@@ -305,6 +302,25 @@ public class TestController {
         BusinessMessage message = qcloudSmsService.sendQcTemple(moblie,"86","我是数字");
         return  message;
     }
-
+    @Autowired
+    private ThirdPartyWalletService thirdPartyWalletService;
+    //获取钱包地址
+    @GetMapping("test9")
+    public String test90(String phone ){
+        String  message = thirdPartyWalletService.getWalletList("55149492","852");
+        return  message;
+    }
+    //检验是否注册
+    @GetMapping("test10")
+    public Boolean test10(String phone ){
+        Boolean  message = thirdPartyWalletService.checkUserRegister("55149492", "852");
+        return  message;
+    }
+    //用户注册
+    @GetMapping("test11")
+    public String test11(String phone ){
+        String  message = thirdPartyWalletService.UserRegister("55149492", "123456","852");
+        return  message;
+    }
 
 }

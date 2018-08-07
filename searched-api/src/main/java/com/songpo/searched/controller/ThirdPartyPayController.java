@@ -44,7 +44,7 @@ public class ThirdPartyPayController {
             @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
             @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
     })
-    @PostMapping("/wx-refund")
+    @GetMapping("/wx-refund")
     public BusinessMessage shopAndGoods(String outTradeNo, String totalFeeStr, String refundFee, String refundDesc) {
         BusinessMessage message = new BusinessMessage();
         message.setSuccess(false);
@@ -72,7 +72,7 @@ public class ThirdPartyPayController {
             @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
             @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
     })
-    @PostMapping("/ali-refund")
+    @GetMapping("/ali-refund")
     public BusinessMessage shopAndGoods(String outTradeNo, String refundFee, String refundDesc) {
         BusinessMessage message = new BusinessMessage();
         message.setSuccess(false);
