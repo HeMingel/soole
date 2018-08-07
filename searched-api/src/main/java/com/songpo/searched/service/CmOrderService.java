@@ -2541,86 +2541,86 @@ public class CmOrderService {
             setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
         }});
         //用户信息里存在手机号
-        if (null != slUser.getPhone()){
-            //查看用户是否注册 true:已经注册 false:没有注册
-            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
-                //获取钱包地址
-                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                if ("".equals(walletList)){
-                    saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
-                }else {
-                    Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
-                    String lockBeginDate = sf.format(begin);
-                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
-                    String lockEndDate =  sf.format(endDate);
-                    //SLB锁仓资产转入
-                    String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
-                            slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
-                    if (Integer.valueOf(code)<0){
-                        saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
-                    }
-                }
-            }else {
-                //用户钱包注册
-                String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                //注册成功
-                if ("0".equals(res)){
-                    //获取钱包地址
-                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                    if ("".equals(walletList)){
-                        saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
-                    }else {
-                        Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
-                        String lockBeginDate = sf.format(begin);
-                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
-                        String lockEndDate =  sf.format(endDate);
-                        //SLB锁仓资产转入
-                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
-                                slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
-                        if (Integer.valueOf(code)<0){
-                            saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
-                        }
-                    }
-                }else{
-                    saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"用户钱包注册失败");
-                }
-            }
+//        if (null != slUser.getPhone()){
+//            //查看用户是否注册 true:已经注册 false:没有注册
+//            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
+//                //获取钱包地址
+//                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                if ("".equals(walletList)){
+//                    saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
+//                }else {
+//                    Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
+//                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+//                    String lockBeginDate = sf.format(begin);
+//                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+//                    String lockEndDate =  sf.format(endDate);
+//                    //SLB锁仓资产转入
+//                    String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
+//                            slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
+//                    if (Integer.valueOf(code)<0){
+//                        saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
+//                    }
+//                }
+//            }else {
+//                //用户钱包注册
+//                String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
+//                //注册成功
+//                if ("0".equals(res)){
+//                    //获取钱包地址
+//                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                    if ("".equals(walletList)){
+//                        saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
+//                    }else {
+//                        Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
+//                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+//                        String lockBeginDate = sf.format(begin);
+//                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+//                        String lockEndDate =  sf.format(endDate);
+//                        //SLB锁仓资产转入
+//                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
+//                                slSlbType.getReleasePercent().toString(),slb.toString(), slOrder.getId()+"1",slSlbType.getSlbState());
+//                        if (Integer.valueOf(code)<0){
+//                            saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"SLB锁仓资产转入失败");
+//                        }
+//                    }
+//                }else{
+//                    saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"用户钱包注册失败");
+//                }
+//            }
+//        }else {
+//            saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"用户没有绑定手机号");
+//        }
+
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slOrder.getUserId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(2);
+        slSlbTransaction1.setSlb(slb);
+        slSlbTransaction1.setTransactionType(2);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slOrder.getUserId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(slb));
+                }});
         }else {
-            saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"用户没有绑定手机号");
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slOrder.getUserId());
+            slUserSlb.setSlb(slb);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
         }
 
-//        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
-//        slSlbTransaction1.setTargetId(slOrder.getUserId());
-//        slSlbTransaction1.setOrderId(slOrder.getId());
-//        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
-//        slSlbTransaction1.setType(2);
-//        slSlbTransaction1.setSlb(slb);
-//        slSlbTransaction1.setTransactionType(2);
-//        slbTransactionMapper.insertSelective(slSlbTransaction1);
-//
-//        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
-//        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
-//            setUserId(slOrder.getUserId());
-//            setSlbType(slSlbType.getSlbType());
-//        }});
-//        if(null != slUserSlb1){
-//            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
-//                setId(slUserSlb1.getId());
-//                setSlb(slUserSlb1.getSlb().add(slb));
-//                }});
-//        }else {
-//            SlUserSlb slUserSlb = new SlUserSlb();
-//            slUserSlb.setUserId(slOrder.getUserId());
-//            slUserSlb.setSlb(slb);
-//            slUserSlb.setSlbType(slSlbType.getSlbType());
-//            userSlbService.insert(slUserSlb);
-//        }
-//
-//        //资金池搜了贝修改以及搜了贝交易记录
-//        //savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
-//        cmTotalPoolService.updatePool(null,null,slb,2,slOrder.getId(),slOrder.getUserId(),5);
+        //资金池搜了贝修改以及搜了贝交易记录
+        //savePoolSlb(slb,slOrder.getUserId(),orderDetail.getOrderId(),5);
+        cmTotalPoolService.updatePool(null,null,slb,2,slOrder.getId(),slOrder.getUserId(),5);
     }
 
     /**
@@ -2636,83 +2636,83 @@ public class CmOrderService {
             setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
         }});
         //用户信息里存在手机号
-        if (null != slUser.getPhone()){
-            //查看用户是否注册 true:已经注册 false:没有注册
-            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
-                //获取钱包地址
-                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                if ("".equals(walletList)){
-                    saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
-                }else {
-                    Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
-                    String lockBeginDate = sf.format(begin);
-                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
-                    String lockEndDate =  sf.format(endDate);
-                    //SLB锁仓资产转入
-                   String code =  thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
-                            slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
-                    if (Integer.valueOf(code)<0){
-                        saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
-                    }
-                }
-            }else {
-                //用户钱包注册
-                String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                //注册成功
-                if ("0".equals(res)){
-                    //获取钱包地址
-                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                    if ("".equals(walletList)){
-                        saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
-                    }else {
-                        Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
-                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
-                        String lockBeginDate = sf.format(begin);
-                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
-                        String lockEndDate =  sf.format(endDate);
-                        //SLB锁仓资产转入
-                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate, slSlbType.getReleaseBatch().toString(),
-                                slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
-                        if (Integer.valueOf(code)<0){
-                            saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
-                        }
-                    }
-                }else {
-                    saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"用户钱包注册失败");
-                }
-            }
-        }else {
-            saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"用户没有绑定手机号");
-        }
-
-//        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
-//        slSlbTransaction1.setTargetId(slUser.getId());
-//        slSlbTransaction1.setOrderId(slOrder.getId());
-//        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
-//        slSlbTransaction1.setType(3);
-//        slSlbTransaction1.setSlb(bean);
-//        slSlbTransaction1.setTransactionType(2);
-//        slbTransactionMapper.insertSelective(slSlbTransaction1);
-//
-//        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
-//        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
-//            setUserId(slUser.getId());
-//            setSlbType(slSlbType.getSlbType());
-//        }});
-//        if(null != slUserSlb1){
-//            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
-//                setId(slUserSlb1.getId());
-//                setSlb(slUserSlb1.getSlb().add(bean));}});
+//        if (null != slUser.getPhone()){
+//            //查看用户是否注册 true:已经注册 false:没有注册
+//            if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
+//                //获取钱包地址
+//                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                if ("".equals(walletList)){
+//                    saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
+//                }else {
+//                    Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
+//                    SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+//                    String lockBeginDate = sf.format(begin);
+//                    Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+//                    String lockEndDate =  sf.format(endDate);
+//                    //SLB锁仓资产转入
+//                   String code =  thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate,slSlbType.getReleaseBatch().toString(),
+//                            slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
+//                    if (Integer.valueOf(code)<0){
+//                        saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
+//                    }
+//                }
+//            }else {
+//                //用户钱包注册
+//                String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
+//                //注册成功
+//                if ("0".equals(res)){
+//                    //获取钱包地址
+//                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                    if ("".equals(walletList)){
+//                        saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
+//                    }else {
+//                        Date begin  = LocalDateTimeUtils.stringToDate(slOrder.getPayTime());
+//                        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+//                        String lockBeginDate = sf.format(begin);
+//                        Date endDate = LocalDateTimeUtils.addMonth(begin,slSlbType.getReleaseBatch());
+//                        String lockEndDate =  sf.format(endDate);
+//                        //SLB锁仓资产转入
+//                        String code = thirdPartyWalletService.transferToSlbSc(walletList,lockBeginDate,lockEndDate, slSlbType.getReleaseBatch().toString(),
+//                                slSlbType.getReleasePercent().toString(),bean.toString(), slOrder.getId()+"2",slSlbType.getSlbState());
+//                        if (Integer.valueOf(code)<0){
+//                            saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"SLB锁仓资产转入失败");
+//                        }
+//                    }
+//                }else {
+//                    saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"用户钱包注册失败");
+//                }
+//            }
 //        }else {
-//            SlUserSlb slUserSlb = new SlUserSlb();
-//            slUserSlb.setUserId(slUser.getId());
-//            slUserSlb.setSlb(bean);
-//            slUserSlb.setSlbType(slSlbType.getSlbType());
-//            userSlbService.insert(slUserSlb);
+//            saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"用户没有绑定手机号");
 //        }
-//        cmTotalPoolService.updatePool(null,null,bean,2,slOrder.getId(),slOrder.getUserId(),8);
-//      //  savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
+
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slUser.getId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(3);
+        slSlbTransaction1.setSlb(bean);
+        slSlbTransaction1.setTransactionType(2);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slUser.getId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(bean));}});
+        }else {
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slUser.getId());
+            slUserSlb.setSlb(bean);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
+        }
+        cmTotalPoolService.updatePool(null,null,bean,2,slOrder.getId(),slOrder.getUserId(),8);
+      //  savePoolSlb(bean,slOrder.getUserId(),slOrder.getId(),8);
     }
     /**
      *
@@ -2785,6 +2785,36 @@ public class CmOrderService {
             //获取已经购买搜了贝商品集合2 7-12凌晨之后
             List<SlOrderDetail> detailList2 = cmOrderMapper.getSlbOrderDetail("2");
             dealWithOldOrder(detailList2,"2");
+            //获取网页注册的用户得到的搜了贝
+            List<SlSlbTransaction> slSlbTransactions = cmSlbTransactionMapper.selectSlb();
+            dealWebOldSlb(slSlbTransactions);
+        }catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+    }
+    @Transactional(rollbackFor = Exception.class)
+    public  void  transferSlbToWalletBefore () {
+        try {
+            //获取已经购买搜了贝商品集合1 7-12凌晨之前
+            List<SlOrderDetail> detailList1 = cmOrderMapper.getSlbOrderDetail("1");
+            dealWithOldOrder(detailList1,"1");
+        }catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+    }
+    @Transactional(rollbackFor = Exception.class)
+    public  void  transferSlbToWalletAfter () {
+        try {
+            //获取已经购买搜了贝商品集合2 7-12凌晨之后
+            List<SlOrderDetail> detailList2 = cmOrderMapper.getSlbOrderDetail("2");
+            dealWithOldOrder(detailList2,"2");
+        }catch (Exception e) {
+            log.error("给订单返回搜了贝失败",e);
+        }
+    }
+    @Transactional(rollbackFor = Exception.class)
+    public  void  transferSlbToWalletUser () {
+        try {
             //获取网页注册的用户得到的搜了贝
             List<SlSlbTransaction> slSlbTransactions = cmSlbTransactionMapper.selectSlb();
             dealWebOldSlb(slSlbTransactions);

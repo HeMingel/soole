@@ -18,7 +18,6 @@
     <!--查询网页注册的用户搜了贝-->
     <select id="selectSlb" resultMap="SlbTransaction">
       SELECT * FROM sl_slb_transaction WHERE slb =1
-      AND created_at BETWEEN '2018-06-19 16:44:21' AND '2018-08-02 16:05:54'
     </select>
 
 </mapper>
