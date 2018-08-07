@@ -2545,7 +2545,7 @@ public class CmOrderService {
             //查看用户是否注册 true:已经注册 false:没有注册
             if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
                 //获取钱包地址
-                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
+                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                 if ("".equals(walletList)){
                     saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
                 }else {
@@ -2567,7 +2567,7 @@ public class CmOrderService {
                 //注册成功
                 if ("0".equals(res)){
                     //获取钱包地址
-                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
+                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                     if ("".equals(walletList)){
                         saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"获取不到用户钱包地址");
                     }else {
@@ -2640,7 +2640,7 @@ public class CmOrderService {
             //查看用户是否注册 true:已经注册 false:没有注册
             if (thirdPartyWalletService.checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
                 //获取钱包地址
-                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
+                String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                 if ("".equals(walletList)){
                     saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
                 }else {
@@ -2662,7 +2662,7 @@ public class CmOrderService {
                 //注册成功
                 if ("0".equals(res)){
                     //获取钱包地址
-                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone());
+                    String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                     if ("".equals(walletList)){
                         saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"获取不到用户钱包地址");
                     }else {
@@ -2833,7 +2833,7 @@ public class CmOrderService {
                     }
                 }
                 //获取用户钱包接口
-                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone());
+                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone(),slPhoneZone.getMobilearea().toString());
                 if (!SLStringUtils.isEmpty(userWallet)){
                     //SLB总额
                     BigDecimal amount = new BigDecimal(0);
@@ -2932,7 +2932,7 @@ public class CmOrderService {
                     }
                 }
                 //获取用户钱包接口
-                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone());
+                String userWallet = thirdPartyWalletService.getWalletList(user.getPhone(),slPhoneZone.getMobilearea().toString());
                 if (!SLStringUtils.isEmpty(userWallet)){
                     //开始日期
                     Date payDate = slSlbTransaction.getCreatedAt();

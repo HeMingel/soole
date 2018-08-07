@@ -222,7 +222,7 @@ public class ThirdPartyWalletService {
      * @param mobile
      * @return walletAddress
      */
-    public String getWalletList(String mobile){
+    public String getWalletList(String mobile, String mobileArea){
 
         //截取指定的电话号码
         mobile = subPhone(mobile);
@@ -242,6 +242,7 @@ public class ThirdPartyWalletService {
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
+        packageParams.put("mobileArea", mobileArea);
         packageParams.put("platTransPwd", platTransPwd);
         packageParams.put("noteStr", encodedNoteStr);
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
@@ -250,6 +251,7 @@ public class ThirdPartyWalletService {
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
+        params.put("mobileArea", mobileArea);
         params.put("platTransPwd", platTransPwd);
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);
@@ -283,12 +285,12 @@ public class ThirdPartyWalletService {
                     setZone(user.getZone());
                 }});
                 if (checkUserRegister(mobile, slPhoneZone.getMobilearea().toString())){
-                    message = retunObject(mobile);
+                    message = retunObject(mobile, slPhoneZone.getMobilearea().toString());
                 }else {
                     // 注册 String mobile, String pwd, String moblieArea
 
                    String res = UserRegister(mobile, BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                    message = retunObject(mobile);
+                    message = retunObject(mobile, slPhoneZone.getMobilearea().toString());
                 }
             }
 
@@ -298,7 +300,7 @@ public class ThirdPartyWalletService {
 
         return  message;
     }
-    public BusinessMessage retunObject(String mobile){
+    public BusinessMessage retunObject(String mobile, String mobileArea){
 
         //截取指定的电话号码
         mobile = subPhone(mobile);
@@ -318,6 +320,7 @@ public class ThirdPartyWalletService {
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
+        packageParams.put("mobileArea", mobileArea);
         packageParams.put("noteStr", encodedNoteStr);
         packageParams.put("platTransPwd", endcodePaltTransPwd);
 
@@ -327,6 +330,7 @@ public class ThirdPartyWalletService {
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
+        params.put("mobileArea", mobileArea);
         params.put("platTransPwd", endcodePaltTransPwd);
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);

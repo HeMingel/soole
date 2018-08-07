@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +44,7 @@ public class ThirdPartyPayController {
             @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
             @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
     })
-    @GetMapping("/wx-refund")
+    @PostMapping("/wx-refund")
     public BusinessMessage shopAndGoods(String outTradeNo, String totalFeeStr, String refundFee, String refundDesc) {
         BusinessMessage message = new BusinessMessage();
         message.setSuccess(false);
@@ -75,7 +72,7 @@ public class ThirdPartyPayController {
             @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
             @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
     })
-    @GetMapping("/ali-refund")
+    @PostMapping("/ali-refund")
     public BusinessMessage shopAndGoods(String outTradeNo, String refundFee, String refundDesc) {
         BusinessMessage message = new BusinessMessage();
         message.setSuccess(false);
