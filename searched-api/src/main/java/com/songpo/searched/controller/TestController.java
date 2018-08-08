@@ -1,7 +1,9 @@
 package com.songpo.searched.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.service.*;
 import com.songpo.searched.util.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.spring.web.json.Json;
 
 
 import java.math.BigDecimal;
@@ -323,4 +326,21 @@ public class TestController {
         return  message;
     }
 
+    @Autowired
+    private CustomerClientHomeService customerClientHomeService;
+    @GetMapping("test12")
+    public BusinessMessage test12(int pageNum){
+        BusinessMessage message = new BusinessMessage();
+        List<SlProduct> list= customerClientHomeService.getRecommendProduct(pageNum,10);
+        message.setData(list);
+        return message;
+    }
+
+    @GetMapping("test13")
+    public BusinessMessage test13(){
+        BusinessMessage message = new BusinessMessage();
+        JSONObject object = customerClientHomeService.getHighQualityShop();
+        message.setData(object);
+        return message;
+    }
 }

@@ -2,6 +2,8 @@ package com.songpo.searched.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.songpo.searched.cache.ShoppingCartCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.domain.CMGoods;
@@ -17,6 +19,7 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +85,9 @@ public class CustomerClientHomeService {
     @Autowired
     private CmSharingLinksService cmSharingLinksService;
 
+    @Autowired
+    private SlShopMapper slShopMapper;
+
     /**
      * 获取首页所有数据
      *
@@ -116,10 +122,12 @@ public class CustomerClientHomeService {
         data.put("actions", actionList);
 
         // 获取推荐商品列表
-        List<SlProduct> productList = this.productMapper.select(new SlProduct() {{
-            setRecommend(ProductEnum.PRODUCT_RECOMMEND_ENABLE.getValue());
-        }});
+        List<SlProduct> productList = this.getRecommendProduct(1,10);
         data.put("products", productList);
+
+        //查询优质店铺
+        JSONObject hqShop =  this.getHighQualityShop();
+        data.put("HighQualityShop",hqShop);
 
         // 获取首页视频信息
         Example videoExample = new Example(SlActionNavigation.class);
@@ -272,5 +280,52 @@ public class CustomerClientHomeService {
         }
 
         return message;
+    }
+
+    /**
+     * 分页获取推荐商品
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public  List<SlProduct>  getRecommendProduct(int pageNum,int pageSize ){
+        // 设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        Example example1 = new Example(SlProduct.class);
+        example1.setOrderByClause(" `sales_virtual` DESC ");
+        example1.createCriteria()
+                .andEqualTo("recommend", "1")
+                .andEqualTo("del", "0");
+        List<SlProduct> productList = this.productMapper.selectByExample(example1);
+        return new PageInfo<>(productList).getList();
+    }
+
+    /**
+     * 后台选推，展示6个店铺以及店铺下三个销量最高的三个商品，左滑更换，6个店铺轮播。
+     */
+    public JSONObject getHighQualityShop() {
+        JSONObject jsonObject = new JSONObject();
+        // 设置分页参数
+        PageHelper.startPage(1,6);
+        Example example = new Example(SlShop.class);
+        example.setOrderByClause("`total_sales` DESC ");
+        example.createCriteria().andEqualTo("groom", "1");
+        //查询6个推荐店铺
+        List<SlShop> shops = new PageInfo<>(this.slShopMapper.selectByExample(example)).getList();
+        jsonObject.put("hq-shops", shops);
+        PageHelper.clearPage();
+        HashMap map = new HashMap();
+        //循环获得每个店铺下的热销产品
+        for (SlShop slShop : shops) {
+            PageHelper.startPage(1, 3);
+            Example example1 = new Example(SlProduct.class);
+            example1.createCriteria().andEqualTo("shopId", slShop.getId());
+            example1.setOrderByClause("sales_virtual DESC");
+            //查询店铺下三个热销产品
+            List<SlProduct> products = new PageInfo<>(this.productMapper.selectByExample(example1)).getList();
+            map.put(slShop.getId(), products);
+        }
+        jsonObject.put("hq-products", map);
+        return jsonObject;
     }
 }
