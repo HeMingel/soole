@@ -133,6 +133,8 @@ public class CmOrderService {
     private  CmOrderHandleMapper cmOrderHandleMapper;
     @Autowired
     private  CmSlbTransactionMapper cmSlbTransactionMapper;
+    @Autowired
+    private SlOrderMapper slOrderMapper;
     /**
      * 多商品下单
      *
@@ -1684,15 +1686,32 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         Map<String, String> map = new HashMap<>();
         if (null != user) {
-            message = checkTheOrder(orderId, user);
-            if (message.getSuccess() == true) {
+            SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+                setOutOrderNumber(orderId);
+            }});
+            if (null == slOrder){
+                message = checkTheOrder(orderId, user);
+                if (message.getSuccess() == true) {
                 /*Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                     setIsVirtualSpellGroup((byte) 0);
                 }}, example);*/
-                String money = message.getData().get("money").toString();
-                String serialNumber = message.getData().get("serialNumber").toString();
+                    String money = message.getData().get("money").toString();
+                    String serialNumber = message.getData().get("serialNumber").toString();
+                    String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                    if (StringUtils.isNotBlank(str)) {
+                        message.setData(null);
+                        map.put("alipay", str);
+                        message.setData(map);
+                        message.setSuccess(true);
+                    }
+                } else {
+                    return message;
+                }
+            }else {
+                String money = slOrder.getTotalAmount().toString();
+                String serialNumber = slOrder.getSerialNumber();
                 String str = this.aliPayService.appPay("15d", money, "", "", null, "搜了购物支付 - " + serialNumber, orderId, "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
                 if (StringUtils.isNotBlank(str)) {
                     message.setData(null);
@@ -1700,9 +1719,8 @@ public class CmOrderService {
                     message.setData(map);
                     message.setSuccess(true);
                 }
-            } else {
-                return message;
             }
+
         } else {
             message.setMsg("请登录");
         }
@@ -1740,15 +1758,34 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         Map<String, String> map = new HashMap<>();
         if (null != user) {
-            message = checkTheOrder(orderId, user);
-            if (message.getSuccess() == true) {
+            SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+                setOutOrderNumber(orderId);
+            }});
+            if (null == slOrder){
+                message = checkTheOrder(orderId, user);
+                if (message.getSuccess() == true) {
                 /*Example example = new Example(SlOrderDetail.class);
                 example.createCriteria().andEqualTo("orderId", orderId);
                 orderDetailService.updateByExampleSelective(new SlOrderDetail() {{
                     setIsVirtualSpellGroup((byte) 0);
                 }}, example);*/
-                String money = message.getData().get("money").toString();
-                String serialNumber = message.getData().get("serialNumber").toString();
+                    String money = message.getData().get("money").toString();
+                    String serialNumber = message.getData().get("serialNumber").toString();
+                    double mo = Arith.mul(Double.parseDouble(money), 100);
+                    String total_fee = String.valueOf(Math.round(mo));
+                    map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", total_fee, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                    log.debug("微信预下单返回数据：{}", map);
+                    if (map.size() > 0) {
+                        message.setData(null);
+                        message.setData(map);
+                        message.setSuccess(true);
+                    }
+                } else {
+                    return message;
+                }
+            }else {
+                String money = slOrder.getTotalAmount().toString();
+                String serialNumber = slOrder.getSerialNumber();
                 double mo = Arith.mul(Double.parseDouble(money), 100);
                 String total_fee = String.valueOf(Math.round(mo));
                 map = wxPayService.unifiedOrderByApp(null, "搜了购物支付 - " + serialNumber, null, null, orderId, "", total_fee, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
@@ -1758,9 +1795,8 @@ public class CmOrderService {
                     message.setData(map);
                     message.setSuccess(true);
                 }
-            } else {
-                return message;
             }
+
         } else {
             message.setMsg("请登录");
         }

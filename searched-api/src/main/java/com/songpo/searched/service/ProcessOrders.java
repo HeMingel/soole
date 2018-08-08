@@ -418,7 +418,41 @@ public class ProcessOrders {
                 log.error("推送用户ID{}消息失败",slUser.getId(),e);
                 e.printStackTrace();
             }
-
-
+    }
+    /**
+     * 支付后拍卖订单处理
+     *
+     * @param orderId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saleOrders(String orderId, int payType) {
+        String date = null;
+        int pulse = 0;
+        SlOrder order = this.orderService.selectOne(new SlOrder() {{
+            setOutOrderNumber(orderId);
+        }});
+        if (null != order) {
+            if (order.getPaymentState() == 2) {
+                SlUser user = userService.selectByPrimaryKey(order.getUserId());
+                if (null != user) {
+                    Example example = new Example(SlOrder.class);
+                    example.createCriteria()
+                            .andEqualTo("id", order.getId())
+                            .andEqualTo("paymentState", 2)
+                            .andEqualTo("userId", user.getId());
+                    orderService.updateByExampleSelective(new SlOrder() {{
+                        // 改成已支付
+                        setPaymentState(1);
+                        // 支付类型
+                        setPaymentChannel(payType);
+                        // 支付时间
+                        setPayTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                        // 支付时间戳
+                        setPayTimeStamp(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
+                    }}, example);
+                }
+            }
+        }
     }
 }

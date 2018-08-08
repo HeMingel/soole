@@ -4,6 +4,8 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPayUtil;
 import com.songpo.searched.alipay.service.AliPayService;
+import com.songpo.searched.entity.SlOrder;
+import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,8 @@ public class PaymentService {
 
     @Autowired
     private ProcessOrders processOrders;
+    @Autowired
+    private SlOrderMapper slOrderMapper;
 
     @Autowired
     public PaymentService(WxPayService payService, AliPayService aliPayService) {
@@ -87,7 +91,14 @@ public class PaymentService {
                         String orderId = resParams.get("out_trade_no");
                         log.debug("orderId is:{}", orderId);
                         if (null != orderId) {
-                            processOrders.processOrders(orderId, 1);
+                            SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+                                setOutOrderNumber(orderId);
+                            }});
+                            if (null == slOrder ){
+                                processOrders.processOrders(orderId, 1);
+                            }else {
+                                processOrders.saleOrders(orderId, 1);
+                            }
                         }
                         // 处理订单支付通知成功逻辑
                         // 通知微信服务器处理支付通知成功
@@ -145,7 +156,14 @@ public class PaymentService {
             if (flag) {
                 String orderId = maps.get("out_trade_no");
                 if (null != orderId) {
-                    processOrders.processOrders(orderId,2);
+                    SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+                        setOutOrderNumber(orderId);
+                    }});
+                    if (null == slOrder){
+                        processOrders.processOrders(orderId,2);
+                    }else {
+                        processOrders.saleOrders(orderId,2);
+                    }
                 }
                 // 通知支付宝服务端支付回调通知已处理成功
                 result = "success";
