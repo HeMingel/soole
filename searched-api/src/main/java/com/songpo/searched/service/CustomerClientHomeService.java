@@ -309,7 +309,7 @@ public class CustomerClientHomeService {
         PageHelper.startPage(1,6);
         Example example = new Example(SlShop.class);
         example.setOrderByClause("`total_sales` DESC ");
-        example.createCriteria().andEqualTo("groom", "1");
+        example.createCriteria().andEqualTo("groom", "2");
         //查询6个推荐店铺
         List<SlShop> shops = new PageInfo<>(this.slShopMapper.selectByExample(example)).getList();
         jsonObject.put("hq-shops", shops);
