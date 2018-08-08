@@ -3,6 +3,10 @@ package com.songpo.searched.controller;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlOrder;
+import com.songpo.searched.entity.SlOrderDetail;
+import com.songpo.searched.service.OrderDetailService;
+import com.songpo.searched.service.OrderService;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
@@ -15,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Api(description = "第三方支付")
@@ -28,6 +33,10 @@ public class ThirdPartyPayController {
     private WxPayService wxPayService;
     @Autowired
     private AliPayService aliPayService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     /**
      * 微信退款
@@ -56,6 +65,8 @@ public class ThirdPartyPayController {
         if (map.get("return_msg").equals("OK")) {
             message.setSuccess(true);
             message.setMsg("退款成功");
+            changeRefundOrderState(outTradeNo);
+
         }
         return message;
     }
@@ -82,7 +93,35 @@ public class ThirdPartyPayController {
         if ("10000".equals(strResponse)) {
             message.setSuccess(true);
             message.setMsg("退款成功");
+            changeRefundOrderState(outTradeNo);
         }
         return message;
+    }
+
+    /**
+     * 退款后修改订单状态
+     * @param orderId
+     */
+    public void changeRefundOrderState(String orderId) {
+        //获取订单信息
+        SlOrder order = this.orderService.selectOne(new SlOrder() {{
+            setId(orderId);
+        }});
+        if (order != null) {
+            order.setSpellGroupStatus(0);
+            order.setPaymentState(101);
+            this.orderService.updateByPrimaryKeySelective(order);
+            List<SlOrderDetail> detailsList = orderDetailService.select(new SlOrderDetail() {{
+                setOrderId(order.getId());
+            }});
+            // 更改orderDetial表shipping_state状态
+            for (SlOrderDetail slOrderDetail : detailsList) {
+                orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
+                    setId(slOrderDetail.getId());
+                    setShippingState(0);
+                }});
+            }
+        }
+
     }
 }
