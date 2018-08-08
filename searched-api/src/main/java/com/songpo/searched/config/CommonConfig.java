@@ -6,6 +6,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.service.*;
+import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.util.SLStringUtils;
 import com.songpo.searched.wxpay.service.WxPayService;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
@@ -61,7 +63,8 @@ public class CommonConfig {
     private UserService userService;
     @Autowired
     private CmSeckillRemindMapper cmSeckillRemindMapper;
-
+    @Autowired
+    public Environment env;
 
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -303,69 +306,6 @@ public class CommonConfig {
 
     }
 
-    /**
-     * 虚拟下单通知,每10秒一次
-     */
-//    @Scheduled(cron = "0/5 * * * * ? ")
-//    public void virtualOrderNotice() throws InterruptedException {
-//        Random rand = new Random();
-////        List<SlOrderDetail> orderDetails = orderDetailService.selectAll();
-//        List<Map<String,Object>> activityProductList= productService.simpleActivityProduct();
-//        List<SlUser> userList = userService.selectAll();
-//
-//        if(activityProductList!=null && activityProductList.size()>0){
-//            int index = rand.nextInt(activityProductList.size());
-//            Map<String, Object> activityProductMap = activityProductList.get(index);
-//            String productId = (String) activityProductMap.get("productId");
-//            String activityId = (String) activityProductMap.get("activityId");
-//            String salesModeId = (String) activityProductMap.get("salesModeId");
-//            String productName = (String) activityProductMap.get("productName");
-//            String product_image_url = (String) activityProductMap.get("product_image_url");
-//            String username="...";
-//            String avatar="jwefda";
-//            if(userList!=null && userList.size()>0){
-//                SlUser user = userList.get(rand.nextInt(userList.size()));
-//                username=user.getNickName();
-//                avatar=user.getAvatar();
-//            }
-//            JSONObject object = new JSONObject();
-//            object.put("avatar", avatar);
-//            object.put("nickName", username);
-//            object.put("productName", productName);
-//            object.put("salesModeId",salesModeId);
-//            object.put("activityId", activityId);
-//            object.put("productId", productId);
-////                    String context = user.getAvatar() + user.getNickName() + "购买" + detail.getProductName() + "成功!";
-//            //随机通知间隔
-//            long maxNoticePlus= rand.nextInt(12)*1000;
-//            Thread.sleep(maxNoticePlus);
-//            //系统通知
-//            notificationService.sendGlobalMessage(object.toJSONString(), MessageTypeEnum.SYSTEM);
-//        }else {
-//            return;
-//        }
-//        if(orderDetails!=null &&orderDetails.size()>0){
-//
-//            int size = orderDetails.size();
-//
-//            int i = rand.nextInt(size);
-//            SlOrderDetail orderDetail = orderDetails.get(i);
-//            String creator = orderDetail.getCreator();
-//            String productId = orderDetail.getProductId();
-//
-//            SlUser user = userService.selectByPrimaryKey(creator);
-//            SlProduct product = productService.selectByPrimaryKey(productId);
-//            JSONObject object = new JSONObject();
-//            object.put("avatar", user.getAvatar());
-//            object.put("nickName", user.getNickName());
-//            object.put("productName", orderDetail.getProductName());
-//            object.put("salesModeId", product.getSalesModeId());
-//
-//        }else {
-//            return ;
-//        }
-//    }
-//
 
     /**
      * 处理拼团超时订单
@@ -543,6 +483,75 @@ public class CommonConfig {
             }
         }
         log.debug("定时任务---限时秒杀推送提醒结束----->");
+
+    }
+
+    /**
+     * 处理未支付国际订单
+     * 30分钟前订单关闭
+     * 30分钟内订单，调用国际订单查询接口，查询订单支付状态，并处理系统订单
+     * 来源 http://soolepay.fisyst.com/Order/queryorder?orderid=
+     */
+    @Scheduled(cron = "0/10 * *  * * ? ")
+    void updateInterOrderPayStatus() {
+        List<SlOrder> orderList = orderService.select(new SlOrder() {{
+            setPaymentState(2);
+            setStatus(1);
+        }});
+        //时间分隔点
+        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -120);
+        //支付超时时间列表
+        List<SlOrder> payOverTimeOrderList = new ArrayList<>();
+        //移除不需要的订单
+        if (orderList != null && orderList.size() > 0) {
+            List<SlOrder> removeOrderList = new ArrayList<>();
+            for (SlOrder order : orderList) {
+                //时间判断，24小时未支付订单需要关闭
+                if (order.getCreatedAt().before(compareDate)) {
+                    removeOrderList.add(order);
+                    payOverTimeOrderList.add(order);
+                } else {
+                    //比较大小，总金额为0的过滤
+                    if (order.getTotalAmount().compareTo(new BigDecimal(0)) <= 0) {
+                        removeOrderList.add(order);
+                    }
+                }
+            }
+            if (removeOrderList.size() > 0) {
+                orderList.removeAll(removeOrderList);
+            }
+        }
+        /****** 更新国际支付订单状态 ******/
+        if (orderList != null && orderList.size() > 0) {
+            for (SlOrder order : orderList) {
+                if (order != null && StringUtils.isNotBlank(order.getId())) {
+                    log.debug("更新订单{}的支付状态", order.getId());
+                    //请求微信订单查询接口并处理订单数据
+                    try {
+//                        String result = HttpUtil.doPost(env.getProperty("international.pay"),order.getId());
+                        String result = HttpUtil.doGet(env.getProperty("international.pay")+order.getId());
+                        if ("1".equals(result) ) {
+                            processOrders.processOrders(order.getId(), 6);
+                        }
+                    } catch (Exception e) {
+                        log.error("更新订单" + order.getId() + "支付状态失败", e);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        /****** 支付超时关闭订单 ******/
+        if (payOverTimeOrderList.size() > 0) {
+            for (SlOrder order : payOverTimeOrderList) {
+                order.setPaymentState(101);
+                order.setCreatedAt(null);
+                order.setUpdatedAt(null);
+                orderService.updateByPrimaryKeySelective(order);
+                //失效订单库存退回
+                getProductCountBack(order);
+            }
+        }
 
     }
 }

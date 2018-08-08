@@ -472,10 +472,12 @@ public class CmOrderService {
                             setTotalAmount(BigDecimal.valueOf(finalMoney));
                             setDeductTotalPulse(finalPulse);
                         }});
+                        String sign = MD5Util.md5encode(slOrder.getId()+MD5Util.md5encode(slOrder.getId()+String.valueOf(money),"utf-8"),"utf-8");
                         Map<String, String> map = new HashMap<>();
                         map.put("order_num", slOrder.getId());
                         map.put("total_amount", String.valueOf(money));
                         map.put("deduct_total_pulse", String.valueOf(pulse));
+                        map.put("sign", String.valueOf(sign));
                         message.setData(map);
                     }
                 }
@@ -1236,10 +1238,12 @@ public class CmOrderService {
                 message.setMsg("订单生成成功");
                 message.setSuccess(true);
             }
+            String sign = MD5Util.md5encode(slOrder.getId()+MD5Util.md5encode(slOrder.getId()+money.toString(),"utf-8"),"utf-8");
             Map<String, String> map = new HashMap<>();
             map.put("order_num", slOrder.getId());
             map.put("total_amount", money.toString());
             map.put("deduct_total_pulse", slOrder.getDeductTotalPulse().toString());
+            map.put("sign", sign);
             message.setData(map);
         } else {
             message.setMsg("用户地址不存在");
