@@ -8,6 +8,7 @@ import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
 import com.songpo.searched.util.Arith;
+import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.util.LocalDateTimeUtils;
 import com.songpo.searched.util.StreamTool;
 import org.apache.commons.lang3.StringUtils;
@@ -71,6 +72,8 @@ public class ProcessOrders {
     private SlSlbTypeService slSlbTypeService;
     @Autowired
     private  CmOrderService cmOrderService;
+    @Autowired
+    public Environment env;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -427,8 +430,6 @@ public class ProcessOrders {
      */
     @Transactional(rollbackFor = Exception.class)
     public void saleOrders(String orderId, int payType) {
-        String date = null;
-        int pulse = 0;
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
             setOutOrderNumber(orderId);
         }});
@@ -451,6 +452,10 @@ public class ProcessOrders {
                         // 支付时间戳
                         setPayTimeStamp(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
                     }}, example);
+                    //支付后修改订单状态接口: http://39.107.241.218:8082/api/orderProcessing?orderId=***&type=***
+                    //orderId :子订单表ID  type:支付类型 1微信 2支付宝
+                    String url = env.getProperty("sale.pay")+"?orderId="+orderId+"&type="+payType;
+                    HttpUtil.doGet(url);
                 }
             }
         }

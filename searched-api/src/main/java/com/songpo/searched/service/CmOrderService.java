@@ -2390,7 +2390,7 @@ public class CmOrderService {
                         }
                     }
 
-                    if (null == slProduct.getShip().toString()){
+                    if (null == slProduct.getShip().toString()||"0".equals(slProduct.getShip().toString())){
                         postFee=Arith.add(slProduct.getPostage().doubleValue(),postFee);
                     }
                 }else {

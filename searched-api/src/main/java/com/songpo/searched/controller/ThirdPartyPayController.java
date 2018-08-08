@@ -7,6 +7,7 @@ import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.service.OrderDetailService;
 import com.songpo.searched.service.OrderService;
+import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.util.OrderNumGeneration;
 import com.songpo.searched.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -37,6 +39,8 @@ public class ThirdPartyPayController {
     private OrderService orderService;
     @Autowired
     private OrderDetailService orderDetailService;
+    @Autowired
+    public Environment env;
 
     /**
      * 微信退款
@@ -105,22 +109,15 @@ public class ThirdPartyPayController {
     public void changeRefundOrderState(String orderId) {
         //获取订单信息
         SlOrder order = this.orderService.selectOne(new SlOrder() {{
-            setId(orderId);
+            setOutOrderNumber(orderId);
         }});
         if (order != null) {
             order.setSpellGroupStatus(0);
             order.setPaymentState(101);
             this.orderService.updateByPrimaryKeySelective(order);
-            List<SlOrderDetail> detailsList = orderDetailService.select(new SlOrderDetail() {{
-                setOrderId(order.getId());
-            }});
-            // 更改orderDetial表shipping_state状态
-            for (SlOrderDetail slOrderDetail : detailsList) {
-                orderDetailService.updateByPrimaryKeySelective(new SlOrderDetail() {{
-                    setId(slOrderDetail.getId());
-                    setShippingState(0);
-                }});
-            }
+            //退款后修改订单状态接口:   http://39.107.241.218:8082/api/order/order-state?orderId=***
+            String url = env.getProperty("sale.refund")+"?orderId="+orderId;
+            HttpUtil.doGet(url);
         }
 
     }
