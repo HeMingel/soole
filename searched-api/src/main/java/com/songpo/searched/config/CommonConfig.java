@@ -499,7 +499,7 @@ public class CommonConfig {
             setStatus(1);
         }});
         //时间分隔点
-        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -120);
+        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -30);
         //支付超时时间列表
         List<SlOrder> payOverTimeOrderList = new ArrayList<>();
         //移除不需要的订单
@@ -529,7 +529,8 @@ public class CommonConfig {
                     //请求微信订单查询接口并处理订单数据
                     try {
 //                        String result = HttpUtil.doPost(env.getProperty("international.pay"),order.getId());
-                        String result = HttpUtil.doGet(env.getProperty("international.pay")+order.getId());
+                        String url = env.getProperty("international.pay");
+                        String result = HttpUtil.doGet(url+order.getId());
                         if ("1".equals(result) ) {
                             processOrders.processOrders(order.getId(), 6);
                         }
