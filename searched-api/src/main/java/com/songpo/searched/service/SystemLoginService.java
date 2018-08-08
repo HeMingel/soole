@@ -184,6 +184,11 @@ public class SystemLoginService {
         SlUser user = userService.selectOne(new SlUser() {{
             setUnionid(unionId);
         }});
+        if (user == null) {
+            user = userService.selectOne(new SlUser() {{
+                setFromUser(fromUser);
+            }});
+        }
         if (null == user) {
             message.setMsg("用户不存在");
         } else {
@@ -194,6 +199,9 @@ public class SystemLoginService {
             user.setLastLogin(new Date());
             Integer loginCount = user.getLoginCount() == null ? 0 : user.getLoginCount();
             user.setLoginCount(loginCount + 1);
+            if (SLStringUtils.isEmpty(user.getUnionid())){
+                user.setUnionid(unionId);
+            }
             userService.updateByPrimaryKeySelective(user);
         }
         return message;

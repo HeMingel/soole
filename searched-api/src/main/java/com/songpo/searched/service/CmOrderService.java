@@ -2880,7 +2880,7 @@ public class CmOrderService {
                     Date payDate = LocalDateTimeUtils.stringToDate(payTime);
                     SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
                     String lockBeginDate =  sf.format(payDate);
-                    Date endDate  = LocalDateTimeUtils.addMonth(payDate,24);
+                    Date endDate  = LocalDateTimeUtils.addMonth(payDate,slSlbType.getReleaseBatch());
                     String lockEndDate =sf.format(endDate);
                     //订单sn
                     String  orderSn = detail.getOrderId()+"1";
