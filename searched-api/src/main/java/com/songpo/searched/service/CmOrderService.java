@@ -2375,7 +2375,7 @@ public class CmOrderService {
                 SlProduct slProduct = this.productService.selectOne(new SlProduct(){{setId(productId);}});
                 if(null !=slProduct){
                     //判断是否包邮 1.包邮 2.部分地区不包邮
-                    if (2==slProduct.getShip()){
+                    if ("2".equals(slProduct.getShip()==null?"":slProduct.getShip().toString())){
 
                         SlUserAddress slUserAddress = this.slUserAddressMapper.selectOne(new SlUserAddress(){{setId(id);}});
                         //获取不包邮的地区
@@ -2390,7 +2390,7 @@ public class CmOrderService {
                         }
                     }
 
-                    if (null == slProduct.getShip().toString()||"0".equals(slProduct.getShip().toString())){
+                    if (null == slProduct.getShip()||"0".equals(slProduct.getShip()==null?"":slProduct.getShip().toString())){
                         postFee=Arith.add(slProduct.getPostage().doubleValue(),postFee);
                     }
                 }else {
