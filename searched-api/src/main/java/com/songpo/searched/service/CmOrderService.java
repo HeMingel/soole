@@ -149,7 +149,7 @@ public class CmOrderService {
     public BusinessMessage addOrder(HttpServletRequest request, String[] detail, String shippingAddressId, String postFee, int inviterId) {
         log.debug("request = [" + request + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
-        double money = 0.00+Double.parseDouble(postFee==null?"0":postFee);
+        double money = 0.00+Double.parseDouble(postFee);
 
         int pulse = 0;
         SlUser user = loginUserService.getCurrentLoginUser();
@@ -575,7 +575,7 @@ public class CmOrderService {
                 //7.如果商品存在的话
                 if (null != slProduct) {
                     //把邮费加上
-                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee==null?"0":postFee)));
+                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee)));
                     // 把虚拟销量加上
                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                         setId(slProduct.getId());
@@ -3156,7 +3156,7 @@ public class CmOrderService {
     public BusinessMessage limitTimeOrder(HttpServletRequest request, String[] detail, String shippingAddressId, String postFee) {
         log.debug("request = [" + request + "], detail = [" + detail + "], shippingAddressId = [" + shippingAddressId + "]");
         BusinessMessage message = new BusinessMessage();
-        double money = 0.00+Double.parseDouble(postFee==null?"0":postFee);
+        double money = 0.00+Double.parseDouble(postFee);
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
 
@@ -3430,7 +3430,7 @@ public class CmOrderService {
                 //如果商品存在的话
                 if (null != slProduct) {
                     //把邮费加上
-                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee==null?"0":postFee)));
+                    slProduct.setPostage(BigDecimal.valueOf(Double.parseDouble(postFee)));
                     // 把虚拟销量加上
                     productService.updateByPrimaryKeySelective(new SlProduct() {{
                         setId(slProduct.getId());
