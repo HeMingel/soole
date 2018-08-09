@@ -284,6 +284,11 @@ public class CommonConfig {
                         if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS") && result.get("trade_state").equals("SUCCESS")) {
                             processOrders.processOrders(order.getId(), 1);
                         }
+                        //处理拍卖订单
+//                        Map<String, String> saleResult = wxPayService.orderQuery("", order.getOutOrderNumber());
+//                        if (saleResult != null && saleResult.get("return_code").equals("SUCCESS") && saleResult.get("result_code").equals("SUCCESS") && saleResult.get("trade_state").equals("SUCCESS")) {
+//                            processOrders.saleOrders(order.getOutOrderNumber(), 1);
+//                        }
                     } catch (Exception e) {
                         log.error("更新订单" + order.getId() + "支付状态失败", e);
                         continue;
@@ -494,6 +499,7 @@ public class CommonConfig {
      */
     @Scheduled(cron = "0/10 * *  * * ? ")
     void updateInterOrderPayStatus() {
+        log.debug("国际订单处理开始.....");
         List<SlOrder> orderList = orderService.select(new SlOrder() {{
             setPaymentState(2);
             setStatus(1);
@@ -530,7 +536,7 @@ public class CommonConfig {
                     try {
 //                        String result = HttpUtil.doPost(env.getProperty("international.pay"),order.getId());
                         String url = env.getProperty("international.pay");
-                        String result = HttpUtil.doGet(url+order.getId());
+                        String result = HttpUtil.doGetNotTimeOut(url+order.getId());
                         if ("1".equals(result) ) {
                             processOrders.processOrders(order.getId(), 6);
                         }
@@ -553,6 +559,6 @@ public class CommonConfig {
                 getProductCountBack(order);
             }
         }
-
+        log.debug("国际订单处理结束.....");
     }
 }

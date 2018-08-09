@@ -161,4 +161,32 @@ public class HttpUtil {
         }
         return null;
 	}
+
+    /**
+     * get请求 不显示超时
+     * @return
+     */
+    public static String doGetNotTimeOut(String url) {
+        try {
+            org.apache.http.client.HttpClient client = new DefaultHttpClient();
+            //发送get请求
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = client.execute(request);
+
+            /**请求发送成功，并得到响应**/
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                /**读取服务器返回过来的json字符串数据**/
+                String strResult = EntityUtils.toString(response.getEntity());
+
+                return strResult;
+            }else {
+                return "-1";
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
