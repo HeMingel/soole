@@ -1476,6 +1476,35 @@ public class CmOrderService {
     }
 
     /**
+     *  预售订单 v.2.0
+     * @param status
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public BusinessMessage preSaleOrderListV_2_0(Integer status, Integer pageNum, Integer pageSize) {
+        BusinessMessage message = new BusinessMessage();
+        SlUser user = loginUserService.getCurrentLoginUser();
+        PageHelper.startPage(pageNum, pageSize);
+        List<Map<String, Object>> list = this.cmOrderMapper.selectReturnsDetailNew(status, user.getId());
+        PageInfo info = new PageInfo<>(list);
+        List<Map<String, Object>> infoList = info.getList();
+        for (Map<String, Object> map :infoList ){
+            Object returnObj = map.get("return_time");
+            if (returnObj != null) {
+                DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime time = LocalDateTime.now();
+                LocalDateTime ldt = LocalDateTime.parse(returnObj.toString(), df);
+                Duration duration = Duration.between(time, ldt);
+                // 返现时间差
+                map.put("shipments_days", duration.toDays());
+            }
+        }
+        message.setData(infoList);
+        message.setSuccess(true);
+        return message;
+    }
+    /**
      * 提醒发货
      *
      * @param orderId 订单id

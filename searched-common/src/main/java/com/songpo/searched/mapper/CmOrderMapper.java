@@ -33,6 +33,8 @@ public interface CmOrderMapper {
 
     List<SlReturnsDetail> selectReturnsDetail(@Param("status")Integer status, @Param("userId")String userId);
 
+    List<Map<String, Object>> selectReturnsDetailNew(@Param("status")Integer status, @Param("userId")String userId);
+
     int reduceNumber(@Param("id")String id, @Param("count")int count);
 
     void changeSlbScheduled();

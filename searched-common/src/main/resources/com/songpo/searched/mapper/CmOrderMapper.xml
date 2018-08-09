@@ -334,5 +334,58 @@
             AND `created_at` &gt;= '2018-07-12 00:05:00'
          </if>
     </select>
+    <!-- 预售订单查询 新 -->
+    <select id="selectReturnsDetailNew" resultType="java.util.Map">
+        SELECT
+          od.`order_id` orderId,
+          od.`serial_number`,
+          od.`product_image_url`,
+          od.`quantity`,
+          od.`post_fee`,
+          od.`price`,
+          od.`product_name`,
+          od.`id` orderDetailId,
+          od.`deduct_total_silver` pulse,
+          o.`total_amount`,
+          o.`payment_state`,
+          o.`deduct_total_pulse`,
+          od.`type`,
+          ap.`activity_id` activityId,
+          temp.return_time ,
+          IFNULL(temp.`returned_status`, 0) 'status',
+          temp.`id` returnsDetailId,
+          p.name shop_name,
+          pro.`sales_mode_id` salesModeId,
+          pro.id productId,
+          u.`username` AS 'owner'
+        FROM
+          sl_order_detail od
+          LEFT JOIN
+            (SELECT
+              *
+            FROM
+              `sl_returns_detail`
+            WHERE `confirm_receipt` = 0
+              AND `completed` = 0
+            GROUP BY `order_id`
+            ORDER BY `updated_at` DESC) temp
+            ON temp.`order_id` = od.`order_id`
+          LEFT JOIN `sl_order` o
+            ON o.`id` = od.`order_id`
+          LEFT JOIN `sl_shop` p
+            ON p.id = od.`shop_id`
+          LEFT JOIN `sl_user` u
+            ON p.`owner_id` = u.`id`
+          LEFT JOIN `sl_activity_product` ap
+            ON ap.id = od.`activity_product_id`
+          LEFT JOIN `sl_product` pro
+            ON pro.id = od.`product_id`
+        WHERE od.`type` = 3
+          AND od.`creator` = #{userId}
+          <if test="status != null and status != 0">
+              AND temp.`returned_status` = #{status}
+          </if>
+
+    </select>
 
 </mapper>

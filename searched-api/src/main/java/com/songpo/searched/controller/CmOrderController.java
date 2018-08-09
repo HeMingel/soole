@@ -264,6 +264,33 @@ public class CmOrderController {
     }
 
     /**
+     * 预售订单查询预 v.2.0
+     *
+     * @param status
+     * @return
+     */
+    @ApiOperation(value = "预售订单v-2.0")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status", value = "搜索条件", paramType = "form"),
+            @ApiImplicitParam(name = "pageNum", value = "页码", paramType = "form"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示数量", paramType = "form")
+    })
+    @GetMapping("pre-sale-order-v-2")
+    public BusinessMessage preSaleOrderListV_2_0(Integer status, Integer pageNum, Integer pageSize) {
+        BusinessMessage message = new BusinessMessage();
+        try {
+            message = this.cmOrderService.preSaleOrderListV_2_0(status,pageNum,pageSize);
+            message.setData(message.getData());
+            message.setSuccess(true);
+            message.setMsg("查询成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug("查询失败 {}", e);
+        }
+        return message;
+    }
+
+    /**
      * 预售提醒发货
      *
      * @param orderId

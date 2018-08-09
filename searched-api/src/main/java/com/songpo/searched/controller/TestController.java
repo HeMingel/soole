@@ -51,7 +51,7 @@ public class TestController {
     @GetMapping("test1")
     public void Test1() throws ParseException {
             //手机号
-            String mobile = "62710650";
+            String mobile = "17611235811";
             //公钥
             String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
             //生成加密随机串
@@ -68,7 +68,7 @@ public class TestController {
             SortedMap<String, String> packageParams = new TreeMap<String, String>();
             packageParams.put("mobile", mobile);
             packageParams.put("loginPwd", loginPwd);
-            packageParams.put("mobileArea", "853");
+            packageParams.put("mobileArea", "86");
             packageParams.put("noteStr", encodedNoteStr);
             String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
@@ -76,7 +76,7 @@ public class TestController {
             Map<String,Object> params = new HashMap<String,Object>();
             params.put("mobile", mobile);
             params.put("loginPwd", loginPwd);
-            params.put("mobileArea", "853");
+            params.put("mobileArea", "86");
             params.put("noteStr", encodedNoteStr);
             params.put("sign", sign);
             String result = HttpUtil.doPost(url, params);
@@ -86,15 +86,17 @@ public class TestController {
     @GetMapping("test2")
     public void Test2() throws ParseException {
         //手机号
-        String mobile = "17611230000";
+        String mobile = "17611235811";
+        String mobileArea = "86";
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
         String noteStr =  String.valueOf(System.currentTimeMillis());
         noteStr = StringUtils.leftPad(noteStr, 16,  "0");
         //加密登录密码
-        String loginPwd = "111111";
-        loginPwd = AESUtils.encode(loginPwd, noteStr);
+        //加密登录密码
+        String platTransPwd = "1234567890";
+        platTransPwd = AESUtils.encode(platTransPwd, noteStr);
 
         //公钥加密随机串
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
@@ -102,16 +104,19 @@ public class TestController {
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
-        packageParams.put("loginPwd", loginPwd);
+        packageParams.put("mobileArea", mobileArea);
+        packageParams.put("platTransPwd", platTransPwd);
         packageParams.put("noteStr", encodedNoteStr);
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
         String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/getWalletList.htm";
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
-        params.put("loginPwd", loginPwd);
+        params.put("mobileArea", mobileArea);
+        params.put("platTransPwd", platTransPwd);
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);
+
         String result = HttpUtil.doPost(url, params);
         System.out.println("================================================");
         System.out.println(result);
@@ -119,9 +124,12 @@ public class TestController {
     }
 
     @GetMapping("test3")
-    public void Test3(String phone) throws ParseException {
+    public void Test3() throws ParseException {
+
         //钱包地址
-        String mobile = phone;
+        String mobile = "17611235811";
+        String mobileArea = "86";
+
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
@@ -137,16 +145,20 @@ public class TestController {
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("mobile", mobile);
+        packageParams.put("mobileArea", mobileArea);
+
         packageParams.put("noteStr", encodedNoteStr);
         packageParams.put("platTransPwd", endcodePaltTransPwd);
 
         String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
-        //String url = "http://127.0.0.1:8080/digital-wallet-interface/wallet/externalWallet/getSlbScAmount.htm";
         String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/getSlbScAmount.htm";
+        //String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/getSlbScAmount.htm";
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("mobile", mobile);
+        params.put("mobileArea", mobileArea);
+
         params.put("platTransPwd", endcodePaltTransPwd);
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);
@@ -342,5 +354,49 @@ public class TestController {
         JSONObject object = customerClientHomeService.getHighQualityShop();
         message.setData(object);
         return message;
+    }
+    @GetMapping("test14")
+    public void Test14(){
+        //钱包地址
+        String walletAddress = "1CepTwo5Wf3PHwHXLUthMvbWsw7eBnet6z";
+        //公钥
+        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
+        //生成加密随机串
+        String noteStr =  String.valueOf(System.currentTimeMillis());
+        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+        //加密登录密码
+        String walletPwd = "yi123456";
+        walletPwd = AESUtils.encode(walletPwd, noteStr);
+
+        //支付金额
+        BigDecimal payAmount = new BigDecimal("0.1");
+
+        //公钥加密随机串
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+        String orderSn = "2018080800000003";
+
+        //生成签名
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("walletAddress", walletAddress);
+        packageParams.put("walletPwd", walletPwd);
+        packageParams.put("payAmount", payAmount.toString());
+        packageParams.put("noteStr", encodedNoteStr);
+        packageParams.put("orderSn", orderSn);
+
+        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+
+        String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/paySlbAmount.htm";
+        //String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/paySlbAmount.htm";
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("walletAddress", walletAddress);
+        params.put("walletPwd", walletPwd);
+        params.put("payAmount", payAmount.toString());
+        params.put("noteStr", encodedNoteStr);
+        params.put("orderSn", orderSn);
+
+        params.put("sign", sign);
+        String result = HttpUtil.doPost(url, params);
+        System.out.println(result);
     }
 }
