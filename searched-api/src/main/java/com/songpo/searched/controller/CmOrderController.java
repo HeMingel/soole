@@ -606,9 +606,10 @@ public class CmOrderController {
         return message;
     }
     /**
-     * A轮订单录入
+     * A、B、C、D、E轮订单录入
      *
      * @param id          搜了ID
+     * @param slbType     哪一轮
      * @param totalAmount 订单总金额
      * @param quantity    购买数量
      * @param inviterId   邀请人ID
@@ -616,9 +617,10 @@ public class CmOrderController {
      * @param checkName   审核人
      * @return
      */
-    @ApiOperation("A轮订单录入")
+    @ApiOperation("A、B、C、D、E轮订单录入轮订单录入")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "搜了ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "slbType", value = "哪一轮", paramType = "form", required = true),
             @ApiImplicitParam(name = "totalAmount", value = "订单总金额", paramType = "form", required = true),
             @ApiImplicitParam(name = "quantity", value = "购买数量", paramType = "form", required = true),
             @ApiImplicitParam(name = "inviterId", value = "邀请人ID", paramType = "form", required = true),
@@ -626,13 +628,13 @@ public class CmOrderController {
             @ApiImplicitParam(name = "checkName", value = "审核人 ", paramType = "form", required = true)
     })
     @PostMapping("enter-order")
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName) {
-        log.debug("A轮订单录入，id = {}, totalAmount = {}, quantity = {}, inviterId = {}, payTime = {}, checkName = {}",
-                id, totalAmount, quantity, inviterId, date, checkName);
+    public BusinessMessage enterOrder(Integer id, String slbType, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName) {
+        log.debug("A轮订单录入，id = {}, slbType = {}, totalAmount = {}, quantity = {}, inviterId = {}, payTime = {}, checkName = {}",
+                id, slbType, totalAmount, quantity, inviterId, date, checkName);
         BusinessMessage message = new BusinessMessage();
 
         try {
-          // message = cmOrderService.enterOrder(id,totalAmount,quantity,inviterId, date, checkName);
+           message = cmOrderService.enterOrder(id,slbType,totalAmount,quantity,inviterId, date, checkName);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("A轮订单录入失败", e);

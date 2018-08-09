@@ -497,68 +497,68 @@ public class CommonConfig {
      * 30分钟内订单，调用国际订单查询接口，查询订单支付状态，并处理系统订单
      * 来源 http://soolepay.fisyst.com/Order/queryorder?orderid=
      */
-    @Scheduled(cron = "0/10 * *  * * ? ")
-    void updateInterOrderPayStatus() {
-        log.debug("国际订单处理开始.....");
-        List<SlOrder> orderList = orderService.select(new SlOrder() {{
-            setPaymentState(2);
-            setStatus(1);
-        }});
-        //时间分隔点
-        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -30);
-        //支付超时时间列表
-        List<SlOrder> payOverTimeOrderList = new ArrayList<>();
-        //移除不需要的订单
-        if (orderList != null && orderList.size() > 0) {
-            List<SlOrder> removeOrderList = new ArrayList<>();
-            for (SlOrder order : orderList) {
-                //时间判断，24小时未支付订单需要关闭
-                if (order.getCreatedAt().before(compareDate)) {
-                    removeOrderList.add(order);
-                    payOverTimeOrderList.add(order);
-                } else {
-                    //比较大小，总金额为0的过滤
-                    if (order.getTotalAmount().compareTo(new BigDecimal(0)) <= 0) {
-                        removeOrderList.add(order);
-                    }
-                }
-            }
-            if (removeOrderList.size() > 0) {
-                orderList.removeAll(removeOrderList);
-            }
-        }
-        /****** 更新国际支付订单状态 ******/
-        if (orderList != null && orderList.size() > 0) {
-            for (SlOrder order : orderList) {
-                if (order != null && StringUtils.isNotBlank(order.getId())) {
-                    log.debug("更新订单{}的支付状态", order.getId());
-                    //请求微信订单查询接口并处理订单数据
-                    try {
-//                        String result = HttpUtil.doPost(env.getProperty("international.pay"),order.getId());
-                        String url = env.getProperty("international.pay");
-                        String result = HttpUtil.doGetNotTimeOut(url+order.getId());
-                        if ("1".equals(result) ) {
-                            processOrders.processOrders(order.getId(), 6);
-                        }
-                    } catch (Exception e) {
-                        log.error("更新订单" + order.getId() + "支付状态失败", e);
-                        continue;
-                    }
-                }
-            }
-        }
-
-        /****** 支付超时关闭订单 ******/
-        if (payOverTimeOrderList.size() > 0) {
-            for (SlOrder order : payOverTimeOrderList) {
-                order.setPaymentState(101);
-                order.setCreatedAt(null);
-                order.setUpdatedAt(null);
-                orderService.updateByPrimaryKeySelective(order);
-                //失效订单库存退回
-                getProductCountBack(order);
-            }
-        }
-        log.debug("国际订单处理结束.....");
-    }
+//    @Scheduled(cron = "0/10 * *  * * ? ")
+//    void updateInterOrderPayStatus() {
+//        log.debug("国际订单处理开始.....");
+//        List<SlOrder> orderList = orderService.select(new SlOrder() {{
+//            setPaymentState(2);
+//            setStatus(1);
+//        }});
+//        //时间分隔点
+//        Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -30);
+//        //支付超时时间列表
+//        List<SlOrder> payOverTimeOrderList = new ArrayList<>();
+//        //移除不需要的订单
+//        if (orderList != null && orderList.size() > 0) {
+//            List<SlOrder> removeOrderList = new ArrayList<>();
+//            for (SlOrder order : orderList) {
+//                //时间判断，24小时未支付订单需要关闭
+//                if (order.getCreatedAt().before(compareDate)) {
+//                    removeOrderList.add(order);
+//                    payOverTimeOrderList.add(order);
+//                } else {
+//                    //比较大小，总金额为0的过滤
+//                    if (order.getTotalAmount().compareTo(new BigDecimal(0)) <= 0) {
+//                        removeOrderList.add(order);
+//                    }
+//                }
+//            }
+//            if (removeOrderList.size() > 0) {
+//                orderList.removeAll(removeOrderList);
+//            }
+//        }
+//        /****** 更新国际支付订单状态 ******/
+//        if (orderList != null && orderList.size() > 0) {
+//            for (SlOrder order : orderList) {
+//                if (order != null && StringUtils.isNotBlank(order.getId())) {
+//                    log.debug("更新订单{}的支付状态", order.getId());
+//                    //请求微信订单查询接口并处理订单数据
+//                    try {
+////                        String result = HttpUtil.doPost(env.getProperty("international.pay"),order.getId());
+//                        String url = env.getProperty("international.pay");
+//                        String result = HttpUtil.doGetNotTimeOut(url+order.getId());
+//                        if ("1".equals(result) ) {
+//                            processOrders.processOrders(order.getId(), 6);
+//                        }
+//                    } catch (Exception e) {
+//                        log.error("更新订单" + order.getId() + "支付状态失败", e);
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
+//
+//        /****** 支付超时关闭订单 ******/
+//        if (payOverTimeOrderList.size() > 0) {
+//            for (SlOrder order : payOverTimeOrderList) {
+//                order.setPaymentState(101);
+//                order.setCreatedAt(null);
+//                order.setUpdatedAt(null);
+//                orderService.updateByPrimaryKeySelective(order);
+//                //失效订单库存退回
+//                getProductCountBack(order);
+//            }
+//        }
+//        log.debug("国际订单处理结束.....");
+//    }
 }
