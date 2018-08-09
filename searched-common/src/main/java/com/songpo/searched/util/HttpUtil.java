@@ -168,7 +168,8 @@ public class HttpUtil {
      */
     public static String doGetNotTimeOut(String url) {
         try {
-            org.apache.http.client.HttpClient client = new DefaultHttpClient();
+//            org.apache.http.client.HttpClient client = new DefaultHttpClient();
+            CloseableHttpClient client = HttpClients.createDefault();
             //发送get请求
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);
