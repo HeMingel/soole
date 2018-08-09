@@ -3030,6 +3030,7 @@ public class CmOrderService {
      * A轮订单录入
      *
      * @param id          搜了ID
+     * @param slbType     哪一轮
      * @param totalAmount 订单总金额
      * @param quantity    购买数量
      * @param inviterId   邀请人ID
@@ -3038,8 +3039,8 @@ public class CmOrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public BusinessMessage enterOrder(Integer id, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName ) {
-        log.debug(" id = [" + id + "], totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
+    public BusinessMessage enterOrder(Integer id, String slbType, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName ) {
+        log.debug(" id = [" + id + "], slbType = ["+slbType+"] totalAmount = ["+totalAmount+"], quantity = ["+quantity+"], inviterId = ["+inviterId+"], checkName = ["+checkName+"]");
         BusinessMessage message = new BusinessMessage();
         if (id == null ) {
             message.setMsg("购买人搜了ID不能为空");
@@ -3048,6 +3049,11 @@ public class CmOrderService {
         }
         if (inviterId == null)  {
             message.setMsg("邀请人搜了ID不能为空");
+            message.setSuccess(false);
+            return message;
+        }
+        if (slbType == null)  {
+            message.setMsg("轮数不能为空");
             message.setSuccess(false);
             return message;
         }
@@ -3068,12 +3074,28 @@ public class CmOrderService {
         }
 //        生成订单号
         String orderNum = OrderNumGeneration.getOrderIdByUUId();
+        String productId ;
+        if ("A".equals(slbType)){
+            productId = BaseConstant.PRODUCT_ID_A;
+        }else if ("B".equals(slbType)){
+            productId = BaseConstant.PRODUCT_ID_B;
+        }else if ("C".equals(slbType)){
+            productId = BaseConstant.PRODUCT_ID_C;
+        }else if ("D".equals(slbType)){
+            productId = BaseConstant.PRODUCT_ID_D;
+        }else {
+            productId = BaseConstant.PRODUCT_ID_E;
+        }
         //获取商品信息
-        SlProduct slProduct = productService.selectByPrimaryKey(BaseConstant.PRODUCT_ID_A);
+        SlProduct slProduct = productService.selectByPrimaryKey(productId);
         //获取活动信息
-        SlActivityProduct slActivityProduct = activityProductMapper.selectByPrimaryKey(BaseConstant.ACTIVITY_ID_A);
+        SlActivityProduct slActivityProduct = activityProductMapper.selectOne(new SlActivityProduct(){{
+            setProductId(productId);
+        }});
         //获取规格信息
-        SlProductRepository slProductRepository = productRepositoryService.selectByPrimaryKey(BaseConstant.REPOSITORY_ID_A);
+        SlProductRepository slProductRepository = productRepositoryService.selectOne(new SlProductRepository(){{
+            setProductId(productId);
+        }});
         if(null != slUserBuy){
             //订单表 数据保存
             String finalPayTime = payTime;

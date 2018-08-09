@@ -38,6 +38,22 @@ public class BaseConstant {
      * A轮规格主键ID C731B072-CE81-2D7A-C701-457B2160F17D
      */
     public static final String  REPOSITORY_ID_A = "C731B072-CE81-2D7A-C701-457B2160F17D";
+    /**
+     * B轮商品主键ID 4CA18693-F2DB-C512-A611-8F219E6B3D0B
+     */
+    public static final String  PRODUCT_ID_B = "4CA18693-F2DB-C512-A611-8F219E6B3D0B";
+    /**
+     * C轮商品主键ID 633B4EA8-50D5-8524-A1FE-E0251F331DBF
+     */
+    public static final String  PRODUCT_ID_C = "633B4EA8-50D5-8524-A1FE-E0251F331DBF";
+    /**
+     * D轮商品主键ID 6DCBA2D0-D482-CF00-CB19-32B1F7BCB81F
+     */
+    public static final String  PRODUCT_ID_D = "6DCBA2D0-D482-CF00-CB19-32B1F7BCB81F";
+    /**
+     * E轮商品主键ID 2286043F-1DC0-229D-6B01-6061DB345CEC
+     */
+    public static final String  PRODUCT_ID_E = "2286043F-1DC0-229D-6B01-6061DB345CEC";
 
     /**
      * 钱包平台查询用户是否注册接口

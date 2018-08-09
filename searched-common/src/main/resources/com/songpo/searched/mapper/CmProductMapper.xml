@@ -435,7 +435,7 @@
                 ap.price ${sortByPrice},
             </if>
             <if test="sortBySale != ''">
-                p.sales_volume ${sortBySale},
+                p.sales_virtual ${sortBySale},
             </if>
             <if test="sortByPrice == '' and sortBySale == ''">
                 p.sales_volume + p.comment_num
