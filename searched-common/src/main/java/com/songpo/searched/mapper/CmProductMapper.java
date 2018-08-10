@@ -265,4 +265,10 @@ public interface CmProductMapper{
      * @return 商品product 表相关信息
      */
     Map<String,Object> limitGoodsBaseInfo(@Param("goodsId")String goodsId,@Param("activityId")String activityId);
+
+    /**
+     * 列表查询热销商品
+     * @return
+     */
+    List<Map<String,Object>> listRecommendProduct();
 }

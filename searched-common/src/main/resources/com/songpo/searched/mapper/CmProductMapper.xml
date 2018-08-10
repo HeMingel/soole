@@ -572,6 +572,22 @@
 
     </select>
 
+    <!-- 热销商品列表-->
+    <select id="listRecommendProduct" resultType="Map">
+        SELECT
+      ap.`activity_id`,
+      ap.`price`,
+      ap.`reference_price`,
+      ap.`count`,
+      p.*
+    FROM
+      `sl_product` p
+      LEFT JOIN `sl_activity_product` ap
+        ON p.`id` = ap.`product_id`
+    WHERE p.`del` = 0
+      AND p.`recommend` = 1
+    ORDER BY p.`sales_virtual` DESC
+    </select>
 </mapper>
 
 

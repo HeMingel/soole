@@ -122,7 +122,7 @@ public class CustomerClientHomeService {
         data.put("actions", actionList);
 
         // 获取推荐商品列表
-        List<SlProduct> productList = this.getRecommendProduct(1,10);
+        List<Map<String,Object>> productList = this.getRecommendProduct(1,10);
         data.put("products", productList);
 
         //查询优质店铺
@@ -288,15 +288,10 @@ public class CustomerClientHomeService {
      * @param pageSize
      * @return
      */
-    public  List<SlProduct>  getRecommendProduct(int pageNum,int pageSize ){
+    public  List<Map<String,Object>>  getRecommendProduct(int pageNum,int pageSize ){
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
-        Example example1 = new Example(SlProduct.class);
-        example1.setOrderByClause(" `sales_virtual` DESC ");
-        example1.createCriteria()
-                .andEqualTo("recommend", "1")
-                .andEqualTo("del", "0");
-        List<SlProduct> productList = this.productMapper.selectByExample(example1);
+        List<Map<String,Object>> productList = cmProductMapper.listRecommendProduct();
         return new PageInfo<>(productList).getList();
     }
 

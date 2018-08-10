@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户端的API控制层
@@ -107,7 +108,7 @@ public class CustomerClientController {
     @PostMapping("list-recommend")
     public BusinessMessage getRecommendProduct(Integer pageNum,Integer pageSize ){
         BusinessMessage message = new BusinessMessage<>();
-        List<SlProduct> list = null;
+        List<Map<String,Object>> list = null;
         try{
             list = this.customerClientHomeService.getRecommendProduct(pageNum, pageSize);
             if (list.size()>0) {

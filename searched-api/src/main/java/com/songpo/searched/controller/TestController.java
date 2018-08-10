@@ -343,7 +343,7 @@ public class TestController {
     @GetMapping("test12")
     public BusinessMessage test12(int pageNum){
         BusinessMessage message = new BusinessMessage();
-        List<SlProduct> list= customerClientHomeService.getRecommendProduct(pageNum,10);
+        List<Map<String,Object>> list= customerClientHomeService.getRecommendProduct(pageNum,10);
         message.setData(list);
         return message;
     }
