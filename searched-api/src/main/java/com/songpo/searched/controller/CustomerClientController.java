@@ -110,6 +110,10 @@ public class CustomerClientController {
         List<SlProduct> list = null;
         try{
             list = this.customerClientHomeService.getRecommendProduct(pageNum, pageSize);
+            if (list.size()>0) {
+                message.setSuccess(true);
+                message.setMsg("获取数据成功");
+            }
         } catch (Exception e) {
             log.error("获取首页推荐商品，{}", e);
             message.setMsg("获取数据失败，请重试");
