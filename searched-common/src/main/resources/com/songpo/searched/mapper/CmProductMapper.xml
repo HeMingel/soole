@@ -517,12 +517,12 @@
         FROM sl_product p
         LEFT JOIN sl_activity_product ap
         ON ap.product_id = p.id
-        WHERE p.id IN ('4CA18693-F2DB-C512-A611-8F219E6B3D0B',
-                        '633B4EA8-50D5-8524-A1FE-E0251F331DBF',
-                        '6DCBA2D0-D482-CF00-CB19-32B1F7BCB81F',
-                        '2286043F-1DC0-229D-6B01-6061DB345CEC',
-                        '1F03D498-AEFB-9551-F3DA-37BF026CF4FA',
-                        'A30A4E9B-71C1-1599-5629-30B6A1DD7A30')
+        WHERE p.id IN ('261BF629-748B-F872-3B74-40C554CB9AE2',
+                        'D1A50A64-BD64-0D6C-906A-09452AE874BB',
+                        'DF089CE0-F2F0-C483-C1B8-7AD9292DCD2A',
+                        'A942D71B-0E04-E2DB-4857-C9545ACA70A4',
+                        'B67FBD8E-F275-8E35-A1C5-6139C5B627CE',
+                        '63CA6794-58C4-9328-6048-279A6EE9EA75')
         ORDER BY p.sales_virtual DESC
 		LIMIT 6
     </select>
@@ -534,12 +534,12 @@
         FROM sl_product p
         LEFT JOIN sl_activity_product ap
         ON ap.product_id = p.id
-        WHERE p.id IN ('4CA18693-F2DB-C512-A611-8F219E6B3D0B',
-                        '633B4EA8-50D5-8524-A1FE-E0251F331DBF',
-                        '6DCBA2D0-D482-CF00-CB19-32B1F7BCB81F',
-                        '2286043F-1DC0-229D-6B01-6061DB345CEC',
-                        '1F03D498-AEFB-9551-F3DA-37BF026CF4FA',
-                        'A30A4E9B-71C1-1599-5629-30B6A1DD7A30')
+        WHERE p.id IN ('261BF629-748B-F872-3B74-40C554CB9AE2',
+                        'D1A50A64-BD64-0D6C-906A-09452AE874BB',
+                        'DF089CE0-F2F0-C483-C1B8-7AD9292DCD2A',
+                        'A942D71B-0E04-E2DB-4857-C9545ACA70A4',
+                        'B67FBD8E-F275-8E35-A1C5-6139C5B627CE',
+                        '63CA6794-58C4-9328-6048-279A6EE9EA75')
         ORDER BY p.sales_virtual DESC
     </select>
 
