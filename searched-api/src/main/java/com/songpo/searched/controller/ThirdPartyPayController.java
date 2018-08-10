@@ -116,8 +116,11 @@ public class ThirdPartyPayController {
             order.setPaymentState(101);
             this.orderService.updateByPrimaryKeySelective(order);
             //退款后修改订单状态接口:   http://39.107.241.218:8082/api/order/order-state?orderId=***
-            String url = env.getProperty("sale.refund")+"?orderId="+orderId;
-            HttpUtil.doGet(url);
+            Map map = new HashMap();
+            String url = env.getProperty("sale.refund");
+            map.put("orderId",orderId);
+//            HttpUtil.doGet(url);
+            HttpUtil.doPost(url, map);
         }
 
     }
