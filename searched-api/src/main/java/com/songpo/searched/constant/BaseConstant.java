@@ -79,6 +79,10 @@ public class BaseConstant {
      * SLB锁仓资产转入
      */
     public static final String WALLET_API_TRANSFERTOSLBSC = "wallet/externalWallet/transferToSlbSc.htm";
+    /**
+     * 使用SLB币支付
+     */
+    public static final String WALLET_API_PAYSLBAMOUNT = "wallet/externalWallet/paySlbAmount.htm";
 
     /**
      * 平台登录密码

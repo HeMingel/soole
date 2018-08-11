@@ -23,6 +23,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -360,5 +361,50 @@ public class ThirdPartyWalletService {
             mobile = mobile.substring(mobile.length()-8, mobile.length());
         }
         return mobile;
+    }
+    /**
+     * 使用SLB币支付
+     * @param walletAddress 钱包地址
+     * @param walletPwd  登录密码
+     * @param payAmount 支付金额
+     * @param orderSn   订单号
+     */
+    public Integer paySlbAmount(String walletAddress, String walletPwd, BigDecimal payAmount, String orderSn){
+        //公钥
+        String publicKey = env.getProperty("wallet.publicKey");;
+        //生成加密随机串
+        String noteStr =  String.valueOf(System.currentTimeMillis());
+        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+
+        walletPwd = AESUtils.encode(walletPwd, noteStr);
+
+        //公钥加密随机串
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+
+        //生成签名
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("walletAddress", walletAddress);
+        packageParams.put("walletPwd", walletPwd);
+        packageParams.put("payAmount", payAmount.toString());
+        packageParams.put("noteStr", encodedNoteStr);
+        packageParams.put("orderSn", orderSn);
+
+        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+
+        String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_PAYSLBAMOUNT;
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("walletAddress", walletAddress);
+        params.put("walletPwd", walletPwd);
+        params.put("payAmount", payAmount.toString());
+        params.put("noteStr", encodedNoteStr);
+        params.put("orderSn", orderSn);
+
+        params.put("sign", sign);
+        String result = HttpUtil.doPost(url, params);
+        //解析返回值 转换成json格式
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        Integer code =  jsonObject.getInteger("resultCode");
+        return code;
     }
 }
