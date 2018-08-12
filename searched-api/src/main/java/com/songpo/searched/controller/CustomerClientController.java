@@ -108,18 +108,14 @@ public class CustomerClientController {
     @PostMapping("list-recommend")
     public BusinessMessage getRecommendProduct(Integer pageNum,Integer pageSize ){
         BusinessMessage message = new BusinessMessage<>();
-        List<Map<String,Object>> list = null;
         try{
-            list = this.customerClientHomeService.getRecommendProduct(pageNum, pageSize);
-            if (list.size()>0) {
+            message = this.customerClientHomeService.getRecommendProduct(pageNum, pageSize);
                 message.setSuccess(true);
                 message.setMsg("获取数据成功");
-            }
         } catch (Exception e) {
             log.error("获取首页推荐商品，{}", e);
             message.setMsg("获取数据失败，请重试");
         }
-        message.setData(list);
        return message;
     }
 }

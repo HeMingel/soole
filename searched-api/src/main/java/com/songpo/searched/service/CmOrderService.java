@@ -42,7 +42,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
-
 public class CmOrderService {
 
     public static final Logger log = LoggerFactory.getLogger(CmOrderService.class);

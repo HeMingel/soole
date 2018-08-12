@@ -85,7 +85,7 @@
                 s.address like #{pAddress},s.longitude ASC ,s.latitude ASC , p.comment_num DESC ,p.sales_virtual DESC
             </if>-->
             <if test="sortByPrice=='' and sortByRating=='' and  sortBySale=='' and synthesize==null ">
-                p.sales_virtual DESC
+                p.`product_sort` DESC, p.sales_virtual DESC
             </if>
 
         </trim>

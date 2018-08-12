@@ -342,9 +342,7 @@ public class TestController {
     private CustomerClientHomeService customerClientHomeService;
     @GetMapping("test12")
     public BusinessMessage test12(int pageNum){
-        BusinessMessage message = new BusinessMessage();
-        List<Map<String,Object>> list= customerClientHomeService.getRecommendProduct(pageNum,10);
-        message.setData(list);
+        BusinessMessage message =  customerClientHomeService.getRecommendProduct(pageNum,10);
         return message;
     }
 
@@ -373,7 +371,7 @@ public class TestController {
 
         //公钥加密随机串
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        String orderSn = "2018080800000003";
+        String orderSn = "2018080800000005";
 
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();

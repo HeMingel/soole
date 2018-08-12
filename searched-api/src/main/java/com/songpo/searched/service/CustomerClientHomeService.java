@@ -122,8 +122,8 @@ public class CustomerClientHomeService {
         data.put("actions", actionList);
 
         // 获取推荐商品列表
-        List<Map<String,Object>> productList = this.getRecommendProduct(1,10);
-        data.put("products", productList);
+        BusinessMessage<PageInfo> businessMessage = this.getRecommendProduct(1,10);
+        data.put("products", businessMessage.getData().getList());
 
         //查询优质店铺
         JSONObject hqShop =  this.getHighQualityShop();
@@ -288,11 +288,14 @@ public class CustomerClientHomeService {
      * @param pageSize
      * @return
      */
-    public  List<Map<String,Object>>  getRecommendProduct(int pageNum,int pageSize ){
+    public BusinessMessage<PageInfo>  getRecommendProduct(int pageNum,int pageSize ){
+        BusinessMessage<PageInfo> businessMessage = new BusinessMessage<>();
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         List<Map<String,Object>> productList = cmProductMapper.listRecommendProduct();
-        return new PageInfo<>(productList).getList();
+        businessMessage.setData(new PageInfo<>(productList));
+        businessMessage.setSuccess(true);
+        return businessMessage;
     }
 
     /**
@@ -309,7 +312,7 @@ public class CustomerClientHomeService {
         List<SlShop> shops = new PageInfo<>(this.slShopMapper.selectByExample(example)).getList();
         jsonObject.put("hq-shops", shops);
         PageHelper.clearPage();
-        HashMap map = new HashMap();
+        List<SlProduct> list = new ArrayList<>();
         //循环获得每个店铺下的热销产品
         for (SlShop slShop : shops) {
             PageHelper.startPage(1, 3);
@@ -318,9 +321,9 @@ public class CustomerClientHomeService {
             example1.setOrderByClause("sales_virtual DESC");
             //查询店铺下三个热销产品
             List<SlProduct> products = new PageInfo<>(this.productMapper.selectByExample(example1)).getList();
-            map.put(slShop.getId(), products);
+            list.addAll(products);
         }
-        jsonObject.put("hq-products", map);
+        jsonObject.put("hq-products", list);
         return jsonObject;
     }
 }
