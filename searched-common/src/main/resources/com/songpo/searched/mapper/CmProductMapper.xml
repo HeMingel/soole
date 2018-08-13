@@ -292,6 +292,7 @@
         ON od.`product_id` = p.`id`
         WHERE p.sales_mode_id = 2 and p.del = 0
         LIMIT 20
+        ORDER BY p.`product_sort` DESC
     </select>
     <!--查询该未完成拼单的单子-->
     <select id="findGroupOrder" resultType="Map">
@@ -497,6 +498,7 @@
         LEFT JOIN sl_sales_mode sm
         ON p.sales_mode_id=sm.id
         where p.sales_mode_id=5 and p.del = 0
+        ORDER BY p.`product_sort` DESC
     </select>
 
     <select id="getAwayMoneyByOrderDettailId" parameterType="String" resultType="double">
