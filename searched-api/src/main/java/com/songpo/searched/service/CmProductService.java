@@ -38,8 +38,6 @@ public class CmProductService {
     @Autowired
     private SlProductMapper slProductMapper;
     @Autowired
-    private CmProductMapper cmProductMapper;
-    @Autowired
     private SlProductSaleModeOrderCountMapper slProductSaleModeOrderCountMapper;
     @Autowired
     private SlActivityProductMapper activityProductMapper;
@@ -126,7 +124,12 @@ public class CmProductService {
         if (!StringUtils.containsAny(sortBySale, orderStrArray)) {
             sortBySale = StringUtils.trimToEmpty(sortBySale);
         }
-
+        /**
+         * 如果是新人专享 更新过期商品
+         */
+        if ("9".equals(salesModeId)){
+            this.updateActivityEnable();
+        }
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         // 执行查询
@@ -674,7 +677,7 @@ public class CmProductService {
     }
 
     public List<Map<String,Object>> simpleActivityProduct(){
-        List<Map<String, Object>> mapList =cmProductMapper.simpleActivityProductQuery();
+        List<Map<String, Object>> mapList = mapper.simpleActivityProductQuery();
         return mapList;
     }
     /**
@@ -695,7 +698,7 @@ public class CmProductService {
      * @return
      */
     public double getAwayMoneyByOrderDettailId (String orderDetailId){
-        return cmProductMapper.getAwayMoneyByOrderDettailId(orderDetailId);
+        return  mapper.getAwayMoneyByOrderDettailId(orderDetailId);
     }
 
     /**
@@ -911,4 +914,20 @@ public class CmProductService {
         return businessMessage;
     }
 
+    /**
+     * 将失效活动置为失效 目前只针对新人专享
+     *
+     */
+    public void updateActivityEnable(){
+       List<String> list = mapper.listOverdueActivity();
+        if (list.size() > 0) {
+            for (String id : list) {
+                log.debug("新人专享商品{}下架");
+                slProductMapper.updateByPrimaryKeySelective(new SlProduct(){{
+                    setId(id);
+                    setSalesModeId("6");
+                }});
+            }
+        }
+    }
 }

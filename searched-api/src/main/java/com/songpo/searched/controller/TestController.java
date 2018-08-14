@@ -397,4 +397,12 @@ public class TestController {
         String result = HttpUtil.doPost(url, params);
         System.out.println(result);
     }
+    @Autowired
+    private CmProductService cmProductService;
+    @GetMapping("test15")
+    public BusinessMessage test15(double dou){
+        BusinessMessage message = new BusinessMessage();
+        cmProductService.updateActivityEnable();
+        return message;
+    }
 }

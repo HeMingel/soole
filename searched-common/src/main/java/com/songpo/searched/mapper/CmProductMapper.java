@@ -271,4 +271,10 @@ public interface CmProductMapper{
      * @return
      */
     List<Map<String,Object>> listRecommendProduct();
+
+    /**
+     * 查询新人专享活动列表
+     * @return
+     */
+    List<String> listOverdueActivity();
 }

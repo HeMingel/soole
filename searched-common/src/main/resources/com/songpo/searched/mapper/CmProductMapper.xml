@@ -590,6 +590,20 @@
       AND p.`recommend` = 1
     ORDER BY p.`sales_virtual` DESC
     </select>
+
+    <select id="listOverdueActivity" resultType="String">
+        SELECT
+        p.`id`
+        FROM
+        `sl_product` p
+        LEFT JOIN `sl_activity_product` ap
+        ON p.`id` = ap.`product_id`
+        WHERE p.`sales_mode_id` = 9
+        AND p.`sold_out` = 1
+        AND p.`del` = 0
+        AND  ap.`end_time` &lt;  NOW()
+    </select>
+
 </mapper>
 
 
