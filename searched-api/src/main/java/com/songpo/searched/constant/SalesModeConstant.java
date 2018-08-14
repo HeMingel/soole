@@ -37,4 +37,8 @@ public class SalesModeConstant {
      * 限时秒杀
      */
     public static final int SALES_MODE_SECKILL = 8;
+    /**
+     * 新人专享
+     */
+    public static final int SALES_MODE_NEWUSER = 9;
 }

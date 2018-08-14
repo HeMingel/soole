@@ -714,6 +714,11 @@ public class CmOrderService {
                                         String orderNum = OrderNumGeneration.getOrderIdByUUId();
                                         message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 8, buyerMessage, 1, inviterId,virtualOpen);
                                     }
+                                    else if (saleModes  == SalesModeConstant.SALES_MODE_NEWUSER ) {
+                                        //生成订单号
+                                        String orderNum = OrderNumGeneration.getOrderIdByUUId();
+                                        message = processingOrders(user.getId(), orderNum, activityProduct, null, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 9, buyerMessage, 1, inviterId,virtualOpen);
+                                    }
                                     if (message.getSuccess() == false) {
                                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                                         message.setData("");
@@ -1063,7 +1068,10 @@ public class CmOrderService {
         if (slProduct.getSalesModeId().equals("8")){
             price = repository.getSeckillPrice().doubleValue();
         }
-
+        //修改价格 如果是新人专享 8.8折
+        if (slProduct.getSalesModeId().equals("9")) {
+            price = (double) Math.round(price * 0.88 * 100) / 100;
+        }
         Double d = price * quantity;
         BigDecimal money = new BigDecimal(d.toString());
         if (slProduct.getPostage().doubleValue() > 0) {

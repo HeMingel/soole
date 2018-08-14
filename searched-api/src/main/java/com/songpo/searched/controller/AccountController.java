@@ -1,9 +1,12 @@
 package com.songpo.searched.controller;
 
 import com.songpo.searched.domain.BusinessMessage;
+import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.CmUserMapper;
+import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.service.AccountService;
+import com.songpo.searched.service.CmOrderService;
 import com.songpo.searched.service.LoginUserService;
 import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
@@ -34,6 +37,8 @@ public class AccountController {
     private AccountService accountService;
     @Autowired
     private CmUserMapper cmUserMapper ;
+    @Autowired
+    private SlOrderMapper slOrderMapper;
 
     /**
      * 余额充值
@@ -151,6 +156,26 @@ public class AccountController {
                 accountService.insertUserCenter(phone, nickName, avatar);
             }
         }
+    }
+
+    /**
+     * 查询是否新人专享
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value="查询是否新人专享")
+    @ApiImplicitParam(name = "userId", value = "用户id", paramType = "form", required = true)
+    @PostMapping("is-new-user-vip")
+    public BusinessMessage isNewUserVIP(String userId){
+        BusinessMessage message = new BusinessMessage();
+        int count = slOrderMapper.selectCount(new SlOrder(){{
+            setUserId(userId);
+        }});
+        message.setMsg("查询成功");
+        if (count == 0 ) {
+            message.setSuccess(true);
+        }
+        return message;
     }
 
 }
