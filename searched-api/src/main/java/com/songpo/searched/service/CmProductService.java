@@ -749,13 +749,13 @@ public class CmProductService {
         // 设置分页参数
 //        PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> mapList = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
         try {
             //抢购中商品
             if (1 == type){
                 //获取限时秒杀活动
                 List<SlActivitySeckill> activitySeckills = this.cmActivitySeckillMapper.limitTimeProductsDay();
                 for (SlActivitySeckill slActivitySeckill : activitySeckills){
+                    Map<String, Object> map = new HashMap<>();
                     map.put("slActivitySeckill",slActivitySeckill);
                     //获取商品
                     SlProduct slProduct = slProductMapper.selectOne(new SlProduct(){{
@@ -780,6 +780,7 @@ public class CmProductService {
                 //获取限时秒杀活动
                 List<SlActivitySeckill> activitySeckills = this.cmActivitySeckillMapper.limitTimeProductsTomo();
                 for (SlActivitySeckill slActivitySeckill : activitySeckills){
+                    Map<String, Object> map = new HashMap<>();
                     map.put("slActivitySeckill",slActivitySeckill);
                     //获取商品
                     SlProduct slProduct = slProductMapper.selectOne(new SlProduct(){{
