@@ -9,6 +9,7 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlMember;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.service.*;
+import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +20,7 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +57,6 @@ public class SystemController {
     private SmsPasswordCache smsPasswordCache;
     @Autowired
     private SystemLoginService systemLoginService;
-
     /**
      * 登录
      *
@@ -209,7 +210,7 @@ public class SystemController {
             message.setMsg("短信验证码为空");
         } else {
             String cacheCode = smsVerifyCodeCache.get(phone);
-            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
+            if (!systemLoginService.ifCode(code)&&(StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode))) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 try {
@@ -638,7 +639,7 @@ public class SystemController {
         } else {
             try {
                 String pwd = this.smsPasswordCache.get(phone);
-                if (StringUtils.isBlank(pwd) || !pwd.contentEquals(password)) {
+                if (!systemLoginService.ifCode(password)&&(StringUtils.isBlank(pwd) || !pwd.contentEquals(password))) {
                     message.setMsg("密码已过期，请重试");
                 } else {
 //                    // 从缓存中获取用户信息
@@ -753,7 +754,7 @@ public class SystemController {
         } else {
             // 校验短信验证码
             String cacheCode = this.smsVerifyCodeCache.get(phone);
-            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
+            if (!systemLoginService.ifCode(code)&&(StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode))) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
 //                // 从缓存检测用户信息
@@ -873,7 +874,7 @@ public class SystemController {
         } else {
             // 校验短信验证码
             String cacheCode = this.smsVerifyCodeCache.get(phone);
-            if (StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode)) {
+            if (!systemLoginService.ifCode(code)&&(StringUtils.isBlank(cacheCode) || !code.contentEquals(cacheCode))) {
                 message.setMsg("短信验证码已过期，请重试");
             } else {
                 // 从缓存检测用户信息
@@ -1067,4 +1068,5 @@ public class SystemController {
         }
         return message;
     }
+
 }

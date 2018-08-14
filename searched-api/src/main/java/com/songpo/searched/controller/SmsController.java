@@ -28,8 +28,6 @@ public class SmsController {
 
     @Autowired
     private SmsService smsService;
-    @Autowired
-    private SmsVerifyCodeCache smsVerifyCodeCache;
 
     @Autowired
     private SmsPasswordCache smsPasswordCache;
