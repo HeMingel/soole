@@ -5,6 +5,7 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
+import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.service.OrderDetailService;
 import com.songpo.searched.service.OrderService;
 import com.songpo.searched.util.HttpUtil;
@@ -41,6 +42,8 @@ public class ThirdPartyPayController {
     private OrderDetailService orderDetailService;
     @Autowired
     public Environment env;
+    @Autowired
+    public SlOrderMapper slOrderMapper;
 
     /**
      * 微信退款
@@ -65,8 +68,9 @@ public class ThirdPartyPayController {
         Map<String,String> map  = new HashMap<>();
         //商户退款单号
         String outRefundNo = OrderNumGeneration.getOrderIdByUUId();
-        map=wxPayService.refund(null,outTradeNo,outRefundNo,totalFeeStr,refundFee,null,refundDesc,null);
-        if (map.get("return_msg").equals("OK")) {
+//        map=wxPayService.refund(null,outTradeNo,outRefundNo,totalFeeStr,refundFee,null,refundDesc,null);
+        Integer resut = updateOrder(outTradeNo);
+        if (resut>0) {
             message.setSuccess(true);
             message.setMsg("退款成功");
             changeRefundOrderState(outTradeNo);
@@ -92,9 +96,10 @@ public class ThirdPartyPayController {
         BusinessMessage message = new BusinessMessage();
         message.setSuccess(false);
         message.setMsg("退款失败");
-        AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundFee,refundDesc,null,null,null,null);
-        String strResponse = response.getCode();
-        if ("10000".equals(strResponse)) {
+//        AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundFee,refundDesc,null,null,null,null);
+//        String strResponse = response.getCode();
+        Integer resut = updateOrder(outTradeNo);
+        if (resut>0) {
             message.setSuccess(true);
             message.setMsg("退款成功");
             changeRefundOrderState(outTradeNo);
@@ -123,5 +128,12 @@ public class ThirdPartyPayController {
             HttpUtil.doPost(url, map);
         }
 
+    }
+    //修改订单支付状态
+    public Integer updateOrder(String orderId){
+        return  slOrderMapper.updateByPrimaryKey(new SlOrder(){{
+            setId(orderId);
+            setPaymentState(103);
+        }});
     }
 }
