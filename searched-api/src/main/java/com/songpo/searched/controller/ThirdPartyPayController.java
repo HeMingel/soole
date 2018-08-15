@@ -112,28 +112,22 @@ public class ThirdPartyPayController {
      * @param orderId
      */
     public void changeRefundOrderState(String orderId) {
-        //获取订单信息
-        SlOrder order = this.orderService.selectOne(new SlOrder() {{
-            setOutOrderNumber(orderId);
-        }});
-        if (order != null) {
-            order.setSpellGroupStatus(0);
-            order.setPaymentState(101);
-            this.orderService.updateByPrimaryKeySelective(order);
             //退款后修改订单状态接口:   http://39.107.241.218:8082/api/order/order-state?orderId=***
             Map map = new HashMap();
             String url = env.getProperty("sale.refund");
             map.put("orderId",orderId);
-//            HttpUtil.doGet(url);
             HttpUtil.doPost(url, map);
-        }
 
     }
     //修改订单支付状态
     public Integer updateOrder(String orderId){
-        return  slOrderMapper.updateByPrimaryKey(new SlOrder(){{
-            setId(orderId);
+        SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+            setOutOrderNumber(orderId);
+        }});
+        return  slOrderMapper.updateByPrimaryKeySelective(new SlOrder(){{
+            setId(slOrder.getId());
             setPaymentState(103);
+            setSpellGroupStatus(0);
         }});
     }
 }
