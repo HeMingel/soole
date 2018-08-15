@@ -1,6 +1,7 @@
 package com.songpo.searched.util;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
 
@@ -16,6 +17,7 @@ public class MD5Util {
         return resultSb.toString();
     }
 
+    // 返回形式为数字跟字符串
     public static String byteToHexString(byte b) {
         int n = b;
         if (n < 0) {
@@ -41,6 +43,27 @@ public class MD5Util {
         } catch (Exception exception) {
         }
         return resultString;
+    }
+    public static String GetMD5Code(String string,String key) {
+        string=string+"&key="+key;
+        String resultString = null;
+        try {
+            resultString = new String(string);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // md.digest() 该函数返回值为存放哈希值结果的byte数组
+            resultString = byteToString(md.digest(string.getBytes()));
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+        }
+        return resultString;
+    }
+    // 转换字节数组为16进制字串
+    private static String byteToString(byte[] bByte) {
+        StringBuffer sBuffer = new StringBuffer();
+        for (int i = 0; i < bByte.length; i++) {
+            sBuffer.append(byteToHexString(bByte[i]));
+        }
+        return sBuffer.toString();
     }
 }
 
