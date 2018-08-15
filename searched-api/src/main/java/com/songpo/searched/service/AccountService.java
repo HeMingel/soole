@@ -9,6 +9,7 @@ import com.songpo.searched.typehandler.*;
 import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.ClientIPUtil;
 import com.songpo.searched.util.HttpRequest;
+import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -263,51 +264,51 @@ public class AccountService {
 
     /**
      *
-     * 用户中心
+     * 用户中心插入
      * @return
      */
     public void insertUserCenter(String phone, String nickName, String avatar) {
-        //String josnStr = "{nickName:" + nickName + ",avatar:" + avatar + "}";
+        //定义参数
         JSONObject json = new JSONObject();
         json.put("nickName",nickName);
         json.put("avatar",avatar);
         String responseBody = null;
+        JSONObject obj = new JSONObject();
+        obj.put("phone", phone);
+        obj.put("content", json);
+        obj.put("type", 1);
+        String url = env.getProperty("user.center.url");
         try {
-            JSONObject obj = new JSONObject();
-            obj.put("phone", phone);
-            obj.put("content", json);
-            obj.put("type", 1);
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(env.getProperty("user.center.url"));
-            httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
-            // 解决中文乱码问题
-            StringEntity stringEntity = new StringEntity(obj.toString(), "UTF-8");
-            stringEntity.setContentEncoding("UTF-8");
-            httpPost.setEntity(stringEntity);
-            // CloseableHttpResponse response =
-            // httpclient.execute(httpPost);
-            // Create a custom response handler
-            ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-                @Override
-                public String handleResponse(final HttpResponse response)
-                        throws ClientProtocolException, IOException {//
-                    int status = response.getStatusLine().getStatusCode();
-                    if (status >= 200 && status < 300) {
-
-                        HttpEntity entity = response.getEntity();
-
-                        return entity != null ? EntityUtils.toString(entity) : null;
-                    } else {
-                        throw new ClientProtocolException(
-                                "Unexpected response status: " + status);
-                    }
-                }
-            };
-            responseBody = httpclient.execute(httpPost, responseHandler);
-            log.debug("用户中心库返回结果{}", responseBody);
-        } catch (Exception e) {
-            System.out.println(e);
+            responseBody = HttpUtil.doPostJson(url,obj);
+        } catch (IOException e) {
+            log.error("该用户中心库返回失败,用户手机号为{}",phone,e);
+            e.printStackTrace();
         }
-
+        log.debug("用户中心库返回结果{}", responseBody);
     }
+
+    /**
+     * 用户中心查询
+     * @param phone
+     * @return  true 存在该用户
+     */
+    public Boolean isExistUserCenter(String phone) {
+        JSONObject json = new JSONObject();
+        json.put("phone", phone);
+        String url = env.getProperty("user.center.get");
+        String result = null;
+        try {
+            result = HttpUtil.doPostJson(url, json);
+        } catch (IOException e) {
+            log.error("用户中心查询出错", e);
+        }
+        System.out.println(result);
+        com.alibaba.fastjson.JSONObject resultJson = com.alibaba.fastjson.JSONObject.parseObject(result);
+        String flag = resultJson.getString("success");
+        if ("true".equals(flag)) {
+            return true;
+        }
+        return false;
+    }
+
 }

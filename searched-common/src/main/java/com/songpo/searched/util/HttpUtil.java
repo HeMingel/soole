@@ -17,6 +17,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,6 +30,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,6 +117,7 @@ public class HttpUtil {
         }
 	}
 
+
 	/**
 	 * post请求（用于请求json格式的参数）
 	 * @param url
@@ -123,7 +127,8 @@ public class HttpUtil {
 	public static String doPost(String url, String params) throws Exception {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(url);// 创建httpPost
+		HttpPost httpPost = new HttpPost(url);
+		// 创建httpPost
     	httpPost.setHeader("Accept", "application/json");
     	httpPost.setHeader("Content-Type", "application/json");
     	String charSet = "UTF-8";
@@ -162,6 +167,36 @@ public class HttpUtil {
         return null;
 	}
 
+    /**
+     * 用于PHP 的 postjson 请求方式
+     * @param url
+     * @param obj
+     * @return
+     * @throws IOException
+     */
+    public static String doPostJson(String url, JSONObject obj) throws IOException {
+        String responseBody;
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
+        System.out.println("1111111111111111111111111"+obj.toString());
+        // 解决中文乱码问题
+        StringEntity stringEntity = new StringEntity(obj.toString(), "UTF-8");
+        stringEntity.setContentEncoding("UTF-8");
+        httpPost.setEntity(stringEntity);
+        ResponseHandler<String> responseHandler = response -> {
+            int status = response.getStatusLine().getStatusCode();
+            if (status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                return entity != null ? EntityUtils.toString(entity) : null;
+            } else {
+                throw new ClientProtocolException(
+                        "Unexpected response status: " + status);
+            }
+        };
+        responseBody = httpclient.execute(httpPost, responseHandler);
+        return responseBody;
+    }
     /**
      * get请求 不显示超时
      * @return

@@ -53,6 +53,8 @@ public class SystemLoginService {
     private SmsVerifyCodeCache smsVerifyCodeCache;
     @Autowired
     private Environment env;
+    @Autowired
+    private AccountService accountService;
     /**
      * 微信网页第三方注册
      *
@@ -166,6 +168,12 @@ public class SystemLoginService {
                 message.setData(data);
                 message.setMsg("用户注册成功");
                 message.setSuccess(true);
+                //去用户户中心库查询用户是否存在
+                Boolean isExist =accountService.isExistUserCenter(phone);
+                //不存在添加
+                if (!isExist) {
+                    accountService.insertUserCenter(phone,nickname,avatar);
+                }
             }
 
         }
@@ -356,6 +364,12 @@ public class SystemLoginService {
             message.setMsg("用户注册成功");
             message.setSuccess(true);
             log.debug("微信用户openId:{} 注册账号成功", openId);
+            //去用户户中心库查询用户是否存在
+            Boolean isExist =accountService.isExistUserCenter(phone);
+            //不存在添加
+            if (!isExist) {
+                accountService.insertUserCenter(phone,nickname,avatar);
+            }
         }
         return message;
     }

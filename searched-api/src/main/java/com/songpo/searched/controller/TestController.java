@@ -398,11 +398,11 @@ public class TestController {
         System.out.println(result);
     }
     @Autowired
-    private CmProductService cmProductService;
+    private AccountService accountService;
     @GetMapping("test15")
-    public BusinessMessage test15(double dou){
+    public BusinessMessage test15(String phone){
         BusinessMessage message = new BusinessMessage();
-        cmProductService.updateActivityEnable();
+       accountService.isExistUserCenter(phone);
         return message;
     }
 }
