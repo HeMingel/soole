@@ -322,7 +322,7 @@ public class TestController {
     //获取钱包地址
     @GetMapping("test9")
     public String test90(String phone ){
-        String  message = thirdPartyWalletService.getWalletList("55149492","852");
+        String  message = thirdPartyWalletService.getWalletList("13511112222","86");
         return  message;
     }
     //检验是否注册
@@ -404,5 +404,49 @@ public class TestController {
         BusinessMessage message = new BusinessMessage();
        accountService.isExistUserCenter(phone);
         return message;
+    }
+    @GetMapping("test16")
+    public void test16(){
+        //钱包地址
+        String walletAddress = "13X1fWiedxuFyz8aPLQ8CtNT9rzK7dCXnn";
+        //公钥
+        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
+        //生成加密随机串
+        String noteStr =  String.valueOf(System.currentTimeMillis());
+        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+        //加密登录密码
+        String walletPwd = "gy812337967";
+        walletPwd = AESUtils.encode(walletPwd, noteStr);
+
+        //支付金额
+        BigDecimal transfAmount = new BigDecimal("1000");
+
+        //公钥加密随机串
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+        String orderSn = "201808161200000";
+
+        //生成签名
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("walletAddress", walletAddress);
+        packageParams.put("walletPwd", walletPwd);
+        packageParams.put("transfAmount", transfAmount.toString());
+        packageParams.put("noteStr", encodedNoteStr);
+        packageParams.put("orderSn", orderSn);
+
+        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+
+        String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/transferToSLB.htm";
+        //String url = "http://47.96.235.100:8080/digital-wallet-interface/wallet/externalWallet/transferToSLB.htm";
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("walletAddress", walletAddress);
+        params.put("walletPwd", walletPwd);
+        params.put("transfAmount", transfAmount.toString());
+        params.put("noteStr", encodedNoteStr);
+        params.put("orderSn", orderSn);
+
+        params.put("sign", sign);
+        String result = HttpUtil.doPost(url, params);
+        System.out.println(result);
     }
 }

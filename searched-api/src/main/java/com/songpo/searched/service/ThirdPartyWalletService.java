@@ -263,14 +263,11 @@ public class ThirdPartyWalletService {
         //解析返回值 转换成json格式
         JSONObject jsonObject = JSONObject.parseObject(result);
         Integer code =  jsonObject.getInteger("resultCode");
+        System.out.println("@@@@@@@@@@@@@"+result);
         //操作成功
         if (code >= 0){
-            JSONArray jsonArray = (JSONArray) jsonObject.get("data");
-            if(jsonArray.size() > 0) {
-                Map map = (Map<String,String>)jsonArray.get(0);
-                //用户已注册
+                Map map = (Map<String,String>)jsonObject.get("data");
                 walletAddress = map.get("walletAddress").toString();
-            }
         }
         return  walletAddress;
     }
@@ -371,7 +368,7 @@ public class ThirdPartyWalletService {
      */
     public Integer paySlbAmount(String walletAddress, String walletPwd, BigDecimal payAmount, String orderSn){
         //公钥
-        String publicKey = env.getProperty("wallet.publicKey");;
+        String publicKey = env.getProperty("wallet.publicKey");
         //生成加密随机串
         String noteStr =  String.valueOf(System.currentTimeMillis());
         noteStr = StringUtils.leftPad(noteStr, 16,  "0");
@@ -397,6 +394,50 @@ public class ThirdPartyWalletService {
         params.put("walletAddress", walletAddress);
         params.put("walletPwd", walletPwd);
         params.put("payAmount", payAmount.toString());
+        params.put("noteStr", encodedNoteStr);
+        params.put("orderSn", orderSn);
+
+        params.put("sign", sign);
+        String result = HttpUtil.doPost(url, params);
+        //解析返回值 转换成json格式
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        Integer code =  jsonObject.getInteger("resultCode");
+        return code;
+    }
+    /**
+     * 从金豆提取到SLB币
+     * @param walletAddress 钱包地址
+     * @param walletPwd     登录密码
+     * @param transfAmount  兑换数量
+     */
+    public Integer transferToSLB(String walletAddress,String walletPwd, String transfAmount ){
+        //公钥
+        String publicKey = env.getProperty("wallet.publicKey");
+        //生成加密随机串
+        String noteStr =  String.valueOf(System.currentTimeMillis());
+        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+
+        walletPwd = AESUtils.encode(walletPwd, noteStr);
+
+        //公钥加密随机串
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+        String orderSn = String.valueOf(System.currentTimeMillis());
+
+        //生成签名
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("walletAddress", walletAddress);
+        packageParams.put("walletPwd", walletPwd);
+        packageParams.put("transfAmount", transfAmount);
+        packageParams.put("noteStr", encodedNoteStr);
+        packageParams.put("orderSn", orderSn);
+
+        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+
+        String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("walletAddress", walletAddress);
+        params.put("walletPwd", walletPwd);
+        params.put("transfAmount", transfAmount.toString());
         params.put("noteStr", encodedNoteStr);
         params.put("orderSn", orderSn);
 

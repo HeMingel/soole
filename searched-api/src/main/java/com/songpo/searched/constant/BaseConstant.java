@@ -83,6 +83,10 @@ public class BaseConstant {
      * 使用SLB币支付
      */
     public static final String WALLET_API_PAYSLBAMOUNT = "wallet/externalWallet/paySlbAmount.htm";
+    /**
+     * 从金豆提取到SLB币
+     */
+    public static final String WALLET_API_TRANSFERTOSLB = "wallet/externalWallet/transferToSLB.htm";
 
     /**
      * 平台登录密码

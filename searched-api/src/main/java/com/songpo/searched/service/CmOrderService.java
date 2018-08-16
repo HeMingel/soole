@@ -342,6 +342,8 @@ public class CmOrderService {
                                                                 break;
                                                             case SalesModeConstant.SALES_MODE_SHARE:
                                                                 setType(7);
+                                                            case SalesModeConstant.SALES_MODE_NEWUSER:
+                                                                setType(9);
                                                                 break;
                                                         }
                                                         // 订单编号
