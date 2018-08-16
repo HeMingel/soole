@@ -6,8 +6,10 @@ import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.entity.SlPhoneZone;
+import com.songpo.searched.entity.SlSystemConnector;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlPhoneZoneMapper;
+import com.songpo.searched.mapper.SlSystemConnectorMapper;
 import com.songpo.searched.mapper.SlUserMapper;
 import com.songpo.searched.util.AESUtils;
 
@@ -45,6 +47,8 @@ public class ThirdPartyWalletService {
     private SlPhoneZoneMapper slPhoneZoneMapper;
     @Autowired
     private SlUserMapper slUserMapper;
+    @Autowired
+    private SlSystemConnectorMapper slSystemConnectorMapper;
 
     /**
      * 获取 加密随机串
@@ -263,7 +267,6 @@ public class ThirdPartyWalletService {
         //解析返回值 转换成json格式
         JSONObject jsonObject = JSONObject.parseObject(result);
         Integer code =  jsonObject.getInteger("resultCode");
-        System.out.println("@@@@@@@@@@@@@"+result);
         //操作成功
         if (code >= 0){
                 Map map = (Map<String,String>)jsonObject.get("data");
@@ -447,5 +450,25 @@ public class ThirdPartyWalletService {
         JSONObject jsonObject = JSONObject.parseObject(result);
         Integer code =  jsonObject.getInteger("resultCode");
         return code;
+    }
+    /**
+     *1、 ROUND_UP：远离零方向舍入。向绝对值最大的方向舍入，只要舍弃位非0即进位。
+     *2、 ROUND_DOWN：趋向零方向舍入。向绝对值最小的方向输入，所有的位都要舍弃，不存在进位情况。
+     *3、 ROUND_CEILING：向正无穷方向舍入。向正最大方向靠拢。若是正数，舍入行为类似于ROUND_UP，若为负数，舍入行为类似于ROUND_DOWN。Math.round()方法就是使用的此模式。
+     *4、 ROUND_FLOOR：向负无穷方向舍入。向负无穷方向靠拢。若是正数，舍入行为类似于ROUND_DOWN；若为负数，舍入行为类似于ROUND_UP。
+     *5、 HALF_UP：最近数字舍入(5进)。这是我们最经典的四舍五入。
+     *6、 HALF_DOWN：最近数字舍入(5舍)。在这里5是要舍弃的。
+     *7、 HAIL_EVEN：银行家舍入法。
+     * 金币转化搜了贝 根据金币转化率
+     * @param toCoin 转化的金币
+     * @return
+     */
+    public String coinToSlb( Integer toCoin){
+        //获取转换率
+        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+            setVar("bean");
+        }});
+        BigDecimal slb = BigDecimal.valueOf(toCoin).divide(new BigDecimal(slSystemConnector.getAppId()),8,BigDecimal.ROUND_CEILING);
+        return slb.toString();
     }
 }
