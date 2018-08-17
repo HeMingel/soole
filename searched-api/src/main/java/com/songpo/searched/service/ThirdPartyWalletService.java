@@ -409,47 +409,106 @@ public class ThirdPartyWalletService {
     }
     /**
      * 从金豆提取到SLB币
-     * @param walletAddress 钱包地址
+     * @param userId         用户ID
      * @param walletPwd     登录密码
-     * @param transfAmount  兑换数量
+     * @param transfAmount  兑换slb数量
      */
-    public Integer transferToSLB(String walletAddress,String walletPwd, String transfAmount ){
-        //公钥
-        String publicKey = env.getProperty("wallet.publicKey");
-        //生成加密随机串
-        String noteStr =  String.valueOf(System.currentTimeMillis());
-        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+    public BusinessMessage transferToSLB(String userId,String walletPwd, String transfAmount ){
+        log.debug("userId="+userId+",walletPwd="+walletPwd+",transfAmount="+transfAmount);
+        BusinessMessage message = new BusinessMessage();
+        //获取用户信息
+        SlUser slUser = slUserMapper.selectByPrimaryKey(userId);
+        //获取slb汇率
+        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+            setVar("bean");
+        }});
+        //兑换的slb数量转换为对应的金币
+        Integer coin = Integer.valueOf(transfAmount) * Integer.valueOf(slSystemConnector.getAppId());
+        //钱包地址
+        String walletAddress = "";
+        try {
+            if (null != slUser){
+                //获取手机区号
+                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
+                }});
+                //查询用户是否注册钱包
+                if (checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
+                    //获取钱包地址
+                    walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+                }else {
+                    //用户注册钱包地址
+                    UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
+                    //获取钱包地址
+                    walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+                }
+                if (slUser.getCoin()>coin){
+                    //公钥
+                    String publicKey = env.getProperty("wallet.publicKey");
+                    //生成加密随机串
+                    String noteStr =  String.valueOf(System.currentTimeMillis());
+                    noteStr = StringUtils.leftPad(noteStr, 16,  "0");
 
-        walletPwd = AESUtils.encode(walletPwd, noteStr);
+                    walletPwd = AESUtils.encode(walletPwd, noteStr);
 
-        //公钥加密随机串
-        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        String orderSn = String.valueOf(System.currentTimeMillis());
+                    //公钥加密随机串
+                    String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+                    String orderSn = String.valueOf(System.currentTimeMillis());
 
-        //生成签名
-        SortedMap<String, String> packageParams = new TreeMap<String, String>();
-        packageParams.put("walletAddress", walletAddress);
-        packageParams.put("walletPwd", walletPwd);
-        packageParams.put("transfAmount", transfAmount);
-        packageParams.put("noteStr", encodedNoteStr);
-        packageParams.put("orderSn", orderSn);
+                    //生成签名
+                    SortedMap<String, String> packageParams = new TreeMap<String, String>();
+                    packageParams.put("walletAddress", walletAddress);
+                    packageParams.put("walletPwd", walletPwd);
+                    packageParams.put("transfAmount", transfAmount);
+                    packageParams.put("noteStr", encodedNoteStr);
+                    packageParams.put("orderSn", orderSn);
 
-        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+                    String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
 
-        String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("walletAddress", walletAddress);
-        params.put("walletPwd", walletPwd);
-        params.put("transfAmount", transfAmount.toString());
-        params.put("noteStr", encodedNoteStr);
-        params.put("orderSn", orderSn);
+                    String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
+                    Map<String,Object> params = new HashMap<String,Object>();
+                    params.put("walletAddress", walletAddress);
+                    params.put("walletPwd", walletPwd);
+                    params.put("transfAmount", transfAmount.toString());
+                    params.put("noteStr", encodedNoteStr);
+                    params.put("orderSn", orderSn);
 
-        params.put("sign", sign);
-        String result = HttpUtil.doPost(url, params);
-        //解析返回值 转换成json格式
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        Integer code =  jsonObject.getInteger("resultCode");
-        return code;
+                    params.put("sign", sign);
+                    String result = HttpUtil.doPost(url, params);
+                    //解析返回值 转换成json格式
+                    JSONObject jsonObject = JSONObject.parseObject(result);
+                    Integer code =  jsonObject.getInteger("resultCode");
+                    if (0 == code){
+                        slUser.setCoin(slUser.getCoin()-coin);
+                        slUserMapper.updateByPrimaryKey(slUser);
+                        message.setMsg("slb兑换成功");
+                        message.setSuccess(true);
+                    }else if (-100 == code){
+                        message.setMsg("先去钱包APP设置支付密码");
+                        message.setSuccess(false);
+                        return message;
+                    }else {
+                        message.setMsg(jsonObject.getString("message"));
+                        message.setSuccess(false);
+                        return message;
+                    }
+                }else {
+                    message.setMsg("金币不足");
+                    message.setSuccess(false);
+                    return message;
+                }
+            }else {
+                message.setMsg("用户不存在");
+                message.setSuccess(false);
+                return message;
+            }
+        }catch (Exception e){
+            log.error("兑换异常",e);
+            message.setSuccess(false);
+            message.setMsg("兑换异常");
+        }
+
+        return message;
     }
     /**
      *1、 ROUND_UP：远离零方向舍入。向绝对值最大的方向舍入，只要舍弃位非0即进位。
