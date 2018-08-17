@@ -401,4 +401,36 @@ import java.util.regex.Pattern;
            }
            return Double.toString(money);
         }
+
+        /**
+         * 生成length位的字母+数字
+         * @param length
+         * @return
+         */
+        public static String getStringRandom(int length) {
+            StringBuffer val = new StringBuffer();
+            Random random = new Random();
+            //参数length，表示生成几位随机数
+            int ischar = 0;
+            int isnum =0 ;
+            for(int i = 0; i < length; i++) {
+                String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
+                if(ischar >= 2){
+                    charOrNum = "num";
+                }
+                if(isnum >= 4){
+                    charOrNum = "char";
+                }
+                //输出字母还是数字
+                if( "char".equalsIgnoreCase(charOrNum) ) {
+                    val.append((char)(random.nextInt(26) + 65));
+                    ischar ++;
+                } else if( "num".equalsIgnoreCase(charOrNum) ) {
+                    val.append(random.nextInt(10));
+                    isnum ++;
+                }
+            }
+            return val.toString();
+        }
+
     }
