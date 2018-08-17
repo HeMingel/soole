@@ -72,4 +72,21 @@ public class UserSlbController {
     public BusinessMessage selectUserSlbDetail(String userId, Integer slbType) {
         return this.cmUserSlbService.selectUserSlbDetail(userId, slbType);
     }
+
+    /**
+     * 金币兑换搜了贝
+     * @param userId         用户ID
+     * @param walletPwd     登录密码
+     * @param transfAmount  兑换slb数量
+     */
+    @ApiOperation(value = "金币兑换搜了贝 ")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "form", required = true),
+            @ApiImplicitParam(name = "walletPwd", value = "登录密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "transfAmount", value = "兑换slb数量", paramType = "form", required = true)
+    })
+    @PostMapping("coin-to-slb")
+    public BusinessMessage transferToSLB(String userId,String walletPwd, String transfAmount) {
+        return this.thirdPartyWalletService.transferToSLB(userId, walletPwd, transfAmount);
+    }
 }
