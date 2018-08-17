@@ -25,6 +25,8 @@ public class QcloudSmsService {
     // NOTE: 这里的模板ID`7839`只是一个示例，
     // 真实的模板ID需要在短信控制台中申请
     int templateId = 168318;
+    //slb注册通知模板
+    int slbMsgId = 176602;
     // 签名
     // 真实的签名需要在短信控制台中申请，另外
     // 签名参数使用的是`签名内容`，而不是`签名ID`
@@ -46,6 +48,45 @@ public class QcloudSmsService {
             SmsMultiSenderResult result = msender.sendWithParam(zoneCode, mobile,
                     templateId, params, smsSign, "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
             //System.out.print("腾讯返回结果+++++++++++++++++++" + result);
+            JSONObject jsonObject = JSONObject.parseObject(result.toString());
+            String resultCode = jsonObject.getString("result");
+            String resultMsg = jsonObject.getString("errmsg");
+            if ("0".equals(resultCode)){
+                message.setSuccess(true);
+            }
+            //返回短信验证码
+            message.setCode(resultCode);
+            message.setMsg(resultMsg);
+        } catch (HTTPException e) {
+            // HTTP响应码错误
+            e.printStackTrace();
+        } catch (JSONException e) {
+            // json解析错误
+            e.printStackTrace();
+        } catch (IOException e) {
+            // 网络IO错误
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    /**
+     * 发送钱包注册密码
+     * @param mobile 手机号
+     * @param zoneCode 区号
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
+    public BusinessMessage sendSlbMsgId(String mobile[] ,String zoneCode,String userName,String password){
+        BusinessMessage message  = new BusinessMessage() ;
+        try {
+            //模板参数 {1} SLB用户名 {2} 手机号
+            String[] params = {userName, password};
+            SmsMultiSender msender = new SmsMultiSender(appid, appkey);
+            SmsMultiSenderResult result = msender.sendWithParam(zoneCode, mobile,
+                    slbMsgId, params, smsSign, "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
+            System.out.print("腾讯返回结果+++++++++++++++++++" + result);
             JSONObject jsonObject = JSONObject.parseObject(result.toString());
             String resultCode = jsonObject.getString("result");
             String resultMsg = jsonObject.getString("errmsg");
