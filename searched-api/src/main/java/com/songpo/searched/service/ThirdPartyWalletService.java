@@ -7,9 +7,11 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.entity.SlPhoneZone;
 import com.songpo.searched.entity.SlSystemConnector;
+import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlPhoneZoneMapper;
 import com.songpo.searched.mapper.SlSystemConnectorMapper;
+import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.mapper.SlUserMapper;
 import com.songpo.searched.util.AESUtils;
 
@@ -49,6 +51,10 @@ public class ThirdPartyWalletService {
     private SlUserMapper slUserMapper;
     @Autowired
     private SlSystemConnectorMapper slSystemConnectorMapper;
+    @Autowired
+    private SlTransactionDetailMapper slTransactionDetailMapper;
+    @Autowired
+    private SmsService smsService;
 
     /**
      * 获取 加密随机串
@@ -293,11 +299,6 @@ public class ThirdPartyWalletService {
                 }});
                 if (checkUserRegister(mobile, slPhoneZone.getMobilearea().toString())){
                     message = retunObject(mobile, slPhoneZone.getMobilearea().toString());
-                }else {
-                    // 注册 String mobile, String pwd, String moblieArea
-
-                   String res = UserRegister(mobile, BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                    message = retunObject(mobile, slPhoneZone.getMobilearea().toString());
                 }
             }
 
@@ -410,11 +411,11 @@ public class ThirdPartyWalletService {
     /**
      * 从金豆提取到SLB币
      * @param userId         用户ID
-     * @param walletPwd     登录密码
+     * @param platTransPwd   平台密码
      * @param transfAmount  兑换slb数量
      */
-    public BusinessMessage transferToSLB(String userId,String walletPwd, String transfAmount ){
-        log.debug("userId="+userId+",walletPwd="+walletPwd+",transfAmount="+transfAmount);
+    public BusinessMessage transferToSLB(String userId,String platTransPwd, String transfAmount ){
+        log.debug("userId="+userId+",transfAmount="+transfAmount);
         BusinessMessage message = new BusinessMessage();
         //获取用户信息
         SlUser slUser = slUserMapper.selectByPrimaryKey(userId);
@@ -437,10 +438,9 @@ public class ThirdPartyWalletService {
                     //获取钱包地址
                     walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                 }else {
-                    //用户注册钱包地址
-                    UserRegister(slUser.getPhone(), BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD, slPhoneZone.getMobilearea().toString());
-                    //获取钱包地址
-                    walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+                    message.setSuccess(false);
+                    message.setMsg("请先注册钱包APP会员");
+                    return message;
                 }
                 if (slUser.getCoin()>coin){
                     //公钥
@@ -449,7 +449,7 @@ public class ThirdPartyWalletService {
                     String noteStr =  String.valueOf(System.currentTimeMillis());
                     noteStr = StringUtils.leftPad(noteStr, 16,  "0");
 
-                    walletPwd = AESUtils.encode(walletPwd, noteStr);
+                    platTransPwd = AESUtils.encode(platTransPwd, noteStr);
 
                     //公钥加密随机串
                     String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
@@ -458,7 +458,7 @@ public class ThirdPartyWalletService {
                     //生成签名
                     SortedMap<String, String> packageParams = new TreeMap<String, String>();
                     packageParams.put("walletAddress", walletAddress);
-                    packageParams.put("walletPwd", walletPwd);
+                    packageParams.put("platTransPwd", platTransPwd);
                     packageParams.put("transfAmount", transfAmount);
                     packageParams.put("noteStr", encodedNoteStr);
                     packageParams.put("orderSn", orderSn);
@@ -468,7 +468,7 @@ public class ThirdPartyWalletService {
                     String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
                     Map<String,Object> params = new HashMap<String,Object>();
                     params.put("walletAddress", walletAddress);
-                    params.put("walletPwd", walletPwd);
+                    params.put("platTransPwd", platTransPwd);
                     params.put("transfAmount", transfAmount.toString());
                     params.put("noteStr", encodedNoteStr);
                     params.put("orderSn", orderSn);
@@ -480,13 +480,18 @@ public class ThirdPartyWalletService {
                     Integer code =  jsonObject.getInteger("resultCode");
                     if (0 == code){
                         slUser.setCoin(slUser.getCoin()-coin);
+                        //扣除用户金币
                         slUserMapper.updateByPrimaryKey(slUser);
+                        //保存交易明细
+                        slTransactionDetailMapper.insertSelective(new SlTransactionDetail(){{
+                            setTargetId(slUser.getId());
+                            setType(105);
+                            setCoin(coin);
+                            setDealType(5);
+                            setCreateTime(new Date());
+                        }});
                         message.setMsg("slb兑换成功");
                         message.setSuccess(true);
-                    }else if (-100 == code){
-                        message.setMsg("先去钱包APP设置支付密码");
-                        message.setSuccess(false);
-                        return message;
                     }else {
                         message.setMsg(jsonObject.getString("message"));
                         message.setSuccess(false);
@@ -511,23 +516,23 @@ public class ThirdPartyWalletService {
         return message;
     }
     /**
-     *1、 ROUND_UP：远离零方向舍入。向绝对值最大的方向舍入，只要舍弃位非0即进位。
-     *2、 ROUND_DOWN：趋向零方向舍入。向绝对值最小的方向输入，所有的位都要舍弃，不存在进位情况。
-     *3、 ROUND_CEILING：向正无穷方向舍入。向正最大方向靠拢。若是正数，舍入行为类似于ROUND_UP，若为负数，舍入行为类似于ROUND_DOWN。Math.round()方法就是使用的此模式。
-     *4、 ROUND_FLOOR：向负无穷方向舍入。向负无穷方向靠拢。若是正数，舍入行为类似于ROUND_DOWN；若为负数，舍入行为类似于ROUND_UP。
-     *5、 HALF_UP：最近数字舍入(5进)。这是我们最经典的四舍五入。
-     *6、 HALF_DOWN：最近数字舍入(5舍)。在这里5是要舍弃的。
-     *7、 HAIL_EVEN：银行家舍入法。
-     * 金币转化搜了贝 根据金币转化率
-     * @param toCoin 转化的金币
-     * @return
+     * 查找搜了贝汇率
      */
-    public String coinToSlb( Integer toCoin){
-        //获取转换率
-        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
-            setVar("bean");
-        }});
-        BigDecimal slb = BigDecimal.valueOf(toCoin).divide(new BigDecimal(slSystemConnector.getAppId()),8,BigDecimal.ROUND_CEILING);
-        return slb.toString();
+    public BusinessMessage selectSlbRate(){
+        log.debug("查询搜了贝汇率开始");
+        BusinessMessage message = new BusinessMessage();
+        try {
+            SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+                setVar("bean");
+            }});
+            message.setMsg("查询成功");
+            message.setData(slSystemConnector);
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("查询失败",e);
+            message.setSuccess(false);
+            message.setMsg("查询失败");
+        }
+        return message;
     }
 }

@@ -244,4 +244,60 @@ public class SmsService {
         }
         return message;
     }
+
+    /**
+     * 发送钱包app注册通知
+     *
+     * @param phone 手机号码
+     * @param zone 地区
+     * @param password 密码
+     * @return 发送结果
+     */
+    public BusinessMessage<SendSmsResponse> sendMess(String phone, String zone, String password) {
+        log.debug("发送钱包app注册通知，手机号码：{}", phone);
+        BusinessMessage<SendSmsResponse> message = new BusinessMessage<>();
+        try {
+            //设置超时时间-可自行调整
+            System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
+            System.setProperty("sun.net.client.defaultReadTimeout", "10000");
+            //初始化ascClient需要的几个参数
+            final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
+            final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
+            //替换成你的AK
+            final String accessKeyId = "LTAI4tIx1Gifh9xz";//你的accessKeyId,参考本文档步骤2
+            final String accessKeySecret = "MTuTblw21E3YLGDESEnzN8cGPf08RE";//你的accessKeySecret，参考本文档步骤2
+            //初始化ascClient,暂时不支持多region（请勿修改）
+            IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+            IAcsClient acsClient = new DefaultAcsClient(profile);
+            //组装请求对象
+            SendSmsRequest request = new SendSmsRequest();
+            //使用post提交
+            request.setMethod(MethodType.POST);
+            //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,登录密码类型的短信推荐使用单条调用的方式
+            request.setPhoneNumbers(phone);
+            //必填:短信签名-可在短信控制台中找到
+            request.setSignName("搜了平台");
+            //必填:短信模板-可在短信控制台中找到
+            if(null==zone||"中国大陆".equals(zone)){
+                request.setTemplateCode("SMS_142382140");
+            }else {
+                request.setTemplateCode("SMS_142387110");
+            }
+            request.setTemplateParam("{\"phone\":\"" + phone + "\",\"password\":\"" + password + "\"}");
+            SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+            if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
+                //请求成功
+                log.debug("钱包app注册通知发送成功", sendSmsResponse);
+                message.setData(sendSmsResponse);
+                message.setSuccess(true);
+            }else {
+                log.debug("钱包app注册通知发送失败 {}",sendSmsResponse.getMessage());
+            }
+        } catch (Exception e) {
+            log.error("发送钱包app注册通知失败，{}", e);
+        }
+        return message;
+    }
+
 }

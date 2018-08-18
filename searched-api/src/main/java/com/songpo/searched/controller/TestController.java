@@ -322,7 +322,7 @@ public class TestController {
     //获取钱包地址
     @GetMapping("test9")
     public String test90(String phone ){
-        String  message = thirdPartyWalletService.getWalletList("13511112222","86");
+        String  message = thirdPartyWalletService.getWalletList("15264553983","86");
         return  message;
     }
     //检验是否注册
@@ -408,14 +408,14 @@ public class TestController {
     @GetMapping("test16")
     public void test16(){
         //钱包地址
-        String walletAddress = "13X1fWiedxuFyz8aPLQ8CtNT9rzK7dCXnn";
+        String walletAddress = "1BwM1YGEmuQdzXhUpUUL37wX1sGCukp8ky";
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
         String noteStr =  String.valueOf(System.currentTimeMillis());
         noteStr = StringUtils.leftPad(noteStr, 16,  "0");
         //加密登录密码
-        String walletPwd = "gy812337967";
+        String walletPwd = "111111";
         walletPwd = AESUtils.encode(walletPwd, noteStr);
 
         //支付金额
@@ -423,7 +423,7 @@ public class TestController {
 
         //公钥加密随机串
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        String orderSn = "201808161200000";
+        String orderSn = "201808171200000";
 
         //生成签名
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
@@ -448,5 +448,15 @@ public class TestController {
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
         System.out.println(result);
+    }
+
+
+    @Autowired
+    private SmsService smsService;
+    @GetMapping("test1314")
+    public BusinessMessage test1314(){
+        BusinessMessage message = new BusinessMessage();
+        message = smsService.sendMess("15264553983","中国大陆", SLStringUtils.getStringRandom(6));
+        return message;
     }
 }
