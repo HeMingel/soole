@@ -292,7 +292,19 @@ public class SmsService {
                 message.setData(sendSmsResponse);
                 message.setSuccess(true);
             }else {
-                log.debug("钱包app注册通知发送失败 {}",sendSmsResponse.getMessage());
+                log.debug("钱包app注册阿里云通知发送失败 {}",sendSmsResponse.getMessage());
+                //启用腾讯云短信备用通道
+                SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                    setZone(zone);
+                }});
+                String mobile[] = new String[]{phone};
+                message =  qcloudSmsService.sendSlbMsgId(mobile,slPhoneZone.getMobilearea().toString(),phone, password);
+                if ("0".equals(message.getCode())) {
+                    //请求成功
+                    log.debug("腾讯钱包app注册通知发送成功，用户：{}",phone);
+                }else{
+                    log.debug("腾讯钱包app注册通知发送失败 用户：{}",phone);
+                }
             }
         } catch (Exception e) {
             log.error("发送钱包app注册通知失败，{}", e);
