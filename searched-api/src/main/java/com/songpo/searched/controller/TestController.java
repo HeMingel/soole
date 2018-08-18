@@ -459,4 +459,18 @@ public class TestController {
         message = smsService.sendMess("15264553983","中国大陆", SLStringUtils.getStringRandom(6));
         return message;
     }
+
+    @GetMapping("test17")
+    public void Test17() throws Exception {
+        cmOrderService.transferSlbToWalletBefore();
+    }
+    @GetMapping("test18")
+    public void Test18() throws Exception {
+        cmOrderService.transferSlbToWalletAfter();
+    }
+
+    @GetMapping("test19")
+    public void Test19() throws Exception {
+        thirdPartyWalletService.getSlbAcount("15264553983");
+    }
 }

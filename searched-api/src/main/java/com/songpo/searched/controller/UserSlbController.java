@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 @Api(description = "用户搜了贝管理")
@@ -57,7 +58,17 @@ public class UserSlbController {
     @GetMapping("select-slb")
     public BusinessMessage selectUserSlb() {
         return this.cmUserSlbService.selectUserSlb();
-//        return  thirdPartyWalletService.getSlbScAmount();
+    }
+
+    /**
+     * 查询搜了贝(最新)
+     * @param  phone
+     * @return
+     */
+    @ApiOperation(value = "查询搜了贝最新")
+    @GetMapping("select-slb-new")
+    public BusinessMessage selectUserSlbNew(String phone) {
+        return thirdPartyWalletService.selectUserSlbNew(phone);
     }
 
     /**

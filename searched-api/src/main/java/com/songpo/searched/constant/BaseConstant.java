@@ -87,6 +87,10 @@ public class BaseConstant {
      * 从金豆提取到SLB币
      */
     public static final String WALLET_API_TRANSFERTOSLB = "wallet/externalWallet/transferToSLB.htm";
+    /**
+     * 查询某个钱包SLB余额
+     */
+    public static final String WALLET_API_GETSLBAMOUNT = "wallet/externalWallet/getSLBAmount.htm";
 
     /**
      * 平台登录密码

@@ -22,6 +22,7 @@ import com.songpo.searched.util.RSAUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -286,7 +287,6 @@ public class ThirdPartyWalletService {
      */
     @Transactional
     public BusinessMessage getSlbScAmount(String phone){
-//        SlUser user = loginUserService.getCurrentLoginUser();
         SlUser user = slUserMapper.selectOne(new SlUser(){{
             setPhone(phone);
         }});
@@ -533,6 +533,138 @@ public class ThirdPartyWalletService {
             message.setSuccess(false);
             message.setMsg("查询失败");
         }
+        return message;
+    }
+
+    /**
+     * 查询某个钱包SLB余额
+     * @param phone 手机号
+     * @return
+     */
+    public BusinessMessage getSlbAcount(String phone){
+        SlUser user = slUserMapper.selectOne(new SlUser(){{
+            setPhone(phone);
+        }});
+        BusinessMessage message = new BusinessMessage();
+        if (null != user){
+            String mobile = user.getPhone();
+            SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                setZone(user.getZone());
+            }});
+            if (checkUserRegister(mobile, slPhoneZone.getMobilearea().toString())){
+                //钱包地址
+                String walletAddress = getWalletList(phone,slPhoneZone.getMobilearea()+"");
+                //公钥
+                String publicKey = env.getProperty("wallet.publicKey");
+                //生成加密随机串
+                String noteStr =  getNoteStr();
+                noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+
+                //公钥加密随机串
+                String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+                String platTransPwd = env.getProperty("wallet.platTransPwd");
+                String endcodePaltTransPwd = AESUtils.encode(platTransPwd, noteStr);
+
+                //生成签名
+                SortedMap<String, String> packageParams = new TreeMap<String, String>();
+                packageParams.put("walletAddress", walletAddress);
+                packageParams.put("noteStr", encodedNoteStr);
+                packageParams.put("platTransPwd", endcodePaltTransPwd);
+
+
+                String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+                String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_GETSLBAMOUNT;
+                Map<String,Object> params = new HashMap<String,Object>();
+                params.put("walletAddress", walletAddress);
+                params.put("noteStr", encodedNoteStr);
+                params.put("platTransPwd", endcodePaltTransPwd);
+
+                params.put("sign", sign);
+                String result = HttpUtil.doPost(url, params);
+                //解析返回值 转换成json格式
+                JSONObject jsonObject = JSONObject.parseObject(result);
+                if (jsonObject.getInteger("resultCode") == 0){
+                    message.setSuccess(true);
+                    message.setCode(jsonObject.getString("resultCode"));
+                    message.setData(jsonObject.get("data"));
+                    message.setMsg(jsonObject.getString("message"));
+                }else{
+                    message.setSuccess(false);
+                }
+            }
+        }
+        return message;
+    }
+    /**
+     * 查询搜了贝(最新)
+     * @param phone
+     */
+    public BusinessMessage selectUserSlbNew(String phone){
+        BusinessMessage message = new BusinessMessage();
+        Map mapScAmount = (Map<String,String>)getSlbScAmount(phone).getData();
+        Map mapAmount = (Map<String,String>)getSlbAcount(phone).getData();
+        try {
+            if (null != mapScAmount && mapScAmount.size()>0){
+                if (null != mapAmount && mapAmount.size()>0){
+                    mapScAmount.put("amount",Double.parseDouble(mapScAmount.get("allScAmount").toString())+(Double.parseDouble(mapAmount.get("amount")+""))+"");
+                    message.setData(mapScAmount);
+                }else {
+                    mapScAmount.put("amount",mapScAmount.get("allScAmount")+"");
+                    message.setData(mapScAmount);
+                }
+            }else {
+                if (null != mapAmount && mapAmount.size()>0){
+                    mapAmount.put("amount",mapAmount.get("amount")+"");
+                    mapAmount.put("allScAmount","0.00");
+                    mapAmount.put("aAmount","0.00");
+                    mapAmount.put("eScAmount","0.00");
+                    mapAmount.put("aReleaseAmount","0.00");
+                    mapAmount.put("dScAmount","0.00");
+                    mapAmount.put("eAmount","0.00");
+                    mapAmount.put("allReleaseAmount","0.00");
+                    mapAmount.put("cScAmount","0.00");
+                    mapAmount.put("dAmount","0.00");
+                    mapAmount.put("cAmount","0.00");
+                    mapAmount.put("allAmount","0.00");
+                    mapAmount.put("bReleaseBmount","0.00");
+                    mapAmount.put("bScAmount","0.00");
+                    mapAmount.put("bAmount","0.00");
+                    mapAmount.put("eReleaseBmount","0.00");
+                    mapAmount.put("cReleaseBmount","0.00");
+                    mapAmount.put("aScAmount","0.00");
+                    mapAmount.put("dReleaseBmount","0.00");
+                    message.setData(mapAmount);
+                }else {
+                    mapAmount.put("amount","0.00");
+                    mapAmount.put("allScAmount","0.00");
+                    mapAmount.put("aAmount","0.00");
+                    mapAmount.put("eScAmount","0.00");
+                    mapAmount.put("aReleaseAmount","0.00");
+                    mapAmount.put("dScAmount","0.00");
+                    mapAmount.put("eAmount","0.00");
+                    mapAmount.put("allReleaseAmount","0.00");
+                    mapAmount.put("cScAmount","0.00");
+                    mapAmount.put("dAmount","0.00");
+                    mapAmount.put("cAmount","0.00");
+                    mapAmount.put("allAmount","0.00");
+                    mapAmount.put("bReleaseBmount","0.00");
+                    mapAmount.put("bScAmount","0.00");
+                    mapAmount.put("bAmount","0.00");
+                    mapAmount.put("eReleaseBmount","0.00");
+                    mapAmount.put("cReleaseBmount","0.00");
+                    mapAmount.put("aScAmount","0.00");
+                    mapAmount.put("dReleaseBmount","0.00");
+                    message.setData(mapAmount);
+                }
+            }
+            message.setMsg("查询成功");
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("查询搜了贝(最新)",e);
+            message.setSuccess(false);
+            message.setMsg("查询搜了贝(最新)异常");
+        }
+
         return message;
     }
 }

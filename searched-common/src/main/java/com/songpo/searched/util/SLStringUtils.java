@@ -2,6 +2,7 @@ package com.songpo.searched.util;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -432,5 +433,20 @@ import java.util.regex.Pattern;
             }
             return val.toString();
         }
-
+        /**
+         * 把字符串前后的0去掉
+         * @param number
+         * @return
+         */
+        public static String getPrettyNumber(String number) {
+            String strMsg = "";
+            try{
+                strMsg =BigDecimal.valueOf(Double.parseDouble(number)).stripTrailingZeros().toPlainString();
+            }
+            catch(Exception ex){
+                strMsg = "";
+                ex.printStackTrace();
+            }
+            return strMsg;
+        }
     }
