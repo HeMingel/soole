@@ -2936,7 +2936,7 @@ public class CmOrderService {
                 //没有用户就开始注册
                 if (!isRegister) {
                     //查询用户手机号地区代码
-                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),SLStringUtils.getStringRandom(6),slPhoneZone.getMobilearea().toString());
                     Integer code = Integer.parseInt(codeStr);
                     if (code != 0) {
                         saveOrderHandle(detail.getOrderId()+"1", user.getId(), "用户注册失败");
@@ -3005,7 +3005,7 @@ public class CmOrderService {
             if ("0".equals(returnCode) ){
                 log.debug("用户装入SLB成功-----------------用户id：{}",user == null ? "用户为空": user.getId());
             } else {
-                saveOrderHandle(detail.getOrderId()+"1", user.getId(), "用户转入SLB到钱包失败");
+                saveOrderHandle(detail.getOrderId()+"1",user == null ? "用户为空": user.getId(), "用户转入SLB到钱包失败");
             }
         }
 
@@ -3035,7 +3035,7 @@ public class CmOrderService {
                 //没有用户就开始注册
                 if (!isRegister) {
                     //查询用户手机号地区代码
-                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),BaseConstant.WALLET_DEFAULT_LOGIN_PASSWORD,slPhoneZone.getMobilearea().toString());
+                    String codeStr = thirdPartyWalletService.UserRegister(user.getPhone(),SLStringUtils.getStringRandom(6),slPhoneZone.getMobilearea().toString());
                     Integer code = Integer.parseInt(codeStr);
                     if (code != 0) {
                         saveOrderHandle(orderId,user.getId(),"用户注册失败");

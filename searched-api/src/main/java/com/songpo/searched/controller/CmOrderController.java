@@ -754,4 +754,20 @@ public class CmOrderController {
         }
         return message;
     }
+
+    /**
+     * 给以前购买的区块链商品（助力购物）导入钱包APP中的搜了贝
+     */
+    @GetMapping("transfer-slb-Wallet")
+    public BusinessMessage transferSlbToWallet(){
+        BusinessMessage message = new BusinessMessage();
+        try {
+            cmOrderService.transferSlbToWallet();
+            cmOrderService.transferSlbToWalletUser();
+            message.setSuccess(true);
+        }catch (Exception e){
+            log.error("转入SLB出错",e);
+        }
+        return message;
+    }
 }
