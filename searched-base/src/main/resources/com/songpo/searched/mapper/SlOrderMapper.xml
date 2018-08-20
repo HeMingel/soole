@@ -32,6 +32,11 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
     <result column="virtual_open" jdbcType="INTEGER" property="virtualOpen" />
+    <result column="out_order_number" jdbcType="VARCHAR" property="outOrderNumber" />
+    <result column="total_bean" jdbcType="INTEGER" property="totalBean" />
+    <result column="bp_id" jdbcType="VARCHAR" property="bpId" />
+    <result column="addr_id" jdbcType="VARCHAR" property="addrId" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -40,6 +45,7 @@
     id, serial_number, user_id, total_amount, deduct_total_pulse, payment_state, payment_channel, 
     pay_time, pay_time_stamp, status, consigneeName, consigneePhone, province, city, 
     county, detailed, spell_group_status, group_master, share_count, create_time, updated_at, 
-    activity_product_id, created_at, remark, type, fee, virtual_open
+    activity_product_id, created_at, remark, type, fee, virtual_open, out_order_number, 
+    total_bean, bp_id, addr_id, del_status
   </sql>
 </mapper>

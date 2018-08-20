@@ -179,7 +179,7 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀 9新人专享
      */
     private Integer type;
 
@@ -782,14 +782,14 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀 9新人专享
      *
      * @return type - 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀 9新人专享
      */
     public Integer getType() {
         return type;
@@ -801,14 +801,14 @@ public class SlOrderDetail implements Serializable {
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀 9新人专享
      *
      * @param type 1：（普通商品）普通订单 
 2：（人气拼团）拼团订单 
 3 : （云易购物）预售订单 
 4 : （搜贝商品）搜贝商品 
 5 : （广告赠送）消费奖励 
-6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀
+6 : （优惠购物）豆赚 7:分享奖励 8限时秒杀 9新人专享
      */
     public void setType(Integer type) {
         this.type = type;

@@ -106,6 +106,12 @@ public class SlProduct implements Serializable {
     private Boolean soldOut;
 
     /**
+     * 商品排序字段(数值越大越靠前)
+     */
+    @Column(name = "product_sort")
+    private Integer productSort;
+
+    /**
      * 逻辑删除0不删除1删除
      */
     private Boolean del;
@@ -456,6 +462,24 @@ public class SlProduct implements Serializable {
     }
 
     /**
+     * 获取商品排序字段(数值越大越靠前)
+     *
+     * @return product_sort - 商品排序字段(数值越大越靠前)
+     */
+    public Integer getProductSort() {
+        return productSort;
+    }
+
+    /**
+     * 设置商品排序字段(数值越大越靠前)
+     *
+     * @param productSort 商品排序字段(数值越大越靠前)
+     */
+    public void setProductSort(Integer productSort) {
+        this.productSort = productSort;
+    }
+
+    /**
      * 获取逻辑删除0不删除1删除
      *
      * @return del - 逻辑删除0不删除1删除
@@ -622,6 +646,7 @@ public class SlProduct implements Serializable {
         sb.append(", recommend=").append(recommend);
         sb.append(", postage=").append(postage);
         sb.append(", soldOut=").append(soldOut);
+        sb.append(", productSort=").append(productSort);
         sb.append(", del=").append(del);
         sb.append(", ship=").append(ship);
         sb.append(", antistop=").append(antistop);
