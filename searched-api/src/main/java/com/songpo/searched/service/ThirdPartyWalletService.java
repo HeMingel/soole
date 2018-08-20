@@ -13,12 +13,9 @@ import com.songpo.searched.mapper.SlPhoneZoneMapper;
 import com.songpo.searched.mapper.SlSystemConnectorMapper;
 import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.mapper.SlUserMapper;
-import com.songpo.searched.util.AESUtils;
+import com.songpo.searched.util.*;
 
 
-import com.songpo.searched.util.HttpUtil;
-import com.songpo.searched.util.MD5SignUtils;
-import com.songpo.searched.util.RSAUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +83,11 @@ public class ThirdPartyWalletService {
      * @return 0:成功  小于0：操作不成功
      */
     public String UserRegister (String mobile, String pwd, String moblieArea){
+        //查询用户
+        String finalMobile = mobile;
+        SlUser user = slUserMapper.selectOne(new SlUser(){{
+            setPhone(finalMobile);
+        }});
         //截取指定的电话号码
         mobile = subPhone(mobile);
 
@@ -120,10 +122,18 @@ public class ThirdPartyWalletService {
             String result = HttpUtil.doPost(url, params);
             //返回值处理
             JSONObject jsonObject = JSONObject.parseObject(result);
-            String  codeMap =  jsonObject.get("resultCode").toString();
+            returnStr =  jsonObject.get("resultCode").toString();
             String  messageMap =  jsonObject.get("message").toString();
             log.debug(messageMap);
-            returnStr = codeMap;
+            //注册成功 发送密码短信
+            if ("0".equals( returnStr)){
+                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setMobilearea(Integer.parseInt(moblieArea));
+                }});
+               if (!SLStringUtils.isEmpty(moblieArea)){
+                   smsService.sendMess(mobile,slPhoneZone.getZone(),pwd);
+               }
+            }
         } catch (Exception e ) {
             log.error("钱包APP注册出错",e);
         }
