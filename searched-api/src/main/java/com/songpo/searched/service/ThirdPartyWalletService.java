@@ -169,7 +169,6 @@ public class ThirdPartyWalletService {
             packageParams.put("noteStr", encodedNoteStr);
             String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
             String url =  env.getProperty("wallet.url")+BaseConstant.WALLET_API_TRANSFERTOSLBSC;
-            System.out.println("url=="+url);
             Map<String,Object> params = new HashMap<String,Object>();
             params.put("walletAddress", walletAddress);
             params.put("platTransPwd", endcodePaltTransPwd);
@@ -184,7 +183,6 @@ public class ThirdPartyWalletService {
             params.put("noteStr", encodedNoteStr);
             params.put("sign", sign);
             String result = HttpUtil.doPost(url, params);
-            System.out.println("result=="+result);
             //返回值处理
             JSONObject jsonObject = JSONObject.parseObject(result);
             String codeMap = jsonObject.get("resultCode").toString();

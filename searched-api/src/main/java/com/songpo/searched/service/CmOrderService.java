@@ -2647,8 +2647,6 @@ public class CmOrderService {
                 String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), loginPwd, slPhoneZone.getMobilearea().toString());
                 //注册成功
                 if ("0".equals(res)){
-                    //发送钱包用户名和密码
-                    smsService.sendMess(slUser.getPhone(),slPhoneZone.getZone(),loginPwd);
                     //获取钱包地址
                     String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                     if ("".equals(walletList)){
@@ -2745,8 +2743,6 @@ public class CmOrderService {
                 String res = thirdPartyWalletService.UserRegister(slUser.getPhone(), loginPwd, slPhoneZone.getMobilearea().toString());
                 //注册成功
                 if ("0".equals(res)){
-                    //发送钱包用户名和密码
-                    smsService.sendMess(slUser.getPhone(),slPhoneZone.getZone(),loginPwd);
                     //获取钱包地址
                     String walletList = thirdPartyWalletService.getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                     if ("".equals(walletList)){
