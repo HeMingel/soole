@@ -146,6 +146,8 @@ public class SystemController {
                         data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                         //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
                         data.put("circleState", user.getCircleState());
+                        //手机号地区
+                        data.put("zone", user.getZone());
                         message.setData(data);
                         message.setSuccess(true);
                     } else {
@@ -172,6 +174,8 @@ public class SystemController {
                         data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
                         //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
                         data.put("circleState", user.getCircleState());
+                        //手机号地区
+                        data.put("zone", user.getZone());
                         message.setData(data);
                         message.setSuccess(true);
                     }
@@ -273,7 +277,8 @@ public class SystemController {
                         data.put("email", user.getEmail());
                         // 是否设置支付密码
                         data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
-
+                        //手机号地区
+                        data.put("zone", user.getZone());
                         message.setData(data);
                         message.setSuccess(true);
 
@@ -316,7 +321,8 @@ public class SystemController {
                 data.put("email", user.getEmail());
                 // 是否设置支付密码
                 data.put("hasSetSecret", StringUtils.isNotBlank(user.getPayPassword()));
-
+                //手机号地区
+                data.put("zone", user.getZone());
                 message.setData(data);
             } else {
                 message.setMsg("用户信息不存在");
@@ -538,6 +544,8 @@ public class SystemController {
             data.put("loginCount", user.getLoginCount());
             //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
             data.put("circleState", user.getCircleState());
+            //手机号地区
+            data.put("zone", user.getZone());
             message.setData(data);
             message.setSuccess(true);
         }
@@ -707,6 +715,8 @@ public class SystemController {
                     data.put("loginCount", user.getLoginCount());
                     //搜圈账号动态0正常1禁用（搜圈乱发动态冻结账号的搜圈发布功能）
                     data.put("circleState", user.getCircleState());
+                    //手机号地区
+                    data.put("zone", user.getZone());
 
                     // 清除验证码
                     this.smsPasswordCache.evict(phone);
