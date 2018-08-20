@@ -157,47 +157,52 @@ public class ThirdPartyWalletService {
                                    String releasePercent,String transfAmount,String orderSn,String batchType){
         log.debug("钱包 {} 开始转入{}slb ",walletAddress,transfAmount);
         String returnStr = "";
-       String  noteStr =  getNoteStr();
-        //公钥
-        String publicKey = env.getProperty("wallet.publicKey");
-        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        String  platTransPwd = env.getProperty("wallet.platTransPwd");
-        String endcodePaltTransPwd = AESUtils.encode(platTransPwd, noteStr);
-        //生成签名
-        SortedMap<String, String> packageParams = new TreeMap<String, String>();
-        packageParams.put("walletAddress", walletAddress);
-        packageParams.put("platTransPwd", endcodePaltTransPwd);
-        packageParams.put("lockBeginDate", lockBeginDate);
-        packageParams.put("lockEndDate", lockEndDate);
-        packageParams.put("releaseNum", releaseNum);
-        packageParams.put("releasePercent", releasePercent);
-        packageParams.put("transfAmount", transfAmount);
-        packageParams.put("noteStr", encodedNoteStr);
-        packageParams.put("orderSn", orderSn);
-        packageParams.put("batchType", batchType);
-        packageParams.put("noteStr", encodedNoteStr);
-        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
-        String url =  env.getProperty("wallet.url")+BaseConstant.WALLET_API_TRANSFERTOSLBSC;
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("walletAddress", walletAddress);
-        params.put("platTransPwd", endcodePaltTransPwd);
-        params.put("lockBeginDate", lockBeginDate);
-        params.put("lockEndDate", lockEndDate);
-        params.put("releaseNum", releaseNum);
-        params.put("releasePercent", releasePercent);
-        params.put("transfAmount", transfAmount);
-        params.put("noteStr", encodedNoteStr);
-        params.put("orderSn", orderSn);
-        params.put("batchType", batchType);
-        params.put("noteStr", encodedNoteStr);
-        params.put("sign", sign);
-        String result = HttpUtil.doPost(url, params);
-        //返回值处理
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        String codeMap = jsonObject.get("resultCode").toString();
-        String messageMap = jsonObject.get("message").toString();
-        log.debug(messageMap);
-        returnStr = codeMap;
+        try {
+            String  noteStr =  getNoteStr();
+            //公钥
+            String publicKey = env.getProperty("wallet.publicKey");
+            String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+            String  platTransPwd = env.getProperty("wallet.platTransPwd");
+            String endcodePaltTransPwd = AESUtils.encode(platTransPwd, noteStr);
+            //生成签名
+            SortedMap<String, String> packageParams = new TreeMap<String, String>();
+            packageParams.put("walletAddress", walletAddress);
+            packageParams.put("platTransPwd", endcodePaltTransPwd);
+            packageParams.put("lockBeginDate", lockBeginDate);
+            packageParams.put("lockEndDate", lockEndDate);
+            packageParams.put("releaseNum", releaseNum);
+            packageParams.put("releasePercent", releasePercent);
+            packageParams.put("transfAmount", transfAmount);
+            packageParams.put("noteStr", encodedNoteStr);
+            packageParams.put("orderSn", orderSn);
+            packageParams.put("batchType", batchType);
+            packageParams.put("noteStr", encodedNoteStr);
+            String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+            String url =  env.getProperty("wallet.url")+BaseConstant.WALLET_API_TRANSFERTOSLBSC;
+            Map<String,Object> params = new HashMap<String,Object>();
+            params.put("walletAddress", walletAddress);
+            params.put("platTransPwd", endcodePaltTransPwd);
+            params.put("lockBeginDate", lockBeginDate);
+            params.put("lockEndDate", lockEndDate);
+            params.put("releaseNum", releaseNum);
+            params.put("releasePercent", releasePercent);
+            params.put("transfAmount", transfAmount);
+            params.put("noteStr", encodedNoteStr);
+            params.put("orderSn", orderSn);
+            params.put("batchType", batchType);
+            params.put("noteStr", encodedNoteStr);
+            params.put("sign", sign);
+            String result = HttpUtil.doPost(url, params);
+            //返回值处理
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            String codeMap = jsonObject.get("resultCode").toString();
+            String messageMap = jsonObject.get("message").toString();
+            log.debug(messageMap);
+            returnStr = codeMap;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return returnStr;
     }
     /**

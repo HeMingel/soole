@@ -39,7 +39,7 @@ public class SlOrder implements Serializable {
     private Integer deductTotalPulse;
 
     /**
-     * 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
+     * 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消 103拍卖退款
      */
     @Column(name = "payment_state")
     private Integer paymentState;
@@ -163,6 +163,36 @@ public class SlOrder implements Serializable {
     @Column(name = "virtual_open")
     private Integer virtualOpen;
 
+    /**
+     * 商户订单号(拍卖新字段)
+     */
+    @Column(name = "out_order_number")
+    private String outOrderNumber;
+
+    /**
+     * 订单银豆总额(拍卖新字段)
+     */
+    @Column(name = "total_bean")
+    private Integer totalBean;
+
+    /**
+     * 支付方式(关联base_payment表ID)(拍卖新字段)
+     */
+    @Column(name = "bp_id")
+    private String bpId;
+
+    /**
+     * 收货地址ID(拍卖新字段)
+     */
+    @Column(name = "addr_id")
+    private String addrId;
+
+    /**
+     * 虚拟删除   1正常(默认)  2虚拟删除(拍卖新字段)
+     */
+    @Column(name = "del_status")
+    private Integer delStatus;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -256,18 +286,18 @@ public class SlOrder implements Serializable {
     }
 
     /**
-     * 获取2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
+     * 获取2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消 103拍卖退款
      *
-     * @return payment_state - 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
+     * @return payment_state - 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消 103拍卖退款
      */
     public Integer getPaymentState() {
         return paymentState;
     }
 
     /**
-     * 设置2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
+     * 设置2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消 103拍卖退款
      *
-     * @param paymentState 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消
+     * @param paymentState 2：待支付 1：支付成功 0：支付失败 101为已失效 102已取消 103拍卖退款
      */
     public void setPaymentState(Integer paymentState) {
         this.paymentState = paymentState;
@@ -655,6 +685,96 @@ public class SlOrder implements Serializable {
         this.virtualOpen = virtualOpen;
     }
 
+    /**
+     * 获取商户订单号(拍卖新字段)
+     *
+     * @return out_order_number - 商户订单号(拍卖新字段)
+     */
+    public String getOutOrderNumber() {
+        return outOrderNumber;
+    }
+
+    /**
+     * 设置商户订单号(拍卖新字段)
+     *
+     * @param outOrderNumber 商户订单号(拍卖新字段)
+     */
+    public void setOutOrderNumber(String outOrderNumber) {
+        this.outOrderNumber = outOrderNumber == null ? null : outOrderNumber.trim();
+    }
+
+    /**
+     * 获取订单银豆总额(拍卖新字段)
+     *
+     * @return total_bean - 订单银豆总额(拍卖新字段)
+     */
+    public Integer getTotalBean() {
+        return totalBean;
+    }
+
+    /**
+     * 设置订单银豆总额(拍卖新字段)
+     *
+     * @param totalBean 订单银豆总额(拍卖新字段)
+     */
+    public void setTotalBean(Integer totalBean) {
+        this.totalBean = totalBean;
+    }
+
+    /**
+     * 获取支付方式(关联base_payment表ID)(拍卖新字段)
+     *
+     * @return bp_id - 支付方式(关联base_payment表ID)(拍卖新字段)
+     */
+    public String getBpId() {
+        return bpId;
+    }
+
+    /**
+     * 设置支付方式(关联base_payment表ID)(拍卖新字段)
+     *
+     * @param bpId 支付方式(关联base_payment表ID)(拍卖新字段)
+     */
+    public void setBpId(String bpId) {
+        this.bpId = bpId == null ? null : bpId.trim();
+    }
+
+    /**
+     * 获取收货地址ID(拍卖新字段)
+     *
+     * @return addr_id - 收货地址ID(拍卖新字段)
+     */
+    public String getAddrId() {
+        return addrId;
+    }
+
+    /**
+     * 设置收货地址ID(拍卖新字段)
+     *
+     * @param addrId 收货地址ID(拍卖新字段)
+     */
+    public void setAddrId(String addrId) {
+        this.addrId = addrId == null ? null : addrId.trim();
+    }
+
+    /**
+     * 获取虚拟删除   1正常(默认)  2虚拟删除(拍卖新字段)
+     *
+     * @return del_status - 虚拟删除   1正常(默认)  2虚拟删除(拍卖新字段)
+     */
+    public Integer getDelStatus() {
+        return delStatus;
+    }
+
+    /**
+     * 设置虚拟删除   1正常(默认)  2虚拟删除(拍卖新字段)
+     *
+     * @param delStatus 虚拟删除   1正常(默认)  2虚拟删除(拍卖新字段)
+     */
+    public void setDelStatus(Integer delStatus) {
+        this.delStatus = delStatus;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -688,6 +808,11 @@ public class SlOrder implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", fee=").append(fee);
         sb.append(", virtualOpen=").append(virtualOpen);
+        sb.append(", outOrderNumber=").append(outOrderNumber);
+        sb.append(", totalBean=").append(totalBean);
+        sb.append(", bpId=").append(bpId);
+        sb.append(", addrId=").append(addrId);
+        sb.append(", delStatus=").append(delStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
