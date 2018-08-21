@@ -698,23 +698,24 @@ public class ThirdPartyWalletService {
     public void urgencySlbTransaction(){
         //查询重复订单
         List<String> orderList = cmUserSlbMapper.listRepeat();
-        if (orderList.size()>0) {
-            for (String order :orderList ) {
+        if (orderList.size() > 0) {
+            for (String order : orderList) {
                 //查询订单号的重复记录
-               List<Map<String,Object>> slbTransation =  cmUserSlbMapper.listWrongMsg(order,"2018-08-20 18:00:00");
-               String userId=  slbTransation.get(0).get("target_id").toString();
-                SlUserSlb slUserSlb = slUserSlbMapper.selectOne(new SlUserSlb(){{
-                    setUserId(userId);
-                }});
-               BigDecimal wrongSlb = new BigDecimal(0);
-               for (Map map :slbTransation) {
-                   String slb = SLStringUtils.isEmpty(map.get("slb").toString())? "0":map.get("slb").toString();
+                List<Map<String, Object>> slbTransation = cmUserSlbMapper.listWrongMsg(order, "2018-08-20 18:00:00");
+                for (Map map : slbTransation) {
+                    BigDecimal wrongSlb = new BigDecimal(0);
+                    String userId = map.get("target_id").toString();
+                    String type = map.get("type").toString();
+                    SlUserSlb slUserSlb = slUserSlbMapper.selectOne(new SlUserSlb() {{
+                        setUserId(userId);
+                        setSlbType(Integer.parseInt(type));
+                    }});
+                    String slb = SLStringUtils.isEmpty(map.get("slb").toString()) ? "0" : map.get("slb").toString();
                     wrongSlb = new BigDecimal(slb).add(wrongSlb);
-               }
-
-               //更新slb用户表信息
-               slUserSlb.setSlb(slUserSlb.getSlb().subtract(wrongSlb)) ;
-                slUserSlbMapper.updateByPrimaryKeySelective(slUserSlb);
+                    //更新slb用户表信息
+                    slUserSlb.setSlb(slUserSlb.getSlb().subtract(wrongSlb));
+                    slUserSlbMapper.updateByPrimaryKeySelective(slUserSlb);
+                }
             }
         }
     }
