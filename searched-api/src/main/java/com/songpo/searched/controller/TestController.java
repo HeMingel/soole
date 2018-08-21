@@ -486,35 +486,36 @@ public class TestController {
 
     @GetMapping("test-slb-pay")
     public void Test20(String walletAddress,String walletPwd,String orderSn){
-        //公钥
-        String publicKey = env.getProperty("wallet.publicKey");
-        //生成加密随机串
-        String noteStr =  String.valueOf(System.currentTimeMillis());
-        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
-        //加密登录密码
-        walletPwd = AESUtils.encode(walletPwd, noteStr);
-        //支付金额
-        BigDecimal payAmount = new BigDecimal("0.1");
-        //公钥加密随机串
-        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-        //生成签名
-        SortedMap<String, String> packageParams = new TreeMap<String, String>();
-        packageParams.put("walletAddress", walletAddress);
-        packageParams.put("walletPwd", walletPwd);
-        packageParams.put("payAmount", payAmount.toString());
-        packageParams.put("noteStr", encodedNoteStr);
-        packageParams.put("orderSn", orderSn);
-        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
-        String url = env.getProperty("wallet.url")+BaseConstant.WALLET_API_PAYSLBAMOUNT;
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("walletAddress", walletAddress);
-        params.put("walletPwd", walletPwd);
-        params.put("payAmount", payAmount.toString());
-        params.put("noteStr", encodedNoteStr);
-        params.put("orderSn", orderSn);
-        params.put("sign", sign);
-        String result = HttpUtil.doPost(url, params);
-        System.out.println(result);
+//        //公钥
+//        String publicKey = env.getProperty("wallet.publicKey");
+//        //生成加密随机串
+//        String noteStr =  String.valueOf(System.currentTimeMillis());
+//        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+//        //加密登录密码
+//        walletPwd = AESUtils.encode(walletPwd, noteStr);
+//        //支付金额
+//        BigDecimal payAmount = new BigDecimal("0.1");
+//        //公钥加密随机串
+//        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+//        //生成签名
+//        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+//        packageParams.put("walletAddress", walletAddress);
+//        packageParams.put("walletPwd", walletPwd);
+//        packageParams.put("payAmount", payAmount.toString());
+//        packageParams.put("noteStr", encodedNoteStr);
+//        packageParams.put("orderSn", orderSn);
+//        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+//        String url = env.getProperty("wallet.url")+BaseConstant.WALLET_API_PAYSLBAMOUNT;
+//        Map<String,Object> params = new HashMap<String,Object>();
+//        params.put("walletAddress", walletAddress);
+//        params.put("walletPwd", walletPwd);
+//        params.put("payAmount", payAmount.toString());
+//        params.put("noteStr", encodedNoteStr);
+//        params.put("orderSn", orderSn);
+//        params.put("sign", sign);
+//        String result = HttpUtil.doPost(url, params);
+//        System.out.println(result);
+
     }
     //slb装入
     @GetMapping("test20")
