@@ -2910,6 +2910,7 @@ public class CmOrderService {
      * @param compareDate 时间段
      */
     public void dealWithOldOrder(List<SlOrderDetail> lists,String compareDate){
+        Integer count = lists.size();
         for (SlOrderDetail detail : lists) {
             //用户
             SlUser user = userService.selectByPrimaryKey(detail.getCreator());
@@ -3003,10 +3004,11 @@ public class CmOrderService {
                 saveSlbInvite(inviter,order,slSlbType,bean);
             }
             if ("0".equals(returnCode) ){
-                log.debug("用户装入SLB成功-----------------用户id：{}",user == null ? "用户为空": user.getId());
+                log.debug("用户转入SLB成功-----------------用户id：{},还剩【{}】条数据待处理",user == null ? "用户为空": user.getId(),count);
             } else {
                 saveOrderHandle(detail.getOrderId()+"1",user == null ? "用户为空": user.getId(), "用户转入SLB到钱包失败");
             }
+            count--;
         }
 
     }
@@ -3015,6 +3017,7 @@ public class CmOrderService {
      * @param slSlbTransactions 页注册赠送的搜了贝集合
      */
     public void dealWebOldSlb(List<SlSlbTransaction> slSlbTransactions){
+        Integer count = slSlbTransactions.size();
         for (SlSlbTransaction slSlbTransaction : slSlbTransactions) {
             //用户
             SlUser user = userService.selectByPrimaryKey(slSlbTransaction.getTargetId());
@@ -3065,6 +3068,8 @@ public class CmOrderService {
                 saveOrderHandle(orderId,user.getId(),"手机号没有绑定");
                 continue;
             }
+            log.debug("还有【{}】条数据待处理",count);
+            count--;
         }
     }
     /**

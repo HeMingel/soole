@@ -701,7 +701,7 @@ public class ThirdPartyWalletService {
         if (orderList.size() > 0) {
             for (String order : orderList) {
                 //查询订单号的重复记录
-                List<Map<String, Object>> slbTransation = cmUserSlbMapper.listWrongMsg(order, "2018-08-20 18:00:00");
+                List<Map<String, Object>> slbTransation = cmUserSlbMapper.listWrongMsg(order, "2018-08-20 17:50:00");
                 for (Map map : slbTransation) {
                     BigDecimal wrongSlb = new BigDecimal(0);
                     String userId = map.get("target_id").toString();
