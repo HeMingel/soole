@@ -3164,7 +3164,7 @@ public class CmOrderService {
             orderDetailService.insertSelective(new SlOrderDetail(){{
                 setId(formatUUID32());
                 setOrderId(slOrder.getId());
-                setSerialNumber(OrderNumGeneration.getOrderIdByUUId());
+                setSerialNumber(orderNum);
                 setShopId(slProduct.getShopId());
                 setRepositoryId(slProductRepository.getId());
                 setProductId(slProduct.getId());
