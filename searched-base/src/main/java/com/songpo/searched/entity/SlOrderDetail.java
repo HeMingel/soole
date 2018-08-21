@@ -195,7 +195,7 @@ public class SlOrderDetail implements Serializable {
     private String confirmDate;
 
     /**
-     * 财务审核确认订单时使用1待确认2已确认
+     * 财务审核(确认订单时使用,已支付给商家)1待确认2已确认
      */
     @Column(name = "check_state")
     private Byte checkState;
@@ -851,18 +851,18 @@ public class SlOrderDetail implements Serializable {
     }
 
     /**
-     * 获取财务审核确认订单时使用1待确认2已确认
+     * 获取财务审核(确认订单时使用,已支付给商家)1待确认2已确认
      *
-     * @return check_state - 财务审核确认订单时使用1待确认2已确认
+     * @return check_state - 财务审核(确认订单时使用,已支付给商家)1待确认2已确认
      */
     public Byte getCheckState() {
         return checkState;
     }
 
     /**
-     * 设置财务审核确认订单时使用1待确认2已确认
+     * 设置财务审核(确认订单时使用,已支付给商家)1待确认2已确认
      *
-     * @param checkState 财务审核确认订单时使用1待确认2已确认
+     * @param checkState 财务审核(确认订单时使用,已支付给商家)1待确认2已确认
      */
     public void setCheckState(Byte checkState) {
         this.checkState = checkState;

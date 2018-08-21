@@ -52,14 +52,14 @@ public class TestController {
     @GetMapping("test1")
     public void Test1() throws ParseException {
             //手机号
-            String mobile = "18335192045";
+            String mobile = "17611235811";
             //公钥
             String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
             //生成加密随机串
             String noteStr =  String.valueOf(System.currentTimeMillis());
             noteStr = StringUtils.leftPad(noteStr, 16,  "0");
             //加密登录密码
-            String loginPwd = SLStringUtils.getStringRandom(6);
+            String loginPwd = "123456";
             loginPwd = AESUtils.encode(loginPwd, noteStr);
 
             //公钥加密随机串
@@ -469,7 +469,10 @@ public class TestController {
     public void Test18() throws Exception {
         cmOrderService.transferSlbToWalletAfter();
     }
-
+    @GetMapping("test180")
+    public void Test180() throws Exception {
+        cmOrderService.transferSlbToWalletUser();
+    }
     @GetMapping("test19")
     public void Test19() throws Exception {
         thirdPartyWalletService.getSlbAcount("15264553983");
@@ -512,5 +515,11 @@ public class TestController {
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
         System.out.println(result);
+    }
+    //slb装入
+    @GetMapping("test20")
+    public  void Test20(){
+        thirdPartyWalletService.transferToSlbSc("1BwM1YGEmuQdzXhUpUUL37wX1sGCukp8ky","20180820","20210820",
+                "36","2.7777777","592.500000","d604c2194d4044dfa1ba5991650235f81","E");
     }
 }
