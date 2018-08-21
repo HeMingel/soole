@@ -24,4 +24,30 @@
         WHERE usb.user_id = #{userId}
 
     </select>
+    
+    <!--查询重复列表-->
+    <select id="listRepeat" resultType="String">
+        SELECT
+         temp.order_id AS orderId
+        FROM
+          (SELECT
+            COUNT(order_id) sumOrder,
+            order_id
+          FROM
+            sl_slb_transaction
+          GROUP BY order_id
+          ORDER BY sumOrder DESC) temp
+        WHERE temp.sumOrder > 2;
+    </select>
+
+    <!--查询重复插入的数据-->
+    <select id="listWrongMsg" resultType="map">
+        SELECT
+          *
+        FROM
+          sl_slb_transaction
+        WHERE order_id = #{orderId}
+          AND `created_at` > #{wrongDate}
+    </select>
+
 </mapper>

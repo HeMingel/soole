@@ -22,4 +22,18 @@ public interface CmUserSlbMapper {
      *@return 查询总搜了贝
      */
     List<Map<String, Object>> selectSumSlb(@Param("userId") String userId);
+
+    /**
+     * 查询重复列表
+     * @return
+     */
+    List<String> listRepeat();
+
+    /**
+     * 查询重复插入的数据
+     * @param orderId
+     * @param wrongDate
+     * @return
+     */
+    List<Map<String,Object>> listWrongMsg(@Param("orderId") String orderId, @Param("wrongDate") String wrongDate);
 }

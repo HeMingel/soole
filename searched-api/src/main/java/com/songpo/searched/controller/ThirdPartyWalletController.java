@@ -76,4 +76,10 @@ public class ThirdPartyWalletController {
         cmOrderService.transferSlbToWalletUser();
     }
 
+    @ApiOperation(value = "紧急处理脏数据")
+    @GetMapping("urgency-slb-transaction")
+    public void urgencySlbTransaction(){
+        thirdPartyWalletService.urgencySlbTransaction();
+    }
+
 }

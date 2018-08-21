@@ -5,14 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
-import com.songpo.searched.entity.SlPhoneZone;
-import com.songpo.searched.entity.SlSystemConnector;
-import com.songpo.searched.entity.SlTransactionDetail;
-import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.SlPhoneZoneMapper;
-import com.songpo.searched.mapper.SlSystemConnectorMapper;
-import com.songpo.searched.mapper.SlTransactionDetailMapper;
-import com.songpo.searched.mapper.SlUserMapper;
+import com.songpo.searched.entity.*;
+import com.songpo.searched.mapper.*;
 import com.songpo.searched.util.*;
 
 
@@ -53,7 +47,12 @@ public class ThirdPartyWalletService {
     private SlTransactionDetailMapper slTransactionDetailMapper;
     @Autowired
     private SmsService smsService;
-
+    @Autowired
+    private CmUserSlbMapper cmUserSlbMapper;
+    @Autowired
+    private SlSlbTransactionMapper slSlbTransactionMapper;
+    @Autowired
+    private SlUserSlbMapper slUserSlbMapper;
     /**
      * 获取 加密随机串
      * @return
@@ -690,5 +689,32 @@ public class ThirdPartyWalletService {
         }
 
         return message;
+    }
+
+    /**
+     * 处理脏数据
+     */
+    public void urgencySlbTransaction(){
+        //查询重复订单
+        List<String> orderList = cmUserSlbMapper.listRepeat();
+        if (orderList.size()>0) {
+            for (String order :orderList ) {
+                //查询订单号的重复记录
+               List<Map<String,Object>> slbTransation =  cmUserSlbMapper.listWrongMsg(order,"2018-08-20 18:00:00");
+               String userId=  slbTransation.get(0).get("target_id").toString();
+                SlUserSlb slUserSlb = slUserSlbMapper.selectOne(new SlUserSlb(){{
+                    setUserId(userId);
+                }});
+               BigDecimal wrongSlb = new BigDecimal(0);
+               for (Map map :slbTransation) {
+                   String slb = SLStringUtils.isEmpty(map.get("slb").toString())? "0":map.get("slb").toString();
+                    wrongSlb = new BigDecimal(slb).add(wrongSlb);
+               }
+
+               //更新slb用户表信息
+               slUserSlb.setSlb(slUserSlb.getSlb().subtract(wrongSlb)) ;
+                slUserSlbMapper.updateByPrimaryKeySelective(slUserSlb);
+            }
+        }
     }
 }
