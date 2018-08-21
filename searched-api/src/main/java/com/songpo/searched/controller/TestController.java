@@ -2,6 +2,7 @@ package com.songpo.searched.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.mapper.*;
@@ -51,14 +52,14 @@ public class TestController {
     @GetMapping("test1")
     public void Test1() throws ParseException {
             //手机号
-            String mobile = "17611235811";
+            String mobile = "18335192045";
             //公钥
             String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
             //生成加密随机串
             String noteStr =  String.valueOf(System.currentTimeMillis());
             noteStr = StringUtils.leftPad(noteStr, 16,  "0");
             //加密登录密码
-            String loginPwd = "123456";
+            String loginPwd = SLStringUtils.getStringRandom(6);
             loginPwd = AESUtils.encode(loginPwd, noteStr);
 
             //公钥加密随机串
@@ -472,5 +473,44 @@ public class TestController {
     @GetMapping("test19")
     public void Test19() throws Exception {
         thirdPartyWalletService.getSlbAcount("15264553983");
+    }
+
+    @GetMapping("testUserRegister")
+    public void Test19(String phone,String zoneCode) throws Exception {
+        thirdPartyWalletService.UserRegister(phone,SLStringUtils.getStringRandom(6),zoneCode);
+    }
+
+
+    @GetMapping("test-slb-pay")
+    public void Test20(String walletAddress,String walletPwd,String orderSn){
+        //公钥
+        String publicKey = env.getProperty("wallet.publicKey");
+        //生成加密随机串
+        String noteStr =  String.valueOf(System.currentTimeMillis());
+        noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+        //加密登录密码
+        walletPwd = AESUtils.encode(walletPwd, noteStr);
+        //支付金额
+        BigDecimal payAmount = new BigDecimal("0.1");
+        //公钥加密随机串
+        String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+        //生成签名
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("walletAddress", walletAddress);
+        packageParams.put("walletPwd", walletPwd);
+        packageParams.put("payAmount", payAmount.toString());
+        packageParams.put("noteStr", encodedNoteStr);
+        packageParams.put("orderSn", orderSn);
+        String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+        String url = env.getProperty("wallet.url")+BaseConstant.WALLET_API_PAYSLBAMOUNT;
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("walletAddress", walletAddress);
+        params.put("walletPwd", walletPwd);
+        params.put("payAmount", payAmount.toString());
+        params.put("noteStr", encodedNoteStr);
+        params.put("orderSn", orderSn);
+        params.put("sign", sign);
+        String result = HttpUtil.doPost(url, params);
+        System.out.println(result);
     }
 }

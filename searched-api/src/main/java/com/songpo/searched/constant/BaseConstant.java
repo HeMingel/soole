@@ -92,9 +92,5 @@ public class BaseConstant {
      */
     public static final String WALLET_API_GETSLBAMOUNT = "wallet/externalWallet/getSLBAmount.htm";
 
-    /**
-     * 平台登录密码
-     */
-    public static final String WALLET_DEFAULT_LOGIN_PASSWORD  = "111111";
 
 }
