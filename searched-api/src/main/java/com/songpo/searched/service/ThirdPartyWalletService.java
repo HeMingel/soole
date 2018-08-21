@@ -705,7 +705,7 @@ public class ThirdPartyWalletService {
                 for (Map map : slbTransation) {
                     BigDecimal wrongSlb = new BigDecimal(0);
                     String userId = map.get("target_id").toString();
-                    String type = map.get("type").toString();
+                    String type = map.get("slb_type").toString();
                     SlUserSlb slUserSlb = slUserSlbMapper.selectOne(new SlUserSlb() {{
                         setUserId(userId);
                         setSlbType(Integer.parseInt(type));
