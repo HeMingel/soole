@@ -110,11 +110,13 @@
     <!--根据分类查询商品 + 商品的筛选 + 根据名称查询-->
     <select id="screenGoods" resultType="Map">
         SELECT
-        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id,p.sales_virtual
+        ap.*,p.name,p.introduction,p.comment_num,p.sales_volume,p.image_url,p.id as goods_id,p.sales_virtual,pt.name product_type_name
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
         ON p.id = ap.product_id
+        LEFT JOIN sl_product_type pt
+        ON p.product_type_id = pt.id
         WHERE 1=1 AND p.del = 0
         and p.`sold_out`=1 AND ap.enabled = 1 and ap.activity_id = #{activityId}
         <if test="saleMode != null and saleMode != ''">
@@ -581,11 +583,14 @@
       ap.`price`,
       ap.`reference_price`,
       ap.`count`,
+      pt.name product_type_name,
       p.*
     FROM
       `sl_product` p
       LEFT JOIN `sl_activity_product` ap
         ON p.`id` = ap.`product_id`
+        LEFT JOIN sl_product_type pt
+        ON p.product_type_id = pt.id
     WHERE p.`del` = 0
       AND p.`recommend` = 1
     ORDER BY p.`sales_virtual` DESC
