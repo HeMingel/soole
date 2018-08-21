@@ -715,6 +715,8 @@ public class ThirdPartyWalletService {
                     //更新slb用户表信息
                     slUserSlb.setSlb(slUserSlb.getSlb().subtract(wrongSlb));
                     slUserSlbMapper.updateByPrimaryKeySelective(slUserSlb);
+                    //删除重复数据
+                    slSlbTransactionMapper.deleteByPrimaryKey(map.get("id").toString());
                 }
             }
         }
