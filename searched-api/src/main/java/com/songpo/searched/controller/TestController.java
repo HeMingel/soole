@@ -171,7 +171,7 @@ public class TestController {
         //钱包地址
         //String walletAddress = "1C4RU377vWRcAFKuH88tiyTZqYrnjkFqQu";
       //  String walletAddress = "1Au5bQqw36wrD4YDKUDy1BQ491y8F6F5DR";
-        String walletAddress = "1CuEogXPvQPu7MTHQbFuFE8mU77gSwWeKn";
+        String walletAddress = "1BwM1YGEmuQdzXhUpUUL37wX1sGCukp8ky";
         //公钥
         String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx4DP4sSde3yncPdJlPHLGNisl5PRpcvjjeet88Jd5vj1uMmAqPWSHwzn+k0TWXxQclL0h/GhWNQ49dWV1ooc+NlF91T9ChRNDr0VMvRwYYmx/5fT/BzWhFWD1g6WvgDKbCezE6DH+gckszVjNXmhZeeJVSTqT8uK0JZU7MYbYZwIDAQAB";
         //生成加密随机串
@@ -182,11 +182,11 @@ public class TestController {
         String endcodePaltTransPwd = AESUtils.encode(platTransPwd, noteStr);
         String lockBeginDate = "20180101";
         String lockEndDate = "20190101";
-        String releaseNum = "10";
-        String releasePercent = "1";
-        String transfAmount = "7777777777777";
-        String orderSn = "786e9336278b049d59991beefa51f94b11";
-        String batchType = "E";
+        String releaseNum = "36";
+        String releasePercent = "1.11111";
+        String transfAmount = "592.5";
+        String orderSn = OrderNumGeneration.getOrderIdByUUId()+"1";
+        String batchType = "A";
 
         //公钥加密随机串
         String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
@@ -328,13 +328,15 @@ public class TestController {
     //检验是否注册
     @GetMapping("test10")
     public Boolean test10(String phone ){
-        Boolean  message = thirdPartyWalletService.checkUserRegister("55149492", "852");
+        Boolean  message = thirdPartyWalletService.checkUserRegister("16619840518", "86");
         return  message;
     }
     //用户注册
     @GetMapping("test11")
     public String test11(String phone ){
-        String  message = thirdPartyWalletService.UserRegister("55149492", "123456","852");
+        String pwd = SLStringUtils.getStringRandom(6);
+        System.out.println("pwdpwdpwdpwd:"+pwd);
+        String  message = thirdPartyWalletService.UserRegister("16619840518", pwd,"86");
         return  message;
     }
 
@@ -468,9 +470,18 @@ public class TestController {
     public void Test18() throws Exception {
         cmOrderService.transferSlbToWalletAfter();
     }
-
+    @GetMapping("test180")
+    public void Test180() throws Exception {
+        cmOrderService.transferSlbToWalletUser();
+    }
     @GetMapping("test19")
     public void Test19() throws Exception {
         thirdPartyWalletService.getSlbAcount("15264553983");
+    }
+    //slb装入
+    @GetMapping("test20")
+    public  void Test20(){
+        thirdPartyWalletService.transferToSlbSc("1BwM1YGEmuQdzXhUpUUL37wX1sGCukp8ky","20180820","20210820",
+                "36","2.7777777","592.500000","d604c2194d4044dfa1ba5991650235f81","E");
     }
 }

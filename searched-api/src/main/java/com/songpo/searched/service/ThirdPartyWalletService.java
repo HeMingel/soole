@@ -453,9 +453,18 @@ public class ThirdPartyWalletService {
                     //获取钱包地址
                     walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                 }else {
-                    message.setSuccess(false);
-                    message.setMsg("请先注册钱包APP会员");
-                    return message;
+                    //生成钱包登录密码
+                    String loginPwd = SLStringUtils.getStringRandom(6);
+                    //用户钱包注册
+                    String res = UserRegister(slUser.getPhone(), loginPwd, slPhoneZone.getMobilearea().toString());
+                    if ("0".equals(res)){
+                        //获取钱包地址
+                        walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+                    }else {
+                        message.setSuccess(false);
+                        message.setMsg("请先注册钱包APP会员");
+                        return message;
+                    }
                 }
                 if (slUser.getCoin()>coin){
                     //公钥
