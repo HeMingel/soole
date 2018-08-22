@@ -4,7 +4,6 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
-import com.songpo.searched.mapper.SlTransactionDetailMapper;
 import com.songpo.searched.typehandler.*;
 import com.songpo.searched.util.Arith;
 import com.songpo.searched.util.ClientIPUtil;
@@ -12,15 +11,6 @@ import com.songpo.searched.util.HttpRequest;
 import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.wxpay.service.WxPayService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,12 +89,16 @@ public class AccountService {
             case WX_APP_PAY:
                 double mo = money.multiply(new BigDecimal(100)).doubleValue();
                 String total_fee = String.valueOf(Math.round(mo));
-                map = wxPayService.unifiedOrderByApp(null, "余额充值 - " + transactionDetail.getId(), null, null, transactionDetail.getId(), "", total_fee, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
+                map = wxPayService.unifiedOrderByApp(null, "余额充值 - " + transactionDetail.getId(),
+                        null, null, transactionDetail.getId(), "", total_fee, ClientIPUtil.getClientIP(req), "", "", "", "", "", "");
                 break;
             case WX_H5_PAY:
                 break;
             case ALI_APP_PAY:
-                String str = this.aliPayService.appPay("15d", money.toString(), "", "", null, "搜了购物支付 - " + transactionDetail.getId(), transactionDetail.getId(), "", "", "", "", null, null, null, "", "", null, null, null, null, null, "");
+                String str = this.aliPayService.appPay("15d", money.toString(), "", "",
+                        null, "搜了购物支付 - " + transactionDetail.getId(), transactionDetail.getId(), "", "", "",
+                        "", null, null, null, "", "", null,
+                        null, null, null, null, "");
                 if (StringUtils.isNotBlank(str)) {
                     map.put("alipay", str);
                 }
@@ -155,7 +149,8 @@ public class AccountService {
         BigDecimal payAmount;
         if (payTypeEnum.equals(PayTypeEnum.WX_APP_PAY) || payTypeEnum.equals(PayTypeEnum.WX_H5_PAY)) {
             Map<String, String> result = wxPayService.orderQuery("", transactionDetailId);
-            if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS") && result.get("trade_state").equals("SUCCESS")) {
+            if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS")
+                    && result.get("trade_state").equals("SUCCESS")) {
                 payStatus = true;
                 double total_fee = Arith.div(Double.valueOf(result.get("total_fee")), 100, 2);
                 payAmount = new BigDecimal(total_fee);

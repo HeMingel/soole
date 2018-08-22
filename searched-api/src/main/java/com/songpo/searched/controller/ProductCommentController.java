@@ -40,7 +40,8 @@ public class ProductCommentController {
 
     @ApiOperation(value = "新增商品评论")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "orderDetailId", value = "评论的订单明细ID，已完成/未评价（shipping_state=5）的订单可评价", paramType = "form", required = true),
+            @ApiImplicitParam(name = "orderDetailId", value = "评论的订单明细ID，已完成/未评价（shipping_state=5）的订单可评价",
+                    paramType = "form", required = true),
             @ApiImplicitParam(name = "content", value = "评论内容", paramType = "form", required = true),
             @ApiImplicitParam(name = "status", value = "评论状态:1好2中3差", paramType = "form", required = true),
             @ApiImplicitParam(name = "imageList", value = "评论图片", paramType = "form"),

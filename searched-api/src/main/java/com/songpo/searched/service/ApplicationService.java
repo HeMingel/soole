@@ -31,7 +31,8 @@ public class ApplicationService {
     private final CmUserService cmUserService;
 
     @Autowired
-    public ApplicationService(SlAgentApplicationMapper agentApplicationMapper, FileService fileService, SlBusinessApplicationMapper businessApplicationMapper, CmUserService cmUserService) {
+    public ApplicationService(SlAgentApplicationMapper agentApplicationMapper, FileService fileService,
+                              SlBusinessApplicationMapper businessApplicationMapper, CmUserService cmUserService) {
         this.agentApplicationMapper = agentApplicationMapper;
         this.fileService = fileService;
         this.businessApplicationMapper = businessApplicationMapper;
@@ -99,7 +100,8 @@ public class ApplicationService {
      * @param idCardHand    手持身份证照片
      */
     @Transactional
-    public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
+    public void createBusinessApplication(SlBusinessApplication business, MultipartFile businessImage,
+                                          MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，商户信息：{}", business);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
@@ -131,12 +133,14 @@ public class ApplicationService {
 
         if (null == user || StringUtils.isBlank(user.getId())) {
             // 设置密码为身份证后6位
-            String password = StringUtils.substring(business.getIdCardNumber(), business.getIdCardNumber().length() - 6, business.getIdCardNumber().length());
+            String password = StringUtils.substring(business.getIdCardNumber(),
+                    business.getIdCardNumber().length() - 6, business.getIdCardNumber().length());
 
             // 创建用户信息
             user = this.cmUserService.initUser(new SlUser() {{
                 setPhone(business.getPhone());
-                setName(business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue()) ? business.getCompanyName() : business.getRealName());
+                setName(business.getType().equals(BusinessApplicationTypeEnum.ENTERPRISE.getValue())
+                        ? business.getCompanyName() : business.getRealName());
                 setCardNumber(business.getIdCardNumber());
                 setPassword(password);
             }});

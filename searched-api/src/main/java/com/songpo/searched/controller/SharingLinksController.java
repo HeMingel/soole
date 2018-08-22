@@ -138,8 +138,9 @@ public class SharingLinksController {
         BusinessMessage<PageInfo<Map<String, Object>>> message = new BusinessMessage<>();
         message.setSuccess(false);
         try {
-            PageInfo data = this.cmSharingLinksService.selectBySharingLinks(salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin,
-                    latitudeMax, sortByPrice, sortByCount, sortByAward, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow, longitudeNow, latitudeNow,synthesize);
+            PageInfo data = this.cmSharingLinksService.selectBySharingLinks(salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax,
+                    latitudeMin,latitudeMax, sortByPrice, sortByCount, sortByAward, priceMin, priceMax, pageNum, pageSize, sortBySale, addressNow,
+                    longitudeNow, latitudeNow,synthesize);
 
             message.setData(data);
             message.setSuccess(true);
@@ -158,7 +159,8 @@ public class SharingLinksController {
      */
     @ApiOperation(value = "根据红包结果查询红包信息")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "result",value = "红包结果1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) 6.已领取(分享奖励商品) ",paramType = "form")
+            @ApiImplicitParam(name = "result",value = "红包结果1.有效  2.已抢完  3.过期  4.待领取(分享奖励商品) 5.立即领取(分享奖励商品) " +
+                    "6.已领取(分享奖励商品) ",paramType = "form")
     })
     @PostMapping("by-result")
     public BusinessMessage selectRedPacketByResult(String result){

@@ -133,7 +133,9 @@ public class CmProductService {
         // 设置分页参数
         PageHelper.startPage(pageNum, pageSize);
         // 执行查询
-        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, activityId, goodsTypeId, goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin, priceMax, sortBySale, addressNow, longitudeNow, latitudeNow, synthesize);
+        List<Map<String, Object>> list = this.mapper.selectBySalesMode(name, salesModeId, activityId, goodsTypeId,
+                goodsTypeStatus, longitudeMin, longitudeMax, latitudeMin, latitudeMax, sortByPrice, sortByRating, priceMin,
+                priceMax, sortBySale, addressNow, longitudeNow, latitudeNow, synthesize);
         if (salesModeId != null && Integer.parseInt(salesModeId) == SalesModeConstant.SALES_MODE_GROUP) {
             PageInfo<Map<String, Object>> map = new PageInfo<>(list);
 

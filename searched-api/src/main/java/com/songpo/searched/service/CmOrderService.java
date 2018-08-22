@@ -228,7 +228,8 @@ public class CmOrderService {
                                 if (null != slProduct) {
 //                                    SlProduct finalSlProduct = slProduct;
                                     //查询活动商品信息
-                                    SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(), activityProductId);
+                                    SlActivityProduct slActivityProduct = this.cmOrderMapper.selectActivityProductByRepositoryId(repository.getId(),
+                                            activityProductId);
                                     if (null != slActivityProduct) {
                                         //如果是无活动就不需要校验时间是否符合
                                         if (slActivityProduct.getActivityId().equals(ActivityConstant.NO_ACTIVITY)) {
@@ -268,7 +269,8 @@ public class CmOrderService {
                                                 //库存的数量 > 他这次加入订单的数量
                                                 if (repository.getCount() - quantity >= 0) {
                                                     //修改价格 如果是限时秒杀就改成秒杀价
-                                                    BigDecimal price = slProduct.getSalesModeId().equals("8") ? repository.getSeckillPrice() : repository.getPrice();
+                                                    BigDecimal price = slProduct.getSalesModeId().equals("8") ? repository.getSeckillPrice() :
+                                                            repository.getPrice();
                                                     // 钱相加 用于统计和添加到订单表扣除总钱里边
                                                     money += price.doubleValue() * quantity;
                                                     // 如果邮费不为空
@@ -375,7 +377,8 @@ public class CmOrderService {
                                                         //判断是否为首单
                                                         if (flag.equals(false) && slActivityProduct.getActivityId().equals(ActivityConstant.NEW_PEOPLE_ACTIVITY)) {
                                                             // 如果是第一单的情况下 需要加上 首单奖励
-                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity + repository.getFirstOrderPulse());
+                                                            setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity +
+                                                                    repository.getFirstOrderPulse());
                                                         } else {
                                                             // 返了豆数量只限纯金钱模式
                                                             setPlaceOrderReturnPulse(repository.getPlaceOrderReturnPulse() * quantity);
@@ -477,7 +480,8 @@ public class CmOrderService {
                             setTotalAmount(BigDecimal.valueOf(finalMoney));
                             setDeductTotalPulse(finalPulse);
                         }});
-                        String sign = MD5Util.md5encode(slOrder.getId()+MD5Util.md5encode(slOrder.getId()+String.valueOf(money),"utf-8"),"utf-8");
+                        String sign = MD5Util.md5encode(slOrder.getId()+
+                                MD5Util.md5encode(slOrder.getId()+String.valueOf(money),"utf-8"),"utf-8");
                         Map<String, String> map = new HashMap<>();
                         map.put("order_num", slOrder.getId());
                         map.put("total_amount", String.valueOf(money));
@@ -532,7 +536,8 @@ public class CmOrderService {
                                             int spellGroupType,
                                             Integer virtualOpen,
                                             String postFee, int inviterId) {
-        log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], quantity = [" + quantity + "], postFee = ["+postFee+"]");
+        log.debug("request = [" + request + "], response = [" + response + "], repositoryId = [" + repositoryId + "], " +
+                "quantity = [" + quantity + "], postFee = ["+postFee+"]");
         BusinessMessage message = new BusinessMessage();
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
@@ -633,7 +638,9 @@ public class CmOrderService {
                                             // ==== 按照自己开团流程走 ======
                                             //生成订单号
                                             String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
+                                            message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(),
+                                                    shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage,
+                                                    spellGroupType, inviterId,virtualOpen);
                                             //加入虚拟开团的用户在remark字段添加虚拟团主头像
                                             Map<String, String> map  = (Map<String, String>) message.getData();
                                             String orderId = map.get("order_num");
@@ -662,7 +669,9 @@ public class CmOrderService {
                                                     //如果不存在的话
                                                     if (f.equals(false)) {
                                                         // ======= 是团员的话 =======
-                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster, shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
+                                                        message = processingOrders(user.getId(), serialNumber, activityProduct, groupMaster,
+                                                                shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2,
+                                                                buyerMessage, spellGroupType, inviterId,virtualOpen);
                                                     } else {
                                                         message.setMsg("您已参加过该团,请勿重复参加");
                                                         return message;
@@ -675,7 +684,9 @@ public class CmOrderService {
                                                 // ==== 如果是他自己开的团 ======
                                                 //生成订单号
                                                 String orderNum = OrderNumGeneration.getOrderIdByUUId();
-                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(), shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2, buyerMessage, spellGroupType, inviterId,virtualOpen);
+                                                message = processingOrders(user.getId(), orderNum, activityProduct, user.getId(),
+                                                        shippingAddressId, repository, quantity, shareOfPeopleId, slProduct, 2,
+                                                        buyerMessage, spellGroupType, inviterId,virtualOpen);
                                             }
                                         }
 

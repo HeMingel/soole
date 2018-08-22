@@ -2,7 +2,6 @@ package com.songpo.searched.controller;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.songpo.searched.cache.SmsPasswordCache;
-import com.songpo.searched.cache.SmsVerifyCodeCache;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.service.SmsService;
 import io.swagger.annotations.Api;
