@@ -494,11 +494,14 @@
         p.remark,
         p.image_url,
         p.sales_virtual,
+        pt.name product_type_name,
         ap.*
         FROM sl_product p
         LEFT  JOIN sl_activity_product ap ON ap.`product_id`=p.`id`
         LEFT JOIN sl_sales_mode sm
         ON p.sales_mode_id=sm.id
+        LEFT JOIN sl_product_type pt
+        ON p.product_type_id = pt.id
         where p.sales_mode_id=5 and p.del = 0
         ORDER BY p.`product_sort` DESC
     </select>
