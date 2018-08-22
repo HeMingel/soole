@@ -1,10 +1,8 @@
 package com.songpo.searched.controller;
 
-import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
-import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.mapper.SlOrderMapper;
 import com.songpo.searched.service.OrderDetailService;
 import com.songpo.searched.service.OrderService;
@@ -22,7 +20,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Api(description = "第三方支付")

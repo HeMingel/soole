@@ -9,7 +9,6 @@ import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlMember;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.service.*;
-import com.songpo.searched.util.HttpUtil;
 import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,7 +19,6 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -803,7 +801,8 @@ public class SystemController {
                         phoneUser.setType(user.getType());
                         //修补错误数据，原来的微信用户中的金豆银豆转移
                         phoneUser.setSilver(phoneUser.getSilver() + user.getSilver());
-                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin() - BaseConstant.REGISTER_PEAS) < 0 ? 0 : (user.getCoin() - BaseConstant.REGISTER_PEAS)));
+                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin() -
+                                BaseConstant.REGISTER_PEAS) < 0 ? 0 : (user.getCoin() - BaseConstant.REGISTER_PEAS)));
                         // 更新
                         userService.updateByPrimaryKeySelective(phoneUser);
                         // 更新缓存
@@ -921,7 +920,8 @@ public class SystemController {
                         phoneUser.setZone(zone);
                         phoneUser.setType(user.getType());
                         //修补错误数据，原来的微信用户中的金豆银豆转移
-                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin() - BaseConstant.REGISTER_PEAS) < 0 ? 0 : (user.getCoin() - BaseConstant.REGISTER_PEAS)));
+                        phoneUser.setCoin(phoneUser.getCoin() + ((user.getCoin() -
+                                BaseConstant.REGISTER_PEAS) < 0 ? 0 : (user.getCoin() - BaseConstant.REGISTER_PEAS)));
                         // 更新
                         userService.updateByPrimaryKeySelective(phoneUser);
                         // 更新缓存

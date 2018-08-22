@@ -2,7 +2,6 @@ package com.songpo.searched.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlProduct;
 import com.songpo.searched.service.CustomerClientHomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
 
 /**
  * 用户端的API控制层

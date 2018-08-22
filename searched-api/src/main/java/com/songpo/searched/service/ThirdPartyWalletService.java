@@ -1,7 +1,5 @@
 package com.songpo.searched.service;
 
-;
-import com.alibaba.fastjson.JSONArray;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.alibaba.fastjson.JSONObject;
@@ -13,7 +11,6 @@ import com.songpo.searched.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;

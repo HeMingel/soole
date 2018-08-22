@@ -118,12 +118,10 @@ public class CmOrderController {
                                             @RequestParam(value = "virtualOpen", defaultValue="1" ) Integer virtualOpen,
                                             String  postFee, Integer inviterId) {
         BusinessMessage message = new BusinessMessage();
-        int ss = inviterId==null?0:inviterId;
+        int ss = inviterId == null ? 0 : inviterId;
         try {
-            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber, groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee, ss);
-//            message.setData(message.getData());
-//            message.setMsg(message.getMsg());
-//            message.setSuccess(true);
+            message = this.cmOrderService.purchaseAddOrder(request, response, repositoryId, quantity, shareOfPeopleId, serialNumber,
+                    groupMaster, shippingAddressId, buyerMessage, activityProductId, spellGroupType,virtualOpen,postFee, ss);
         } catch (Exception e) {
             message.setMsg("添加订单失败");
             log.error("新增订单失败 {}", e);
@@ -279,7 +277,7 @@ public class CmOrderController {
     public BusinessMessage preSaleOrderListV_2_0(Integer status, Integer pageNum, Integer pageSize) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.preSaleOrderListV_2_0(status,pageNum,pageSize);
+            message = this.cmOrderService.preSaleOrderListV_2_0(status, pageNum, pageSize);
             message.setData(message.getData());
             message.setSuccess(true);
             message.setMsg("查询成功");
@@ -628,7 +626,8 @@ public class CmOrderController {
             @ApiImplicitParam(name = "checkName", value = "审核人 ", paramType = "form", required = true)
     })
     @PostMapping("enter-order")
-    public BusinessMessage enterOrder(Integer id, String slbType, Double totalAmount, Integer quantity, Integer inviterId, String  date, String checkName) {
+    public BusinessMessage enterOrder(Integer id, String slbType, Double totalAmount, Integer quantity,
+                                      Integer inviterId, String  date, String checkName) {
         log.debug("A轮订单录入，id = {}, slbType = {}, totalAmount = {}, quantity = {}, inviterId = {}, payTime = {}, checkName = {}",
                 id, slbType, totalAmount, quantity, inviterId, date, checkName);
         BusinessMessage message = new BusinessMessage();
@@ -747,7 +746,8 @@ public class CmOrderController {
                                             String  postFee) {
         BusinessMessage message = new BusinessMessage();
         try {
-            message = this.cmOrderService.limitTimeOrderOnly(request, response, repositoryId, quantity, shareOfPeopleId, shippingAddressId, buyerMessage, activityProductId,postFee);
+            message = this.cmOrderService.limitTimeOrderOnly(request, response, repositoryId, quantity, shareOfPeopleId,
+                    shippingAddressId, buyerMessage, activityProductId,postFee);
         } catch (Exception e) {
             message.setMsg("添加限时秒杀订单失败");
             log.error("新增限时秒杀订单失败 {}", e);
