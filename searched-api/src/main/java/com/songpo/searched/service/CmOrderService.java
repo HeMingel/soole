@@ -3004,7 +3004,7 @@ public class CmOrderService {
                 saveSlbInvite(inviter,order,slSlbType,bean);
             }
             if ("0".equals(returnCode) ){
-                log.debug("用户转入SLB成功-----------------用户id：{},还剩【{}】条数据待处理",user == null ? "用户为空": user.getId(),count);
+                log.debug("用户转入SLB成功-----------------用户id：{},还剩【{}】条数据待处理",user == null ? "用户为空": user.getId(),count-1);
             } else {
                 saveOrderHandle(detail.getOrderId()+"1",user == null ? "用户为空": user.getId(), "用户转入SLB到钱包失败");
             }
@@ -3068,7 +3068,7 @@ public class CmOrderService {
                 saveOrderHandle(orderId,user.getId(),"手机号没有绑定");
                 continue;
             }
-            log.debug("还有【{}】条数据待处理",count);
+            log.debug("还有【{}】条数据待处理",count-1);
             count--;
         }
     }
