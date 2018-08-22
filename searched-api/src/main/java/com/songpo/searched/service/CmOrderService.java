@@ -2683,35 +2683,35 @@ public class CmOrderService {
             saveOrderHandle(slOrder.getId()+"1", slUser.getId(),"用户没有绑定手机号");
         }
 
-//        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
-//        slSlbTransaction1.setTargetId(slOrder.getUserId());
-//        slSlbTransaction1.setOrderId(slOrder.getId());
-//        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
-//        slSlbTransaction1.setType(2);
-//        slSlbTransaction1.setSlb(slb);
-//        slSlbTransaction1.setTransactionType(2);
-//        slbTransactionMapper.insertSelective(slSlbTransaction1);
-//
-//        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
-//        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
-//            setUserId(slOrder.getUserId());
-//            setSlbType(slSlbType.getSlbType());
-//        }});
-//        if(null != slUserSlb1){
-//            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
-//                setId(slUserSlb1.getId());
-//                setSlb(slUserSlb1.getSlb().add(slb));
-//                }});
-//        }else {
-//            SlUserSlb slUserSlb = new SlUserSlb();
-//            slUserSlb.setUserId(slOrder.getUserId());
-//            slUserSlb.setSlb(slb);
-//            slUserSlb.setSlbType(slSlbType.getSlbType());
-//            userSlbService.insert(slUserSlb);
-//        }
-//
-//        //资金池搜了贝修改以及搜了贝交易记录
-//        cmTotalPoolService.updatePool(null,null,slb,2,slOrder.getId(),slOrder.getUserId(),5);
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slOrder.getUserId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(2);
+        slSlbTransaction1.setSlb(slb);
+        slSlbTransaction1.setTransactionType(2);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slOrder.getUserId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(slb));
+                }});
+        }else {
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slOrder.getUserId());
+            slUserSlb.setSlb(slb);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
+        }
+
+        //资金池搜了贝修改以及搜了贝交易记录
+        cmTotalPoolService.updatePool(null,null,slb,2,slOrder.getId(),slOrder.getUserId(),5);
     }
 
     /**
@@ -2779,32 +2779,32 @@ public class CmOrderService {
             saveOrderHandle(slOrder.getId()+"2", slUser.getId(),"用户没有绑定手机号");
         }
 
-//        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
-//        slSlbTransaction1.setTargetId(slUser.getId());
-//        slSlbTransaction1.setOrderId(slOrder.getId());
-//        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
-//        slSlbTransaction1.setType(3);
-//        slSlbTransaction1.setSlb(bean);
-//        slSlbTransaction1.setTransactionType(2);
-//        slbTransactionMapper.insertSelective(slSlbTransaction1);
-//
-//        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
-//        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
-//            setUserId(slUser.getId());
-//            setSlbType(slSlbType.getSlbType());
-//        }});
-//        if(null != slUserSlb1){
-//            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
-//                setId(slUserSlb1.getId());
-//                setSlb(slUserSlb1.getSlb().add(bean));}});
-//        }else {
-//            SlUserSlb slUserSlb = new SlUserSlb();
-//            slUserSlb.setUserId(slUser.getId());
-//            slUserSlb.setSlb(bean);
-//            slUserSlb.setSlbType(slSlbType.getSlbType());
-//            userSlbService.insert(slUserSlb);
-//        }
-//        cmTotalPoolService.updatePool(null,null,bean,2,slOrder.getId(),slOrder.getUserId(),8);
+        SlSlbTransaction slSlbTransaction1 = new SlSlbTransaction();
+        slSlbTransaction1.setTargetId(slUser.getId());
+        slSlbTransaction1.setOrderId(slOrder.getId());
+        slSlbTransaction1.setSlbType(slSlbType.getSlbType());
+        slSlbTransaction1.setType(3);
+        slSlbTransaction1.setSlb(bean);
+        slSlbTransaction1.setTransactionType(2);
+        slbTransactionMapper.insertSelective(slSlbTransaction1);
+
+        //搜了贝有此用户 修改搜了贝 ; 没有此用户 添加
+        SlUserSlb slUserSlb1 = this.userSlbService.selectOne(new SlUserSlb(){{
+            setUserId(slUser.getId());
+            setSlbType(slSlbType.getSlbType());
+        }});
+        if(null != slUserSlb1){
+            userSlbService.updateByPrimaryKeySelective(new SlUserSlb(){{
+                setId(slUserSlb1.getId());
+                setSlb(slUserSlb1.getSlb().add(bean));}});
+        }else {
+            SlUserSlb slUserSlb = new SlUserSlb();
+            slUserSlb.setUserId(slUser.getId());
+            slUserSlb.setSlb(bean);
+            slUserSlb.setSlbType(slSlbType.getSlbType());
+            userSlbService.insert(slUserSlb);
+        }
+        cmTotalPoolService.updatePool(null,null,bean,2,slOrder.getId(),slOrder.getUserId(),8);
     }
     /**
      *

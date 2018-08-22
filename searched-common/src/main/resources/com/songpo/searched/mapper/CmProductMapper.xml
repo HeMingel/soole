@@ -419,11 +419,14 @@
         p.remark,
         p.image_url,
         p.sales_virtual,
+        pt.name product_type_name,
         ap.*
         FROM
         sl_product p
         LEFT JOIN sl_activity_product ap
         ON p.id = ap.`product_id`
+        LEFT JOIN sl_product_type pt
+        ON p.product_type_id = pt.id
         WHERE p.`shop_id` = #{shopId}
         AND p.`sold_out` = 1
         AND ap.`enabled` = 1
