@@ -458,7 +458,7 @@ public class ThirdPartyWalletService {
                         walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
                     }else {
                         message.setSuccess(false);
-                        message.setMsg("请先注册钱包APP会员");
+                        message.setMsg("请先注册搜了钱包APP");
                         return message;
                     }
                 }
