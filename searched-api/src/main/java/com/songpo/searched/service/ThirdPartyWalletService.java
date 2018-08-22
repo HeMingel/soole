@@ -127,13 +127,15 @@ public class ThirdPartyWalletService {
                     setMobilearea(Integer.parseInt(moblieArea));
                 }});
                if (!SLStringUtils.isEmpty(moblieArea)){
-                  // smsService.sendMess(mobile,slPhoneZone.getZone(),pwd);
+                   smsService.sendMess(mobile,slPhoneZone.getZone(),pwd);
                }
             }
         } catch (Exception e ) {
             log.error("钱包APP注册出错",e);
+        }finally {
+            return returnStr;
         }
-        return returnStr;
+
     }
 
 
