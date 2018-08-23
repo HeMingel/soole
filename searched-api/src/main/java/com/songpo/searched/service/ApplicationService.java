@@ -114,18 +114,17 @@ public class ApplicationService {
             if (StringUtils.isNotBlank(businessImageUrl)) {
                 business.setBusinessImageUrl(businessImageUrl);
             }
-        } else {
-            // 上传身份证正面照片
-            String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
-            if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
-                business.setIdCardFrontImageUrl(idCardFrontImageUrl);
-            }
+        }
+        // 上传身份证正面照片
+        String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
+        if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
+            business.setIdCardFrontImageUrl(idCardFrontImageUrl);
+        }
 
-            // 上传身份证反面照片
-            String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
-            if (StringUtils.isNotBlank(idCardBackImageUrl)) {
-                business.setIdCardBackImageUrl(idCardBackImageUrl);
-            }
+        // 上传身份证反面照片
+        String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
+        if (StringUtils.isNotBlank(idCardBackImageUrl)) {
+            business.setIdCardBackImageUrl(idCardBackImageUrl);
         }
 
         // 检测账号是否存在，如果不存在，则创建用户

@@ -127,7 +127,8 @@ public class ApplicationController {
             @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
     })
     @PostMapping(value = "business")
-    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
+    public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront,
+                                                           MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，申请信息：{}", business);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
         if (StringUtils.isBlank(business.getProvince())) {
