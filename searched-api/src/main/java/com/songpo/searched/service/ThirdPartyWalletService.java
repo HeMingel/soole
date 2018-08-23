@@ -718,9 +718,9 @@ public class ThirdPartyWalletService {
             message.setMsg("查询成功");
             message.setSuccess(true);
         }catch (Exception e){
-            log.error("查询搜了贝(最新)",e);
+            log.error("查询搜了贝(最新)异常",e);
             message.setSuccess(false);
-            message.setMsg("查询搜了贝(最新)异常");
+            message.setMsg("查询搜了贝异常");
         }
 
         return message;
