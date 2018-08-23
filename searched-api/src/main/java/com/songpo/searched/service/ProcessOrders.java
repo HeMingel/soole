@@ -141,10 +141,9 @@ public class ProcessOrders {
                                             setSpellGroupStatus(2);
                                         }}, e);
                                         //拼团成功更改所有订单的发货状态
-                                        orderDetailService.updateByPrimaryKeySelective( new SlOrderDetail(){{
-                                            setId(detail.getId());
+                                        orderDetailService.updateByExampleSelective( new SlOrderDetail(){{
                                             setShippingState(3);
-                                        }});
+                                        }},e);
                                     } else if (count < detail.getGroupPeople()) {
                                         orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                             setId(order.getId());
