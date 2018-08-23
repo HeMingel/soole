@@ -105,6 +105,8 @@ public class ApplicationService {
         log.debug("提交商户入驻申请，商户信息：{}", business);
         // 上传照片
         String idCardHandImageUrl = this.fileService.upload("business_application", idCardHand);
+        String idCardFrontImageUrl;
+        String idCardBackImageUrl ;
         if (StringUtils.isNotBlank(idCardHandImageUrl)) {
             business.setIdCardHandImageUrl(idCardHandImageUrl);
         }
@@ -114,17 +116,29 @@ public class ApplicationService {
             if (StringUtils.isNotBlank(businessImageUrl)) {
                 business.setBusinessImageUrl(businessImageUrl);
             }
-        }
-        // 上传身份证正面照片
-        String idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
-        if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
-            business.setIdCardFrontImageUrl(idCardFrontImageUrl);
-        }
+            // 上传身份证正面照片
+            idCardFrontImageUrl = this.fileService.upload("business_application", idCardFront);
+            if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
+                business.setIdCardFrontImageUrl(idCardFrontImageUrl);
+            }
 
-        // 上传身份证反面照片
-        String idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
-        if (StringUtils.isNotBlank(idCardBackImageUrl)) {
-            business.setIdCardBackImageUrl(idCardBackImageUrl);
+            // 上传身份证反面照片
+             idCardBackImageUrl = this.fileService.upload("business_application", idCardBack);
+            if (StringUtils.isNotBlank(idCardBackImageUrl)) {
+                business.setIdCardBackImageUrl(idCardBackImageUrl);
+            }
+        } else {
+            // 上传身份证正面照片
+              idCardFrontImageUrl = this.fileService.upload("agent_application", idCardFront);
+            if (StringUtils.isNotBlank(idCardFrontImageUrl)) {
+                business.setIdCardFrontImageUrl(idCardFrontImageUrl);
+            }
+
+            // 上传身份证反面照片
+                idCardBackImageUrl = this.fileService.upload("agent_application", idCardBack);
+            if (StringUtils.isNotBlank(idCardBackImageUrl)) {
+                business.setIdCardBackImageUrl(idCardBackImageUrl);
+            }
         }
 
         // 检测账号是否存在，如果不存在，则创建用户
