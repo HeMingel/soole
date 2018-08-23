@@ -140,10 +140,13 @@ public class ProcessOrders {
                                             // 改成拼团成功
                                             setSpellGroupStatus(2);
                                         }}, e);
+                                        Example e1 = new Example(SlOrderDetail.class);
+                                        e.createCriteria()
+                                                .andEqualTo("serialNumber", order.getSerialNumber());
                                         //拼团成功更改所有订单的发货状态
                                         orderDetailService.updateByExampleSelective( new SlOrderDetail(){{
                                             setShippingState(3);
-                                        }},e);
+                                        }},e1);
                                     } else if (count < detail.getGroupPeople()) {
                                         orderService.updateByPrimaryKeySelective(new SlOrder() {{
                                             setId(order.getId());
