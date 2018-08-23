@@ -133,7 +133,9 @@ public class ThirdPartyWalletService {
         } catch (Exception e ) {
             log.error("钱包APP注册出错",e);
         }
-        return returnStr;
+        finally {
+            return returnStr;
+        }
     }
 
 

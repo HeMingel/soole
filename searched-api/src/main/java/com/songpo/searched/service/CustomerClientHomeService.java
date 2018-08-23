@@ -12,14 +12,12 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.typehandler.ActionNavigationTypeEnum;
 import com.songpo.searched.typehandler.ArticleTypeEnum;
-import com.songpo.searched.typehandler.ProductEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
