@@ -274,16 +274,21 @@ public class SmsService {
             SendSmsRequest request = new SendSmsRequest();
             //使用post提交
             request.setMethod(MethodType.POST);
-            //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,登录密码类型的短信推荐使用单条调用的方式
-            request.setPhoneNumbers(phone);
+
             //必填:短信签名-可在短信控制台中找到
             request.setSignName("搜了平台");
             //必填:短信模板-可在短信控制台中找到
             if(null==zone||"中国大陆".equals(zone)){
                 request.setTemplateCode("SMS_142382140");
             }else {
+                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+                    setZone(zone);
+                }});
+                phone = "00"+slPhoneZone.getMobilearea()+phone;
                 request.setTemplateCode("SMS_142387110");
             }
+            //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,登录密码类型的短信推荐使用单条调用的方式
+            request.setPhoneNumbers(phone);
             request.setTemplateParam("{\"phone\":\"" + phone + "\",\"password\":\"" + password + "\"}");
             SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
             if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
