@@ -671,6 +671,7 @@ public class ThirdPartyWalletService {
                     message.setData(mapScAmount);
                 }
             }else {
+                mapAmount = new HashMap();
                 if (null != mapAmount && mapAmount.size()>0){
                     mapAmount.put("amount",mapAmount.get("amount")+"");
                     mapAmount.put("allScAmount","0.00");
