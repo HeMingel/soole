@@ -28,10 +28,10 @@ public class ThirdPartyWalletController {
 
     @ApiOperation(value = "钱包SLB支付")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "walletAddress", value = "商户订单号", paramType = "form", required = true),
-            @ApiImplicitParam(name = "walletPwd", value = "订单金额", paramType = "form", required = true),
-            @ApiImplicitParam(name = "amount", value = "退款总金额", paramType = "form", required = true),
-            @ApiImplicitParam(name = "orderSn", value = "退款原因", paramType = "form", required = true)
+            @ApiImplicitParam(name = "walletAddress", value = "钱包地址", paramType = "form", required = true),
+            @ApiImplicitParam(name = "walletPwd", value = "钱包密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "amount", value = "支付金额", paramType = "form", required = true),
+            @ApiImplicitParam(name = "orderSn", value = "订单号", paramType = "form", required = true)
     })
     @PostMapping("pay")
     public BusinessMessage paySLBFromWallet(String walletAddress,String walletPwd,String amount ,String orderSn){
