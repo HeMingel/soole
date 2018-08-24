@@ -797,9 +797,9 @@ class AlipayController(val alipayService: AliPayService) {
         ApiImplicitParam(name = "tradeNo", value = "支付宝交易号，和商户订单号不能同时为空", paramType = "query", required = false)
     ])
     @GetMapping("/query")
-    fun query(outTradeNo: String?, tradeNo: String?): BusinessMessage<AlipayTradeCustomsQueryResponse> {
+    fun query(outTradeNo: String?, tradeNo: String?): BusinessMessage<AlipayTradeQueryResponse> {
         log.debug { "统一收单线下交易查询，商户订单号= [$outTradeNo], 支付宝交易号 = [$tradeNo]" }
-        val message = BusinessMessage<AlipayTradeCustomsQueryResponse>()
+        val message = BusinessMessage<AlipayTradeQueryResponse>()
         try {
             message.data = this.alipayService.query(outTradeNo, tradeNo)
             message.success = true

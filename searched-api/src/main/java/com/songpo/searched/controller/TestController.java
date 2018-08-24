@@ -1,7 +1,10 @@
 package com.songpo.searched.controller;
 
 
+import com.alipay.api.response.AlipayTradeCustomsQueryResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.github.pagehelper.PageInfo;
+import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
@@ -522,5 +525,14 @@ public class TestController {
     public  void Test20(){
         thirdPartyWalletService.transferToSlbSc("1BwM1YGEmuQdzXhUpUUL37wX1sGCukp8ky","20180820","20210820",
                 "36","2.7777777","592.500000","d604c2194d4044dfa1ba5991650235f81","E");
+    }
+    @Autowired
+    private AliPayService aliPayService;
+    @GetMapping("test-query")
+    public BusinessMessage testQuery(String outTradeNo,String tradeNo ){
+        BusinessMessage message = new BusinessMessage<AlipayTradeQueryResponse>();
+        message.data = aliPayService.query(outTradeNo,tradeNo);
+        System.out.println( "查询订单结果：============================="+((AlipayTradeQueryResponse) message.data).isSuccess());
+        return message;
     }
 }

@@ -1013,8 +1013,9 @@ class AliPayService {
      * @param tradeNo    String	特殊可选	64	支付宝交易号，和商户订单号不能同时为空
      * @return 响应信息
      */
-    fun query(outTradeNo: String?, tradeNo: String?): AlipayTradeCustomsQueryResponse? {
-        val request = AlipayTradeCustomsQueryRequest()
+    fun query(outTradeNo: String?, tradeNo: String?): AlipayTradeQueryResponse? {
+        //val request = AlipayTradeCustomsQueryRequest()
+        val request = AlipayTradeQueryRequest()
         val model = AlipayTradeQueryModel()
         request.bizModel = model
 

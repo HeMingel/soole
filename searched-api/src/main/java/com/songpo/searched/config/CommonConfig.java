@@ -1,5 +1,7 @@
 package com.songpo.searched.config;
 
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.cache.ProductRepositoryCache;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
@@ -65,6 +67,8 @@ public class CommonConfig {
     private CmSeckillRemindMapper cmSeckillRemindMapper;
     @Autowired
     public Environment env;
+    @Autowired
+    private AliPayService aliPayService;
 
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -240,8 +244,8 @@ public class CommonConfig {
 
     /**
      * 处理未支付订单
-     * 24小时前订单关闭
-     * 24小时内订单，调用微信订单查询接口，查询订单支付状态，并处理系统订单
+     * 半小时前订单关闭
+     * 半小时内订单，调用微信订单查询接口，查询订单支付状态，并处理系统订单
      * 来源 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_2&index=4
      */
     @Scheduled(cron = "0 0/1 *  * * ? ")
@@ -280,9 +284,18 @@ public class CommonConfig {
                     log.debug("更新订单{}的支付状态", order.getId());
                     //请求微信订单查询接口并处理订单数据
                     try {
+
                         Map<String, String> result = wxPayService.orderQuery("", order.getId());
                         if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS") && result.get("trade_state").equals("SUCCESS")) {
                             processOrders.processOrders(order.getId(), 1);
+                        }else {
+
+                            //如果微信查询不到 开始查询支付宝订单
+                            AlipayTradeQueryResponse response = aliPayService.query(order.getId(),null);
+                            log.debug("【支付宝】订单查询接口开始 订单{}的查询结果为 {}",order.getId(),response.getSubMsg());
+                            if (response.isSuccess()) {
+                                processOrders.processOrders(order.getId(), 2);
+                            }
                         }
                         //处理拍卖订单
 //                        Map<String, String> saleResult = wxPayService.orderQuery("", order.getOutOrderNumber());
