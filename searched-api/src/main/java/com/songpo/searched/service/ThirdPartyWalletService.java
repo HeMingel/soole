@@ -356,6 +356,7 @@ public class ThirdPartyWalletService {
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
+        System.out.println("getSlbScAmountgetSlbScAmount="+result);
         //解析返回值 转换成json格式
        JSONObject jsonObject = JSONObject.parseObject(result);
        if (jsonObject.getInteger("resultCode") == 0){
@@ -603,6 +604,7 @@ public class ThirdPartyWalletService {
 
                 params.put("sign", sign);
                 String result = HttpUtil.doPost(url, params);
+                System.out.println("getSlbAcount=="+result);
                 //解析返回值 转换成json格式
                 JSONObject jsonObject = JSONObject.parseObject(result);
                 if (jsonObject.getInteger("resultCode") == 0){
