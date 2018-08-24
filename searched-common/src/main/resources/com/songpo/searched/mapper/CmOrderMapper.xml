@@ -227,7 +227,7 @@
         FROM sl_activity_product sap
         LEFT JOIN sl_activity_product_repository sapr ON sap.`activity_product_repository_serial_number` = sapr.`serial_number`
         LEFT JOIN sl_product_repository spr ON spr.id = sapr.`product_repository_id`
-        WHERE sap.enabled = TRUE AND spr.`id`= #{repositoryId} and sap.id = #{activityProductId} and (sap.end_time>now() IS NULL )
+        WHERE sap.enabled = TRUE AND spr.`id`= #{repositoryId} and sap.id = #{activityProductId} and (sap.end_time>now() OR  sap.end_time IS NULL )
     </select>
     <select id="selectShopUserName" resultType="java.util.Map">
         select
