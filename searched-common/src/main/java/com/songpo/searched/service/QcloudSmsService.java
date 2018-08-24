@@ -26,7 +26,7 @@ public class QcloudSmsService {
     // 真实的模板ID需要在短信控制台中申请
     int templateId = 168318;
     //slb注册通知模板
-    int slbMsgId = 176602;
+    int slbMsgId = 180633;
     // 签名
     // 真实的签名需要在短信控制台中申请，另外
     // 签名参数使用的是`签名内容`，而不是`签名ID`

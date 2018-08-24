@@ -279,13 +279,13 @@ public class SmsService {
             request.setSignName("搜了平台");
             //必填:短信模板-可在短信控制台中找到
             if(null==zone||"中国大陆".equals(zone)){
-                request.setTemplateCode("SMS_142382140");
+                request.setTemplateCode("SMS_142952202");
             }else {
                 SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
                     setZone(zone);
                 }});
                 phone = "00"+slPhoneZone.getMobilearea()+phone;
-                request.setTemplateCode("SMS_142387110");
+                request.setTemplateCode("SMS_142947152");
             }
             //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,登录密码类型的短信推荐使用单条调用的方式
             request.setPhoneNumbers(phone);
@@ -313,6 +313,18 @@ public class SmsService {
             }
         } catch (Exception e) {
             log.error("发送钱包app注册通知失败，{}", e);
+            //启用腾讯云短信备用通道
+            SlPhoneZone slPhoneZone =slPhoneZoneMapper.selectOne( new SlPhoneZone(){{
+                setZone(zone);
+            }});
+            String mobile[] = new String[]{phone};
+            message =  qcloudSmsService.sendSlbMsgId(mobile,slPhoneZone.getMobilearea().toString(),phone, password);
+            if ("0".equals(message.getCode())) {
+                //请求成功
+                log.debug("腾讯钱包app注册通知发送成功，用户：{}",phone);
+            }else{
+                log.debug("腾讯钱包app注册通知发送失败 用户：{}",phone);
+            }
         }
         return message;
     }
