@@ -634,7 +634,7 @@ public class ThirdPartyWalletService {
                     mapScAmount.put("allReleaseAmount",Double.parseDouble(mapAmount.get("amount").toString())+(Double.parseDouble(mapAmount.get("allReleaseAmount")==null?"0.00":mapAmount.get("allReleaseAmount")+""))+"");
                     mapScAmount.put("allScAmount",Double.parseDouble(mapScAmount.get("allScAmount")==null?"0.00":mapScAmount.get("allScAmount").toString())+"");
                     mapScAmount.put("aAmount",Double.parseDouble(mapScAmount.get("aAmount")==null?"0.00":mapScAmount.get("aAmount").toString())+"");
-                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString()));
+                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString())+"");
                     mapScAmount.put("aReleaseAmount",Double.parseDouble(mapScAmount.get("aReleaseAmount")==null?"0.00":mapScAmount.get("aReleaseAmount").toString())+"");
                     mapScAmount.put("dScAmount",Double.parseDouble(mapScAmount.get("dScAmount")==null?"0.00":mapScAmount.get("dScAmount").toString())+"");
                     mapScAmount.put("eAmount",Double.parseDouble(mapScAmount.get("eAmount")==null?"0.00":mapScAmount.get("eAmount").toString())+"");
