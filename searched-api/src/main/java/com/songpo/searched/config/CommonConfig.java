@@ -293,7 +293,7 @@ public class CommonConfig {
                             //如果微信查询不到 开始查询支付宝订单
                             AlipayTradeQueryResponse response = aliPayService.query(order.getId(),null);
                             log.debug("【支付宝】订单查询接口开始 订单{}的查询结果为 {}",order.getId(),response.getSubMsg());
-                            if (response.isSuccess()) {
+                            if ("TRADE_SUCCESS".equals(response.getTradeStatus())) {
                                 processOrders.processOrders(order.getId(), 2);
                             }
                         }

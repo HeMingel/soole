@@ -532,7 +532,7 @@ public class TestController {
     public BusinessMessage testQuery(String outTradeNo,String tradeNo ){
         BusinessMessage message = new BusinessMessage<AlipayTradeQueryResponse>();
         message.data = aliPayService.query(outTradeNo,tradeNo);
-        System.out.println( "查询订单结果：============================="+((AlipayTradeQueryResponse) message.data).isSuccess());
+        System.out.println( "查询订单结果：============================="+((AlipayTradeQueryResponse) message.data).getTradeStatus());
         return message;
     }
 }
