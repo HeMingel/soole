@@ -673,16 +673,15 @@ public class ThirdPartyWalletService {
                     message.setData(mapScAmount);
                 }
             }else {
-                mapAmount = new HashMap();
                 if (null != mapAmount && mapAmount.size()>0){
-                    mapAmount.put("amount",mapAmount.get("amount")+"");
+                    mapAmount.put("amount",Double.parseDouble(mapAmount.get("amount").toString())+"");
                     mapAmount.put("allScAmount","0.00");
                     mapAmount.put("aAmount","0.00");
                     mapAmount.put("eScAmount","0.00");
                     mapAmount.put("aReleaseAmount","0.00");
                     mapAmount.put("dScAmount","0.00");
                     mapAmount.put("eAmount","0.00");
-                    mapAmount.put("allReleaseAmount",mapAmount.get("amount")+"");
+                    mapAmount.put("allReleaseAmount",Double.parseDouble(mapAmount.get("amount").toString())+"");
                     mapAmount.put("cScAmount","0.00");
                     mapAmount.put("dAmount","0.00");
                     mapAmount.put("cAmount","0.00");
@@ -696,6 +695,7 @@ public class ThirdPartyWalletService {
                     mapAmount.put("dReleaseBmount","0.00");
                     message.setData(mapAmount);
                 }else {
+                    mapAmount = new HashMap();
                     mapAmount.put("amount","0.00");
                     mapAmount.put("allScAmount","0.00");
                     mapAmount.put("aAmount","0.00");
