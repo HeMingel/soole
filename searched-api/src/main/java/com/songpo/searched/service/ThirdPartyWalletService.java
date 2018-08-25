@@ -356,6 +356,7 @@ public class ThirdPartyWalletService {
         params.put("noteStr", encodedNoteStr);
         params.put("sign", sign);
         String result = HttpUtil.doPost(url, params);
+        System.out.println("getSlbScAmountgetSlbScAmount="+result);
         //解析返回值 转换成json格式
        JSONObject jsonObject = JSONObject.parseObject(result);
        if (jsonObject.getInteger("resultCode") == 0){
@@ -603,6 +604,7 @@ public class ThirdPartyWalletService {
 
                 params.put("sign", sign);
                 String result = HttpUtil.doPost(url, params);
+                System.out.println("getSlbAcount=="+result);
                 //解析返回值 转换成json格式
                 JSONObject jsonObject = JSONObject.parseObject(result);
                 if (jsonObject.getInteger("resultCode") == 0){
@@ -630,57 +632,56 @@ public class ThirdPartyWalletService {
                 if (null != mapAmount && mapAmount.size()>0){
                     mapScAmount.put("amount",Double.parseDouble(mapScAmount.get("allScAmount").toString())+(Double.parseDouble(mapAmount.get("amount")+""))+"");
                     mapScAmount.put("allReleaseAmount",Double.parseDouble(mapAmount.get("amount").toString())+(Double.parseDouble(mapAmount.get("allReleaseAmount")==null?"0.00":mapAmount.get("allReleaseAmount")+""))+"");
-                    mapScAmount.put("allScAmount",Double.parseDouble(mapScAmount.get("allScAmount")==null?"0.00":mapScAmount.get("allScAmount").toString()));
-                    mapScAmount.put("aAmount",Double.parseDouble(mapScAmount.get("aAmount")==null?"0.00":mapScAmount.get("aAmount").toString()));
-                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString()));
-                    mapScAmount.put("aReleaseAmount",Double.parseDouble(mapScAmount.get("aReleaseAmount")==null?"0.00":mapScAmount.get("aReleaseAmount").toString()));
-                    mapScAmount.put("dScAmount",Double.parseDouble(mapScAmount.get("dScAmount")==null?"0.00":mapScAmount.get("dScAmount").toString()));
-                    mapScAmount.put("eAmount",Double.parseDouble(mapScAmount.get("eAmount")==null?"0.00":mapScAmount.get("eAmount").toString()));
-                    mapScAmount.put("cScAmount",Double.parseDouble(mapScAmount.get("cScAmount")==null?"0.00":mapScAmount.get("cScAmount").toString()));
-                    mapScAmount.put("dAmount",Double.parseDouble(mapScAmount.get("dAmount")==null?"0.00":mapScAmount.get("dAmount").toString()));
-                    mapScAmount.put("cAmount",Double.parseDouble(mapScAmount.get("cAmount")==null?"0.00":mapScAmount.get("cAmount").toString()));
-                    mapScAmount.put("allAmount",Double.parseDouble(mapScAmount.get("allAmount")==null?"0.00":mapScAmount.get("allAmount").toString()));
-                    mapScAmount.put("bReleaseBmount",Double.parseDouble(mapScAmount.get("bReleaseBmount")==null?"0.00":mapScAmount.get("bReleaseBmount").toString()));
-                    mapScAmount.put("bScAmount",Double.parseDouble(mapScAmount.get("bScAmount")==null?"0.00":mapScAmount.get("bScAmount").toString()));
-                    mapScAmount.put("bAmount",Double.parseDouble(mapScAmount.get("bAmount")==null?"0.00":mapScAmount.get("bAmount").toString()));
-                    mapScAmount.put("eReleaseBmount",Double.parseDouble(mapScAmount.get("eReleaseBmount")==null?"0.00":mapScAmount.get("eReleaseBmount").toString()));
-                    mapScAmount.put("cReleaseBmount",Double.parseDouble(mapScAmount.get("cReleaseBmount")==null?"0.00":mapScAmount.get("cReleaseBmount").toString()));
-                    mapScAmount.put("aScAmount",Double.parseDouble(mapScAmount.get("aScAmount")==null?"0.00":mapScAmount.get("aScAmount").toString()));
-                    mapScAmount.put("dReleaseBmount",Double.parseDouble(mapScAmount.get("dReleaseBmount")==null?"0.00":mapScAmount.get("dReleaseBmount").toString()));
+                    mapScAmount.put("allScAmount",Double.parseDouble(mapScAmount.get("allScAmount")==null?"0.00":mapScAmount.get("allScAmount").toString())+"");
+                    mapScAmount.put("aAmount",Double.parseDouble(mapScAmount.get("aAmount")==null?"0.00":mapScAmount.get("aAmount").toString())+"");
+                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString())+"");
+                    mapScAmount.put("aReleaseAmount",Double.parseDouble(mapScAmount.get("aReleaseAmount")==null?"0.00":mapScAmount.get("aReleaseAmount").toString())+"");
+                    mapScAmount.put("dScAmount",Double.parseDouble(mapScAmount.get("dScAmount")==null?"0.00":mapScAmount.get("dScAmount").toString())+"");
+                    mapScAmount.put("eAmount",Double.parseDouble(mapScAmount.get("eAmount")==null?"0.00":mapScAmount.get("eAmount").toString())+"");
+                    mapScAmount.put("cScAmount",Double.parseDouble(mapScAmount.get("cScAmount")==null?"0.00":mapScAmount.get("cScAmount").toString())+"");
+                    mapScAmount.put("dAmount",Double.parseDouble(mapScAmount.get("dAmount")==null?"0.00":mapScAmount.get("dAmount").toString())+"");
+                    mapScAmount.put("cAmount",Double.parseDouble(mapScAmount.get("cAmount")==null?"0.00":mapScAmount.get("cAmount").toString())+"");
+                    mapScAmount.put("allAmount",Double.parseDouble(mapScAmount.get("allAmount")==null?"0.00":mapScAmount.get("allAmount").toString())+"");
+                    mapScAmount.put("bReleaseBmount",Double.parseDouble(mapScAmount.get("bReleaseBmount")==null?"0.00":mapScAmount.get("bReleaseBmount").toString())+"");
+                    mapScAmount.put("bScAmount",Double.parseDouble(mapScAmount.get("bScAmount")==null?"0.00":mapScAmount.get("bScAmount").toString())+"");
+                    mapScAmount.put("bAmount",Double.parseDouble(mapScAmount.get("bAmount")==null?"0.00":mapScAmount.get("bAmount").toString())+"");
+                    mapScAmount.put("eReleaseBmount",Double.parseDouble(mapScAmount.get("eReleaseBmount")==null?"0.00":mapScAmount.get("eReleaseBmount").toString())+"");
+                    mapScAmount.put("cReleaseBmount",Double.parseDouble(mapScAmount.get("cReleaseBmount")==null?"0.00":mapScAmount.get("cReleaseBmount").toString())+"");
+                    mapScAmount.put("aScAmount",Double.parseDouble(mapScAmount.get("aScAmount")==null?"0.00":mapScAmount.get("aScAmount").toString())+"");
+                    mapScAmount.put("dReleaseBmount",Double.parseDouble(mapScAmount.get("dReleaseBmount")==null?"0.00":mapScAmount.get("dReleaseBmount").toString())+"");
                     message.setData(mapScAmount);
                 }else {
                     mapScAmount.put("amount",mapScAmount.get("allScAmount")+"");
-                    mapScAmount.put("allScAmount",Double.parseDouble(mapScAmount.get("allScAmount")==null?"0.00":mapScAmount.get("allScAmount").toString()));
-                    mapScAmount.put("aAmount",Double.parseDouble(mapScAmount.get("aAmount")==null?"0.00":mapScAmount.get("aAmount").toString()));
-                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString()));
-                    mapScAmount.put("aReleaseAmount",Double.parseDouble(mapScAmount.get("aReleaseAmount")==null?"0.00":mapScAmount.get("aReleaseAmount").toString()));
-                    mapScAmount.put("dScAmount",Double.parseDouble(mapScAmount.get("dScAmount")==null?"0.00":mapScAmount.get("dScAmount").toString()));
-                    mapScAmount.put("eAmount",Double.parseDouble(mapScAmount.get("eAmount")==null?"0.00":mapScAmount.get("eAmount").toString()));
-                    mapScAmount.put("cScAmount",Double.parseDouble(mapScAmount.get("cScAmount")==null?"0.00":mapScAmount.get("cScAmount").toString()));
-                    mapScAmount.put("dAmount",Double.parseDouble(mapScAmount.get("dAmount")==null?"0.00":mapScAmount.get("dAmount").toString()));
-                    mapScAmount.put("cAmount",Double.parseDouble(mapScAmount.get("cAmount")==null?"0.00":mapScAmount.get("cAmount").toString()));
-                    mapScAmount.put("allAmount",Double.parseDouble(mapScAmount.get("allAmount")==null?"0.00":mapScAmount.get("allAmount").toString()));
-                    mapScAmount.put("bReleaseBmount",Double.parseDouble(mapScAmount.get("bReleaseBmount")==null?"0.00":mapScAmount.get("bReleaseBmount").toString()));
-                    mapScAmount.put("bScAmount",Double.parseDouble(mapScAmount.get("bScAmount")==null?"0.00":mapScAmount.get("bScAmount").toString()));
-                    mapScAmount.put("bAmount",Double.parseDouble(mapScAmount.get("bAmount")==null?"0.00":mapScAmount.get("bAmount").toString()));
-                    mapScAmount.put("eReleaseBmount",Double.parseDouble(mapScAmount.get("eReleaseBmount")==null?"0.00":mapScAmount.get("eReleaseBmount").toString()));
-                    mapScAmount.put("cReleaseBmount",Double.parseDouble(mapScAmount.get("cReleaseBmount")==null?"0.00":mapScAmount.get("cReleaseBmount").toString()));
-                    mapScAmount.put("aScAmount",Double.parseDouble(mapScAmount.get("aScAmount")==null?"0.00":mapScAmount.get("aScAmount").toString()));
-                    mapScAmount.put("dReleaseBmount",Double.parseDouble(mapScAmount.get("dReleaseBmount")==null?"0.00":mapScAmount.get("dReleaseBmount").toString()));
-                    mapScAmount.put("allReleaseAmount",Double.parseDouble(mapScAmount.get("allReleaseAmount")==null?"0.00":mapScAmount.get("allReleaseAmount").toString()));
+                    mapScAmount.put("allScAmount",Double.parseDouble(mapScAmount.get("allScAmount")==null?"0.00":mapScAmount.get("allScAmount").toString())+"");
+                    mapScAmount.put("aAmount",Double.parseDouble(mapScAmount.get("aAmount")==null?"0.00":mapScAmount.get("aAmount").toString())+"");
+                    mapScAmount.put("eScAmount",Double.parseDouble(mapScAmount.get("eScAmount")==null?"0.00":mapScAmount.get("eScAmount").toString())+"");
+                    mapScAmount.put("aReleaseAmount",Double.parseDouble(mapScAmount.get("aReleaseAmount")==null?"0.00":mapScAmount.get("aReleaseAmount").toString())+"");
+                    mapScAmount.put("dScAmount",Double.parseDouble(mapScAmount.get("dScAmount")==null?"0.00":mapScAmount.get("dScAmount").toString())+"");
+                    mapScAmount.put("eAmount",Double.parseDouble(mapScAmount.get("eAmount")==null?"0.00":mapScAmount.get("eAmount").toString())+"");
+                    mapScAmount.put("cScAmount",Double.parseDouble(mapScAmount.get("cScAmount")==null?"0.00":mapScAmount.get("cScAmount").toString())+"");
+                    mapScAmount.put("dAmount",Double.parseDouble(mapScAmount.get("dAmount")==null?"0.00":mapScAmount.get("dAmount").toString())+"");
+                    mapScAmount.put("cAmount",Double.parseDouble(mapScAmount.get("cAmount")==null?"0.00":mapScAmount.get("cAmount").toString())+"");
+                    mapScAmount.put("allAmount",Double.parseDouble(mapScAmount.get("allAmount")==null?"0.00":mapScAmount.get("allAmount").toString())+"");
+                    mapScAmount.put("bReleaseBmount",Double.parseDouble(mapScAmount.get("bReleaseBmount")==null?"0.00":mapScAmount.get("bReleaseBmount").toString())+"");
+                    mapScAmount.put("bScAmount",Double.parseDouble(mapScAmount.get("bScAmount")==null?"0.00":mapScAmount.get("bScAmount").toString())+"");
+                    mapScAmount.put("bAmount",Double.parseDouble(mapScAmount.get("bAmount")==null?"0.00":mapScAmount.get("bAmount").toString())+"");
+                    mapScAmount.put("eReleaseBmount",Double.parseDouble(mapScAmount.get("eReleaseBmount")==null?"0.00":mapScAmount.get("eReleaseBmount").toString())+"");
+                    mapScAmount.put("cReleaseBmount",Double.parseDouble(mapScAmount.get("cReleaseBmount")==null?"0.00":mapScAmount.get("cReleaseBmount").toString())+"");
+                    mapScAmount.put("aScAmount",Double.parseDouble(mapScAmount.get("aScAmount")==null?"0.00":mapScAmount.get("aScAmount").toString())+"");
+                    mapScAmount.put("dReleaseBmount",Double.parseDouble(mapScAmount.get("dReleaseBmount")==null?"0.00":mapScAmount.get("dReleaseBmount").toString())+"");
+                    mapScAmount.put("allReleaseAmount",Double.parseDouble(mapScAmount.get("allReleaseAmount")==null?"0.00":mapScAmount.get("allReleaseAmount").toString())+"");
                     message.setData(mapScAmount);
                 }
             }else {
-                mapAmount = new HashMap();
                 if (null != mapAmount && mapAmount.size()>0){
-                    mapAmount.put("amount",mapAmount.get("amount")+"");
+                    mapAmount.put("amount",Double.parseDouble(mapAmount.get("amount").toString())+"");
                     mapAmount.put("allScAmount","0.00");
                     mapAmount.put("aAmount","0.00");
                     mapAmount.put("eScAmount","0.00");
                     mapAmount.put("aReleaseAmount","0.00");
                     mapAmount.put("dScAmount","0.00");
                     mapAmount.put("eAmount","0.00");
-                    mapAmount.put("allReleaseAmount",mapAmount.get("amount")+"");
+                    mapAmount.put("allReleaseAmount",Double.parseDouble(mapAmount.get("amount").toString())+"");
                     mapAmount.put("cScAmount","0.00");
                     mapAmount.put("dAmount","0.00");
                     mapAmount.put("cAmount","0.00");
@@ -694,6 +695,7 @@ public class ThirdPartyWalletService {
                     mapAmount.put("dReleaseBmount","0.00");
                     message.setData(mapAmount);
                 }else {
+                    mapAmount = new HashMap();
                     mapAmount.put("amount","0.00");
                     mapAmount.put("allScAmount","0.00");
                     mapAmount.put("aAmount","0.00");

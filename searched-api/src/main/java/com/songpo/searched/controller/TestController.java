@@ -535,4 +535,16 @@ public class TestController {
         System.out.println( "查询订单结果：============================="+((AlipayTradeQueryResponse) message.data).getTradeStatus());
         return message;
     }
+    //锁仓slb
+    @GetMapping("test21")
+    public  String Test21(){
+//        thirdPartyWalletService.getSlbScAmount("18611327925");
+//        thirdPartyWalletService.getSlbAcount("18611327925");
+        return  thirdPartyWalletService.getSlbScAmount("18611327925")+""+thirdPartyWalletService.getSlbAcount("18611327925")+"";
+    }
+    //查slb
+    @GetMapping("test22")
+    public  void Test22(){
+        thirdPartyWalletService.getSlbAcount("18611327925");
+    }
 }
