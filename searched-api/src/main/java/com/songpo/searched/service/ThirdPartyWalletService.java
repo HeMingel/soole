@@ -431,105 +431,107 @@ public class ThirdPartyWalletService {
     public BusinessMessage transferToSLB(String userId,String platTransPwd, String transfAmount ){
         log.debug("userId="+userId+",transfAmount="+transfAmount);
         BusinessMessage message = new BusinessMessage();
-        //获取用户信息
-        SlUser slUser = slUserMapper.selectByPrimaryKey(userId);
-        //获取slb汇率
-        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
-            setVar("bean");
-        }});
-        //兑换的slb数量转换为对应的金币
-        Integer coin = Integer.valueOf(transfAmount) * Integer.valueOf(slSystemConnector.getAppId());
-        //钱包地址
-        String walletAddress = "";
+        message.setSuccess(false);
+        message.setMsg("暂不开放此功能");
+//        //获取用户信息
+//        SlUser slUser = slUserMapper.selectByPrimaryKey(userId);
+//        //获取slb汇率
+//        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+//            setVar("bean");
+//        }});
+//        //兑换的slb数量转换为对应的金币
+//        Integer coin = Integer.valueOf(transfAmount) * Integer.valueOf(slSystemConnector.getAppId());
+//        //钱包地址
+//        String walletAddress = "";
         try {
-            if (null != slUser){
-                //获取手机区号
-                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
-                    setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
-                }});
-                //查询用户是否注册钱包
-                if (checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
-                    //获取钱包地址
-                    walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                }else {
-                    //生成钱包登录密码
-                    String loginPwd = SLStringUtils.getStringRandom(6);
-                    //用户钱包注册
-                    String res = UserRegister(slUser.getPhone(), loginPwd, slPhoneZone.getMobilearea().toString());
-                    if ("0".equals(res)){
-                        //获取钱包地址
-                        walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
-                    }else {
-                        message.setSuccess(false);
-                        message.setMsg("请先注册搜了钱包APP");
-                        return message;
-                    }
-                }
-                if (slUser.getCoin()>coin){
-                    //公钥
-                    String publicKey = env.getProperty("wallet.publicKey");
-                    //生成加密随机串
-                    String noteStr =  String.valueOf(System.currentTimeMillis());
-                    noteStr = StringUtils.leftPad(noteStr, 16,  "0");
-
-                    platTransPwd = AESUtils.encode(platTransPwd, noteStr);
-
-                    //公钥加密随机串
-                    String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
-                    String orderSn = String.valueOf(System.currentTimeMillis());
-
-                    //生成签名
-                    SortedMap<String, String> packageParams = new TreeMap<String, String>();
-                    packageParams.put("walletAddress", walletAddress);
-                    packageParams.put("platTransPwd", platTransPwd);
-                    packageParams.put("transfAmount", transfAmount);
-                    packageParams.put("noteStr", encodedNoteStr);
-                    packageParams.put("orderSn", orderSn);
-
-                    String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
-
-                    String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
-                    Map<String,Object> params = new HashMap<String,Object>();
-                    params.put("walletAddress", walletAddress);
-                    params.put("platTransPwd", platTransPwd);
-                    params.put("transfAmount", transfAmount.toString());
-                    params.put("noteStr", encodedNoteStr);
-                    params.put("orderSn", orderSn);
-
-                    params.put("sign", sign);
-                    String result = HttpUtil.doPost(url, params);
-                    //解析返回值 转换成json格式
-                    JSONObject jsonObject = JSONObject.parseObject(result);
-                    Integer code =  jsonObject.getInteger("resultCode");
-                    if (0 == code){
-                        slUser.setCoin(slUser.getCoin()-coin);
-                        //扣除用户金币
-                        slUserMapper.updateByPrimaryKey(slUser);
-                        //保存交易明细
-                        slTransactionDetailMapper.insertSelective(new SlTransactionDetail(){{
-                            setTargetId(slUser.getId());
-                            setType(105);
-                            setCoin(coin);
-                            setDealType(5);
-                            setCreateTime(new Date());
-                        }});
-                        message.setMsg("slb兑换成功");
-                        message.setSuccess(true);
-                    }else {
-                        message.setMsg(jsonObject.getString("message"));
-                        message.setSuccess(false);
-                        return message;
-                    }
-                }else {
-                    message.setMsg("金币不足");
-                    message.setSuccess(false);
-                    return message;
-                }
-            }else {
-                message.setMsg("用户不存在");
-                message.setSuccess(false);
-                return message;
-            }
+//            if (null != slUser){
+//                //获取手机区号
+//                SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
+//                    setZone(slUser.getZone()==""?"中国大陆":slUser.getZone());
+//                }});
+//                //查询用户是否注册钱包
+//                if (checkUserRegister(slUser.getPhone(), slPhoneZone.getMobilearea().toString())){
+//                    //获取钱包地址
+//                    walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                }else {
+//                    //生成钱包登录密码
+//                    String loginPwd = SLStringUtils.getStringRandom(6);
+//                    //用户钱包注册
+//                    String res = UserRegister(slUser.getPhone(), loginPwd, slPhoneZone.getMobilearea().toString());
+//                    if ("0".equals(res)){
+//                        //获取钱包地址
+//                        walletAddress = getWalletList(slUser.getPhone(),slPhoneZone.getMobilearea().toString());
+//                    }else {
+//                        message.setSuccess(false);
+//                        message.setMsg("请先注册搜了钱包APP");
+//                        return message;
+//                    }
+//                }
+//                if (slUser.getCoin()>coin){
+//                    //公钥
+//                    String publicKey = env.getProperty("wallet.publicKey");
+//                    //生成加密随机串
+//                    String noteStr =  String.valueOf(System.currentTimeMillis());
+//                    noteStr = StringUtils.leftPad(noteStr, 16,  "0");
+//
+//                    platTransPwd = AESUtils.encode(platTransPwd, noteStr);
+//
+//                    //公钥加密随机串
+//                    String encodedNoteStr = RSAUtils.encryptByPublicKey(noteStr, publicKey);
+//                    String orderSn = String.valueOf(System.currentTimeMillis());
+//
+//                    //生成签名
+//                    SortedMap<String, String> packageParams = new TreeMap<String, String>();
+//                    packageParams.put("walletAddress", walletAddress);
+//                    packageParams.put("platTransPwd", platTransPwd);
+//                    packageParams.put("transfAmount", transfAmount);
+//                    packageParams.put("noteStr", encodedNoteStr);
+//                    packageParams.put("orderSn", orderSn);
+//
+//                    String sign = MD5SignUtils.createMD5Sign(packageParams, MD5SignUtils.CHARSET_NAME_DEFAULT);
+//
+//                    String url = env.getProperty("wallet.url") + BaseConstant.WALLET_API_TRANSFERTOSLB;
+//                    Map<String,Object> params = new HashMap<String,Object>();
+//                    params.put("walletAddress", walletAddress);
+//                    params.put("platTransPwd", platTransPwd);
+//                    params.put("transfAmount", transfAmount.toString());
+//                    params.put("noteStr", encodedNoteStr);
+//                    params.put("orderSn", orderSn);
+//
+//                    params.put("sign", sign);
+//                    String result = HttpUtil.doPost(url, params);
+//                    //解析返回值 转换成json格式
+//                    JSONObject jsonObject = JSONObject.parseObject(result);
+//                    Integer code =  jsonObject.getInteger("resultCode");
+//                    if (0 == code){
+//                        slUser.setCoin(slUser.getCoin()-coin);
+//                        //扣除用户金币
+//                        slUserMapper.updateByPrimaryKey(slUser);
+//                        //保存交易明细
+//                        slTransactionDetailMapper.insertSelective(new SlTransactionDetail(){{
+//                            setTargetId(slUser.getId());
+//                            setType(105);
+//                            setCoin(coin);
+//                            setDealType(5);
+//                            setCreateTime(new Date());
+//                        }});
+//                        message.setMsg("slb兑换成功");
+//                        message.setSuccess(true);
+//                    }else {
+//                        message.setMsg(jsonObject.getString("message"));
+//                        message.setSuccess(false);
+//                        return message;
+//                    }
+//                }else {
+//                    message.setMsg("金币不足");
+//                    message.setSuccess(false);
+//                    return message;
+//                }
+//            }else {
+//                message.setMsg("用户不存在");
+//                message.setSuccess(false);
+//                return message;
+//            }
         }catch (Exception e){
             log.error("兑换异常",e);
             message.setSuccess(false);

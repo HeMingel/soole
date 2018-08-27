@@ -545,6 +545,10 @@ public class TestController {
     //查slb
     @GetMapping("test22")
     public  void Test22(){
-        thirdPartyWalletService.getSlbAcount("18611327925");
+//        for (int i=0; i<10; i++) {
+            System.out.println("开始:"+System.currentTimeMillis());
+            thirdPartyWalletService.getSlbAcount("18611327925");
+            System.out.println("结束:"+System.currentTimeMillis());
+//        }
     }
 }
