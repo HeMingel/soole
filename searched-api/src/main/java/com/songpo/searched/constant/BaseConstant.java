@@ -76,6 +76,11 @@ public class BaseConstant {
     public static final String WALLET_API_GETSLBSCAMOUNT = "wallet/externalWallet/getSlbScAmount.htm";
 
     /**
+     * 查询钱包总SLB+SLB锁仓余额
+     */
+    public static final String WALLET_API_GETSLBANDSLBSCAMOUNT = "wallet/externalWallet/getSlbAndSlbScAmount.htm";
+
+    /**
      * SLB锁仓资产转入
      */
     public static final String WALLET_API_TRANSFERTOSLBSC = "wallet/externalWallet/transferToSlbSc.htm";

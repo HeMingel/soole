@@ -8,6 +8,8 @@ import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.SlTransactionDetail;
+import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.service.*;
 import com.songpo.searched.util.*;
@@ -16,10 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.spring.web.json.Json;
 
 
@@ -52,6 +51,9 @@ public class TestController {
     private HttpRequest httpRequest;
     @Autowired
     private Environment env;
+    @Autowired
+    private SlTransactionDetailMapper slTransactionDetailMapper;
+
     @GetMapping("test1")
     public void Test1() throws ParseException {
             //手机号
@@ -332,7 +334,7 @@ public class TestController {
     //检验是否注册
     @GetMapping("test10")
     public Boolean test10(String phone ){
-        Boolean  message = thirdPartyWalletService.checkUserRegister("55149492", "852");
+        Boolean  message = thirdPartyWalletService.checkUserRegister("18710002972", "86");
         return  message;
     }
     //用户注册
@@ -538,17 +540,48 @@ public class TestController {
     //锁仓slb
     @GetMapping("test21")
     public  String Test21(){
-//        thirdPartyWalletService.getSlbScAmount("18611327925");
-//        thirdPartyWalletService.getSlbAcount("18611327925");
-        return  thirdPartyWalletService.getSlbScAmount("18611327925")+""+thirdPartyWalletService.getSlbAcount("18611327925")+"";
+        return  thirdPartyWalletService.getSlbScAmount("18611327925")+"";
     }
     //查slb
     @GetMapping("test22")
     public  void Test22(){
-//        for (int i=0; i<10; i++) {
-            System.out.println("开始:"+System.currentTimeMillis());
             thirdPartyWalletService.getSlbAcount("18611327925");
-            System.out.println("结束:"+System.currentTimeMillis());
-//        }
+    }
+    //4.9查询钱包总SLB+SLB锁仓余额
+    @PostMapping("test23")
+    public  BusinessMessage Test23(String phone){
+        try {
+            return thirdPartyWalletService.getSlbAndSlbScAmount(phone);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    /**
+     *删除slb 退还金豆
+     */
+    @GetMapping("test24")
+    public void Test24(){
+        List<SlTransactionDetail> slTransactionDetails = slTransactionDetailMapper.select(new SlTransactionDetail(){{
+            setType(105);
+        }});
+        int count = slTransactionDetails.size();
+        for (SlTransactionDetail slTransactionDetail : slTransactionDetails){
+            SlUser slUser = userService.selectByPrimaryKey(slTransactionDetail.getTargetId());
+            slUser.setCoin(slUser.getCoin()+slTransactionDetail.getCoin());
+            userService.updateByPrimaryKeySelective(slUser);
+            //保存交易明细
+            slTransactionDetailMapper.insertSelective(new SlTransactionDetail(){{
+                setTargetId(slUser.getId());
+                setType(106);
+                setCoin(slTransactionDetail.getCoin());
+                setDealType(5);
+                setTransactionType(2);
+                setCreateTime(new Date());
+            }});
+            System.out.println("@@@@@@@@还剩下"+(--count)+"条数据需要处理!");
+
+        }
     }
 }
