@@ -42,6 +42,8 @@ public class CommonConfig {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private  CmOrderMapper cmOrderMapper;
+    @Autowired
     private ProcessOrders processOrders;
     @Autowired
     private WxPayService wxPayService;
@@ -250,10 +252,11 @@ public class CommonConfig {
      */
     @Scheduled(cron = "0 0/1 *  * * ? ")
     void updateOrderPayStatus() {
-        List<SlOrder> orderList = orderService.select(new SlOrder() {{
-            setPaymentState(2);
-            setStatus(1);
-        }});
+        List <SlOrder> orderList = cmOrderMapper.listUnpaid();
+//        List<SlOrder> orderList = orderService.select(new SlOrder() {{
+//            setPaymentState(2);
+//            setStatus(1);
+//        }});
         //时间分隔点
         Date compareDate = LocalDateTimeUtils.addMinute(new Date(), -30);
         //支付超时时间列表

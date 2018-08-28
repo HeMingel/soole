@@ -1,6 +1,7 @@
 package com.songpo.searched.mapper;
 
 import com.songpo.searched.entity.SlActivityProduct;
+import com.songpo.searched.entity.SlOrder;
 import com.songpo.searched.entity.SlOrderDetail;
 import com.songpo.searched.entity.SlReturnsDetail;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,4 +47,10 @@ public interface CmOrderMapper {
      * 2 7-12 之后
      */
     List<SlOrderDetail> getSlbOrderDetail(@Param("compareDate") String compareDate);
+
+    /**
+     * 查询待支付订单
+     * @return
+     */
+    List<SlOrder> listUnpaid();
 }

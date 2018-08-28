@@ -51,6 +51,44 @@
         <result column="inviter_id" jdbcType="INTEGER" property="inviterId" />
         <result column="is_delayed" jdbcType="INTEGER" property="isDelayed" />
     </resultMap>
+
+    <resultMap id="SlOrderResultMap" type="com.songpo.searched.entity.SlOrder">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+        <result column="deduct_total_pulse" jdbcType="INTEGER" property="deductTotalPulse" />
+        <result column="payment_state" jdbcType="DECIMAL" property="paymentState" />
+        <result column="payment_channel" jdbcType="INTEGER" property="paymentChannel" />
+        <result column="pay_time" jdbcType="VARCHAR" property="payTime" />
+        <result column="pay_time_stamp" jdbcType="BIGINT" property="payTimeStamp" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="consigneeName" jdbcType="VARCHAR" property="consigneename" />
+        <result column="consigneePhone" jdbcType="VARCHAR" property="consigneephone" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="county" jdbcType="VARCHAR" property="county" />
+        <result column="detailed" jdbcType="VARCHAR" property="detailed" />
+        <result column="spell_group_status" jdbcType="INTEGER" property="spellGroupStatus" />
+        <result column="group_master" jdbcType="VARCHAR" property="groupMaster" />
+        <result column="share_count" jdbcType="INTEGER" property="shareCount" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+        <result column="activity_product_id" jdbcType="VARCHAR" property="activityProductId" />
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="fee" jdbcType="DECIMAL" property="fee" />
+        <result column="virtual_open" jdbcType="INTEGER" property="virtualOpen" />
+        <result column="out_order_number" jdbcType="VARCHAR" property="outOrderNumber" />
+        <result column="total_bean" jdbcType="INTEGER" property="totalBean" />
+        <result column="bp_id" jdbcType="VARCHAR" property="bpId" />
+        <result column="addr_id" jdbcType="VARCHAR" property="addrId" />
+        <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+    </resultMap>
     <select id="findList" parameterType="String" resultType="java.util.Map">
         select
         ss.name shopName,
@@ -388,4 +426,13 @@
 
     </select>
 
+    <select id="listUnpaid"  resultMap="SlOrderResultMap">
+        SELECT
+        o.*
+        FROM
+        `sl_order` o
+        WHERE o.`payment_state` = 2
+        AND o.`status` = 1
+        AND o.`created_at` &lt; SUBDATE(NOW(), INTERVAL 90 SECOND)
+    </select>
 </mapper>
