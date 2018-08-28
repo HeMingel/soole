@@ -727,8 +727,17 @@ public class ThirdPartyWalletService {
 //            message.setSuccess(false);
 //            message.setMsg("查询搜了贝异常");
 //        }
+        BusinessMessage message = getSlbAndSlbScAmount(phone);
+        Map mapSlb = (Map<String,String>)message.getData();
+        //总SLB数量
+        mapSlb.put("amount",mapSlb.get("allAmountSlbSc"));
+        //总释放数量
+        mapSlb.put("allReleaseAmount",mapSlb.get("allReleaseAmountSlbSc"));
+        //总锁仓数量
+        mapSlb.put("allScAmount",mapSlb.get("allScAmountSlbSc"));
+        mapSlb.put("allAmount",mapSlb.get("allAmountSlb"));
 
-        return getSlbAndSlbScAmount(phone);
+        return message;
     }
 
     /**
