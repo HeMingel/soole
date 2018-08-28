@@ -420,28 +420,28 @@ public class SystemLoginService {
      * @param userId 用户标识
      */
     public void sendRegisterGiftToNewUser(String userId) {
-        SlTransactionDetail detail = new SlTransactionDetail();
-        // 设置hi目标用户
-        detail.setTargetId(userId);
-        /** 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回
-         * 6.余额提现 （100-199：活动相关） 100：新人礼包 101：签到 102：邀请好友 （200-299：购物相关）
-         * 200：购物支付 201：购物赠送 202：评价晒单 （300-400：收益相关）
-         */
-        detail.setType(100);
-        /**
-         * 2018年7月2日
-         * 改为赠送送金豆
-         */
-        detail.setCoin(BaseConstant.REGISTER_PEAS);
-        // 交易类型 1.支出 2.收入
-        detail.setTransactionType(2);
-        // 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
-        detail.setDealType(5);
-        // 设置创建时间
-        detail.setCreateTime(new Date());
-        //资金池扣除银豆
-        cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS, null, null, 2, null, userId, 1);
-        this.slTransactionDetailMapper.insertSelective(detail);
+//        SlTransactionDetail detail = new SlTransactionDetail();
+//        // 设置hi目标用户
+//        detail.setTargetId(userId);
+//        /** 消费方式 （1-99：红包、转账业务）1.转账 2. 接收转账 3.发红包 4.抢红包 5.红包过期退回
+//         * 6.余额提现 （100-199：活动相关） 100：新人礼包 101：签到 102：邀请好友 （200-299：购物相关）
+//         * 200：购物支付 201：购物赠送 202：评价晒单 （300-400：收益相关）
+//         */
+//        detail.setType(100);
+//        /**
+//         * 2018年7月2日
+//         * 改为赠送送金豆
+//         */
+//        detail.setCoin(BaseConstant.REGISTER_PEAS);
+//        // 交易类型 1.支出 2.收入
+//        detail.setTransactionType(2);
+//        // 交易货币类型 1.账户余额 2.了豆 3.钱 4.钱+豆
+//        detail.setDealType(5);
+//        // 设置创建时间
+//        detail.setCreateTime(new Date());
+//        //资金池扣除银豆
+//        cmTotalPoolService.updatePool(BaseConstant.REGISTER_PEAS, null, null, 2, null, userId, 1);
+//        this.slTransactionDetailMapper.insertSelective(detail);
     }
 
     /**
