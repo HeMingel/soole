@@ -355,7 +355,10 @@ public class ProcessOrders {
                     //2.保存搜了币交易明细
                     //2.1 保存邀请人搜了币交易明细
                     //获取搜了贝类型
-                    SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{setPrice(orderDetail.getPrice());}});
+                    SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{
+                        setProductId(orderDetail.getProductId());
+//                        setPrice(orderDetail.getPrice());
+                    }});
                     //保存邀请人搜了贝以及交易记录
                     cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
 

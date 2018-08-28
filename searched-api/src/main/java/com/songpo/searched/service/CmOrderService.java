@@ -2823,7 +2823,8 @@ public class CmOrderService {
                 if (slOrderDetail.getCreatedAt().before(now)){
                     BigDecimal price = slOrderDetail.getPrice();
                     SlSlbType slSlbType = slSlbTypeService.selectOne(new SlSlbType() {{
-                        setPrice(price);
+                        setProductId(slOrderDetail.getProductId());
+//                        setPrice(price);
                     }});
                     if (slSlbType != null ) {
                         //给购买人返贝
@@ -2932,7 +2933,8 @@ public class CmOrderService {
             SlOrder order = orderService.selectByPrimaryKey(detail.getOrderId());
            //SLB参数表
             SlSlbType slSlbType = slSlbTypeService.selectOne( new SlSlbType(){{
-                setPrice(detail.getPrice());
+                setProductId(detail.getProductId());
+//                setPrice(detail.getPrice());
             }});
             //转入SLB返回代码
             String returnCode = null;
