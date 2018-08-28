@@ -1,5 +1,6 @@
 package com.songpo.searched.controller;
 
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.songpo.searched.alipay.service.AliPayService;
 import com.songpo.searched.domain.BusinessMessage;
 import com.songpo.searched.entity.SlOrder;
@@ -124,6 +125,82 @@ public class ThirdPartyPayController {
         return  slOrderMapper.updateByPrimaryKeySelective(new SlOrder(){{
             setId(slOrder.getId());
             setPaymentState(103);
+            setSpellGroupStatus(0);
+        }});
+    }
+
+
+
+    /**
+     * 微信真实退款
+     * @param outTradeNo 商户订单号
+     * @param totalFeeStr 订单金额 单位为分，只能为整数
+     * @param refundFee 退款总金额 单位为分，只能为整数
+     * @param refundDesc 退款原因
+     * @return
+     */
+    @ApiOperation(value = "微信退款")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "outTradeNo", value = "商户订单号", paramType = "form", required = true),
+            @ApiImplicitParam(name = "totalFeeStr", value = "订单金额", paramType = "form", required = true),
+            @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
+            @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
+    })
+    @GetMapping("/wx-real-refund")
+    public BusinessMessage wxRealRefund(String outTradeNo, String totalFeeStr, String refundFee, String refundDesc) {
+        BusinessMessage message = new BusinessMessage();
+        message.setSuccess(false);
+        message.setMsg("退款失败");
+        Map<String,String> map  = new HashMap<>();
+        //商户退款单号
+        String outRefundNo = OrderNumGeneration.getOrderIdByUUId();
+        map=wxPayService.refund(null,outTradeNo,outRefundNo,totalFeeStr,refundFee,null,refundDesc,null);
+        if (map.get("return_msg").equals("OK")) {
+            message.setSuccess(true);
+            message.setMsg("退款成功");
+            updateRealOrder(outTradeNo);
+        }
+        return message;
+    }
+    /**
+     * 支付宝真实退款
+     * @param outTradeNo 商户订单号
+     * @param refundFee 需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+     * @param refundDesc 退款原因
+     * @return
+     */
+    @ApiOperation(value = "支付宝退款")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "outTradeNo", value = "商户订单号", paramType = "form", required = true),
+            @ApiImplicitParam(name = "refundFee", value = "退款总金额", paramType = "form", required = true),
+            @ApiImplicitParam(name = "refundDesc", value = "退款原因", paramType = "form", required = true)
+    })
+    @GetMapping("/ali-real-refund")
+    public BusinessMessage aliRealRefund(String outTradeNo, String refundFee, String refundDesc) {
+        BusinessMessage message = new BusinessMessage();
+        message.setSuccess(false);
+        message.setMsg("退款失败");
+        AlipayTradeRefundResponse response = aliPayService.refund(outTradeNo,null,refundFee,refundDesc,null,null,null,null);
+        String strResponse = response.getCode();
+        if ("10000".equals(strResponse)) {
+            message.setSuccess(true);
+            message.setMsg("退款成功");
+            updateRealOrder(outTradeNo);
+        }
+        return message;
+    }
+    /**
+     * 真实退款后修改订单状态
+     * @param orderId
+     */
+    //修改订单支付状态
+    public Integer updateRealOrder(String orderId){
+        SlOrder slOrder = slOrderMapper.selectOne(new SlOrder(){{
+            setOutOrderNumber(orderId);
+        }});
+        return  slOrderMapper.updateByPrimaryKeySelective(new SlOrder(){{
+            setId(slOrder.getId());
+            setPaymentState(101);
             setSpellGroupStatus(0);
         }});
     }
