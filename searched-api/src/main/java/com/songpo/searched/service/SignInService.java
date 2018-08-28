@@ -100,11 +100,15 @@ public class SignInService {
             } else {
                 int checkTimes = signIn.getSignNum();
                 checkTimes++;
-                if (checkTimes == 3) {
-                    signIn.setAwardSilver(signIn.getAwardSilver() + 1);
-                } else if (checkTimes == 7) {
-                    signIn.setAwardSilver(signIn.getAwardSilver() + 2);
-                }
+                /**
+                 * 2018-08-28
+                 * 修改为每天签到只送一个豆
+                 */
+//                if (checkTimes == 3) {
+//                    signIn.setAwardSilver(signIn.getAwardSilver() + 1);
+//                } else if (checkTimes == 7) {
+//                    signIn.setAwardSilver(signIn.getAwardSilver() + 2);
+//                }
                 //连续签到天数加1
                 signIn.setSignNum(checkTimes);
             }

@@ -18,8 +18,9 @@ public class BaseConstant {
 
     /**
      * 注册赠送的豆数
+     * 2018-08-28 改成注册不送豆
      */
-    public static final int REGISTER_PEAS = 16;
+    public static final int REGISTER_PEAS = 0;
 
     /**
      * 资金池主键ID 8C0E7538-8796-E590-20D7-B98EB3AE61B2
