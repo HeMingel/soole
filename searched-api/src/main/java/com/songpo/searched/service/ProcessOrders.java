@@ -141,7 +141,7 @@ public class ProcessOrders {
                                             setSpellGroupStatus(2);
                                         }}, e);
                                         Example e1 = new Example(SlOrderDetail.class);
-                                        e.createCriteria()
+                                        e1.createCriteria()
                                                 .andEqualTo("serialNumber", order.getSerialNumber());
                                         //拼团成功更改所有订单的发货状态
                                         orderDetailService.updateByExampleSelective( new SlOrderDetail(){{
