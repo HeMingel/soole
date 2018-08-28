@@ -727,15 +727,41 @@ public class ThirdPartyWalletService {
 //            message.setSuccess(false);
 //            message.setMsg("查询搜了贝异常");
 //        }
+        /**
+         * 2018-08-28
+         * 钱包接口更新 小数数据保留七位
+         */
         BusinessMessage message = getSlbAndSlbScAmount(phone);
         Map mapSlb = (Map<String,String>)message.getData();
         //总SLB数量
-        mapSlb.put("amount",mapSlb.get("allAmountSlbSc"));
+        mapSlb.put("amount", String.format("%.7f", Double.parseDouble(mapSlb.get("allAmountSlbSc").toString())));
         //总释放数量
-        mapSlb.put("allReleaseAmount",mapSlb.get("allReleaseAmountSlbSc"));
+        mapSlb.put("allReleaseAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("allReleaseAmountSlbSc").toString())));
         //总锁仓数量
-        mapSlb.put("allScAmount",mapSlb.get("allScAmountSlbSc"));
-        mapSlb.put("allAmount",mapSlb.get("allAmountSlb"));
+        mapSlb.put("allScAmount", String.format("%.7f", Double.parseDouble(mapSlb.get("allScAmountSlbSc").toString())));
+        mapSlb.put("allAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("allAmountSlb").toString())));
+
+        mapSlb.put("aAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("aAmount").toString())));
+        mapSlb.put("eScAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("eScAmount").toString())));
+        mapSlb.put("aReleaseAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("aReleaseAmount").toString())));
+        mapSlb.put("dScAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("dScAmount").toString())));
+        mapSlb.put("eAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("eAmount").toString())));
+        mapSlb.put("cScAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("cScAmount").toString())));
+        mapSlb.put("allAmountSlbSc",String.format("%.7f", Double.parseDouble(mapSlb.get("allAmountSlbSc").toString())));
+        mapSlb.put("dAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("dAmount").toString())));
+        mapSlb.put("cAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("cAmount").toString())));
+        mapSlb.put("allAmountSlb",String.format("%.7f", Double.parseDouble(mapSlb.get("allAmountSlb").toString())));
+        mapSlb.put("allScAmountSlbSc",String.format("%.7f", Double.parseDouble(mapSlb.get("allScAmountSlbSc").toString())));
+        mapSlb.put("bReleaseBmount",String.format("%.7f", Double.parseDouble(mapSlb.get("bReleaseBmount").toString())));
+        mapSlb.put("bScAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("bScAmount").toString())));
+
+        mapSlb.put("allReleaseAmountSlbSc",String.format("%.7f", Double.parseDouble(mapSlb.get("allReleaseAmountSlbSc").toString())));
+        mapSlb.put("bAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("bAmount").toString())));
+        mapSlb.put("eReleaseBmount",String.format("%.7f", Double.parseDouble(mapSlb.get("eReleaseBmount").toString())));
+        mapSlb.put("cReleaseBmount",String.format("%.7f", Double.parseDouble(mapSlb.get("cReleaseBmount").toString())));
+        mapSlb.put("aScAmount",String.format("%.7f", Double.parseDouble(mapSlb.get("aScAmount").toString())));
+        mapSlb.put("dReleaseBmount",String.format("%.7f", Double.parseDouble(mapSlb.get("dReleaseBmount").toString())));
+
 
         return message;
     }
