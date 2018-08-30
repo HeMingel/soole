@@ -149,8 +149,12 @@ public class AccountService {
         BigDecimal payAmount;
         if (payTypeEnum.equals(PayTypeEnum.WX_APP_PAY) || payTypeEnum.equals(PayTypeEnum.WX_H5_PAY)) {
             Map<String, String> result = wxPayService.orderQuery("", transactionDetailId);
-            if (result != null && result.get("return_code").equals("SUCCESS") && result.get("result_code").equals("SUCCESS")
-                    && result.get("trade_state").equals("SUCCESS")) {
+            String returnCode =  result.get("return_code");
+            String resultCode = result.get("result_code");
+            String resultState = result.get("trade_state");
+            String success = "SUCCESS";
+            if (result != null && success.equals(returnCode) && success.equals(resultCode)
+                    && success.equals(resultState)) {
                 payStatus = true;
                 double total_fee = Arith.div(Double.valueOf(result.get("total_fee")), 100, 2);
                 payAmount = new BigDecimal(total_fee);

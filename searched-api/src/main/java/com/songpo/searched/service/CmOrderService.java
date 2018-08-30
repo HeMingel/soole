@@ -253,7 +253,7 @@ public class CmOrderService {
                                             //单用户购买限制数量 - 他已经下单的商品数量 >= 这次加入订单的数量
                                             if (slActivityProduct.getRestrictCount() - counts >= quantity) {
                                                 SlActivitySeckill seckill = null;
-                                                if (slProduct.getSalesModeId().equals("8")){
+                                                if ("8".equals(slProduct.getSalesModeId())){
                                                     //秒杀表总库存
                                                      seckill = slActivitySeckillMapper.selectOne(new SlActivitySeckill(){{
                                                         setProductOldId(slProduct.getId());
@@ -269,7 +269,7 @@ public class CmOrderService {
                                                 //库存的数量 > 他这次加入订单的数量
                                                 if (repository.getCount() - quantity >= 0) {
                                                     //修改价格 如果是限时秒杀就改成秒杀价
-                                                    BigDecimal price = slProduct.getSalesModeId().equals("8") ? repository.getSeckillPrice() :
+                                                    BigDecimal price = "8".equals(slProduct.getSalesModeId()) ? repository.getSeckillPrice() :
                                                             repository.getPrice();
                                                     // 钱相加 用于统计和添加到订单表扣除总钱里边
                                                     money += price.doubleValue() * quantity;
@@ -277,10 +277,6 @@ public class CmOrderService {
 //                                                    if (slProduct.getPostage().doubleValue() > 0) {
 //                                                        money = money + slProduct.getPostage().doubleValue();
 //                                                    }
-                                                    // 了豆相加  用于统计和添加到订单表扣除了豆里边
-                                                    /**
-                                                     * 预售模式修改 由 豆+钱  改为纯钱模式
-                                                     */
                                                     if (repository.getSilver() > 0 && !"2".equals(slProduct.getSalesModeId()) ) {
                                                         pulse += repository.getSilver() * quantity;
                                                     }

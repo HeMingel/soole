@@ -197,16 +197,9 @@ public class ProcessOrders {
                                         }
                                     }
                                     break;
+                                    default:
+                                        break;
                             }
-                            /**
-                             * 注释原因- 和分享后奖励16%冲突
-                             * 2018年6月26日16:25:21
-                             * heming
-                            // 加上了奖励了豆数量
-                              if (detail.getPlaceOrderReturnPulse() > 0) {
-                                pulse += detail.getPlaceOrderReturnPulse();
-                            }
-                           **/
                             SlProduct product = this.productService.selectOne(new SlProduct() {{
                                 setId(detail.getProductId());
                             }});

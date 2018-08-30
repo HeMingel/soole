@@ -177,7 +177,7 @@ public class CommonConfig {
     void changeOrderDetailState(List<SlOrderDetail> list,int days) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        for (SlOrderDetail detail : list)
+        for (SlOrderDetail detail : list)  {
             if (StringUtils.isNotBlank(detail.getShippingTime())) {
                 log.debug("自动更新订单{}为已收货状态，当前订单自动收货天数为{}天", detail.getOrderId(), days);
                 LocalDate ldt = LocalDate.parse(detail.getShippingTime().substring(0, 10), df);
@@ -195,6 +195,8 @@ public class CommonConfig {
                     cmOrderService.changeRedPacketResult(detail);
                 }
             }
+        }
+
     }
     /**
      * 预售订单确认收货(商家发货3天,自动确认收货)
