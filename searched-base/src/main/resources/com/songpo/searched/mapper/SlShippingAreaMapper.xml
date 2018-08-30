@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlShippingAreaMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlShippingArea">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="no_postage_area_id" jdbcType="VARCHAR" property="noPostageAreaId" />
+    <result column="no_postage_area_text" jdbcType="VARCHAR" property="noPostageAreaText" />
+    <result column="postage_area_id" jdbcType="VARCHAR" property="postageAreaId" />
+    <result column="postage_area_text" jdbcType="VARCHAR" property="postageAreaText" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, no_postage_area_id, no_postage_area_text, postage_area_id, postage_area_text, 
+    create_time, update_time
+  </sql>
+</mapper>

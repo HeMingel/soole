@@ -23,9 +23,9 @@ public class AESUtils {
 
     //注意: 这里的password(秘钥必须是16位的)
     //private static final String keyBytes = AdditionalInfoConstant.SECURITY_PRIVATE_KEY;
-	private static final String keyBytes = null;
+	private static final String KEYBYTES = null;
 	
-    static final String algorithmStr = "AES/ECB/PKCS5Padding";
+    static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
 
     private static final Object TAG = "AES";
 
@@ -70,7 +70,7 @@ public class AESUtils {
         keyGen.init(128); //128位的AES加密
         try {
             // 生成一个实现指定转换的 Cipher 对象。
-            cipher = Cipher.getInstance(algorithmStr);
+            cipher = Cipher.getInstance(ALGORITHMSTR);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -143,7 +143,7 @@ public class AESUtils {
         try {
             byte[] keyStr = getKey(password);
             SecretKeySpec key = new SecretKeySpec(keyStr, "AES");
-            Cipher cipher = Cipher.getInstance(algorithmStr);//algorithmStr
+            Cipher cipher = Cipher.getInstance(ALGORITHMSTR);//algorithmStr
             byte[] byteContent = content.getBytes("utf-8");
             cipher.init(Cipher.ENCRYPT_MODE, key);//   ʼ
             byte[] result = cipher.doFinal(byteContent);
@@ -168,10 +168,11 @@ public class AESUtils {
         try {
             byte[] keyStr = getKey(password);
             SecretKeySpec key = new SecretKeySpec(keyStr, "AES");
-            Cipher cipher = Cipher.getInstance(algorithmStr);//algorithmStr
-            cipher.init(Cipher.DECRYPT_MODE, key);//   ʼ
+            //algorithmStr
+            Cipher cipher = Cipher.getInstance(ALGORITHMSTR);
+            cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] result = cipher.doFinal(content);
-            return result; //
+            return result;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -209,8 +210,9 @@ public class AESUtils {
      * @return
      */
     public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr.length() < 1)
+        if (hexStr.length() < 1) {
             return null;
+        }
         byte[] result = new byte[hexStr.length() / 2];
         for (int i = 0; i < hexStr.length() / 2; i++) {
             int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
@@ -226,7 +228,7 @@ public class AESUtils {
      */
     public static String encode(String content){
         //加密之后的字节数组,转成16进制的字符串形式输出
-        return parseByte2HexStr(encrypt(content, keyBytes));
+        return parseByte2HexStr(encrypt(content, KEYBYTES));
     }
     
     /**
@@ -242,7 +244,7 @@ public class AESUtils {
      */
     public static String decode(String content){
         //解密之前,先将输入的字符串按照16进制转成二进制的字节数组,作为待解密的内容输入
-        byte[] b = decrypt(parseHexStr2Byte(content), keyBytes);
+        byte[] b = decrypt(parseHexStr2Byte(content), KEYBYTES);
         return new String(b);
     }
     
@@ -269,8 +271,9 @@ public class AESUtils {
     public static String getA221(){  
     	String s = null;
         try {  
-            KeyGenerator kg = KeyGenerator.getInstance("AES");  
-            kg.init(128);//要生成多少位，只需要修改这里即可128, 192或256  
+            KeyGenerator kg = KeyGenerator.getInstance("AES");
+            //要生成多少位，只需要修改这里即可128, 192或256
+            kg.init(128);
             SecretKey sk = kg.generateKey();  
             byte[] b = sk.getEncoded();  
             s = parseByte2HexStr(b);  

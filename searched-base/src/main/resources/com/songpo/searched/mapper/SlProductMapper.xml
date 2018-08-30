@@ -5,51 +5,76 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="product_number" jdbcType="INTEGER" property="productNumber" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
-    <result column="product_type_id" jdbcType="VARCHAR" property="productTypeId" />
-    <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
-    <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
-    <result column="sales_virtual" jdbcType="INTEGER" property="salesVirtual" />
-    <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="category_id_1" jdbcType="INTEGER" property="categoryId1" />
+    <result column="category_id_2" jdbcType="INTEGER" property="categoryId2" />
+    <result column="category_id_3" jdbcType="INTEGER" property="categoryId3" />
     <result column="sales_mode_id" jdbcType="VARCHAR" property="salesModeId" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="pro_check_time" jdbcType="VARCHAR" property="proCheckTime" />
-    <result column="recommend" jdbcType="INTEGER" property="recommend" />
-    <result column="postage" jdbcType="DECIMAL" property="postage" />
-    <result column="sold_out" jdbcType="BIT" property="soldOut" />
-    <result column="product_sort" jdbcType="INTEGER" property="productSort" />
+    <result column="activity_type" jdbcType="TINYINT" property="activityType" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="goods_type" jdbcType="TINYINT" property="goodsType" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="cost_price" jdbcType="DECIMAL" property="costPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="promotion_price" jdbcType="DECIMAL" property="promotionPrice" />
+    <result column="give_point" jdbcType="INTEGER" property="givePoint" />
+    <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
+    <result column="shipping_area_id" jdbcType="INTEGER" property="shippingAreaId" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="max_buy" jdbcType="INTEGER" property="maxBuy" />
+    <result column="clicks" jdbcType="INTEGER" property="clicks" />
+    <result column="min_stock_alarm" jdbcType="INTEGER" property="minStockAlarm" />
+    <result column="sales_virtual" jdbcType="INTEGER" property="salesVirtual" />
+    <result column="sales_volume" jdbcType="INTEGER" property="salesVolume" />
+    <result column="collects" jdbcType="INTEGER" property="collects" />
+    <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
+    <result column="shares" jdbcType="INTEGER" property="shares" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="QRcode" jdbcType="VARCHAR" property="qrcode" />
+    <result column="is_hot" jdbcType="INTEGER" property="isHot" />
+    <result column="is_recommend" jdbcType="INTEGER" property="isRecommend" />
+    <result column="is_new" jdbcType="INTEGER" property="isNew" />
+    <result column="state" jdbcType="TINYINT" property="state" />
     <result column="del" jdbcType="BIT" property="del" />
-    <result column="ship" jdbcType="INTEGER" property="ship" />
-    <result column="antistop" jdbcType="VARCHAR" property="antistop" />
-    <result column="reason" jdbcType="VARCHAR" property="reason" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="img_id_array" jdbcType="VARCHAR" property="imgIdArray" />
+    <result column="sku_img_array" jdbcType="VARCHAR" property="skuImgArray" />
+    <result column="goods_weight" jdbcType="DECIMAL" property="goodsWeight" />
+    <result column="goods_volume" jdbcType="DECIMAL" property="goodsVolume" />
+    <result column="shipping_fee_type" jdbcType="INTEGER" property="shippingFeeType" />
+    <result column="sale_date" jdbcType="TIMESTAMP" property="saleDate" />
+    <result column="pro_check_time" jdbcType="TIMESTAMP" property="proCheckTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.songpo.searched.entity.SlProduct">
     <!--
       WARNING - @mbg.generated
     -->
     <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
+    <result column="goods_spec_format" jdbcType="LONGVARCHAR" property="goodsSpecFormat" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, product_number, image_url, introduction, product_type_id, comment_num, 
-    sales_volume, sales_virtual, shop_id, sales_mode_id, creator, create_time, pro_check_time, 
-    recommend, postage, sold_out, product_sort, del, ship, antistop, reason, remark, 
-    created_at, updated_at
+    id, name, shop_id, sort, category_id, category_id_1, category_id_2, category_id_3, 
+    sales_mode_id, activity_type, activity_id, goods_type, market_price, cost_price, 
+    price, promotion_price, give_point, shipping_fee, shipping_area_id, stock, max_buy, 
+    clicks, min_stock_alarm, sales_virtual, sales_volume, collects, comment_num, shares, 
+    picture, keywords, introduction, QRcode, is_hot, is_recommend, is_new, state, del, 
+    img_id_array, sku_img_array, goods_weight, goods_volume, shipping_fee_type, sale_date, 
+    pro_check_time, create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    detail
+    detail, goods_spec_format
   </sql>
 </mapper>

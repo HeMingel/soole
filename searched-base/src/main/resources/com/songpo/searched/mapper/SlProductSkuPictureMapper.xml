@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlProductSkuPictureMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductSkuPicture">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="spec_id" jdbcType="INTEGER" property="specId" />
+    <result column="spec_value_id" jdbcType="INTEGER" property="specValueId" />
+    <result column="sku_img_array" jdbcType="VARCHAR" property="skuImgArray" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="modify_time" jdbcType="INTEGER" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, goods_id, shop_id, spec_id, spec_value_id, sku_img_array, create_time, modify_time
+  </sql>
+</mapper>

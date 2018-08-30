@@ -7,81 +7,67 @@ import javax.persistence.*;
 @Table(name = "sl_file")
 public class SlFile implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
-     * 文件名
+     * 用户id
+     */
+    @Column(name = "user_id")
+    private String userId;
+
+    /**
+     * 名称
      */
     private String name;
 
     /**
-     * 文件大小（bytes）
+     * 路径
      */
-    private Integer size;
+    private String path;
 
     /**
-     * 保存路径
+     * 文件大小
      */
-    private String floder;
-
-    private String mimetype;
+    private String size;
 
     /**
-     * 文件类型
+     * 宽（针对图片）
      */
-    private String extension;
+    private String width;
 
     /**
-     * 文件原名
+     * 高（针对图片）
      */
-    @Column(name = "source_name")
-    private String sourceName;
+    private String height;
 
     /**
-     * 标记类型
+     * 类型
      */
-    @Column(name = "mark_type")
-    private String markType;
+    private String type;
 
     /**
-     * 标识值
+     * mime类型
      */
-    @Column(name = "mark_value")
-    private String markValue;
+    private String mime;
 
     /**
-     * 文件的哈希验证字符串
+     * 文件类型  1.图片  2.文件
      */
-    private String hash;
-
-    /**
-     * 会员ID
-     */
-    private Integer userid;
-
-    /**
-     * 后台上传
-     */
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
-
-    /**
-     * 文件分类
-     */
-    private String classify;
+    @Column(name = "file_type")
+    private Byte fileType;
 
     /**
      * 创建时间
      */
-    @Column(name = "created_at")
-    private Date createdAt;
+    @Column(name = "create_time")
+    private Date createTime;
 
     /**
-     * 最后更新时间
+     * 更新时间
      */
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Column(name = "update_time")
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -100,251 +86,201 @@ public class SlFile implements Serializable {
     }
 
     /**
-     * 获取文件名
+     * 获取用户id
      *
-     * @return name - 文件名
+     * @return user_id - 用户id
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置用户id
+     *
+     * @param userId 用户id
+     */
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    /**
+     * 获取名称
+     *
+     * @return name - 名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置文件名
+     * 设置名称
      *
-     * @param name 文件名
+     * @param name 名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
 
     /**
-     * 获取文件大小（bytes）
+     * 获取路径
      *
-     * @return size - 文件大小（bytes）
+     * @return path - 路径
      */
-    public Integer getSize() {
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * 设置路径
+     *
+     * @param path 路径
+     */
+    public void setPath(String path) {
+        this.path = path == null ? null : path.trim();
+    }
+
+    /**
+     * 获取文件大小
+     *
+     * @return size - 文件大小
+     */
+    public String getSize() {
         return size;
     }
 
     /**
-     * 设置文件大小（bytes）
+     * 设置文件大小
      *
-     * @param size 文件大小（bytes）
+     * @param size 文件大小
      */
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setSize(String size) {
+        this.size = size == null ? null : size.trim();
     }
 
     /**
-     * 获取保存路径
+     * 获取宽（针对图片）
      *
-     * @return floder - 保存路径
+     * @return width - 宽（针对图片）
      */
-    public String getFloder() {
-        return floder;
+    public String getWidth() {
+        return width;
     }
 
     /**
-     * 设置保存路径
+     * 设置宽（针对图片）
      *
-     * @param floder 保存路径
+     * @param width 宽（针对图片）
      */
-    public void setFloder(String floder) {
-        this.floder = floder == null ? null : floder.trim();
+    public void setWidth(String width) {
+        this.width = width == null ? null : width.trim();
     }
 
     /**
-     * @return mimetype
-     */
-    public String getMimetype() {
-        return mimetype;
-    }
-
-    /**
-     * @param mimetype
-     */
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype == null ? null : mimetype.trim();
-    }
-
-    /**
-     * 获取文件类型
+     * 获取高（针对图片）
      *
-     * @return extension - 文件类型
+     * @return height - 高（针对图片）
      */
-    public String getExtension() {
-        return extension;
+    public String getHeight() {
+        return height;
     }
 
     /**
-     * 设置文件类型
+     * 设置高（针对图片）
      *
-     * @param extension 文件类型
+     * @param height 高（针对图片）
      */
-    public void setExtension(String extension) {
-        this.extension = extension == null ? null : extension.trim();
+    public void setHeight(String height) {
+        this.height = height == null ? null : height.trim();
     }
 
     /**
-     * 获取文件原名
+     * 获取类型
      *
-     * @return source_name - 文件原名
+     * @return type - 类型
      */
-    public String getSourceName() {
-        return sourceName;
+    public String getType() {
+        return type;
     }
 
     /**
-     * 设置文件原名
+     * 设置类型
      *
-     * @param sourceName 文件原名
+     * @param type 类型
      */
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName == null ? null : sourceName.trim();
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     /**
-     * 获取标记类型
+     * 获取mime类型
      *
-     * @return mark_type - 标记类型
+     * @return mime - mime类型
      */
-    public String getMarkType() {
-        return markType;
+    public String getMime() {
+        return mime;
     }
 
     /**
-     * 设置标记类型
+     * 设置mime类型
      *
-     * @param markType 标记类型
+     * @param mime mime类型
      */
-    public void setMarkType(String markType) {
-        this.markType = markType == null ? null : markType.trim();
+    public void setMime(String mime) {
+        this.mime = mime == null ? null : mime.trim();
     }
 
     /**
-     * 获取标识值
+     * 获取文件类型  1.图片  2.文件
      *
-     * @return mark_value - 标识值
+     * @return file_type - 文件类型  1.图片  2.文件
      */
-    public String getMarkValue() {
-        return markValue;
+    public Byte getFileType() {
+        return fileType;
     }
 
     /**
-     * 设置标识值
+     * 设置文件类型  1.图片  2.文件
      *
-     * @param markValue 标识值
+     * @param fileType 文件类型  1.图片  2.文件
      */
-    public void setMarkValue(String markValue) {
-        this.markValue = markValue == null ? null : markValue.trim();
-    }
-
-    /**
-     * 获取文件的哈希验证字符串
-     *
-     * @return hash - 文件的哈希验证字符串
-     */
-    public String getHash() {
-        return hash;
-    }
-
-    /**
-     * 设置文件的哈希验证字符串
-     *
-     * @param hash 文件的哈希验证字符串
-     */
-    public void setHash(String hash) {
-        this.hash = hash == null ? null : hash.trim();
-    }
-
-    /**
-     * 获取会员ID
-     *
-     * @return userid - 会员ID
-     */
-    public Integer getUserid() {
-        return userid;
-    }
-
-    /**
-     * 设置会员ID
-     *
-     * @param userid 会员ID
-     */
-    public void setUserid(Integer userid) {
-        this.userid = userid;
-    }
-
-    /**
-     * 获取后台上传
-     *
-     * @return is_admin - 后台上传
-     */
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    /**
-     * 设置后台上传
-     *
-     * @param isAdmin 后台上传
-     */
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    /**
-     * 获取文件分类
-     *
-     * @return classify - 文件分类
-     */
-    public String getClassify() {
-        return classify;
-    }
-
-    /**
-     * 设置文件分类
-     *
-     * @param classify 文件分类
-     */
-    public void setClassify(String classify) {
-        this.classify = classify == null ? null : classify.trim();
+    public void setFileType(Byte fileType) {
+        this.fileType = fileType;
     }
 
     /**
      * 获取创建时间
      *
-     * @return created_at - 创建时间
+     * @return create_time - 创建时间
      */
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreateTime() {
+        return createTime;
     }
 
     /**
      * 设置创建时间
      *
-     * @param createdAt 创建时间
+     * @param createTime 创建时间
      */
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     /**
-     * 获取最后更新时间
+     * 获取更新时间
      *
-     * @return updated_at - 最后更新时间
+     * @return update_time - 更新时间
      */
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
     /**
-     * 设置最后更新时间
+     * 设置更新时间
      *
-     * @param updatedAt 最后更新时间
+     * @param updateTime 更新时间
      */
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -354,20 +290,17 @@ public class SlFile implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
         sb.append(", name=").append(name);
+        sb.append(", path=").append(path);
         sb.append(", size=").append(size);
-        sb.append(", floder=").append(floder);
-        sb.append(", mimetype=").append(mimetype);
-        sb.append(", extension=").append(extension);
-        sb.append(", sourceName=").append(sourceName);
-        sb.append(", markType=").append(markType);
-        sb.append(", markValue=").append(markValue);
-        sb.append(", hash=").append(hash);
-        sb.append(", userid=").append(userid);
-        sb.append(", isAdmin=").append(isAdmin);
-        sb.append(", classify=").append(classify);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", width=").append(width);
+        sb.append(", height=").append(height);
+        sb.append(", type=").append(type);
+        sb.append(", mime=").append(mime);
+        sb.append(", fileType=").append(fileType);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

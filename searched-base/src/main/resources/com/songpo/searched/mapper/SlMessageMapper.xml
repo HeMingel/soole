@@ -5,7 +5,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="source_id" jdbcType="VARCHAR" property="sourceId" />
     <result column="source_name" jdbcType="VARCHAR" property="sourceName" />
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />

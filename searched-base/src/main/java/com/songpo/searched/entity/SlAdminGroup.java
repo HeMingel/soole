@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "sl_admin_group")
 public class SlAdminGroup implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

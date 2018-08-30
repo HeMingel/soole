@@ -10,8 +10,8 @@ public class SlMessageCenter implements Serializable {
      * 唯一标识符
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(generator = "JDBC")
+    private Integer id;
 
     /**
      * 消息是否已读  1.未读  2.已读
@@ -64,7 +64,7 @@ public class SlMessageCenter implements Serializable {
      *
      * @return id - 唯一标识符
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -73,8 +73,8 @@ public class SlMessageCenter implements Serializable {
      *
      * @param id 唯一标识符
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

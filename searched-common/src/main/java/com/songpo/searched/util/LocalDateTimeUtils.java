@@ -102,12 +102,18 @@ public class LocalDateTimeUtils {
      */
     public static long betweenTwoTime(LocalDateTime startTime, LocalDateTime endTime, ChronoUnit field) {
         Period period = Period.between(LocalDate.from(startTime), LocalDate.from(endTime));
-        if (field == ChronoUnit.YEARS) return period.getYears();
-        if (field == ChronoUnit.MONTHS) return period.getYears() * 12 + period.getMonths();
+        if (field == ChronoUnit.YEARS) {
+            return period.getYears();
+        }
+        if (field == ChronoUnit.MONTHS) {
+            return period.getYears() * 12 + period.getMonths();
+        }
         return field.between(startTime, endTime);
     }
 
-    //获取一天的开始时间，2017,7,22 00:00
+    /**
+     * 获取一天的开始时间，2017,7,22 00:00
+     */
     public static LocalDateTime getDayStart(LocalDateTime time) {
         return time.withHour(0)
                 .withMinute(0)
@@ -115,7 +121,9 @@ public class LocalDateTimeUtils {
                 .withNano(0);
     }
 
-    //获取一天的结束时间，2017,7,22 23:59:59.999999999
+    /**
+     *  获取一天的结束时间，2017,7,22 23:59:59.999999999
+     */
     public static LocalDateTime getDayEnd(LocalDateTime time) {
         return time.withHour(23)
                 .withMinute(59)

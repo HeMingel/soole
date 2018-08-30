@@ -10,7 +10,7 @@ public class SlBusinessApplication implements Serializable {
      * 唯一标识符
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "JDBC")
     private String id;
 
     /**

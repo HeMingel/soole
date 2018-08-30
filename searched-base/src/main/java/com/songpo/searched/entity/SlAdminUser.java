@@ -10,7 +10,7 @@ public class SlAdminUser implements Serializable {
      * ID
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlProductSkuMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductSku">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+    <result column="attr_value_items" jdbcType="VARCHAR" property="attrValueItems" />
+    <result column="attr_value_items_format" jdbcType="VARCHAR" property="attrValueItemsFormat" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="cost_price" jdbcType="DECIMAL" property="costPrice" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="picture" jdbcType="INTEGER" property="picture" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="QRcode" jdbcType="VARCHAR" property="qrcode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, goods_id, sku_name, attr_value_items, attr_value_items_format, market_price, 
+    price, promote_price, cost_price, stock, picture, code, QRcode, create_time, update_time
+  </sql>
+</mapper>

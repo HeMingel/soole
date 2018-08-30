@@ -10,8 +10,8 @@ public class SlMessage implements Serializable {
      * 唯一标识符
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(generator = "JDBC")
+    private Integer id;
 
     /**
      * 来源标识
@@ -90,7 +90,7 @@ public class SlMessage implements Serializable {
      *
      * @return id - 唯一标识符
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -99,8 +99,8 @@ public class SlMessage implements Serializable {
      *
      * @param id 唯一标识符
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

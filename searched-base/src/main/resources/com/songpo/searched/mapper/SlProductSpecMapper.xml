@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlProductSpecMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductSpec">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="spec_name" jdbcType="VARCHAR" property="specName" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="show_type" jdbcType="INTEGER" property="showType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_platform" jdbcType="INTEGER" property="isPlatform" />
+    <result column="spec_des" jdbcType="VARCHAR" property="specDes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, shop_id, spec_name, sort, show_type, create_time, update_time, is_platform, spec_des
+  </sql>
+</mapper>

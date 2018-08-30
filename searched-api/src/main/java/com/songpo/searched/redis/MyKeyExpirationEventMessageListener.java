@@ -1,7 +1,5 @@
 package com.songpo.searched.redis;
 
-import com.songpo.searched.service.CmOrderService;
-import com.songpo.searched.service.CmProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +23,10 @@ public class MyKeyExpirationEventMessageListener extends KeyExpirationEventMessa
      * 订单失效KEY
      */
     public static final String ORDER_DISABLED = "com.songpo.seached:order:disabled";
-    @Autowired
-    private CmProductService cmProductService;
-    @Autowired
-    private CmOrderService cmOrderService;
+//    @Autowired
+//    private CmProductService cmProductService;
+//    @Autowired
+//    private CmOrderService cmOrderService;
 
     /**
      * Creates new {@link MessageListener} for {@code __keyevent@*__:expired} messages.
@@ -50,30 +48,30 @@ public class MyKeyExpirationEventMessageListener extends KeyExpirationEventMessa
         // 获取到的key
         String key = new String(message.getBody());
 
-        // 处理限时秒杀商品
-        if (key.startsWith(PRODUCT_TIME_LIMIT)) {
-            this.cmProductService.processProductUndercarriage(key);
-        }
-        // 处理订单失效
-        if (key.startsWith(ORDER_DISABLED)) {
-            this.cmOrderService.processOrderDisabled(key);
-        }
+//        // 处理限时秒杀商品
+//        if (key.startsWith(PRODUCT_TIME_LIMIT)) {
+//            this.cmProductService.processProductUndercarriage(key);
+//        }
+//        // 处理订单失效
+//        if (key.startsWith(ORDER_DISABLED)) {
+//            this.cmOrderService.processOrderDisabled(key);
+//        }
 
     }
 
-    public CmProductService getCmProductService() {
-        return cmProductService;
-    }
-
-    public void setCmProductService(CmProductService cmProductService) {
-        this.cmProductService = cmProductService;
-    }
-
-    public CmOrderService getCmOrderService() {
-        return cmOrderService;
-    }
-
-    public void setCmOrderService(CmOrderService cmOrderService) {
-        this.cmOrderService = cmOrderService;
-    }
+//    public CmProductService getCmProductService() {
+//        return cmProductService;
+//    }
+//
+//    public void setCmProductService(CmProductService cmProductService) {
+//        this.cmProductService = cmProductService;
+//    }
+//
+//    public CmOrderService getCmOrderService() {
+//        return cmOrderService;
+//    }
+//
+//    public void setCmOrderService(CmOrderService cmOrderService) {
+//        this.cmOrderService = cmOrderService;
+//    }
 }

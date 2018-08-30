@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "sl_develop_menu")
 public class SlDevelopMenu implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

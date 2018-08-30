@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlAttributeValueMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlAttributeValue">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="attr_value_name" jdbcType="VARCHAR" property="attrValueName" />
+    <result column="attr_id" jdbcType="INTEGER" property="attrId" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="is_search" jdbcType="BIT" property="isSearch" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, attr_value_name, attr_id, value, type, sort, is_search
+  </sql>
+</mapper>

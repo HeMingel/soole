@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.songpo.searched.mapper.SlProductCategoryBlockMapper">
+  <resultMap id="BaseResultMap" type="com.songpo.searched.entity.SlProductCategoryBlock">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="category_alias" jdbcType="VARCHAR" property="categoryAlias" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="category_image_url" jdbcType="VARCHAR" property="categoryImageUrl" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="modify_time" jdbcType="INTEGER" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, shop_id, category_name, category_id, category_alias, color, sort, category_image_url, 
+    create_time, modify_time
+  </sql>
+</mapper>
