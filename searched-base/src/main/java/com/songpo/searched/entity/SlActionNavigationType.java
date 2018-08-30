@@ -11,7 +11,7 @@ public class SlActionNavigationType implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     /**
      * 名称，比如：我的、商品、首页
@@ -42,7 +42,7 @@ public class SlActionNavigationType implements Serializable {
      *
      * @return id - 唯一标识符
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -51,8 +51,8 @@ public class SlActionNavigationType implements Serializable {
      *
      * @param id 唯一标识符
      */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

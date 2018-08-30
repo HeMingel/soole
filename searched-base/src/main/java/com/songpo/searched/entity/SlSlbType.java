@@ -15,7 +15,13 @@ public class SlSlbType implements Serializable {
     private String id;
 
     /**
-     * slb名字
+     * 产品ID
+     */
+    @Column(name = "product_id")
+    private String productId;
+
+    /**
+     * slb轮数
      */
     @Column(name = "slb_state")
     private String slbState;
@@ -68,6 +74,11 @@ public class SlSlbType implements Serializable {
     private Integer releaseBatch;
 
     /**
+     * 录入IP
+     */
+    private String ip;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_at")
@@ -100,18 +111,36 @@ public class SlSlbType implements Serializable {
     }
 
     /**
-     * 获取slb名字
+     * 获取产品ID
      *
-     * @return slb_state - slb名字
+     * @return product_id - 产品ID
+     */
+    public String getProductId() {
+        return productId;
+    }
+
+    /**
+     * 设置产品ID
+     *
+     * @param productId 产品ID
+     */
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
+    }
+
+    /**
+     * 获取slb轮数
+     *
+     * @return slb_state - slb轮数
      */
     public String getSlbState() {
         return slbState;
     }
 
     /**
-     * 设置slb名字
+     * 设置slb轮数
      *
-     * @param slbState slb名字
+     * @param slbState slb轮数
      */
     public void setSlbState(String slbState) {
         this.slbState = slbState == null ? null : slbState.trim();
@@ -262,6 +291,24 @@ public class SlSlbType implements Serializable {
     }
 
     /**
+     * 获取录入IP
+     *
+     * @return ip - 录入IP
+     */
+    public String getIp() {
+        return ip;
+    }
+
+    /**
+     * 设置录入IP
+     *
+     * @param ip 录入IP
+     */
+    public void setIp(String ip) {
+        this.ip = ip == null ? null : ip.trim();
+    }
+
+    /**
      * 获取创建时间
      *
      * @return create_at - 创建时间
@@ -304,6 +351,7 @@ public class SlSlbType implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", productId=").append(productId);
         sb.append(", slbState=").append(slbState);
         sb.append(", slbType=").append(slbType);
         sb.append(", price=").append(price);
@@ -313,6 +361,7 @@ public class SlSlbType implements Serializable {
         sb.append(", releaseNum=").append(releaseNum);
         sb.append(", releasePercent=").append(releasePercent);
         sb.append(", releaseBatch=").append(releaseBatch);
+        sb.append(", ip=").append(ip);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

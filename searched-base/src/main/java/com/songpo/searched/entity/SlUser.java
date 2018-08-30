@@ -112,6 +112,11 @@ public class SlUser implements Serializable {
     private BigDecimal money;
 
     /**
+     * 提现余额(记录提现总金额)
+     */
+    private BigDecimal surplus;
+
+    /**
      * 客户端标识
      */
     @Column(name = "client_id")
@@ -549,6 +554,24 @@ public class SlUser implements Serializable {
     }
 
     /**
+     * 获取提现余额(记录提现总金额)
+     *
+     * @return surplus - 提现余额(记录提现总金额)
+     */
+    public BigDecimal getSurplus() {
+        return surplus;
+    }
+
+    /**
+     * 设置提现余额(记录提现总金额)
+     *
+     * @param surplus 提现余额(记录提现总金额)
+     */
+    public void setSurplus(BigDecimal surplus) {
+        this.surplus = surplus;
+    }
+
+    /**
      * 获取客户端标识
      *
      * @return client_id - 客户端标识
@@ -826,6 +849,7 @@ public class SlUser implements Serializable {
         sb.append(", coin=").append(coin);
         sb.append(", silver=").append(silver);
         sb.append(", money=").append(money);
+        sb.append(", surplus=").append(surplus);
         sb.append(", clientId=").append(clientId);
         sb.append(", clientSecret=").append(clientSecret);
         sb.append(", openId=").append(openId);

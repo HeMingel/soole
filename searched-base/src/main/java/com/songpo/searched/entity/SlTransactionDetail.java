@@ -47,13 +47,37 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  104:区块链商品邀请人收益  105：金豆兑换搜了贝
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
+  106：SLB兑换暂未开放，退还金豆（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
 
 （300-400：收益相关）300店主收益
 
 （500-600：猴王游戏相关）501:收益 502支出
      */
     private Integer type;
+
+    /**
+     * 提现转款截图(限后台财务余额提现转款使用)
+     */
+    @Column(name = "money_img")
+    private String moneyImg;
+
+    /**
+     * 提现转款确认1待确认2已确认(限后台财务余额提现转款使用)
+     */
+    @Column(name = "money_state")
+    private Integer moneyState;
+
+    /**
+     * 提现转款订单确认人员(限后台财务余额提现转款使用)
+     */
+    @Column(name = "conf_name")
+    private String confName;
+
+    /**
+     * 转款记录人员(限后台财务余额提现转款使用)
+     */
+    @Column(name = "money_name")
+    private String moneyName;
 
     /**
      * 交易金额
@@ -218,7 +242,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  104:区块链商品邀请人收益  105：金豆兑换搜了贝
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
+  106：SLB兑换暂未开放，退还金豆（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
 
 （300-400：收益相关）300店主收益
 
@@ -229,7 +253,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  104:区块链商品邀请人收益  105：金豆兑换搜了贝
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
+  106：SLB兑换暂未开放，退还金豆（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
 
 （300-400：收益相关）300店主收益
 
@@ -245,7 +269,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  104:区块链商品邀请人收益  105：金豆兑换搜了贝
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
+  106：SLB兑换暂未开放，退还金豆（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
 
 （300-400：收益相关）300店主收益
 
@@ -256,7 +280,7 @@ public class SlTransactionDetail implements Serializable {
 
 （100-199：活动相关） 100：新人礼包（平台赠送）  101：签到  102：邀请好友  103：分享获得  104:区块链商品邀请人收益  105：金豆兑换搜了贝
 
-（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
+  106：SLB兑换暂未开放，退还金豆（200-299：购物相关） 200：购物支付  201：购物赠送  202：评价晒单 
 
 （300-400：收益相关）300店主收益
 
@@ -264,6 +288,78 @@ public class SlTransactionDetail implements Serializable {
      */
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    /**
+     * 获取提现转款截图(限后台财务余额提现转款使用)
+     *
+     * @return money_img - 提现转款截图(限后台财务余额提现转款使用)
+     */
+    public String getMoneyImg() {
+        return moneyImg;
+    }
+
+    /**
+     * 设置提现转款截图(限后台财务余额提现转款使用)
+     *
+     * @param moneyImg 提现转款截图(限后台财务余额提现转款使用)
+     */
+    public void setMoneyImg(String moneyImg) {
+        this.moneyImg = moneyImg == null ? null : moneyImg.trim();
+    }
+
+    /**
+     * 获取提现转款确认1待确认2已确认(限后台财务余额提现转款使用)
+     *
+     * @return money_state - 提现转款确认1待确认2已确认(限后台财务余额提现转款使用)
+     */
+    public Integer getMoneyState() {
+        return moneyState;
+    }
+
+    /**
+     * 设置提现转款确认1待确认2已确认(限后台财务余额提现转款使用)
+     *
+     * @param moneyState 提现转款确认1待确认2已确认(限后台财务余额提现转款使用)
+     */
+    public void setMoneyState(Integer moneyState) {
+        this.moneyState = moneyState;
+    }
+
+    /**
+     * 获取提现转款订单确认人员(限后台财务余额提现转款使用)
+     *
+     * @return conf_name - 提现转款订单确认人员(限后台财务余额提现转款使用)
+     */
+    public String getConfName() {
+        return confName;
+    }
+
+    /**
+     * 设置提现转款订单确认人员(限后台财务余额提现转款使用)
+     *
+     * @param confName 提现转款订单确认人员(限后台财务余额提现转款使用)
+     */
+    public void setConfName(String confName) {
+        this.confName = confName == null ? null : confName.trim();
+    }
+
+    /**
+     * 获取转款记录人员(限后台财务余额提现转款使用)
+     *
+     * @return money_name - 转款记录人员(限后台财务余额提现转款使用)
+     */
+    public String getMoneyName() {
+        return moneyName;
+    }
+
+    /**
+     * 设置转款记录人员(限后台财务余额提现转款使用)
+     *
+     * @param moneyName 转款记录人员(限后台财务余额提现转款使用)
+     */
+    public void setMoneyName(String moneyName) {
+        this.moneyName = moneyName == null ? null : moneyName.trim();
     }
 
     /**
@@ -441,6 +537,10 @@ public class SlTransactionDetail implements Serializable {
         sb.append(", orderId=").append(orderId);
         sb.append(", shareId=").append(shareId);
         sb.append(", type=").append(type);
+        sb.append(", moneyImg=").append(moneyImg);
+        sb.append(", moneyState=").append(moneyState);
+        sb.append(", confName=").append(confName);
+        sb.append(", moneyName=").append(moneyName);
         sb.append(", money=").append(money);
         sb.append(", coin=").append(coin);
         sb.append(", silver=").append(silver);

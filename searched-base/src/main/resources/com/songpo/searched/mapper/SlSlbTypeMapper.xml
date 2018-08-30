@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
     <result column="slb_state" jdbcType="VARCHAR" property="slbState" />
     <result column="slb_type" jdbcType="INTEGER" property="slbType" />
     <result column="price" jdbcType="DECIMAL" property="price" />
@@ -15,6 +16,7 @@
     <result column="release_num" jdbcType="DECIMAL" property="releaseNum" />
     <result column="release_percent" jdbcType="DECIMAL" property="releasePercent" />
     <result column="release_batch" jdbcType="INTEGER" property="releaseBatch" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
   </resultMap>
@@ -22,7 +24,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, slb_state, slb_type, price, present_num, lock_begin_date, lock_end_date, release_num, 
-    release_percent, release_batch, create_at, update_at
+    id, product_id, slb_state, slb_type, price, present_num, lock_begin_date, lock_end_date, 
+    release_num, release_percent, release_batch, ip, create_at, update_at
   </sql>
 </mapper>
