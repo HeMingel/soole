@@ -502,7 +502,7 @@
         ON p.sales_mode_id=sm.id
         LEFT JOIN sl_product_type pt
         ON p.product_type_id = pt.id
-        where p.sales_mode_id=5 and p.del = 0
+        where p.sales_mode_id=5 and p.del = 0 AND p.sold_out = 1
         ORDER BY p.`product_sort` DESC
     </select>
 
