@@ -591,9 +591,8 @@ public class TestController {
             setAppId("inviter");
         }});
         Object object =  SLStringUtils.resultDeserialize(slSystemConnector.getParams(),"inviter");
-        System.out.println("#######"+object);
-        PHPSerialize p = new PHPSerialize();
-        PHPValue c = p.unserialize(slSystemConnector.getParams());
-        System.out.println(c.toHashMap().get("inviter"));
+        System.out.println(null != object);
+        System.out.println("on".equals(object.toString()));
+        System.out.println("#######"+(null != object && "on".equals(object)));
     }
 }

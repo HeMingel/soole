@@ -332,7 +332,7 @@ public class ProcessOrders {
                         setAppId("inviter");
                     }});
                     Object object = SLStringUtils.resultDeserialize(slSystemConnector.getParams(),"inviter");
-                    if (null != null && "on".equals(object)){
+                    if (null != object && "on".equals(object.toString())){
                         userService.updateByPrimaryKey(slUser);
                         //在order表的reMark字段记录
                         slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "搜了贝");
