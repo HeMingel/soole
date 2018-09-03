@@ -7,10 +7,7 @@ import com.songpo.searched.entity.*;
 import com.songpo.searched.mapper.*;
 import com.songpo.searched.rabbitmq.NotificationService;
 import com.songpo.searched.typehandler.MessageTypeEnum;
-import com.songpo.searched.util.Arith;
-import com.songpo.searched.util.HttpUtil;
-import com.songpo.searched.util.LocalDateTimeUtils;
-import com.songpo.searched.util.StreamTool;
+import com.songpo.searched.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +71,8 @@ public class ProcessOrders {
     private  CmOrderService cmOrderService;
     @Autowired
     public Environment env;
+    @Autowired
+    private SlSystemConnectorMapper slSystemConnectorMapper;
 
     public static final Logger log = LoggerFactory.getLogger(ProcessOrders.class);
 
@@ -329,22 +328,27 @@ public class ProcessOrders {
 
                 slUser.setMoney(slUser.getMoney().add(fanMoney));
                 if (orderDetail.getType() == 4) {
-                    //给邀请人余额打钱
-                    userService.updateByPrimaryKey(slUser);
-                    //在order表的reMark字段记录
-                    slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "搜了贝");
-                    orderService.updateByPrimaryKey(slOrder);
-                    //1.保存金钱交易明细
-                    SlTransactionDetail detail = new SlTransactionDetail();
-                    detail.setSourceId(slOrder.getUserId());
-                    detail.setTargetId(slUser.getId());
-                    detail.setOrderId(orderId);
-                    detail.setType(104);
-                    detail.setMoney(fanMoney);
-                    detail.setDealType(1);
-                    detail.setTransactionType(2);
-                    detail.setCreateTime(new Date());
-                    transactionDetailService.insertSelective(detail);
+                    SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+                        setAppId("inviter");
+                    }});
+                    Object object = SLStringUtils.resultDeserialize(slSystemConnector.getParams(),"inviter");
+                    if (null != null && "on".equals(object)){
+                        userService.updateByPrimaryKey(slUser);
+                        //在order表的reMark字段记录
+                        slOrder.setRemark("返给邀请人" + fanMoney + "元以及" + bean + "搜了贝");
+                        orderService.updateByPrimaryKey(slOrder);
+                        //1.保存金钱交易明细
+                        SlTransactionDetail detail = new SlTransactionDetail();
+                        detail.setSourceId(slOrder.getUserId());
+                        detail.setTargetId(slUser.getId());
+                        detail.setOrderId(orderId);
+                        detail.setType(104);
+                        detail.setMoney(fanMoney);
+                        detail.setDealType(1);
+                        detail.setTransactionType(2);
+                        detail.setCreateTime(new Date());
+                        transactionDetailService.insertSelective(detail);
+                    }
 
                     //2.保存搜了币交易明细
                     //2.1 保存邀请人搜了币交易明细
@@ -355,7 +359,6 @@ public class ProcessOrders {
                     }});
                     //保存邀请人搜了贝以及交易记录
 //                    cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
-
                     //2.2 保存购买人搜了币交易明细
                     cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
                 }
@@ -364,7 +367,7 @@ public class ProcessOrders {
                      * 极光推送
                      */
                     String content = "尊敬的队长,"+slUserBuy.getUsername()+"购买了商品"+slOrder.getTotalAmount().doubleValue()+"" +
-                            "元,成功获得分润奖励"+fanMoney+"元、"+bean+"搜了币，请打开APP“我的账本-钱包”查看奖励余额";
+                            "元,成功获得分润奖励"+fanMoney+"元，请打开APP“我的账本-钱包”查看奖励余额";
                     sendPush(slUser.getUsername().toString(),content,2,"邀请返现");
                 }
             }

@@ -1,13 +1,10 @@
 package com.songpo.searched.controller;
 
 
-import com.alipay.api.response.AlipayTradeCustomsQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.github.pagehelper.PageInfo;
 import com.songpo.searched.alipay.service.AliPayService;
-import com.songpo.searched.constant.BaseConstant;
 import com.songpo.searched.domain.BusinessMessage;
-import com.songpo.searched.entity.SlProduct;
+import com.songpo.searched.entity.SlSystemConnector;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.*;
@@ -19,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 
 import java.math.BigDecimal;
@@ -53,6 +49,8 @@ public class TestController {
     private Environment env;
     @Autowired
     private SlTransactionDetailMapper slTransactionDetailMapper;
+    @Autowired
+    private SlSystemConnectorMapper slSystemConnectorMapper;
 
     @GetMapping("test1")
     public void Test1() throws ParseException {
@@ -581,7 +579,21 @@ public class TestController {
                 setCreateTime(new Date());
             }});
             System.out.println("@@@@@@@@还剩下"+(--count)+"条数据需要处理!");
-
         }
+    }
+
+    /**
+     * 测试PHP序列化
+     */
+    @GetMapping("test25")
+    public void Test25()  {
+        SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
+            setAppId("inviter");
+        }});
+        Object object =  SLStringUtils.resultDeserialize(slSystemConnector.getParams(),"inviter");
+        System.out.println("#######"+object);
+        PHPSerialize p = new PHPSerialize();
+        PHPValue c = p.unserialize(slSystemConnector.getParams());
+        System.out.println(c.toHashMap().get("inviter"));
     }
 }

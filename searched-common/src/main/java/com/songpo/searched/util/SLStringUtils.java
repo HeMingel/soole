@@ -449,4 +449,13 @@ import java.util.regex.Pattern;
             }
             return strMsg;
         }
+        /**content:要反序列化的字符串
+         * param：要返回的结果的key
+         * java反序列化php序列化对象
+         */
+        public static Object resultDeserialize(String content, String param){
+            PHPSerialize p = new PHPSerialize();
+            PHPValue c = p.unserialize(content);
+            return c.toHashMap().get(param);
+        }
     }
