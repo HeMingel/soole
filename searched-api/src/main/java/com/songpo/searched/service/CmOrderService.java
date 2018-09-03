@@ -156,10 +156,13 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             //查询邀请人并且是区块链团队长
+            /**
+             * 2018-09-03 取消团队长
+             */
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
-                setCaptain(2);
+//                setCaptain(2);
             }});
             if(inviterId==user.getUsername()||slUser==null||inviterId<=0){
                 inviterId=7777;
@@ -538,10 +541,13 @@ public class CmOrderService {
         SlUser user = loginUserService.getCurrentLoginUser();
         if (null != user) {
             //查询邀请人并且是区块链团队长
+            /**
+             * 2018-09-03 取消团队长
+             */
             int finalInviterId = inviterId;
             SlUser slUser = userService.selectOne(new SlUser() {{
                 setUsername(finalInviterId);
-                setCaptain(2);
+//                setCaptain(2);
             }});
             if(inviterId==user.getUsername()||slUser==null||inviterId<=0){
                 inviterId=7777;
@@ -2840,12 +2846,12 @@ public class CmOrderService {
                                     if (user != null) {
                                         BigDecimal slb = price.multiply(new BigDecimal(0.05)).
                                                 multiply(new BigDecimal(slOrderDetail.getQuantity()));
-                                        saveSlbInvite(user,slOrder,slSlbType,slb);
+//                                        saveSlbInvite(user,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",user.getUsername());
                                     } else{
                                         BigDecimal slb = price.multiply(new BigDecimal(0.05)).
                                                 multiply(new BigDecimal(slOrderDetail.getQuantity()));
-                                        saveSlbInvite(platform,slOrder,slSlbType,slb);
+//                                        saveSlbInvite(platform,slOrder,slSlbType,slb);
                                         log.debug("给邀请人{}返回搜了贝成功",platform.getUsername());
                                     }
 
@@ -3009,9 +3015,9 @@ public class CmOrderService {
                 }
             }
             //给邀请人返贝
-            if (inviter != null && !SLStringUtils.isEmpty(inviter.getPhone())) {
-                saveSlbInvite(inviter,order,slSlbType,bean);
-            }
+//            if (inviter != null && !SLStringUtils.isEmpty(inviter.getPhone())) {
+//                saveSlbInvite(inviter,order,slSlbType,bean);
+//            }
             if ("0".equals(returnCode) ){
                 log.debug("用户转入SLB成功-----------------用户id：{},还剩【{}】条数据待处理",user == null ? "用户为空": user.getId(),count-1);
             } else {
@@ -3193,6 +3199,7 @@ public class CmOrderService {
                 setCreatedAt(LocalDateTimeUtils.stringToDate(payTime));
             }});
             //订单表插入成功后 给邀请人返10%金额+5%搜了贝
+            //2018-09-03 只给邀请人返10%金额，不送5%搜了贝
             if(result>0){
                 processOrders.fanMoney(slOrder.getId());
             }

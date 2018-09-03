@@ -301,6 +301,7 @@ public class ProcessOrders {
 
     /**
      *给邀请人返10%金额+5%搜了贝
+     * 2018-09-03 给邀请人返10%金额，不再送5%搜了贝
      */
     @Transactional(rollbackFor = Exception.class)
     public void fanMoney(String orderId) {
@@ -353,7 +354,7 @@ public class ProcessOrders {
 //                        setPrice(orderDetail.getPrice());
                     }});
                     //保存邀请人搜了贝以及交易记录
-                    cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
+//                    cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
 
                     //2.2 保存购买人搜了币交易明细
                     cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
