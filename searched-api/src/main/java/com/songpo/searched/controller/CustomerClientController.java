@@ -115,4 +115,24 @@ public class CustomerClientController {
         }
        return message;
     }
+    /**
+     * 获取首页所有数据
+     *
+     * @return
+     */
+    @ApiOperation(value = "用户端首页", notes = "用于获取首页所有数据")
+    @GetMapping("home-v1")
+    public BusinessMessage<JSONObject> homeV1() {
+        BusinessMessage<JSONObject> message = new BusinessMessage<>();
+        try {
+            message.setData(this.customerClientHomeService.getHomeDataVersion1());
+            message.setSuccess(true);
+        } catch (Exception e) {
+            log.error("获取用户端首页数据失败，{}", e);
+
+            message.setMsg("获取数据失败，请重试");
+        }
+        return message;
+    }
+
 }

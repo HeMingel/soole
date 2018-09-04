@@ -324,4 +324,111 @@ public class CustomerClientHomeService {
         jsonObject.put("hq-products", list);
         return jsonObject;
     }
+
+    /**
+     * 获取新首页所有数据 v.1
+     *
+     * @return
+     */
+    public JSONObject getHomeDataVersion1() {
+        JSONObject data = new JSONObject();
+
+        // 获取所有一级商品分类列表
+        List<Map<String, Object>> productTypes = this.productTypeService.findAll(null);
+        data.put("productTypes", productTypes);
+
+        // 获取广告轮播图列表
+        Example bannerExample = new Example(SlActionNavigation.class);
+        bannerExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_BANNER.getValue());
+        bannerExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> bannerList = this.actionNavigationService.selectByExample(bannerExample);
+        data.put("banners", bannerList);
+
+        // 获取入口列表
+        Example gatewayExample = new Example(SlActionNavigation.class);
+        gatewayExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_GATEWAY_NEW.getValue());
+        gatewayExample.setOrderByClause("serial_number asc");
+        List<SlActionNavigation> gatewayList = this.actionNavigationService.selectByExample(gatewayExample);
+        data.put("gateways", gatewayList);
+
+        //获取新的活动列表
+        Example activityExample = new Example(SlActionNavigation.class);
+        activityExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTIVITIES.getValue());
+        activityExample.setOrderByClause("serial_number asc");
+        List<SlActionNavigation> activity = this.actionNavigationService.selectByExample(activityExample);
+        data.put("activity",activity);
+        // 获取活动列表
+        Example actionExample = new Example(SlActionNavigation.class);
+        actionExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_ACTION.getValue());
+        actionExample.setOrderByClause("serial_number asc");
+        List<SlActionNavigation> actionList = this.actionNavigationService.selectByExample(actionExample);
+        data.put("actions", actionList);
+
+        // 获取推荐商品列表
+        BusinessMessage<PageInfo> businessMessage = this.getRecommendProduct(1,10);
+        data.put("products", businessMessage.getData().getList());
+
+        //查询优质店铺
+        JSONObject hqShop =  this.getHighQualityShop();
+        data.put("HighQualityShop",hqShop);
+
+        // 获取首页视频信息
+        Example videoExample = new Example(SlActionNavigation.class);
+        videoExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO.getValue());
+        videoExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> videoList = this.actionNavigationService.selectByExample(videoExample);
+        data.put("videoInfo", videoList.size() > 0 ? videoList.get(0) : "");
+        data.put("videoInfos", videoList);
+
+        // 获取直播列表
+        Example videoLiveExample = new Example(SlActionNavigation.class);
+        videoLiveExample.createCriteria().andEqualTo("type", ActionNavigationTypeEnum.CUSTOMER_APP_HOME_VIDEO_LIVE.getValue());
+        videoLiveExample.setOrderByClause("action_sort asc");
+        List<SlActionNavigation> videoLiveList = this.actionNavigationService.selectByExample(videoLiveExample);
+        data.put("videoLives", videoLiveList);
+
+        // 获取热词
+        List<SlHotKeywords> hotKeywordsList = this.slHotKeywordsMapper.selectAll();
+        data.put("hotKeywords", hotKeywordsList);
+
+        //获取未领取红包
+        BusinessMessage  message = this.cmSharingLinksService.selectRedPacketByResult("4");
+        data.put("redPacket", message);
+
+        //6个销量最多的商品
+        List<SlProduct> salesProducts = this.cmProductMapper.selectSalesProducts();
+        data.put("salesProducts", salesProducts);
+
+        // 海南之家
+        Example homesHanNanExample = new Example(SlArticle.class);
+        homesHanNanExample.createCriteria().andEqualTo("type",ArticleTypeEnum.HOMES_HAINAN.getValue());
+        homesHanNanExample.setOrderByClause("art_sort desc");
+        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.selectByExample(homesHanNanExample);
+//        List<SlArticle> homesHanNanArticleList = this.slArticleMapper.select(new SlArticle() {{
+//            setType(ArticleTypeEnum.HOMES_HAINAN.getValue());
+//        }});
+        data.put("homesHaiNanArticles", homesHanNanArticleList);
+
+        // 搜了头条
+        List<SlArticle> searchedHeadLinesArticleList = this.slArticleMapper.select(new SlArticle() {{
+            setType(ArticleTypeEnum.SEARCHED_HEADLINES.getValue());
+        }});
+        data.put("searchedHeadLines", searchedHeadLinesArticleList);
+
+        // 搜了故事
+        Example articleExample = new Example(SlArticle.class);
+        articleExample.createCriteria().andEqualTo("type",ArticleTypeEnum.SEARCHED_STORY.getValue());
+        articleExample.setOrderByClause("art_sort desc");
+        List<SlArticle> searchedStoryArticleList = this.slArticleMapper.selectByExample(articleExample);
+        //List<SlArticle> searchedStoryArticleList = this.slArticleMapper.select(new SlArticle() {{
+        //    setType(ArticleTypeEnum.SEARCHED_STORY.getValue());
+        //}});
+        data.put("searchedStoryArticles", searchedStoryArticleList);
+
+        // 金牌顾问
+        List<SlGoldAdviser> goldAdvisers = this.slGoldAdviserMapper.selectAll();
+        data.put("goldAdvisers", goldAdvisers);
+
+        return data;
+    }
 }

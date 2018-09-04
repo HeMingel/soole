@@ -1,6 +1,5 @@
 package com.songpo.searched.util;
 
-import java.util.regex.*;
 import java.util.*;
 
 public class PHPSerialize {

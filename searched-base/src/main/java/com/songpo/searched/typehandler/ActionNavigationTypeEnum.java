@@ -13,7 +13,11 @@ public enum ActionNavigationTypeEnum implements BaseEnum {
     CUSTOMER_APP_HOME_ACTION("用户端-首页-促销活动", 3),
     CUSTOMER_APP_HOME_VIDEO("用户端-首页-视频", 4),
     CUSTOMER_APP_HOME_SALE_MODE("用户端-首页-销售模式", 5),
-    CUSTOMER_APP_HOME_VIDEO_LIVE("用户端-首页-视频直播", 6);
+    CUSTOMER_APP_HOME_VIDEO_LIVE("用户端-首页-视频直播", 6),
+    CUSTOMER_APP_HOME_GATEWAY_NEW("用户端-首页-新入口", 9),
+    CUSTOMER_APP_HOME_ACTIVITIES("用户端-首页-新活动", 10);
+
+
 
     private String label;
 
