@@ -328,8 +328,16 @@ public class ProcessOrders {
 
                 slUser.setMoney(slUser.getMoney().add(fanMoney));
                 if (orderDetail.getType() == 4) {
+                    //2.1 保存邀请人搜了币交易明细
+                    //获取搜了贝类型
+                    SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{
+                        setProductId(orderDetail.getProductId());
+                    }});
+                    //2.2 保存购买人搜了币交易明细
+                    cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
+
                     SlSystemConnector slSystemConnector = slSystemConnectorMapper.selectOne(new SlSystemConnector(){{
-                        setAppId("inviter");
+                        setVar("deswitch");
                     }});
                     Object object = SLStringUtils.resultDeserialize(slSystemConnector.getParams(),"inviter");
                     if (null != object && "on".equals(object.toString())){
@@ -348,19 +356,10 @@ public class ProcessOrders {
                         detail.setTransactionType(2);
                         detail.setCreateTime(new Date());
                         transactionDetailService.insertSelective(detail);
+                        //保存邀请人搜了贝以及交易记录
+                       //cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
                     }
 
-                    //2.保存搜了币交易明细
-                    //2.1 保存邀请人搜了币交易明细
-                    //获取搜了贝类型
-                    SlSlbType slSlbType = this.slSlbTypeService.selectOne(new SlSlbType(){{
-                        setProductId(orderDetail.getProductId());
-//                        setPrice(orderDetail.getPrice());
-                    }});
-                    //保存邀请人搜了贝以及交易记录
-//                    cmOrderService.saveSlbInvite(slUser,slOrder,slSlbType,bean);
-                    //2.2 保存购买人搜了币交易明细
-                    cmOrderService.saveSlbBuy(slSlbType,slOrder,orderDetail);
                 }
                 if (5 != slOrder.getPaymentChannel()){
                     /**
