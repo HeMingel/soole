@@ -659,7 +659,7 @@ public class CmOrderController {
             message.setMsg("订单不存在");
             return message;
         }
-        if (order.getPaymentState() == 2 || order.getPaymentState() == 1 || order.getPaymentState() == 101) {
+        if (order.getPaymentState() == 2) {
             log.debug("======================================订单ID{} 的支付宝手动处理订单开始}：",orderId+"===============================");
             processOrders.processOrders(orderId, type);
             message.setMsg("处理成功");
