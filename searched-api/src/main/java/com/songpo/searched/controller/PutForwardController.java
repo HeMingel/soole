@@ -48,7 +48,7 @@ public class PutForwardController {
         try {
             BigDecimal isMoney = BigDecimal.valueOf(Double.parseDouble(pfMoney));
             if (isMoney.compareTo(new BigDecimal(100)) < 0) {
-
+                message.setSuccess(false);
                 message.setMsg("提现失败，需要大于100元!!!");
                 return message;
             }
