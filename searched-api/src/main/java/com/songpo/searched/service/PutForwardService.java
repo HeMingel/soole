@@ -4,6 +4,7 @@ import com.songpo.searched.entity.SlPutForward;
 import com.songpo.searched.entity.SlTransactionDetail;
 import com.songpo.searched.entity.SlUser;
 import com.songpo.searched.mapper.SlPutForwardMapper;
+import com.songpo.searched.mapper.SlUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,8 @@ public class PutForwardService {
             }});
 
             slUser.setMoney(slUser.getMoney().subtract(money));
+            userService.updateByPrimaryKeySelective(slUser);
+
 
             SlTransactionDetail detail = new SlTransactionDetail();
             detail.setSourceId(userId);
