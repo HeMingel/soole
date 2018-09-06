@@ -377,6 +377,7 @@ public class ProcessOrders {
     }
 
 
+
     /**
      * 极光推送，调用PHP接口
      * @date  2018年6月20日16:15:05
@@ -423,6 +424,10 @@ public class ProcessOrders {
                 e.printStackTrace();
             }
     }
+
+
+
+
     /**
      * 支付后拍卖订单处理
      *
