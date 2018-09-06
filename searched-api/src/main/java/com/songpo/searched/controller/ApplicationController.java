@@ -6,6 +6,7 @@ import com.songpo.searched.entity.SlAgentApplication;
 import com.songpo.searched.entity.SlBusinessApplication;
 import com.songpo.searched.service.ApplicationService;
 import com.songpo.searched.typehandler.BusinessApplicationTypeEnum;
+import com.songpo.searched.util.SLStringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -37,10 +38,10 @@ public class ApplicationController {
     }
 
     /**
-     * 提交商户入驻申请
+     * 提交代理入驻申请
      *
-     * @param agent       入驻信息
-     * @param idCardHand  手持身份证照片
+     * @param agent      入驻信息
+     * @param idCardHand 手持身份证照片
      * @return 业务消息
      */
     @ApiOperation(value = "提交代理商入驻申请", notes = "用于提交代理商入驻申请")
@@ -48,6 +49,9 @@ public class ApplicationController {
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form", required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form", required = true),
             @ApiImplicitParam(name = "country", value = "区县", paramType = "form", required = true),
+            @ApiImplicitParam(name = "provinceId", value = "省份id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "cityId", value = "城市id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "countryId", value = "区县id", paramType = "form", required = true),
             @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form"),
             @ApiImplicitParam(name = "street", value = "村、街道", paramType = "form"),
             @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
@@ -63,11 +67,11 @@ public class ApplicationController {
     public BusinessMessage<JSONObject> agentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交代理入驻申请，申请信息：{}", agent);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
-        if (StringUtils.isBlank(agent.getProvince())) {
+        if (StringUtils.isBlank(agent.getProvince()) && agent.getAaProvinceId() > 0) {
             message.setMsg("省份为空");
-        } else if (StringUtils.isBlank(agent.getCity())) {
+        } else if (StringUtils.isBlank(agent.getCity()) && agent.getAaCityId() > 0) {
             message.setMsg("城市为空");
-        } else if (StringUtils.isBlank(agent.getCountry())) {
+        } else if (StringUtils.isBlank(agent.getCountry()) && agent.getAaCountryId() > 0) {
             message.setMsg("区县为空");
         } else if (null == agent.getLevel()) {
             message.setMsg("申请级别为空");
@@ -103,8 +107,8 @@ public class ApplicationController {
     /**
      * 提交商户入驻申请
      *
-     * @param business    入驻信息
-     * @param idCardHand  手持身份证照片
+     * @param business   入驻信息
+     * @param idCardHand 手持身份证照片
      * @return 业务消息
      */
     @ApiOperation(value = "提交商户入驻申请", notes = "用于提交商户入驻申请", consumes = "multipart/form-data")
@@ -113,6 +117,9 @@ public class ApplicationController {
             @ApiImplicitParam(name = "province", value = "省份", paramType = "form", required = true),
             @ApiImplicitParam(name = "city", value = "城市", paramType = "form", required = true),
             @ApiImplicitParam(name = "country", value = "区县", paramType = "form", required = true),
+            @ApiImplicitParam(name = "provinceId", value = "省份id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "cityId", value = "城市id", paramType = "form", required = true),
+            @ApiImplicitParam(name = "countryId", value = "区县id", paramType = "form", required = true),
             @ApiImplicitParam(name = "town", value = "乡镇", paramType = "form"),
             @ApiImplicitParam(name = "street", value = "街道", paramType = "form"),
             @ApiImplicitParam(name = "otherAddress", value = "剩余地址信息", paramType = "form"),
@@ -131,11 +138,11 @@ public class ApplicationController {
                                                            MultipartFile idCardBack, MultipartFile idCardHand) {
         log.debug("提交商户入驻申请，申请信息：{}", business);
         BusinessMessage<JSONObject> message = new BusinessMessage<>();
-        if (StringUtils.isBlank(business.getProvince())) {
+        if (StringUtils.isBlank(business.getProvince()) && business.getProvinceId() > 0) {
             message.setMsg("省份为空");
-        } else if (StringUtils.isBlank(business.getCity())) {
+        } else if (StringUtils.isBlank(business.getCity()) && business.getCityId() > 0) {
             message.setMsg("城市为空");
-        } else if (StringUtils.isBlank(business.getCountry())) {
+        } else if (StringUtils.isBlank(business.getCountry()) && business.getCountryId() > 0) {
             message.setMsg("区县为空");
         } else if (null == business.getType()) {
             message.setMsg("申请级别为空");
