@@ -39,14 +39,16 @@ public class PutForwardService {
      */
     public void add(String pfUserId, String bankId,String pfMoney) {
         try {
+            String trid=getMoney(pfUserId,BigDecimal.valueOf(Double.parseDouble(pfMoney)));
             this.slPutForwardMapper.insertSelective(new SlPutForward(){{
                 setBankId(bankId);
                 setPfUserId(pfUserId);
                 setCreatedAt(new Date());
                 setUpdatedAt(new Date());
+                setDetailId(trid);
                 setPfMoney(BigDecimal.valueOf(Double.parseDouble(pfMoney)));
             }});
-            getMoney(pfUserId,BigDecimal.valueOf(Double.parseDouble(pfMoney)));
+
         } catch (Exception e) {
             log.error("提现失败 {}", e);
         }
@@ -57,7 +59,8 @@ public class PutForwardService {
      * 提现产生记录，以及扣除用户余额
      */
     @Transactional(rollbackFor = Exception.class)
-    public void getMoney(String userId,BigDecimal money) {
+    public String getMoney(String userId,BigDecimal money) {
+        SlTransactionDetail detail = new SlTransactionDetail();
         try {
 
             SlUser slUser = this.userService.selectOne(new SlUser() {{
@@ -68,7 +71,7 @@ public class PutForwardService {
             userService.updateByPrimaryKeySelective(slUser);
 
 
-            SlTransactionDetail detail = new SlTransactionDetail();
+
             detail.setSourceId(userId);
             detail.setTargetId(slUser.getId());
             detail.setType(6);
@@ -88,6 +91,7 @@ public class PutForwardService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return detail.getId();
     }
 
 
