@@ -596,6 +596,7 @@
         ON p.product_type_id = pt.id
     WHERE p.`del` = 0
       AND p.`recommend` = 1
+      AND p.sold_out = 1
     ORDER BY p.`sales_virtual` DESC
     </select>
 
