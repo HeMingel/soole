@@ -61,7 +61,8 @@ public class ApplicationController {
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
             @ApiImplicitParam(name = "idCardFront", value = "身份证正面照片", paramType = "form", dataType = "file", required = true),
             @ApiImplicitParam(name = "idCardBack", value = "身份证反面照片", paramType = "form", dataType = "file", required = true),
-            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
+            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true),
+            @ApiImplicitParam(name = "interState", value = "手机号区域1国内手机号2国际手机号", paramType = "form")
     })
     @PostMapping("agent")
     public BusinessMessage<JSONObject> agentApplication(SlAgentApplication agent, MultipartFile idCardFront, MultipartFile idCardBack, MultipartFile idCardHand) {
@@ -131,7 +132,8 @@ public class ApplicationController {
             @ApiImplicitParam(name = "idCardNumber", value = "身份证号", paramType = "form", required = true),
             @ApiImplicitParam(name = "idCardFront", value = "身份证正面照片，申请类型为个人时必传", paramType = "form", dataType = "file"),
             @ApiImplicitParam(name = "idCardBack", value = "身份证反面照片，申请类型为个人时必传", paramType = "form", dataType = "file"),
-            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true)
+            @ApiImplicitParam(name = "idCardHand", value = "手持身份证照片", paramType = "form", dataType = "file", required = true),
+            @ApiImplicitParam(name = "interState", value = "手机号区域1国内手机号2国际手机号", paramType = "form")
     })
     @PostMapping(value = "business")
     public BusinessMessage<JSONObject> businessApplication(SlBusinessApplication business, MultipartFile businessImage, MultipartFile idCardFront,
