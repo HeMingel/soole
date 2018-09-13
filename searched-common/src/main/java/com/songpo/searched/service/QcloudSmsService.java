@@ -18,19 +18,19 @@ public class QcloudSmsService {
     @Autowired
     private SmsPasswordCache smsPasswordCache;
     // 短信应用SDK AppID
-    int appid = 1400120943; // 1400开头
+    int appid = ; // 1400开头
     // 短信应用SDK AppKey
     String appkey = "a378262450ca156fca3941ee43fb3741";
     // 短信模板ID，需要在短信应用中申请
     // NOTE: 这里的模板ID`7839`只是一个示例，
     // 真实的模板ID需要在短信控制台中申请
-    int templateId = 168318;
+    int templateId =;
     //slb注册通知模板
-    int slbMsgId = 180633;
+    int slbMsgId = ;
     // 签名
     // 真实的签名需要在短信控制台中申请，另外
     // 签名参数使用的是`签名内容`，而不是`签名ID`
-    String smsSign = "搜了平台";
+    String smsSign = "";
 
     /**
      * 指定模板ID单发短信
