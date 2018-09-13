@@ -66,8 +66,8 @@ public class SmsService {
                 final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
                 final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
                 //替换成你的AK
-                final String accessKeyId = "LTAI4tIx1Gifh9xz";//你的accessKeyId,参考本文档步骤2
-                final String accessKeySecret = "MTuTblw21E3YLGDESEnzN8cGPf08RE";//你的accessKeySecret，参考本文档步骤2
+                final String accessKeyId = "";//你的accessKeyId,参考本文档步骤2
+                final String accessKeySecret = "";//你的accessKeySecret，参考本文档步骤2
                 //初始化ascClient,暂时不支持多region（请勿修改）
                 IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
                 DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -79,12 +79,12 @@ public class SmsService {
                 //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,验证码类型的短信推荐使用单条调用的方式
                 request.setPhoneNumbers(mobile);
                 //必填:短信签名-可在短信控制台中找到
-                request.setSignName("搜了平台");
+                request.setSignName("");
                 //必填:短信模板-可在短信控制台中找到
                 if(null==zone||"中国大陆".equals(zone)){
-                    request.setTemplateCode("SMS_130929507");
+                    request.setTemplateCode("");
                 }else {
-                    request.setTemplateCode("SMS_137550007");
+                    request.setTemplateCode("");
                 }
 
                 RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(DIGITS).build();
@@ -166,8 +166,8 @@ public class SmsService {
                 final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
                 final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
                 //替换成你的AK
-                final String accessKeyId = "LTAI4tIx1Gifh9xz";//你的accessKeyId,参考本文档步骤2
-                final String accessKeySecret = "MTuTblw21E3YLGDESEnzN8cGPf08RE";//你的accessKeySecret，参考本文档步骤2
+                final String accessKeyId = "";//你的accessKeyId,参考本文档步骤2
+                final String accessKeySecret = "";//你的accessKeySecret，参考本文档步骤2
                 //初始化ascClient,暂时不支持多region（请勿修改）
                 IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
                 DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -182,9 +182,9 @@ public class SmsService {
                 request.setSignName("搜了平台");
                 //必填:短信模板-可在短信控制台中找到
                 if(null==zone||"中国大陆".equals(zone)){
-                    request.setTemplateCode("SMS_130929507");
+                    request.setTemplateCode("");
                 }else {
-                    request.setTemplateCode("SMS_137550007");
+                    request.setTemplateCode("");
                 }
 
                 RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(DIGITS).build();
@@ -264,8 +264,8 @@ public class SmsService {
             final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
             final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
             //替换成你的AK
-            final String accessKeyId = "LTAI4tIx1Gifh9xz";//你的accessKeyId,参考本文档步骤2
-            final String accessKeySecret = "MTuTblw21E3YLGDESEnzN8cGPf08RE";//你的accessKeySecret，参考本文档步骤2
+            final String accessKeyId = "";//你的accessKeyId,参考本文档步骤2
+            final String accessKeySecret = "";//你的accessKeySecret，参考本文档步骤2
             //初始化ascClient,暂时不支持多region（请勿修改）
             IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -276,16 +276,16 @@ public class SmsService {
             request.setMethod(MethodType.POST);
 
             //必填:短信签名-可在短信控制台中找到
-            request.setSignName("搜了平台");
+            request.setSignName("");
             //必填:短信模板-可在短信控制台中找到
             if(null==zone||"中国大陆".equals(zone)){
-                request.setTemplateCode("SMS_142952202");
+                request.setTemplateCode("");
             }else {
                 SlPhoneZone slPhoneZone = slPhoneZoneMapper.selectOne(new SlPhoneZone(){{
                     setZone(zone);
                 }});
                 phone = "00"+slPhoneZone.getMobilearea()+phone;
-                request.setTemplateCode("SMS_142947152");
+                request.setTemplateCode("");
             }
             //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,登录密码类型的短信推荐使用单条调用的方式
             request.setPhoneNumbers(phone);
